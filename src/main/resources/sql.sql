@@ -1,0 +1,58 @@
+/*
+SQLPLUS system/dba;
+
+CREATE USER onion IDENTIFIED BY a123
+DEFAULT TABLESPACE USERS
+TEMPORARY TABLESPACE TEMP;
+
+GRANT CONNECT,RESOURCE,UNLIMITED TABLESPACE TO onion;
+
+CONNECT onion/a123;
+*/
+
+DROP TABLE delivery PURGE;
+DROP TABLE orders PURGE;
+DROP TABLE wish PURGE;
+
+
+
+CREATE TABLE wish (
+	wish_id     NUMBER,
+	member_id   NUMBER  NOT NULL,
+	product_id  NUMBER  NOT NULL,
+	created_date DATE    DEFAULT SYSDATE,
+    CONSTRAINT PK_WISH PRIMARY KEY (wish_id),
+    CONSTRAINT FK_WISH_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id),
+    CONSTRAINT FK_WISH_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id)
+);
+
+CREATE TABLE orders (
+	order_id	NUMBER	NOT NULL,
+	member_id	NUMBER	NOT NULL,
+	product_id	NUMBER	NOT NULL,
+	order_role	VARCHAR2 NOT NULL,
+    order_state VARCHAR2 NOT NULL, 
+	order_date  DATE    DEFAULT SYSDATE,
+	modified_date DATE  DEFAULT SYSDATE,
+    CONSTRAINT PK_ORDERS PRIMARY KEY (order_id),
+    CONSTRAINT FK_ORDERS_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id),
+    CONSTRAINT FK_ORDERS_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id)
+);
+
+CREATE TABLE delivery (
+	order_id	number,
+	post_code	VARCHAR(255)	NOT NULL,
+	address	    VARCHAR(255)	NOT NULL,
+	detail_address VARCHAR(255)	NOT NULL,
+	extra_address VARCHAR(255)	NOT NULL,
+	request     VARCHAR(255),
+    CONSTRAINT PK_DELIVERY PRIMARY KEY (order_id),
+    CONSTRAINT FK_DELIVERY_ORDER_ID FOREIGN KEY (order_id) REFERENCES member(order_id)
+);
+
+
+
+
+
+
+

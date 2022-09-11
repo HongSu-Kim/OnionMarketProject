@@ -1,4 +1,4 @@
 package com.youprice.onion.service;
 
-public interface MemberService {
+public interface OrderService {
 }
