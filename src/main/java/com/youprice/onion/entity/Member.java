@@ -2,10 +2,7 @@ package com.youprice.onion.entity;
 
 import lombok.Getter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -13,6 +10,7 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer memberId;
+    @Column(name = "member_id")
+    private Integer id;//회원번호 PK
 
 }

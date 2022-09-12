@@ -12,7 +12,7 @@ public class Delivery implements Serializable {
     @Id
     @OneToOne
     @JoinColumn(name = "order_id")
-    private Order order;//주문번호
+    private Order order;//주문번호 PK FK
 
     @Embedded
     private Address address;//배송지
