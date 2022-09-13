@@ -12,8 +12,10 @@ public class Block {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer blockNum;
+    private Integer block_id;
 
-    @JoinColumn
-    private Integer member_id;
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member; //회원번호 FK
+
 }

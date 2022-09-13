@@ -12,9 +12,9 @@ public class Follow {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer followNum;
+    private Integer follow_id;
 
-    @JoinColumn
-    private Integer member_id;
-
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member; //회원번호 FK
 }
