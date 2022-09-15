@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 public class Review {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "review_id")

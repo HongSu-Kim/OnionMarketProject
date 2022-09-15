@@ -24,4 +24,5 @@ public class Inquiry {
     private LocalDateTime inquiryDate;
     private Integer parent;
 
+
 }

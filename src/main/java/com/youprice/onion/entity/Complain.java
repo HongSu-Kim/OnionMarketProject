@@ -27,4 +27,5 @@ public class Complain {
     private Integer complainUser;
     private String complainContent;
     private String status;
+
 }
