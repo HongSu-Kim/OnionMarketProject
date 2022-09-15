@@ -1,6 +1,10 @@
 package com.youprice.onion.entity;
+import lombok.Getter;
+
+import javax.persistence.*;
 
 @Entity
+@Getter
 public class ProductImg {
 
         @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)

@@ -1,6 +1,9 @@
 package com.youprice.onion.entity;
+import lombok.Getter;
+import javax.persistence.*;
 
 @Entity
+@Getter
 public class Town {
         @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
         @Column(name = "town_id")
