@@ -1,11 +1,18 @@
 package com.youprice.onion.entity;
 
 
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import javax.persistence.*;
+
+
 @Entity
+@Getter
 public class Product {
 
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -30,12 +37,12 @@ public class Product {
     private ProductProgress productProgress; //판매상태 Reserved,tradings,soldout 예약중,거래중,판매완료
 
     private String payStatus; //페이현황
-    
+
     private String auctionStatus; //경매현황
-    
+
     private String blindStatus; //블라인드현황
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name = "member_id")
     private Member member;//회원번호 FK
 
@@ -54,7 +61,24 @@ public class Product {
     @OneToOne(mappedBy = "product")//카운트번호
     private  Countdown countdown;
 
+    //주문내역 참조 양방향
+    //@OneToMany(mappedBy = "product")
+    //private List<Order> orderList = new ArrayList<>();
 
+    //찜 참조 양방향
+   // @OneToMany(mappedBy = "product")
+    //private  List<Wish> wishList = new ArrayList<>();
+
+    //채팅방 참조 양방향
+   // @OneToMany(mappedBy = "product")
+    //private  List<ChatRoom> chatRoomList = new ArrayList<>();
+    
+    //신고 참조 양방향
+   // @OneToMany(mappedBy = "product")
+   // private  List<Complain> complainList = new ArrayList<>();
+
+
+    
 }
 
 
