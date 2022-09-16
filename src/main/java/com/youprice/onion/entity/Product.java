@@ -42,7 +42,7 @@ public class Product {
 
     private String blindStatus; //블라인드현황
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name = "member_id")
     private Member member;//회원번호 FK
 

@@ -12,11 +12,11 @@ public class ProductTag {
     @Column(name = "product_tag_id")
     private Long id; //상품태그번호 PK
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name = "product_id")
     private Product product; //상품번호 FK
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name = "tag_id")
     private Tag tag; //태그번호 FK
 
