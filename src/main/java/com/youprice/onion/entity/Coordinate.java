@@ -2,8 +2,12 @@ package com.youprice.onion.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+import javax.persistence.*;
+
 
 @Entity
+@Getter
 public class Coordinate {
 
         @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
