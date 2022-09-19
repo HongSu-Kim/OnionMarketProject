@@ -14,14 +14,13 @@ public class Wish {
     @Column(name = "wish_id")
     private Integer id;//찜번호 Pk
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;//회원번호 FK
 
-//    @ManyToOne
-//    @JoinColumn(name = "product_id")
-//    private Product product;//상품번호 FK
-    private int productId;//상품번호
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private Product product;//상품번호 FK
 
     private LocalDateTime createdDate;//등록시간
 
