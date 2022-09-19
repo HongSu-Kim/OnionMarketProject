@@ -24,5 +24,8 @@ public class Inquiry {
     private String inquiryContent; // 문의내용
     private LocalDateTime inquiryDate; // 문의등록일
 
+    @OneToOne(mappedBy = "inquiry")
+    private Answer answer;
+
 
 }

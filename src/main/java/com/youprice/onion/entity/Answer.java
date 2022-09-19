@@ -11,7 +11,7 @@ public class Answer {
     @Column(name = "answer_id")
     private Integer id; // 답변번호 PK
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inquiry_id")
     private Inquiry inquiry; // 문의글번호 FK
 
