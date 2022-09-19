@@ -1,20 +1,20 @@
 package com.youprice.onion.entity;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-@Setter
 public class Follow {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer follow_id;
+    @Column(name = "follow_id")
+    private Integer id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name = "member_id")
     private Member member; //회원번호 FK
+
 }
