@@ -32,4 +32,7 @@ public class Order {
     @OneToOne(mappedBy = "order")
     private Delivery delivery;
 
+    @OneToOne(mappedBy = "order")
+    private Review review;
+
 }
