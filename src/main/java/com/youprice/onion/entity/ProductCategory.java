@@ -8,7 +8,7 @@ import javax.persistence.*;
 public class ProductCategory {
 
       @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
-      @Column(name = "product_category")
+      @Column(name = "product_category_id")
       private Long id; //상품카테고리번호 PK
 
       @ManyToOne(fetch = FetchType.LAZY )
