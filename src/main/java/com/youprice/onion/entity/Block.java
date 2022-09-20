@@ -1,21 +1,24 @@
 package com.youprice.onion.entity;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-@Setter
 public class Block {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer block_id;
+    @Column(name = "block_id")
+    private Integer id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name = "member_id")
-    private Member member; //회원번호 FK
+    private Member member; //회원-회원번호 FK
+
+    @ManyToOne(fetch = FetchType.LAZY )
+    @JoinColumn(name = "block_id_num")
+    private Member target; //회원-회원번호 FK
 
 }

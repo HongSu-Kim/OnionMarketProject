@@ -12,17 +12,15 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "review_id")
-    private Integer id;
+    private Integer id; // 리뷰번호 PK
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
-    private Order order;
+    private Order order; // 주문번호 FK
 
-    private String reviewType;
-    private String reviewContent;
-    private Integer grade;
-    private LocalDateTime reviewDate;
-
-    @Column(name = "review_image")
-    private String image;
+    private String reviewType; // 리뷰타입
+    private String reviewContent; // 리뷰내용
+    private Integer grade; // 평점
+    private LocalDateTime reviewDate; //등록일
+    private String reviewImageName; // 첨부사진
 }

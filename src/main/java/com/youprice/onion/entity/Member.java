@@ -3,6 +3,8 @@ package com.youprice.onion.entity;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -13,34 +15,61 @@ public class Member {
     @Column(name = "member_id")
     private Integer id;//회원번호 PK
 
-    @Column //(nullable = false, length = 30, unique = true)
+    private String role; //권한(user or admin)
+
+    @Column(name = "user_id")
     private String userId; //아이디
 
-    @Column //(nullable = false)
     private String pwd; //비밀번호
-
-    @Column //(nullable = false, unique = true)
     private String nickname; //닉네임
-
-    @Column //(nullable = false)
     private String name; //이름
-
-    @Column //(nullable = false)
     private String birth; //생일
-
-    @Column //(nullable = false, length = 11)
     private String tel; //전화번호
 
-    @Column //(nullable = false)
-    private String email; //이메일 주소
+    @Embedded
+    private Address address; //주소
 
-    private int grade; //평점
-    private int point; //포인트
+    private String email; //이메일
+    private String memberImageName; //프로필 사진
     private int cash; //양파페이
+    private int point; //포인트
+    private int userGrade; //평점
     private int complaintCount; //신고접수 횟수
-    private String profileImg; //프로필 사진
 
-    @Column //(nullable = false)
-    private String address; //주소
+    @OneToMany(mappedBy = "member")
+    private List<Follow> followList = new ArrayList<>(); //팔로우-회원번호 FK
+
+    @OneToMany(mappedBy = "member")
+    private List<Block> blockList = new ArrayList<>(); //차단-회원번호 FK
+
+    @OneToMany(mappedBy = "member")
+    private List<Inquiry> inquiryList = new ArrayList<>(); //1:1문의글-회원번호 FK
+
+    @OneToMany(mappedBy = "member")
+    private List<Complain> complainList = new ArrayList<>(); //신고-회원번호 FK
+
+    @OneToMany(mappedBy = "member")
+    private List<ChatRoom> chatRoomList = new ArrayList<>(); //채팅방-회원번호 FK
+
+    @OneToMany(mappedBy = "member")
+    private List<NoticeBoard> noticeBoardList = new ArrayList<>(); //게시판-회원번호 FK
+
+    @OneToMany(mappedBy = "member")
+    private List<Product> productList = new ArrayList<>(); //상품-회원번호 FK
+
+    @OneToMany(mappedBy = "member")
+    private List<MemberCategory> memberCategoryList = new ArrayList<>(); //회원카테고리설정-회원번호 FK
+
+    @OneToMany(mappedBy = "member")
+    private List<Keyword> keywordList = new ArrayList<>(); //키워드-회원번호 FK
+
+    @OneToMany(mappedBy = "member")
+    private List<Town> townList = new ArrayList<>(); //동네-회원번호 FK
+
+    @OneToMany(mappedBy = "member")
+    private List<Order> orderList = new ArrayList<>(); //주문내역-회원번호 FK
+
+    @OneToMany(mappedBy = "member")
+    private List<Wish> wishList = new ArrayList<>(); //찜-회원번호 FK
 
 }
