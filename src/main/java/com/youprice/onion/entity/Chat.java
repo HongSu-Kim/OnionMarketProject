@@ -14,9 +14,9 @@ public class Chat{
     @Column(name = "chat_id")
     private Long id; //채팅번호(각 채팅 문장의 번호) PK
 
-    @OneToOne
-    @JoinColumn(name="chat_room_id")
-    private ChatRoom chatroom; //채팅방번호 FK
+    @ManyToOne
+    @JoinColumn(name="chatroom_id")
+    private Chatroom chatroom; //채팅방번호 FK
 
     @Column
     private String message; //메세지
