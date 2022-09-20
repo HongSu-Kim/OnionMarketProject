@@ -5,10 +5,10 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-public class ProductImg {
+public class ProductImage {
 
         @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
-        @Column(name = "image_id")
+        @Column(name = "product_image_id")
         private Long id; //이미지번호 PK
 
         @ManyToOne(fetch = FetchType.LAZY )
