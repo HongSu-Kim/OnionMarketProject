@@ -50,32 +50,26 @@ public class Product {
     private List<ProductCategory> productCategoryList = new ArrayList<>();
 
     @OneToMany(mappedBy = "product")//이미지번호
-    private List<ProductImg> productImgList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "product")//키워드번호
-    private List<Keyword> keywordList = new ArrayList<>();
+    private List<ProductImage> productImageList = new ArrayList<>();
 
     @OneToMany(mappedBy = "product")//태그번호
     private List<ProductTag> productTagList = new ArrayList<>();
 
-    @OneToOne(mappedBy = "product")//카운트번호
-    private  Countdown countdown;
-
     //주문내역 참조 양방향
-    //@OneToMany(mappedBy = "product")
-    //private List<Order> orderList = new ArrayList<>();
+    @OneToMany(mappedBy = "product")
+    private List<Order> orderList = new ArrayList<>();
 
     //찜 참조 양방향
-   // @OneToMany(mappedBy = "product")
-    //private  List<Wish> wishList = new ArrayList<>();
+    @OneToMany(mappedBy = "product")
+    private  List<Wish> wishList = new ArrayList<>();
 
     //채팅방 참조 양방향
-   // @OneToMany(mappedBy = "product")
-    //private  List<ChatRoom> chatRoomList = new ArrayList<>();
+    @OneToMany(mappedBy = "product")
+    private  List<ChatRoom> chatRoomList = new ArrayList<>();
     
     //신고 참조 양방향
-   // @OneToMany(mappedBy = "product")
-   // private  List<Complain> complainList = new ArrayList<>();
+    @OneToMany(mappedBy = "product")
+    private  List<Complain> complainList = new ArrayList<>();
 
 
     

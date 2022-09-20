@@ -12,17 +12,20 @@ public class Inquiry {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "inquiry_id")
-    private Integer id;
+    private Integer id; // 문의번호 PK
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member member;
+    private Member member; // 회원번호 FK
 
-    private String inquiryType;
-    private String inquirySubject;
-    private String inquiryContent;
-    private LocalDateTime inquiryDate;
-    private Integer parent;
+    private String inquiryType; // 문의유형
+    private String inquirySubject; // 문의제목
+    private String inquiryContent; // 문의내용
+    private LocalDateTime inquiryDate; // 문의등록일
+    private String status; // 답변상태
+
+    @OneToOne(mappedBy = "inquiry")
+    private Answer answer;
 
 
 }
