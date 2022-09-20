@@ -56,20 +56,20 @@ public class Product {
     private List<ProductTag> productTagList = new ArrayList<>();
 
     //주문내역 참조 양방향
-    //@OneToMany(mappedBy = "product")
-    //private List<Order> orderList = new ArrayList<>();
+    @OneToMany(mappedBy = "product")
+    private List<Order> orderList = new ArrayList<>();
 
     //찜 참조 양방향
-   // @OneToMany(mappedBy = "product")
-    //private  List<Wish> wishList = new ArrayList<>();
+    @OneToMany(mappedBy = "product")
+    private  List<Wish> wishList = new ArrayList<>();
 
     //채팅방 참조 양방향
-   // @OneToMany(mappedBy = "product")
-    //private  List<ChatRoom> chatRoomList = new ArrayList<>();
+    @OneToMany(mappedBy = "product")
+    private  List<ChatRoom> chatRoomList = new ArrayList<>();
     
     //신고 참조 양방향
-   // @OneToMany(mappedBy = "product")
-   // private  List<Complain> complainList = new ArrayList<>();
+    @OneToMany(mappedBy = "product")
+    private  List<Complain> complainList = new ArrayList<>();
 
 
     
