@@ -15,7 +15,7 @@ public class NoticeImage {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "notice_id")
-    private NoticeBoard noticeBoard; //공지 번호 FK
+    private Notice notice; //공지 번호 FK
 
     @Column
     private String notice_image_name; //첨부파일명
