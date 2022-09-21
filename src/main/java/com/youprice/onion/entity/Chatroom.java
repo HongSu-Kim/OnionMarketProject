@@ -4,14 +4,15 @@ import lombok.Getter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
-public class ChatRoom{
+public class Chatroom{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "chat_room_id")
+    @Column(name = "chatroom_id")
     private Integer id;//채팅방번호 PK
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -30,5 +31,8 @@ public class ChatRoom{
 
     @Column
     private LocalDateTime modify_date; //수정시간(마지막 채팅 시간)
+
+    @OneToMany(mappedBy = "Chat")
+    private List<Chat> chat;
 
 }
