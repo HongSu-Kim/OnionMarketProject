@@ -4,7 +4,6 @@ import lombok.Getter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Getter
@@ -23,6 +22,7 @@ public class Inquiry {
     private String inquirySubject; // 문의제목
     private String inquiryContent; // 문의내용
     private LocalDateTime inquiryDate; // 문의등록일
+    private String status; // 답변상태
 
     @OneToOne(mappedBy = "inquiry")
     private Answer answer;

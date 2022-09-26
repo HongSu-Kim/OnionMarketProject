@@ -12,32 +12,23 @@ public class Chat{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "chat_id")
-    private Long id; //각각 채팅 내용의 번호
+    private Long id; //채팅번호(각 채팅 문장의 번호) PK
+
+    @ManyToOne
+    @JoinColumn(name="chatroom_id")
+    private Chatroom chatroom; //채팅방번호 FK
 
     @Column
-    private int chat_room_id; //채팅방의 번호
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    private String message; //메세지
 
     @Column
-    private String sender;
+    private String chat_image_name; //첨부 이미지
 
     @Column
-    private String message;
+    private char read_or_not; //읽음 표시
 
     @Column
-    private String image_file_name;
+    private LocalDateTime sending_time; //전송 시간
 
-    @Column
-    private char read_or_not;
-
-    @Column
-    private LocalDateTime sending_time;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chatroom_id")
-    private ChatRoom chatRoom;
 
 }

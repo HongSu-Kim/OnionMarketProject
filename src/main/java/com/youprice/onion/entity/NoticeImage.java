@@ -10,14 +10,14 @@ public class NoticeImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "image_id")
-    private Integer id;
+    @Column(name = "notice_image_id")
+    private Integer id; //공지 이미지 번호 PK
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "notice_id")
-    private NoticeBoard noticeBoard;
+    private Notice notice; //공지 번호 FK
 
     @Column
-    private String notice_image_name;
+    private String notice_image_name; //첨부파일명
 
 }
