@@ -22,7 +22,7 @@ public class Chat{
     private String message; //메세지
 
     @Column
-    private String chatImageName; //첨부 이미지
+    private String chatImageName; //첨부이미지
 
     @Column
     private char readOrNot; //읽음 표시

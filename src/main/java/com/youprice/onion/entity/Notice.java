@@ -24,7 +24,7 @@ public class Notice{
     }
 
     @Column
-    private NoticeType noticeType; //공지 타입(notice, qna, event ...)
+    private NoticeType noticeType; //공지타입(notice, qna, event ...)
 
     @Column
     private String noticeSubject; //공지제목

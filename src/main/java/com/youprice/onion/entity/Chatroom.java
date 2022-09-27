@@ -24,7 +24,7 @@ public class Chatroom{
     private Member member; //상품번호 FK
 
     @Column
-    private String state; //채팅의 진행 상태 , 진행중 - 종료 - 삭제(DB삭제 X)
+    private String state; //채팅의 진행 상태, 진행중 - 종료 - 삭제(DB삭제 X)
 
     @Column
     private LocalDateTime createDate = LocalDateTime.now(); //생성시간
