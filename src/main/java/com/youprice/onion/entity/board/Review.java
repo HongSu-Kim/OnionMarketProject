@@ -24,4 +24,5 @@ public class Review {
     private Integer grade; // 평점
     private LocalDateTime reviewDate; //등록일
     private String reviewImageName; // 첨부사진
+
 }

@@ -11,14 +11,14 @@ public class Block {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "block_id")
-    private Integer id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name = "member_id")
-    private Member member; //회원-회원번호 FK
+    private Member member; //차단한 회원번호 FK
 
     @ManyToOne(fetch = FetchType.LAZY )
-    @JoinColumn(name = "block_id_num")
-    private Member target; //회원-회원번호 FK
+    @JoinColumn(name = "block_target_id")
+    private Member target; //차단 당한 회원번호 FK
 
 }
