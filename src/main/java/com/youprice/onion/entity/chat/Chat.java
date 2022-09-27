@@ -18,9 +18,17 @@ public class Chat{
     @JoinColumn(name="chatroom_id")
     private Chatroom chatroom; //채팅방번호 FK
 
+    @Column
     private String message; //메세지
-    private String chat_image_name; //첨부 이미지
-    private char read_or_not; //읽음 표시
-    private LocalDateTime sending_time; //전송 시간
+
+    @Column
+    private String chatImageName; //첨부이미지
+
+    @Column
+    private char readOrNot; //읽음 표시
+
+    @Column
+    private LocalDateTime sendingTime; //전송 시간
+
 
 }
