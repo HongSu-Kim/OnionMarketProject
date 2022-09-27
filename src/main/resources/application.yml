@@ -20,3 +20,8 @@ spring:
         format_sql: true
         show_sql: true
 
+mybatis:
+  mapper-locations: mybatis/mapper/*/*.xml
+  type-aliases-package: com.youprice.onion.mapper.*
+  configuration:
+    map-underscore-to-camel-case: true
