@@ -22,13 +22,13 @@ public class Chat{
     private String message; //메세지
 
     @Column
-    private String chat_image_name; //첨부 이미지
+    private String chatImageName; //첨부 이미지
 
     @Column
-    private char read_or_not; //읽음 표시
+    private char readOrNot; //읽음 표시
 
     @Column
-    private LocalDateTime sending_time; //전송 시간
+    private LocalDateTime sendingTime; //전송 시간
 
 
 }

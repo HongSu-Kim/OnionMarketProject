@@ -18,6 +18,6 @@ public class NoticeImage {
     private Notice notice; //공지 번호 FK
 
     @Column
-    private String notice_image_name; //첨부파일명
+    private String noticeImageName; //첨부파일명
 
 }

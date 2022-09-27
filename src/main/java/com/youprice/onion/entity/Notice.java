@@ -24,22 +24,22 @@ public class Notice{
     }
 
     @Column
-    private NoticeType notice_type; //공지 타입(notice, qna, event ...)
+    private NoticeType noticeType; //공지 타입(notice, qna, event ...)
 
     @Column
-    private String notice_subject; //공지제목
+    private String noticeSubject; //공지제목
 
     @Column
-    private String notice_content; //공지내용
+    private String noticeContent; //공지내용
 
     @Column
-    private LocalDateTime notice_date; //작성일자
+    private LocalDateTime noticeDate; //작성일자
 
     @Column
-    private int hit_count; //조회수
+    private int hitCount; //조회수
 
-    @OneToMany(mappedBy = "NoticeBoard")
-    private List<NoticeImage> noticeImage;
+    @OneToMany(mappedBy = "notice")
+    private List<NoticeImage> noticeImageList;
 
 
 }

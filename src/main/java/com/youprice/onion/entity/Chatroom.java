@@ -24,15 +24,15 @@ public class Chatroom{
     private Member member; //상품번호 FK
 
     @Column
-    private char state; //채팅의 진행 상태 , 진행중 - 종료 - 삭제(DB삭제 X)
+    private String state; //채팅의 진행 상태 , 진행중 - 종료 - 삭제(DB삭제 X)
 
     @Column
-    private LocalDateTime create_date = LocalDateTime.now(); //생성시간
+    private LocalDateTime createDate = LocalDateTime.now(); //생성시간
 
     @Column
-    private LocalDateTime modify_date; //수정시간(마지막 채팅 시간)
+    private LocalDateTime modifyDate; //수정시간(마지막 채팅 시간)
 
-    @OneToMany(mappedBy = "Chat")
-    private List<Chat> chat;
+    @OneToMany(mappedBy = "chatroom")
+    private List<Chat> chatList;
 
 }
