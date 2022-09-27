@@ -16,6 +16,6 @@ public class ProductImage {
         @JoinColumn(name = "product_id")
         private Product product; //상품번호 FK
 
-        private String imageFileName; //이미지파일이름
+        private String productImageName; //이미지파일이름
 
 }
