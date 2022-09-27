@@ -21,7 +21,4 @@ public class ProductTag {
     @JoinColumn(name = "tag_id")
     private Tag tag; //태그번호 FK
 
-
-
-
 }

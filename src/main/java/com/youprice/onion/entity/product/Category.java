@@ -23,8 +23,8 @@ public class Category {
     private Category parent;
 
 
-    @OneToMany(mappedBy = "category") //자식카테고리번호
-    private  List<Category> categoryList = new ArrayList<>();
+    @OneToMany(mappedBy = "parent") //자식카테고리번호
+    private  List<Category> childList = new ArrayList<>();
 
     @OneToMany(mappedBy = "category")//상품카테고리번호
     private List<ProductCategory> productCategoryList = new ArrayList<>();
