@@ -15,6 +15,10 @@ public class Follow {
 
     @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name = "member_id")
-    private Member member; //회원번호 FK
+    private Member member; //팔로우한 회원번호 FK
+
+    @ManyToOne(fetch = FetchType.LAZY )
+    @JoinColumn(name = "follow_target_id")
+    private Member target; //팔로우된 회원번호 FK
 
 }
