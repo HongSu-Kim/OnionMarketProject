@@ -11,6 +11,7 @@ import com.youprice.onion.entity.product.Town;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "member_id")
-    private Integer id;//회원번호 PK
+    private Long id;//회원번호 PK
 
     private String role; //권한(user or admin)
 
@@ -31,7 +32,7 @@ public class Member {
     private String pwd; //비밀번호
     private String nickname; //닉네임
     private String name; //이름
-    private String birth; //생일
+    private LocalDate birth; //생일
     private String tel; //전화번호
 
     @Embedded

@@ -5,7 +5,6 @@ import lombok.Getter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -26,15 +25,15 @@ public class Notice{
     }
 
     @Enumerated(EnumType.STRING)
-    private NoticeType notice_type; //공지 타입(notice, qna, event ...)
+    private NoticeType noticeType; //공지타입(notice, qna, event ...)
 
-    private String notice_subject; //공지제목
-    private String notice_content; //공지내용
-    private LocalDateTime notice_date; //작성일자
-    private int hit_count; //조회수
+    private String noticeSubject; //공지제목
+    private String noticeContent; //공지내용
+    private LocalDateTime noticeDate; //작성일자
+    private int hitCount; //조회수
 
 
     @OneToMany(mappedBy = "notice")
-    private List<NoticeImage> noticeImageList = new ArrayList<>();
+    private List<NoticeImage> noticeImageList;
 
 }

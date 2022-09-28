@@ -6,7 +6,6 @@ import lombok.Getter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,12 +25,12 @@ public class Chatroom{
     @JoinColumn(name = "member_id")
     private Member member; //상품번호 FK
 
-    private String state; //채팅의 진행 상태 , 진행중 - 종료 - 삭제(DB삭제 X)
-    private LocalDateTime create_date; //생성시간
-    private LocalDateTime modify_date; //수정시간(마지막 채팅 시간)
+    private String state; //채팅의 진행 상태, 진행중 - 종료 - 삭제(DB삭제 X)
+    private LocalDateTime createDate; //생성시간
+    private LocalDateTime modifyDate; //수정시간(마지막 채팅 시간)
 
 
     @OneToMany(mappedBy = "chatroom")
-    private List<Chat> chat = new ArrayList<>();
+    private List<Chat> chatList;
 
 }
