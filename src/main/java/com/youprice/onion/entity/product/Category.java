@@ -11,25 +11,23 @@ import java.util.List;
 @Getter
 public class Category {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Id  @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "category_id")
-    private Long id; //카테고리번호 PK
+    private int id; //카테고리번호 PK
 
-    private String categoryName; //카테고리이름
-
-    @ManyToOne(fetch = FetchType.LAZY )
-    @JoinColumn(name = "parent_id") //부모카테고리번호
-    private Category parent;
+    private String categoryPname; //상위카테고리이름
 
 
-    @OneToMany(mappedBy = "parent") //자식카테고리번호
-    private  List<Category> childList = new ArrayList<>();
+    private String categoryCname; //하위카테고리이름
+
+    @ManyToOne(fetch = FetchType.LAZY , cascade = CascadeType.ALL)
+    @JoinColumn(name = "parent_id") //상위카테고리번호
+    private Category category;
+
+    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL) //하위카테고리번호
+    private  List<Category> categoryList = new ArrayList<>();
 
     @OneToMany(mappedBy = "category")//상품카테고리번호
     private List<ProductCategory> productCategoryList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "category")//회원카테고리번호
-    private List<MemberCategory> memberCategoryList = new ArrayList<>();
 
 }
