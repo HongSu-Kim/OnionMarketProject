@@ -21,7 +21,7 @@ public class Category {
     @JoinColumn(name = "parent_id") //부모카테고리번호
     private Category category;
 
-    @OneToMany(mappedBy = "category") //자식카테고리 번호
+    @OneToMany(mappedBy = "category") //자식 카테고리 번호
     private  List<Category> categoryList = new ArrayList<>();
 
     @OneToMany(mappedBy = "category")//상품카테고리번호
