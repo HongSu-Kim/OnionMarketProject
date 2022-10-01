@@ -68,11 +68,11 @@ public class Product {
     private  List<Complain> complainList = new ArrayList<>();
 
     //입찰 참조 양방향
-    @OneToMany(mappedBy = "bidding")
+    @OneToMany(mappedBy = "product")
     private List<Bidding> biddingList = new ArrayList<>();
 
     //경매 참조 양방향
-    @OneToOne(mappedBy = "auction")
+    @OneToOne(mappedBy = "product")
     private Product product;
 }
 
