@@ -40,9 +40,7 @@ public class Product {
     private ProductProgress productProgress; //판매상태 Reserved,tradings,soldout 예약중,거래중,판매완료
 
     private String payStatus; //페이현황
-    private String auctionStatus; //경매현황
     private String blindStatus; //블라인드현황
-
 
     @OneToMany(mappedBy = "product")//카테고리번호 FK
     private List<ProductCategory> productCategoryList = new ArrayList<>();
@@ -69,6 +67,13 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private  List<Complain> complainList = new ArrayList<>();
 
+    //입찰 참조 양방향
+    @OneToMany(mappedBy = "bidding")
+    private List<Bidding> biddingList = new ArrayList<>();
+
+    //경매 참조 양방향
+    @OneToOne(mappedBy = "auction")
+    private Product product;
 }
 
 
