@@ -164,8 +164,7 @@ CREATE TABLE product_tag (
 
 CREATE TABLE category (
 	category_id     	NUMBER          NOT NULL,
-	category_pname   	VARCHAR2(255)   NOT NULL,
-    category_cname   	VARCHAR2(255)   NOT NULL,
+    category_name  	    VARCHAR2(255)   NOT NULL,
 	parent_id       	NUMBER          NULL,
 	CONSTRAINT PK_CATEGORY PRIMARY KEY (category_id),
 	CONSTRAINT FK_CATEGORY_PARENT_ID FOREIGN KEY (parent_id) REFERENCES category(category_id)
