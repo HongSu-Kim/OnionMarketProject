@@ -30,7 +30,8 @@ DROP TABLE category PURGE;
 
 DROP TABLE product_tag PURGE;
 DROP TABLE tag PURGE;
-DROP TABLE countdown PURGE;
+DROP TABLE bidding PURGE;
+DROP TABLE auction PURGE;
 DROP TABLE product_image PURGE;
 DROP TABLE product PURGE;
 
@@ -43,15 +44,14 @@ DROP TABLE block PURGE;
 DROP TABLE member PURGE;
 
 
-
 CREATE TABLE member (
 	member_id			NUMBER			NOT NULL,
-	role				VARCHAR2(15)	NULL,
-	user_id				VARCHAR2(30)	NOT NULL,
-	pwd					VARCHAR2(40)	NOT NULL,
-	nickname			VARCHAR2(40)	NOT NULL,
-	name				VARCHAR2(30)	NOT NULL,
-	birth				DATE			NOT NULL,
+	role				VARCHAR2(15)    NULL,
+	user_id				VARCHAR2(30)    NOT NULL,
+	pwd					VARCHAR2(40)    NOT NULL,
+	nickname			VARCHAR2(40)    NOT NULL,
+	name				VARCHAR2(30)    NOT NULL,
+	birth				DATE		    NOT NULL,
 	tel					CHAR(11)	    NOT NULL,
 	post_code			NUMBER	        NOT NULL,
 	address				VARCHAR2(100)	NOT NULL,
@@ -68,16 +68,16 @@ CREATE TABLE member (
 
 
 CREATE TABLE follow (
-	follow_id			NUMBER			NOT NULL,
-	member_id			NUMBER			NOT NULL,
-	follow_target_id	NUMBER			NOT NULL,
+	follow_id           NUMBER          NOT NULL,
+	member_id           NUMBER          NOT NULL,
+	follow_target_id    NUMBER          NOT NULL,
 	CONSTRAINT PK_FOLLOW PRIMARY KEY (follow_id),
 	CONSTRAINT FK_FOLLOW_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id),
 	CONSTRAINT FK_FOLLOW_FOLLOW_TARGET_ID FOREIGN KEY (follow_target_id) REFERENCES member(member_id)
 	);
 
 CREATE TABLE block (
-	block_id			NUMBER			NOT NULL,
+	block_id            NUMBER			NOT NULL,
 	member_id       	NUMBER  		NOT NULL,
 	block_target_id   	NUMBER  		NOT NULL,
 	CONSTRAINT PK_BLOCK PRIMARY KEY (block_id),
@@ -86,8 +86,8 @@ CREATE TABLE block (
 );
 
 CREATE TABLE keyword (
-	keyword_id      	NUMBER			NOT NULL,
-	member_id       	NUMBER			NOT NULL,
+	keyword_id      	NUMBER          NOT NULL,
+	member_id       	NUMBER          NOT NULL,
 	keyword_name    	VARCHAR2(255)   NULL,
 	CONSTRAINT PK_KEYWORD PRIMARY KEY (keyword_id),
 	CONSTRAINT FK_KEYWORD_MEMBER_ID FOREIGN KEY (member_id) REFERENCES  member(member_id)
@@ -102,10 +102,9 @@ CREATE TABLE coordinate (
 );
 
 CREATE TABLE town (
-	town_id				NUMBER        	NOT NULL,
-	member_id			NUMBER        	NOT NULL,
-	coordinate_id		NUMBER        	NOT NULL,
-	region				VARCHAR2(10)	NOT NULL,
+	town_id             NUMBER        	NOT NULL,
+	member_id           NUMBER        	NOT NULL,
+	coordinate_id       NUMBER        	NOT NULL,
 	CONSTRAINT PK_TOWN PRIMARY KEY (town_id),
 	CONSTRAINT FK_TOWN_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id),
 	CONSTRAINT FK_TOWN_COORDINATE_ID FOREIGN KEY (coordinate_id) REFERENCES coordinate(coordinate_id)
@@ -122,10 +121,9 @@ CREATE TABLE product (
 	upload_date         DATE            DEFAULT SYSDATE,
 	update_date         DATE            DEFAULT NULL,
 	view_count          NUMBER          DEFAULT 0,
-	product_progress    VARCHAR2(255)   NULL,
-	pay_status          VARCHAR2(255)   NULL,
-	auction_status      VARCHAR2(255)   NULL,
-	blind_status        VARCHAR2(255)   NULL,
+	product_progress    VARCHAR2(20)   NULL,
+	pay_status          VARCHAR2(20)   NULL,
+	blind_status        VARCHAR2(20)   NULL,
 	CONSTRAINT PK_PRODUCT PRIMARY KEY (product_id),
 	CONSTRAINT FK_PRODUCT_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id),
 	CONSTRAINT FK_PRODUCT_TOWN_ID    FOREIGN KEY (town_id) REFERENCES town(town_id)
@@ -139,11 +137,24 @@ CREATE TABLE product_image (
 	CONSTRAINT FK_PRODUCT_IMAGE_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id)
 );
 
-CREATE TABLE countdown (
-	countdown_id   		NUMBER  		NOT NULL,
-	product_id     		NUMBER  		NOT NULL,
-	CONSTRAINT PK_COUNTDOWN PRIMARY KEY (countdown_id),
-	CONSTRAINT FK_COUNTDOWN_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id)
+CREATE TABLE auction (
+    auction_id          NUMBER          NOT NULL,
+    product_id          NUMBER          NOT NULL,
+    auction_deadline    DATE            NULL,
+    auction_status      VARCHAR2(20)    NULL,
+    CONSTRAINT PK_AUCTION PRIMARY KEY (auction_id),
+    CONSTRAINT FK_AUCTION_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id)
+);
+
+CREATE TABLE bidding (
+    bidding_id          NUMBER          NOT NULL,
+    product_id          NUMBER          NOT NULL,
+    member_id           NUMBER          NOT NULL,
+    bid                 NUMBER          NULL,
+    bidding_time        DATE            NULL,
+    CONSTRAINT PK_BIDDING PRIMARY KEY (bidding_id),
+    CONSTRAINT FK_BIDDING_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id),
+    CONSTRAINT FK_BIDDING_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id)
 );
 
 CREATE TABLE tag (
@@ -248,7 +259,7 @@ CREATE TABLE delivery (
 
 CREATE TABLE complain (
 	complain_id         NUMBER          NOT NULL,
-	member_id       	NUMBER			NOT NULL,
+	member_id       	NUMBER          NOT NULL,
 	product_id          NUMBER          NULL,
 	chatroom_id         NUMBER          NULL,
 	complain_type       VARCHAR2(20)	NOT NULL,
@@ -276,9 +287,9 @@ CREATE TABLE review (
 CREATE TABLE inquiry (
 	inquiry_id	    	NUMBER	        NOT NULL,
 	member_id	    	NUMBER	        NOT NULL,
-	inquiry_type		VARCHAR2(20)	NOT NULL,
-	inquiry_subject		VARCHAR2(30)	NOT NULL,
-	inquiry_content		VARCHAR2(255)	NOT NULL,
+	inquiry_type        VARCHAR2(20)	NOT NULL,
+	inquiry_subject     VARCHAR2(30)	NOT NULL,
+	inquiry_content     VARCHAR2(255)	NOT NULL,
 	inquiry_date    	DATE            DEFAULT SYSDATE,
 	status          	VARCHAR2(10)	DEFAULT 'wait',
 	CONSTRAINT PK_INQUIRY PRIMARY KEY (inquiry_id),
@@ -289,8 +300,8 @@ CREATE TABLE answer (
 	answer_id	    	NUMBER	        NOT NULL,
 	inquiry_id	    	NUMBER	        NOT NULL,
 	member_id	    	NUMBER	        NOT NULL,
-	answer_subject		VARCHAR2(30)    NOT NULL,
-	answer_content		VARCHAR2(255)	NOT NULL,
+	answer_subject      VARCHAR2(30)    NOT NULL,
+	answer_content      VARCHAR2(255)	NOT NULL,
 	answer_date     	DATE            DEFAULT SYSDATE,
 	CONSTRAINT PK_ANSWER PRIMARY KEY (answer_id),
 	CONSTRAINT FK_ANSWER_INQUIRY_ID FOREIGN KEY (inquiry_id) REFERENCES inquiry(inquiry_id),
@@ -312,7 +323,7 @@ CREATE TABLE notice (
 CREATE TABLE notice_image (
 	notice_image_id     NUMBER          NOT NULL,
 	notice_id           NUMBER          NOT NULL,
-	notice_image_name	VARCHAR2(255)   NOT NULL,
+	notice_image_name   VARCHAR2(255)   NOT NULL,
 	CONSTRAINT PK_NOTICE_IMAGE PRIMARY KEY (notice_image_id),
 	CONSTRAINT FK_NOTICE_IMAGE_NOTICE_ID FOREIGN KEY (notice_id) REFERENCES notice(notice_id)
 );
