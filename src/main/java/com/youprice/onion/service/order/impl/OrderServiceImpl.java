@@ -5,8 +5,8 @@ import com.youprice.onion.service.order.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;

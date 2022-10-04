@@ -4,14 +4,15 @@ import com.youprice.onion.entity.member.Address;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Getter
-public class Delivery implements Serializable {
+public class Delivery {
 
     @Id
-    @OneToOne(fetch = FetchType.LAZY)
+    private Long id;
+    @MapsId
+    @OneToOne
     @JoinColumn(name = "order_id")
     private Order order;//주문번호 PK FK
 
