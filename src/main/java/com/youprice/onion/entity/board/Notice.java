@@ -14,7 +14,7 @@ public class Notice{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "notice_id")
-    private Integer id; //공지번호 PK
+    private Long id; //공지번호 PK
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -24,23 +24,16 @@ public class Notice{
         NOTICE, QNA, EVENT
     }
 
-    @Column
+    @Enumerated(EnumType.STRING)
     private NoticeType noticeType; //공지타입(notice, qna, event ...)
 
-    @Column
     private String noticeSubject; //공지제목
-
-    @Column
     private String noticeContent; //공지내용
-
-    @Column
     private LocalDateTime noticeDate; //작성일자
-
-    @Column
     private int hitCount; //조회수
+
 
     @OneToMany(mappedBy = "notice")
     private List<NoticeImage> noticeImageList;
-
 
 }
