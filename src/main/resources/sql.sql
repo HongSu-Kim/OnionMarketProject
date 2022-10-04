@@ -96,8 +96,8 @@ CREATE TABLE keyword (
 CREATE TABLE coordinate (
 	coordinate_id 		NUMBER        	NOT NULL,
 	town_name     		VARCHAR2(10)  	NOT NULL,
+    latitude      		VARCHAR2(20)  	NOT NULL,
 	longitude     		VARCHAR2(20)  	NOT NULL,
-	latitude      		VARCHAR2(20)  	NOT NULL,
 	CONSTRAINT PK_COORDINATE PRIMARY KEY (coordinate_id)
 );
 
