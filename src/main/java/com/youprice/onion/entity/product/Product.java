@@ -73,7 +73,7 @@ public class Product {
 
     //경매 참조 양방향
     @OneToOne(mappedBy = "product")
-    private Product product;
+    private Auction auction;
 }
 
 
