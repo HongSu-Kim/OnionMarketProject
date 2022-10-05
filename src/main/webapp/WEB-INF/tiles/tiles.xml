@@ -10,9 +10,11 @@
 		<put-attribute name="footer" value="/WEB-INF/views/layout/footer.jsp" />
 	</definition>
 	<definition name="*/*" extends="layout">
-		<put-attribute name="body" value="/WEB-INF/views/{1}}/{2}.jsp" />
-		<put-attribute name="css" value="/resources/css/{1}}/{2}.jsp" />
-		<put-attribute name="js" value="/resources/js/{1}}/{2}.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
+		<put-attribute name="css1" value="/resources/css/{1}.css" />
+		<put-attribute name="css2" value="/resources/css/{1}/{2}.css" />
+		<put-attribute name="js1" value="/resources/js/{1}.js" />
+		<put-attribute name="js2" value="/resources/js/{1}/{2}.js" />
 	</definition>
 
 </tiles-definitions>
