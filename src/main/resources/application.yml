@@ -25,3 +25,8 @@ mybatis:
   type-aliases-package: com.youprice.onion.mapper.*
   configuration:
     map-underscore-to-camel-case: true
+
+devtools:
+  livereload:
+    enabled: true
+
