@@ -53,7 +53,7 @@ CREATE TABLE member (
 	name				VARCHAR2(30)    NOT NULL,
 	birth				DATE		    NOT NULL,
 	tel					CHAR(11)	    NOT NULL,
-	post_code			NUMBER	        NOT NULL,
+	postcode			CHAR(5)	        NOT NULL,
 	address				VARCHAR2(100)	NOT NULL,
 	detail_address		VARCHAR2(100)   NOT NULL,
 	extra_address		VARCHAR2(100)   NULL,
@@ -126,7 +126,7 @@ CREATE TABLE product (
 	blind_status        VARCHAR2(20)   NULL,
 	CONSTRAINT PK_PRODUCT PRIMARY KEY (product_id),
 	CONSTRAINT FK_PRODUCT_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id),
-	CONSTRAINT FK_PRODUCT_TOWN_ID    FOREIGN KEY (town_id) REFERENCES town(town_id)
+	CONSTRAINT FK_PRODUCT_TOWN_ID FOREIGN KEY (town_id) REFERENCES town(town_id)
 );
 
 CREATE TABLE product_image (
@@ -236,6 +236,7 @@ CREATE TABLE orders (
 	order_id	    	NUMBER	        NOT NULL,
 	member_id	    	NUMBER          NOT NULL,
 	product_id	    	NUMBER          NOT NULL,
+	order_price         NUMBER          NOT NULL,
 	order_role	    	VARCHAR2(10)    NOT NULL,
 	order_state     	VARCHAR2(10)    DEFAULT 'order',
 	order_date      	DATE            DEFAULT SYSDATE,
@@ -247,7 +248,7 @@ CREATE TABLE orders (
 
 CREATE TABLE delivery (
 	order_id	    	NUMBER          NOT NULL,
-	post_code	    	NUMBER	        NOT NULL,
+	postcode	    	CHAR(5)	        NOT NULL,
 	address         	VARCHAR2(255)   NOT NULL,
 	detail_address  	VARCHAR2(255)   NOT NULL,
 	extra_address   	VARCHAR2(255)   NOT NULL,

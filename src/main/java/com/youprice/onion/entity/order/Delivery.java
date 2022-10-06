@@ -19,7 +19,7 @@ public class Delivery {
     @Embedded
     private Address address;//배송지
 
-    private int delivery_cost;//배송비
     private String request;//요청사항
+    private int deliveryCost;//배송비
 
 }
