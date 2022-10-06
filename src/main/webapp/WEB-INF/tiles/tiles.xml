@@ -4,14 +4,17 @@
 		"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
 
-	<!-- admin -->
-	<definition name="admin-layout" template="/WEB-INF/views/layout/layout_admin.jsp">
-		<put-attribute name="navbar" value="/WEB-INF/views/layout/navbar_admin.jsp" />
-		<put-attribute name="sidebarMenu" value="/WEB-INF/views/layout/sidebarMenu_admin.jsp" />
+	<definition name="layout" template="/WEB-INF/views/layout/layout.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/layout/header.jsp" />
 		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="/WEB-INF/views/layout/footer.jsp" />
 	</definition>
-	<definition name="admin/*" extends="admin-layout">
-		<put-attribute name="body" value="/WEB-INF/views/admin/{1}.jsp" />
+	<definition name="*/*" extends="layout">
+		<put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
+		<put-attribute name="css1" value="/resources/css/{1}.css" />
+		<put-attribute name="css2" value="/resources/css/{1}/{2}.css" />
+		<put-attribute name="js1" value="/resources/js/{1}.js" />
+		<put-attribute name="js2" value="/resources/js/{1}/{2}.js" />
 	</definition>
 
 </tiles-definitions>
