@@ -1,6 +1,7 @@
 package com.youprice.onion.entity.product;
 
 
+import com.youprice.onion.dto.product.ProductDTO;
 import com.youprice.onion.entity.chat.Chatroom;
 import com.youprice.onion.entity.order.Order;
 import com.youprice.onion.entity.order.Wish;
@@ -74,6 +75,18 @@ public class Product {
     //경매 참조 양방향
     @OneToOne(mappedBy = "product")
     private Auction auction;
+
+    public Product createProduct(ProductDTO productDTO) {
+
+        this.id = productDTO.getId();
+        this.productName = productDTO.getProductName();
+        this.subject = productDTO.getSubject();
+        this.content = productDTO.getContent();
+        this.price = productDTO.getPrice();
+        this.uploadDate = LocalDateTime.now();
+
+        return this;
+    }
 }
 
 
