@@ -237,7 +237,6 @@ CREATE TABLE orders (
 	member_id	    	NUMBER          NOT NULL,
 	product_id	    	NUMBER          NOT NULL,
 	order_price         NUMBER          NOT NULL,
-	order_role	    	VARCHAR2(10)    NOT NULL,
 	order_state     	VARCHAR2(10)    DEFAULT 'order',
 	order_date      	DATE            DEFAULT SYSDATE,
 	modified_date   	DATE            DEFAULT NULL,

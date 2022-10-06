@@ -1,5 +1,6 @@
 package com.youprice.onion.entity.order;
 
+import com.youprice.onion.dto.order.OrderAddDTO;
 import com.youprice.onion.entity.board.Review;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.product.Product;
@@ -31,10 +32,6 @@ public class Order {
 
     @Setter
     @Enumerated(EnumType.STRING)
-    private OrderRole orderRole;//구분-buyer,seller
-
-    @Setter
-    @Enumerated(EnumType.STRING)
     private OrderState orderState;//주문상태-order,delivery,cancel,complete
 
     private LocalDateTime orderDate;//주문시간
@@ -48,7 +45,12 @@ public class Order {
     private Review review;
 
 
-//    public Order(OrderAddDTO orderAddDTO, ) {
-//        this.member =
-//    }
+    public Order(Member member, Product product, int orderPrice) {
+        this.member = member;
+        this.product = product;
+        this.orderPrice = orderPrice;
+        this.orderState = OrderState.ORDER;
+        this.orderDate = LocalDateTime.now();
+    }
+    
 }
