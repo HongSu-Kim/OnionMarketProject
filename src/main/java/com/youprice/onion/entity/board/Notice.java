@@ -20,10 +20,6 @@ public class Notice{
     @JoinColumn(name = "member_id")
     private Member member; //회원번호 FK
 
-    private enum NoticeType {
-        NOTICE, QNA, EVENT
-    }
-
     @Enumerated(EnumType.STRING)
     private NoticeType noticeType; //공지타입(notice, qna, event ...)
 
