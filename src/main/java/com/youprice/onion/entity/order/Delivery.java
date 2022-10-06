@@ -10,10 +10,10 @@ import javax.persistence.*;
 public class Delivery {
 
     @Id
-    @JoinColumn(name = "order_id")
     private Long id;
     @MapsId
     @OneToOne
+    @JoinColumn(name = "order_id")
     private Order order;//주문번호 PK FK
 
     @Embedded
