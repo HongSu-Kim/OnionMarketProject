@@ -38,6 +38,8 @@ DROP TABLE product PURGE;
 DROP TABLE town PURGE;
 DROP TABLE coordinate PURGE;
 
+DROP TABLE search PURGE;
+DROP TABLE keyword_alarm PURGE;
 DROP TABLE keyword PURGE;
 DROP TABLE follow PURGE;
 DROP TABLE block PURGE;
