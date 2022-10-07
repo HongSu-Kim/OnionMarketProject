@@ -1,10 +1,18 @@
 package com.youprice.onion.controller.order;
 
+import com.youprice.onion.dto.order.OrderAddDTO;
 import com.youprice.onion.service.order.OrderService;
+import com.youprice.onion.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @Controller
@@ -12,11 +20,36 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class OrderController {
 
 	private final OrderService orderService;
+//	private final ProductService productService;
+	private final HttpSession httpSession;
 
 	// 주문 페이지
 	@GetMapping("order")
-	public String order() {
+	public String order(Model model, OrderAddDTO orderAddDTO, Long orderId) {
+
+//		Member loginMember = (Member) httpSession.getAttribute("loginMember");
+//		ProductDTO productDTO = productService.getProduct;
+
+//		orderAddDTO.setMemberId(loginMember.getId());
+//		orderAddDTO.setProductId(productDTO.getId());
+		orderAddDTO.setMemberId(1L);//--
+		orderAddDTO.setProductId(1L);//--
+
+		model.addAttribute("orderAddDTO", orderAddDTO);
 		return "order/order";
+	}
+
+	// 주문 페이지
+	@PostMapping("order")
+	public String order(Model model, @Valid OrderAddDTO orderAddDTO, BindingResult bindingResult) {
+
+		if (bindingResult.hasErrors()) {
+			return "order/order";
+		}
+
+		orderService.addOrder(orderAddDTO);
+
+		return "redirect:/order/order";
 	}
 
 	// 결제 페이지

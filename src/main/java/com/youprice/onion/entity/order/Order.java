@@ -1,15 +1,17 @@
 package com.youprice.onion.entity.order;
 
+import com.youprice.onion.dto.order.OrderAddDTO;
 import com.youprice.onion.entity.board.Review;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.product.Product;
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@NoArgsConstructor
 @Table(name = "orders")
 public class Order {
 
@@ -26,8 +28,12 @@ public class Order {
     @JoinColumn(name = "product_id")
     private Product product;//상품번호 FK
 
-    private String orderRole;//구분-buyer,seller
-    private String orderState;//주문상태-order,delivery,cancel,complete
+    private int orderPrice;//주문가격
+
+    @Setter
+    @Enumerated(EnumType.STRING)
+    private OrderState orderState;//주문상태-order,delivery,cancel,complete
+
     private LocalDateTime orderDate;//주문시간
     private LocalDateTime modifiedDate;//수정시간
 
@@ -38,4 +44,13 @@ public class Order {
     @OneToOne(mappedBy = "order")
     private Review review;
 
+
+    public Order(Member member, Product product, int orderPrice) {
+        this.member = member;
+        this.product = product;
+        this.orderPrice = orderPrice;
+        this.orderState = OrderState.ORDER;
+        this.orderDate = LocalDateTime.now();
+    }
+    
 }
