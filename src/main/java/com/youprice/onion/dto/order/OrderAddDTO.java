@@ -16,7 +16,7 @@ public class OrderAddDTO {
     private int orderPrice;//주문가격
 
     // address
-    @Size(min = 5, message = "우편번호를 정확히 입력해주세요")
+    @Size(min = 5, max = 5, message = "우편번호를 정확히 입력해주세요")
     private String postcode;//우편번호
     @NotEmpty(message = "주소를 입력해주세요")
     private String address;//주소
