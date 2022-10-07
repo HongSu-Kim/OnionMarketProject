@@ -8,7 +8,7 @@ import com.youprice.onion.entity.order.Order;
 import com.youprice.onion.entity.order.Wish;
 import com.youprice.onion.entity.product.Product;
 import com.youprice.onion.entity.product.Town;
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -17,21 +17,23 @@ import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "member_id")
-    private Long id;//회원번호 PK
+    private Long id; //회원번호 PK
 
-    private String role; //권한(user or admin)
+    @Enumerated(EnumType.STRING)
+    private Role role; //권한(user or admin)
 
     @Column(name = "user_id")
     private String userId; //아이디
 
     private String pwd; //비밀번호
-    private String nickname; //닉네임
     private String name; //이름
+    private String nickname; //닉네임
     private LocalDate birth; //생일
     private String tel; //전화번호
 
@@ -81,5 +83,20 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     private List<Wish> wishList = new ArrayList<>(); //찜-회원번호 FK
+
+    @Builder
+    public Member(Role role, String userId, String pwd, String name, String nickname, LocalDate birth, String tel, String postcode, String address, String detailAddress, String extraAddress, String email, String memberImageName) {
+
+        this.role = role;
+        this.userId = userId;
+        this.pwd = pwd;
+        this.name = name;
+        this.nickname = nickname;
+        this.birth = birth;
+        this.tel = tel;
+        this.address = new Address(postcode, address, detailAddress, extraAddress);
+        this.email = email;
+        this.memberImageName = memberImageName;
+    }
 
 }
