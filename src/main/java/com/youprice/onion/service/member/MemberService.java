@@ -1,4 +1,28 @@
 package com.youprice.onion.service.member;
 
-public interface MemberService {
+import com.youprice.onion.dto.member.MemberDTO;
+import com.youprice.onion.repository.member.MemberRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+public interface MemberService extends UserDetailsService {
+
+    public String saveMember(MemberDTO memberDTO);
+
+//    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException;
+/*
+    //회원가입
+    Long memberJoin(MemberDTO.RequestMemberDTO dto);
+
+    //회원정보 수정
+    Long memberInfoModify(MemberDTO.RequestMemberDTO dto);
+
+    public boolean checkUserIdDuplication(String userId);
+
+    public boolean checkNicknameDuplication(String nickname);
+
+    public boolean checkEmailDuplication(String email);
+    */
+
 }
