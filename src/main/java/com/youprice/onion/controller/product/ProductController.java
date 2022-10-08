@@ -31,7 +31,7 @@ public class ProductController {
 
         productService.createProductDTO(productDTO, productImageDTO, file, price);
 
-        return "redirect:/";//상품 상세페이지로 이동
+        return "redirect:/product/productdetail";//상품 상세페이지로 이동
     }
 
     @GetMapping("productdetail")//상품 상세페이지 주소
