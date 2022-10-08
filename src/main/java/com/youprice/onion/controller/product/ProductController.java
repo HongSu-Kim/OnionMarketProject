@@ -27,9 +27,13 @@ public class ProductController {
         return "product/addproduct";//상품등록 페이지
     }
     @PostMapping(value = "/add")//실제 상품 등록 주소
-    public String addProduct(Model model, ProductDTO productDTO, ProductImageDTO productImageDTO, MultipartFile file, @RequestParam("price") int price) throws Exception{
+    public String addProduct(Model model, ProductDTO productDTO, ProductImageDTO productImageDTO, MultipartFile file) throws Exception{
 
-        productService.createProductDTO(productDTO, productImageDTO, file, price);
+        Long productId = productService.createProductDTO(productDTO, productImageDTO, file);
+
+        System.out.println("productId = " + productId);
+
+        model.addAttribute("dto",productId);
 
         return "redirect:/product/productdetail";//상품 상세페이지로 이동
     }
