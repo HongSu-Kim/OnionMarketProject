@@ -48,9 +48,9 @@ DROP TABLE member PURGE;
 
 CREATE TABLE member (
 	member_id			NUMBER			NOT NULL,
-	role				VARCHAR2(15)    NULL,
+	role				VARCHAR2(50)    DEFAULT 'ROLE_USER' NOT NULL,
 	user_id				VARCHAR2(30)    NOT NULL,
-	pwd					VARCHAR2(40)    NOT NULL,
+	pwd					VARCHAR2(60)    NOT NULL,
 	nickname			VARCHAR2(40)    NOT NULL,
 	name				VARCHAR2(30)    NOT NULL,
 	birth				DATE		    NOT NULL,
