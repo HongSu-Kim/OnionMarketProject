@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface ProductService {
 
-    void createProductDTO(ProductDTO productDTO, ProductImageDTO productImageDTO, MultipartFile file, int price );
+    Long createProductDTO(ProductDTO productDTO, ProductImageDTO productImageDTO, MultipartFile file);
     List<Product> findAllProductDTO();
+
+    ProductDTO getProductDTO(Long productId);
 }

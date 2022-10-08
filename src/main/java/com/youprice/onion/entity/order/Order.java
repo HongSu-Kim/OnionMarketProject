@@ -28,7 +28,10 @@ public class Order {
     @JoinColumn(name = "product_id")
     private Product product;//상품번호 FK
 
-    private int orderPrice;//주문가격
+    private String orderNum;//주문번호
+    private String imp_uid;//결제번호
+
+    private int orderPayment;//결제금액
 
     @Setter
     @Enumerated(EnumType.STRING)
@@ -45,10 +48,10 @@ public class Order {
     private Review review;
 
 
-    public Order(Member member, Product product, int orderPrice) {
+    public Order(Member member, Product product, int orderPayment) {
         this.member = member;
         this.product = product;
-        this.orderPrice = orderPrice;
+        this.orderPayment = orderPayment;
         this.orderState = OrderState.ORDER;
         this.orderDate = LocalDateTime.now();
     }
