@@ -12,12 +12,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
+@RequestMapping("keyword")
 public class KeywordController {
 
 
@@ -31,67 +33,43 @@ public class KeywordController {
     private  final KeywordRepositoy.Keywordrepositoy updatecount;
     private  final KeywordRepositoy keywordRepositoy;
 
-    @GetMapping("/keyword")
+    @GetMapping("keyword")
     public String KeywordCreate(Model model){
-        //List<ProductImage> list = productImageServiceImpl.findProduct();
         List<Category> finduniform = categoryServiceImpl.finduniform();
         List<Category> footballboot = categoryServiceImpl.footballboot();
 
-        //model.addAttribute("list",list);
         model.addAttribute("finduniform",finduniform);
         model.addAttribute("footballboot",footballboot);
-        return "keyword";
+        return "product/keyword";
     }
 
-
-    @PostMapping("/keyword")
+    @PostMapping("keyword")
     public String KeywordCreate(Model model, KeywordCreateDTO keywordCreateDto, @RequestParam("userId")String userId
     , @RequestParam("keywordName")String keywordName){
 
-       // List<ProductImage> list = productImageServiceImpl.findProduct();
+
         List<Category> finduniform = categoryServiceImpl.finduniform();
         List<Category> footballboot = categoryServiceImpl.footballboot();
 
-       // model.addAttribute("list",list);
         model.addAttribute("finduniform",finduniform);
         model.addAttribute("footballboot",footballboot);
 
 
 
-       keywordServiceImpl.KeywordCreate(keywordCreateDto,userId,keywordName);
+        keywordServiceImpl.KeywordCreate(keywordCreateDto,userId,keywordName);
 
 
-
-
-        return "index";
+        return "redirect:/keyword/keyword";
     }
 
 
-    @GetMapping("/keywordAlarm")
+    @GetMapping("mykeyword")
     public String KeywordAlarm(Model model,@RequestParam("userId") String userId){
 
-       List<Keyword> MykeywordList = keywordrepositoy.findKeywordList(userId);
+        keywordServiceImpl.KeywordList(model,userId);
 
-       model.addAttribute("MykeywordList",MykeywordList);
-
-
-        return "keywordAlarm";
+        return "product/mykeyword";
     }
-
-
-    @PostMapping("/keywordAlarm")
-    public String KeywordAlarm(@RequestParam("userId") String userId){
-
-
-
-
-
-
-
-        return "index";
-    }
-
-
 
 
 }
