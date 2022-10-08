@@ -28,12 +28,12 @@ public class ProductServiceImpl implements ProductService {
 
     //상품 등록
     @Override
-    public void createProductDTO(ProductDTO productDTO, ProductImageDTO productImageDTO, MultipartFile file, int price ) {
+    public Long createProductDTO(ProductDTO productDTO, ProductImageDTO productImageDTO, MultipartFile file) {
 
         Product product = new Product();
         product.createProduct(productDTO);
 
-        productRepository.save(product);
+        return productRepository.save(product).getId();
 //상품 이미지 등록(예정)
 //        ProductImage productImage = new ProductImage();
 //        product = productManager.findByPrice(price);
