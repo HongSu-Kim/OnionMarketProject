@@ -17,25 +17,14 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
         private final EntityManager em;
         //전체조회
-        public List<Product> findAll() {
-            return em.createQuery("select p from Product p", Product.class).getResultList();
-        }
+
         //가격으로 조회(변경예정)
         public Product findByPrice(int price) {
 
             return em.createQuery("select p from Product p where p.price=:price", Product.class)
                     .setParameter("price",price).getSingleResult();
         }
-        //이미지로 조회(변경예정)
-        public List<ProductImage> findAllImg(Long id) {
 
-            return em.createQuery("select i from ProductImage i join i.product p where p.id=:id", ProductImage.class)
-                    .setParameter("id", id).getResultList();
-        }
-
-        public Product findOne(Long id){
-            return em.createQuery("select p from Product p where p.id=:id", Product.class).getSingleResult();
-        }
     }
 
 }
