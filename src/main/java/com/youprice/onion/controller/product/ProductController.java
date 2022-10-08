@@ -1,6 +1,7 @@
 package com.youprice.onion.controller.product;
 
 import com.youprice.onion.dto.product.ProductDTO;
+import com.youprice.onion.dto.product.ProductImageDTO;
 import com.youprice.onion.entity.product.Product;
 import com.youprice.onion.service.product.impl.ProductServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -23,16 +24,12 @@ public class ProductController {
     public String add() {
         return "/addproduct";
     }
-    @PostMapping("/add")
-    public String addProduct(Model model, ProductDTO productDTO, MultipartFile file, @RequestParam("id")Long id) throws Exception{
+    @PostMapping(value = "/add")
+    public String addProduct(Model model, ProductDTO productDTO, ProductImageDTO productImageDTO, MultipartFile file, @RequestParam("price") int price) throws Exception{
 
-        productService.createProductDTO(productDTO, file);
+        productService.createProductDTO(productDTO, productImageDTO, file, price);
 
-        List<Product> dto = productService.findByPrice(id);
-
-        model.addAttribute("dto",dto);
-
-        return "redirect:/";
+        return "/productdetail";
     }
 
     @GetMapping("productdetail")
