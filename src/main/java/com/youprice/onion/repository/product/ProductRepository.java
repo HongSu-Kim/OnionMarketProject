@@ -16,8 +16,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     public class ProductManager {
 
         private final EntityManager em;
-        //전체조회
-
         //가격으로 조회(변경예정)
         public Product findByPrice(int price) {
 
