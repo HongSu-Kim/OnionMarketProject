@@ -13,6 +13,6 @@ public class SearchCreateDTO {
     
     private String searchName;//검색명
 
-    private  int count; //검색수
+    private  int searchCount; //검색수
 
 }

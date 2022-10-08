@@ -7,6 +7,7 @@ import com.youprice.onion.repository.member.KeywordRepositoy;
 import com.youprice.onion.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.util.List;
 
@@ -36,18 +37,43 @@ public class KeywordServiceImpl {
   else  return;
 
 
+ }
 
+ public void KeywordList(Model model,String userId){
+
+  List<Keyword> MykeywordList = keywordrepositoy.findKeywordList(userId);
+
+
+  model.addAttribute("MykeywordList",MykeywordList);
 
  }
 
-public List<Keyword> findKeywordList(String userId) {
+ public void KeywordAlram(String subject, String productName, Model model){ //상품등록시 설정키워드있으면 알림
+
+  Keyword keyword = new Keyword();
+
+
+
+  if(keywordrepositoy.keywordalram(subject,productName) !=null){
+
+  // keywordrepositoy.updatecount(subject,productName);
+   return;
+  }
+
+
+  else
+
+   return;
+
+ }
+
+
+
+ public List<Keyword> findKeywordList(String userId) {
 
 return keywordrepositoy.findKeywordList(userId);
 
 }
-
-
-
 
 
 }
