@@ -1,14 +1,10 @@
 <%@ page import="javax.validation.constraints.NotEmpty" %>
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<c:set var = "cp" value = "<%=request.getContextPath()%>"/>
 
-<%
-    request.setCharacterEncoding("UTF-8");
-    String cp = request.getContextPath();
-
-
-
-%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -32,7 +28,7 @@
 
 <nav class="navbar navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/main/${userId}"> ${userId} 어서오세요<br/> <br/></a>
+        <a class="navbar-brand" href="keyword"> ${userId} 어서오세요<br/> <br/></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar"
                 aria-controls="offcanvasDarkNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -95,16 +91,19 @@
     </div>
 </nav>
 <br/><br/><br/><br/>
-<form action="/keyword" method="post">
-<%--<input type="hidden" name="userId" value="${userId}">--%>
+<form:form action="" method="post">
+
     <input type="hidden" name="userId" value="asd">
 <input type="text" name="keywordName" value="" />
  <input type="submit" value="키워드등록하기" />
+</form:form>
 
+<form:form action="mykeyword" method="get">
 
+    <input type="hidden" name="userId" value="asd">
 
-
-</form>
+    <input type="submit" value="MY키워드확인" />
+</form:form>
 
 
 <br/><br/>

@@ -19,10 +19,7 @@ public class Keyword {
     private Member member;//회원번호 FK
 
     private String keywordName;//키워드명
-
-    @OneToMany(mappedBy = "keyword")//이미지번호
-    private List<KeywordAlarm> keywordAlarmList = new ArrayList<>();
-
+    
     public Keyword keywordCreate(KeywordCreateDTO keywordCreateDto, Member member){
 
   //  this.id = keywordCreateDto.getId();

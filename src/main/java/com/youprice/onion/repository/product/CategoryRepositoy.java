@@ -40,7 +40,7 @@ public interface CategoryRepositoy extends JpaRepository<Category, Long> {
             //  String jpql = "select o from Category o  where o.categoryName='유니폼'";
 
             //select m from Member m join fetch m.team
-            return em.createQuery("select o from Category o  where o.category='540'", Category.class)
+            return em.createQuery("select o from Category o  where o.category='22'", Category.class)
                     .getResultList();
 
         }
@@ -50,7 +50,7 @@ public interface CategoryRepositoy extends JpaRepository<Category, Long> {
             //  String jpql = "select o from Category o  where o.categoryName='유니폼'";
 
             //select m from Member m join fetch m.team
-            return em.createQuery("select o from Category o  where o.category='544' ", Category.class)
+            return em.createQuery("select o from Category o  where o.category='22' ", Category.class)
                     .getResultList();
 
         }
@@ -58,7 +58,7 @@ public interface CategoryRepositoy extends JpaRepository<Category, Long> {
         public List<Category> uniformPARENT_ID() {
 
 
-            return em.createQuery("select o from Category o where o.category = '540' ", Category.class)
+            return em.createQuery("select o from Category o where o.category = '22' ", Category.class)
                     .getResultList();
 
         }
@@ -66,18 +66,12 @@ public interface CategoryRepositoy extends JpaRepository<Category, Long> {
         public List<Category> footballbootPARENT_ID() {
 
 
-            return em.createQuery("select o from Category o  where o.category='544' ", Category.class)
+            return em.createQuery("select o from Category o  where o.category='' ", Category.class)
                     .getResultList();
 
         }
 
-        public List<Category> update() {
 
-
-            return em.createQuery(" update Category c set c.categoryName = c.categoryName where c.id = :id", Category.class)
-                    .getResultList();
-
-        }
 
 
 

@@ -1,13 +1,11 @@
 <%@ page import="javax.validation.constraints.NotEmpty" %>
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<c:set var = "cp" value = "<%=request.getContextPath()%>"/>
 
-<%
-    request.setCharacterEncoding("UTF-8");
-    String cp = request.getContextPath();
-    String userId = request.getParameter("userId");
 
-%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -32,7 +30,7 @@
 
 <nav class="navbar navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/main/${userId}"> ${userId} 카테고리 설정 하세요<br/> <br/></a>
+        <a class="navbar-brand" href="/category/category"> ${userId} 카테고리 설정 하세요<br/> <br/></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar"
                 aria-controls="offcanvasDarkNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -96,7 +94,7 @@
 <br/><br/><br/>
 <h1>카테고리 추가하기</h1>
 
-<form action="/main/admin/${userId}" method="post">
+<form:form action="" method="post">
 
     부모카테고리번호: <input type="text" name="category"/>
     카테고리 이름: <input type="text" name="categoryName"/>
@@ -105,11 +103,11 @@
     <input type="submit" value="추가하기"/>
 
 
-</form>
+</form:form>
 
-<form action="/main/categoryUpdate/${userId}" method="get">
+<form:form action="categoryupdate" method="get">
     카테고리 수정하기 <input type="submit" value="수정">
-</form>
+</form:form>
 
 
 </body>

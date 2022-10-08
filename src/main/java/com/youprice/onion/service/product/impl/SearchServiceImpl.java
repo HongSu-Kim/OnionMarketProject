@@ -45,6 +45,14 @@ public Long Searchcount(){
   return  searchrepositoy.findSearch();
  }
 
+ public Search findBySearchName(String searchName){
+  return searchRepositoy.findBySearchName(searchName);
+ }
+
+ public int searchupdatecount(String searchName){
+  return searchrepositoy.updatecount(searchName);
+ }
+
 
 }
 

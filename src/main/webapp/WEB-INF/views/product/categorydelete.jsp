@@ -1,10 +1,11 @@
 <%@ page import="javax.validation.constraints.NotEmpty" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<c:set var = "cp" value = "<%=request.getContextPath()%>"/>
 
 <%
-    request.setCharacterEncoding("UTF-8");
-    String cp = request.getContextPath();
+
     String userId = request.getParameter("userId");
 
 %>
@@ -32,7 +33,7 @@
 
 <nav class="navbar navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/main/${userId}/"> ${userId} 카테고리 설정 하세요<br/> <br/></a>
+        <a class="navbar-brand" href="/category/category">카테고리 설정 하세요<br/> <br/></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar"
                 aria-controls="offcanvasDarkNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -140,14 +141,14 @@
 
 
 
-<form action="/main/categoryUpdate/{userId}"  method="post">
+<form:form action=""  method="post">
     <input type="text" name="category_id" value="삭제할 번호를 입력!"/>
     <input type="submit"  value="삭제하기"/>
 
 
     <br/>
 
-</form>
+</form:form>
 
 
 
