@@ -11,4 +11,6 @@ public interface ProductService {
 
     void createProductDTO(ProductDTO productDTO, ProductImageDTO productImageDTO, MultipartFile file, int price );
     List<Product> findAllProductDTO();
+
+    ProductDTO getProductDTO(Long productId);
 }
