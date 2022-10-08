@@ -24,7 +24,8 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductImageServiceImpl productImageServiceImpl;
     //상품 등록
-    public void createProductDTO(ProductDTO productDTO, ProductImageDTO productImageDTO, MultipartFile file, int price ) throws Exception{
+    @Override
+    public void createProductDTO(ProductDTO productDTO, ProductImageDTO productImageDTO, MultipartFile file, int price ) {
 
         Product product = new Product();
         product.createProduct(productDTO);
@@ -39,8 +40,9 @@ public class ProductServiceImpl implements ProductService {
 
     }
     //전체 상품 조회
+    @Override
     public List<Product> findAllProductDTO() {
-        return productManager.findAll();
+        return productRepository.findAll();
     }
 
     //가격에 따른 데이터 조회(변경예정)
