@@ -38,6 +38,8 @@ DROP TABLE product PURGE;
 DROP TABLE town PURGE;
 DROP TABLE coordinate PURGE;
 
+DROP TABLE search PURGE;
+DROP TABLE keyword_alarm PURGE;
 DROP TABLE keyword PURGE;
 DROP TABLE follow PURGE;
 DROP TABLE block PURGE;
@@ -46,9 +48,9 @@ DROP TABLE member PURGE;
 
 CREATE TABLE member (
 	member_id			NUMBER			NOT NULL,
-	role				VARCHAR2(15)    NULL,
+	role				VARCHAR2(50)    DEFAULT 'ROLE_USER',
 	user_id				VARCHAR2(30)    NOT NULL,
-	pwd					VARCHAR2(40)    NOT NULL,
+	pwd					VARCHAR2(60)    NOT NULL,
 	nickname			VARCHAR2(40)    NOT NULL,
 	name				VARCHAR2(30)    NOT NULL,
 	birth				DATE		    NOT NULL,
@@ -257,7 +259,9 @@ CREATE TABLE orders (
 	order_id	    	NUMBER	        NOT NULL,
 	member_id	    	NUMBER          NOT NULL,
 	product_id	    	NUMBER          NOT NULL,
-	order_price         NUMBER          NOT NULL,
+    order_num           CHAR(15)        NOT NULL,
+    imp_uid             VARCHAR2(20)    NOT NULL,
+    order_payment       NUMBER          NOT NULL,
 	order_state     	VARCHAR2(10)    DEFAULT 'order',
 	order_date      	DATE            DEFAULT SYSDATE,
 	modified_date   	DATE            DEFAULT NULL,
