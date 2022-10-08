@@ -404,6 +404,6 @@ INSERT INTO Coordinate VALUES( 59,'서울특별시 강동구 길동','37.5345598
 INSERT INTO Coordinate VALUES( 60 ,'서울특별시 강동구 상일1동','37.5506614', '127.1649058');
 INSERT INTO Coordinate VALUES( 61,'서울특별시 강동구 상일2동','37.5499518',  '127.1758801');
 INSERT INTO Coordinate VALUES( 62,' 서울특별시 강동구 성내1동','37.5304417',  '127.122425');
-INSERT INTO Coordinate VALUES( 63,' 서울특별시 강동구 성내2동','37.532425',  ' 127.129563');
+INSERT INTO Coordinate VALUES( 63,' 서울특별시 강동구 성내2동','37.532425',  '127.129563');
 INSERT INTO Coordinate VALUES( 64,' 서울특별시 강동구 둔촌1동','37.5333656','  127.1419851');
 INSERT INTO Coordinate VALUES( 65 ,'서울특별시 강동구 둔촌2동','37.5332885',' 127.1419221');
