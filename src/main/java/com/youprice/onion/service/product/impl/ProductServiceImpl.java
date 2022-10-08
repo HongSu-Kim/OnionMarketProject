@@ -8,6 +8,7 @@ import com.youprice.onion.repository.product.ProductImageRepository;
 import com.youprice.onion.repository.product.ProductRepository;
 import com.youprice.onion.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +24,8 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository.ProductManager productManager;
 
     private final ProductImageServiceImpl productImageServiceImpl;
+    private final ModelMapper modelMapper;
+
     //상품 등록
     @Override
     public void createProductDTO(ProductDTO productDTO, ProductImageDTO productImageDTO, MultipartFile file, int price ) {
@@ -50,5 +53,8 @@ public class ProductServiceImpl implements ProductService {
         return productManager.findByPrice(price);
     }
 
-
+    @Override
+    public ProductDTO getProductDTO(Long productId) {
+        return modelMapper.map(productRepository.findById(productId).orElse(null), ProductDTO.class);
+    }
 }
