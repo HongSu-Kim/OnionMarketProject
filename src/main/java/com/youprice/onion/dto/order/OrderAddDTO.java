@@ -10,10 +10,12 @@ import javax.validation.constraints.Size;
 @Setter
 public class OrderAddDTO {
 
-    private Long memberId;//회원번호 FK
-    private Long productId;//상품번호 FK
+	private Long memberId;//회원번호
+	private Long productId;//상품번호
 
-    private int orderPrice;//주문가격
+    private int orderPayment;//주문가격
+    private String orderNum;//주문번호
+    private String imp_uid;//결제번호
 
     // address
     @Size(min = 5, max = 5, message = "우편번호를 정확히 입력해주세요")
