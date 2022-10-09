@@ -11,6 +11,7 @@ public interface ProductService {
 
     Long createProductDTO(ProductDTO productDTO, ProductImageDTO productImageDTO, MultipartFile file);
     List<Product> findAllProductDTO();
+    Product findOne(Long id);
 
-    ProductDTO getProductDTO(Long productId);
+//    ProductDTO getProductDTO(Long productId);
 }
