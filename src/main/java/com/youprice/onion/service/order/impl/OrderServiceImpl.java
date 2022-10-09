@@ -2,7 +2,7 @@ package com.youprice.onion.service.order.impl;
 
 import com.youprice.onion.dto.order.OrderAddDTO;
 import com.youprice.onion.dto.order.OrderDTO;
-import com.youprice.onion.dto.product.ProductDTO;
+import com.youprice.onion.dto.order.OrderDeliveryDTO;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.order.Delivery;
 import com.youprice.onion.entity.order.Order;
@@ -13,19 +13,23 @@ import com.youprice.onion.repository.order.OrderRepository;
 import com.youprice.onion.repository.product.ProductRepository;
 import com.youprice.onion.service.order.OrderService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
 @RequiredArgsConstructor
 @Service
-@Transactional
+@Transactional(readOnly = true)
+@Slf4j
 public class OrderServiceImpl implements OrderService {
 
 	private final OrderRepository orderRepository;
@@ -36,12 +40,14 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public OrderDTO getOrderDTO(Long orderId) {
-		return modelMapper.map(orderRepository.findById(orderId).orElse(null), OrderDTO.class);
+		Optional<Order> optional = orderRepository.findById(orderId);
+		return optional.isPresent() ? modelMapper.map(optional.get(), OrderDTO.class) : null;
 	}
 
 	// 주문 완료
 	@Override
-	public void addOrder(OrderAddDTO orderAddDTO) {
+	@Transactional
+	public Long addOrder(OrderAddDTO orderAddDTO) {
 
 		Member member = memberRepository.findById(orderAddDTO.getMemberId()).orElse(null);
 		Product product = productRepository.findById(orderAddDTO.getProductId()).orElse(null);
@@ -49,16 +55,18 @@ public class OrderServiceImpl implements OrderService {
 
 		// 주문내역 생성
 		Order order = new Order(member, product, orderAddDTO.getOrderPayment());
-		orderRepository.save(order);
+		Long orderId = orderRepository.save(order).getId();
 
 		// 배송정보 생성
 		Delivery delivery = new Delivery(order, orderAddDTO.getPostcode(), orderAddDTO.getAddress(), orderAddDTO.getDetailAddress(),
 				orderAddDTO.getExtraAddress(), orderAddDTO.getRequest(), orderAddDTO.getDeliveryCost());
 		deliveryRepository.save(delivery);
+
+		return orderId;
 	}
 
+	// orderNum 생성
 	@Override
-	@Transactional(readOnly = true)
 	public String getOrderNum() {
 
 		LocalDateTime now = LocalDateTime.now();
@@ -73,7 +81,8 @@ public class OrderServiceImpl implements OrderService {
 		return orderNum;
 	}
 
-	public String getRandomString(int length) {
+	// 램덤 문자열 생성
+	private String getRandomString(int length) {
 
 		StringBuilder result = new StringBuilder();
 		Random random = new Random();
@@ -90,4 +99,30 @@ public class OrderServiceImpl implements OrderService {
 		}
 		return result.toString();
 	}
+
+	@Override
+	public List<OrderDTO> getBuyList(Long memberId) {
+		
+		List<OrderDTO> list = orderRepository.findAllByMemberId(memberId);
+		Type type = new TypeToken<List<OrderDTO>>() {}.getType();
+
+		return modelMapper.map(list, type);
+
+	}
+
+	@Override
+	public List<OrderDTO> getSellList(Long memberId) {
+
+		List<OrderDTO> list = orderRepository.findAllByProductMemberId(memberId);
+		Type type = new TypeToken<List<OrderDTO>>() {}.getType();
+
+		return modelMapper.map(list, type);
+	}
+
+	@Override
+	public OrderDeliveryDTO getOrderDeliveryDTO(Long orderId) {
+		Optional<Order> optional = orderRepository.findById(orderId);
+		return optional.isPresent() ? modelMapper.map(optional.get(), OrderDeliveryDTO.class) : null;
+	}
+
 }
