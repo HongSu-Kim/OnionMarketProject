@@ -15,18 +15,15 @@
 </head>
 <body>
 
-<h1>상품 정보</h1>
-<div >
-	<c:forEach var="dto" items="${dto}">
-
-		상품명: ${dto.productName}<br/>
-		제목: ${dto.subject}<br/>
-		내용: <br/><textarea rows="10" cols="50">${dto.content}</textarea><br/>
-		상품가격: ${dto.price}<br/>
-		등록일: ${dto.uploadDate}<br/>
-<%--		이미지: ${id.file}--%>
-		<hr/>
-	</c:forEach>
+<div>
+	<h1>상품 정보</h1>
+	상품명: ${dto.productName}<br/>
+	제목: ${dto.subject}<br/>
+	내용: <br/><textarea rows="10" cols="50">${dto.content}</textarea><br/>
+	상품가격: ${dto.price}<br/>
+	등록일: ${dto.uploadDate} <br/>
+	<%--	이미지: ${id.file}--%>
+	<hr/>
 </div>
 
 <form action="/productmain" method="get">
