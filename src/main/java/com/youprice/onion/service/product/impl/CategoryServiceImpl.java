@@ -81,9 +81,6 @@ public class CategoryServiceImpl  implements CategoryService {
         return categoryrepositoy.footballbootPARENT_ID();
     }
 
-    public  List<Category> update(){
-     return  categoryrepositoy.update();
-    }
 
 }
 

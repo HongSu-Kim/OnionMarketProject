@@ -13,12 +13,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
+@RequestMapping("town")
 public class TownController {
 
     private  final TownServiceImpl townServiceImpl;
@@ -26,7 +28,7 @@ public class TownController {
     private  final CategoryServiceImpl categoryServiceImpl;
     private  final CoordinateServiceImpl coordinateServiceImpl;
 
-    @GetMapping("/town")
+    @GetMapping("town")
     public String find(Model model , TownFindDTO townFinddto){
 
         List<Category> finduniform = categoryServiceImpl.finduniform();
@@ -40,43 +42,33 @@ public class TownController {
 
 
 
-        return "town";
+        return "product/town";
     }
 
-    @PostMapping("/town")
+    @PostMapping("townresult")
     public String find(Town town, Model model, TownFindDTO townFinddto, @RequestParam("wishtown") String wishtown){
 
 
-
-
-        List<Category> finduniform = categoryServiceImpl.finduniform();
-        List<Category> footballboot = categoryServiceImpl.footballboot();
         List<Coordinate> Gangnam = coordinateServiceImpl.FindGangnam();
         List<Coordinate> Songpa = coordinateServiceImpl.FindSongpa();
         List<Coordinate> Gangdong = coordinateServiceImpl.FindGangdong();
 
 
-        model.addAttribute("finduniform",finduniform);
-        model.addAttribute("footballboot",footballboot);
         model.addAttribute("Gangnam",Gangnam);
         model.addAttribute("Songpa",Songpa);
         model.addAttribute("Gangdong",Gangdong);
 
         model.addAttribute("wishtown",wishtown);
-       // model.addAttribute("town",town);
 
 
-
-        return "townResult";
+        return "product/townresult";
     }
 
-    @PostMapping("/towncreate/{userId}")
+    @PostMapping("town")
     public String towncreate (TownFindDTO townFinddto, @RequestParam("userId")String userId) {
 
-
-        //townServiceImpl.townCreate(townFinddto,userId);
         townServiceImpl.townCreate(townFinddto,userId);
-        return "index";
+        return "redirect:/town/town";
 
 
     }
