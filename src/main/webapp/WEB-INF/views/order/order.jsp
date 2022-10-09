@@ -14,68 +14,75 @@
 
 </head>
 <body>
+	<jsp:include page="orderNav.jsp"/>
 	<div class="order">
 		<h1>order</h1>
 		<form:form action="" method="post" modelAttribute="orderAddDTO">
 			<input type="text" name="${_csrf.parameterName}" value="${_csrf.token}">
 			<input type="text" id="orderNum" name="orderNum" value="${orderAddDTO.orderNum}"/>
-			<p>order</p>
-			<p>
-				<span>MemberId</span>
-				<input type="text" id="memberId" name="memberId" value="${memberDTO.memberId}" placeholder="회원번호"/>
-			</p>
-			<p>
-				<span>ProductId</span>
-				<input type="text" id="productId" name="productId" value="${productDTO.productId}" placeholder="상품번호"/>
-			</p>
-			<p>
-				<span>OrderPrice</span>
-				<input type="text" id="orderPrice" name="orderPrice" value="${productDTO.orderPrice}" placeholder="주문가격"/>
-			</p>
+			<div>
+				<h3>order</h3>
+				<p>
+					<span>MemberId</span>
+					<input type="text" id="memberId" name="memberId" value="${memberDTO.memberId}" placeholder="회원번호"/>
+				</p>
+				<p>
+					<span>ProductId</span>
+					<input type="text" id="productId" name="productId" value="${productDTO.productId}" placeholder="상품번호"/>
+				</p>
+				<p>
+					<span>OrderPrice</span>
+					<input type="text" id="orderPrice" name="orderPrice" value="${productDTO.orderPrice}" placeholder="주문가격"/>
+				</p>
+			</div>
 			<br/>
-			<p>member - hidden</p>
-			<p>
-				<span>memberName</span>
-				<input type="text" id="name" name="name" value="${memberDTO.name}" placeholder="주문자명"/>
-			</p>
-			<p>
-				<span>memberTel</span>
-				<input type="text" id="tel" name="tel" value="${memberDTO.tel}" placeholder="주문자 연락처"/>
-			</p>
-			<p>
-				<span>memberEmail</span>
-				<input type="text" id="email" name="email" value="${memberDTO.email}" placeholder="주문자 이메일"/>
-			</p>
+			<div>
+				<h3>member - hidden</h3>
+				<p>
+					<span>memberName</span>
+					<input type="text" id="name" name="name" value="${memberDTO.name}" placeholder="주문자명"/>
+				</p>
+				<p>
+					<span>memberTel</span>
+					<input type="text" id="tel" name="tel" value="${memberDTO.tel}" placeholder="주문자 연락처"/>
+				</p>
+				<p>
+					<span>memberEmail</span>
+					<input type="text" id="email" name="email" value="${memberDTO.email}" placeholder="주문자 이메일"/>
+				</p>
+			</div>
 			<br/>
-			<p>delivery</p>
-			<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br/>
-			<p>
-				<span>Postcode</span>
-				<input type="text" id="postcode" name="postcode" value="${memberDTO.postcode}" placeholder="우편번호">
-			&nbsp;&nbsp;<form:errors path="postcode"/><br/>
-			</p>
-			<p>
-				<span>Address</span>
-				<input type="text" id="address" name="address" value="${memberDTO.address}" placeholder="주소">
-			&nbsp;&nbsp;<form:errors path="address"/><br/>
-			</p>
-			<p>
-				<span>DetailAddress</span>
-				<input type="text" id="detailAddress" name="detailAddress" value="${memberDTO.detailAddress}" placeholder="상세주소">
-			</p>
-			<p>
-				<span>ExtraAddress</span>
-				<input type="text" id="extraAddress" name="extraAddress" value="${memberDTO.extraAddress}" placeholder="참고항목">
-			&nbsp;&nbsp;<form:errors path="extraAddress"/><br/>
-			</p>
-			<p>
-				<span>DeliveryCost</span>
-				<input type="text" id="deliveryCost" name="deliveryCost" value="${orderAddDTO.deliveryCost}" placeholder="배송비"/>
-			</p>
-			<p>
-				<span>Request</span>
-				<input type="text" id="request" name="request" value="${orderAddDTO.request}" placeholder="요구사항"/>
-			</p>
+			<div>
+				<h3>delivery</h3>
+				<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br/>
+				<p>
+					<span>Postcode</span>
+					<input type="text" id="postcode" name="postcode" value="${memberDTO.postcode}" placeholder="우편번호">
+				&nbsp;&nbsp;<form:errors path="postcode"/><br/>
+				</p>
+				<p>
+					<span>Address</span>
+					<input type="text" id="address" name="address" value="${memberDTO.address}" placeholder="주소">
+				&nbsp;&nbsp;<form:errors path="address"/><br/>
+				</p>
+				<p>
+					<span>DetailAddress</span>
+					<input type="text" id="detailAddress" name="detailAddress" value="${memberDTO.detailAddress}" placeholder="상세주소">
+				</p>
+				<p>
+					<span>ExtraAddress</span>
+					<input type="text" id="extraAddress" name="extraAddress" value="${memberDTO.extraAddress}" placeholder="참고항목">
+				&nbsp;&nbsp;<form:errors path="extraAddress"/><br/>
+				</p>
+				<p>
+					<span>DeliveryCost</span>
+					<input type="text" id="deliveryCost" name="deliveryCost" value="${orderAddDTO.deliveryCost}" placeholder="배송비"/>
+				</p>
+				<p>
+					<span>Request</span>
+					<input type="text" id="request" name="request" value="${orderAddDTO.request}" placeholder="요구사항"/>
+				</p>
+			</div>
 			<button>입력</button>
 			<button type="button" id="payment">결제하기</button>
 		</form:form>
