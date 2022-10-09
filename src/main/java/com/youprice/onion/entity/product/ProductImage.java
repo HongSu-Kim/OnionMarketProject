@@ -1,4 +1,5 @@
 package com.youprice.onion.entity.product;
+import com.youprice.onion.dto.product.ProductImageDTO;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -18,4 +19,12 @@ public class ProductImage {
 
         private String productImageName; //이미지파일이름
 
+        public ProductImage createProductImage(ProductImageDTO productImageDTO, Product product) {
+
+                this.id = productImageDTO.getId();
+                this.product = product;
+                this.productImageName = productImageDTO.getProductImageName();
+
+                return this;
+        }
 }

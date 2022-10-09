@@ -2,6 +2,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var = "cp" value = "<%=request.getContextPath()%>"/>
 <html>
 <head>
@@ -33,6 +34,11 @@
         <%-- FOOTER END--%>
 
 	</div>
+
+<!-- jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+<!-- iamport.payment.js -->
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
 
 <script src="${cp}<tiles:getAsString name = 'js1'/>"></script>
 <script src="${cp}<tiles:getAsString name = 'js2'/>"></script>
