@@ -53,8 +53,8 @@ public class Product {
     private List<ProductTag> productTagList = new ArrayList<>();
 
     //주문내역 참조 양방향
-    @OneToMany(mappedBy = "product")
-    private List<Order> orderList = new ArrayList<>();
+    @OneToOne(mappedBy = "product")
+    private Order order;
 
     //찜 참조 양방향
     @OneToMany(mappedBy = "product")
