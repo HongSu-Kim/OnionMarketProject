@@ -30,18 +30,21 @@ public class ProductController {
     public String addProduct(Model model, ProductDTO productDTO, ProductImageDTO productImageDTO, MultipartFile file) throws Exception{
 
         Long productId = productService.createProductDTO(productDTO, productImageDTO, file);
-
         System.out.println("productId = " + productId);
 
-        model.addAttribute("dto",productId);
+        model.addAttribute("productId",productId);
 
-        return "redirect:/product/productdetail";//상품 상세페이지로 이동
+        return "redirect:/product/productdetail?productId="+productId;//상품 상세페이지로 이동
     }
 
     @GetMapping("productdetail")//상품 상세페이지 주소
-    public String detail() {
+    public String detail(Model model, Long productId) throws Exception{
 
-        return "product/productdetail";//상품 상세페이지
+        Product product = productService.findOne(productId);
+
+        model.addAttribute("dto",product);
+
+        return "product/productdetail";
     }
 
     @GetMapping(value = "productmain")//상품 리스트 메인 화면 주소

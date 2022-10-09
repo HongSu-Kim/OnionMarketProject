@@ -25,8 +25,8 @@ public class TownServiceImpl implements TownService {
  private  final MemberRepository memberRepositoy;
  private  final  MemberRepository.Memberrepositoy memberrepositoy;
 
- public void townCreate(TownFindDTO townFinddto, String userId){
-
+ @Override
+ public void townCreate(TownFindDTO townFinddto, String userId) {
   Town town = new Town();
   Coordinate coordinate = new Coordinate();
   Member member = new Member();
@@ -39,22 +39,43 @@ member = memberrepositoy.findmember(userId);
  town.townCreate(townFinddto,coordinate,member);
 
   townRepositoy.save(town);
-
-
  }
 
-
-
- public List<Town> townfind(){
-
-
-
-
-return  townrepositoy.findAll();
-
-
+ @Override
+ public List<Town> townfind() {
+  return  townrepositoy.findAll();
  }
 
+// public void townCreate(TownFindDTO townFinddto, String userId){
+//
+//  Town town = new Town();
+//  Coordinate coordinate = new Coordinate();
+//  Member member = new Member();
+//CoordinateCreateDTO coordinateCreatedto = new CoordinateCreateDTO();
+//
+//coordinate = townFinddto.getCoordinate();
+//
+//member = memberrepositoy.findmember(userId);
+//
+// town.townCreate(townFinddto,coordinate,member);
+//
+//  townRepositoy.save(town);
+//
+//
+// }
+//
+//
+//
+// public List<Town> townfind(){
+//
+//
+//
+//
+//return  townrepositoy.findAll();
+//
+//
+// }
+//
 
 
 
