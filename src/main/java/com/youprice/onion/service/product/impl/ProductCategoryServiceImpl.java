@@ -15,11 +15,6 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     private  ProductCategoryRepositoy.ProductCategoryrepositoy productCategoryrepositoy;
 
 
-    public void ProductCategoryCreate(){
-
-
-    }
-
 
 }
 

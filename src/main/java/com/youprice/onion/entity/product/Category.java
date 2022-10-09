@@ -30,17 +30,23 @@ public class Category {
 
 
 
-    public  Category categoryCreate1(CategoryCreateDTO categoryCreatedto) {
+    public  Category TopcategoryCreate(CategoryCreateDTO categoryCreatedto,String topcategoryName) {
+        this.categoryName =topcategoryName; //상위카테고리이름
 
-        this.categoryName = categoryCreatedto.getCategoryName();
-        this.category = categoryCreatedto.getCategory();//하위카테고리이름
+        return this;
+
+    }
+
+    public  Category SubcategoryCreate(CategoryCreateDTO categoryCreatedto) {
+          this.categoryName = categoryCreatedto.getCategoryName(); //하위카테고리이름
+          this.category =categoryCreatedto.getCategory();
 
         return this;
 
     }
 
     public  Category categoryUpdate(CategoryUpdateDTO categoryUpdatedto) {
-        this.id = categoryUpdatedto.getCategory_id();
+        this.id = categoryUpdatedto.getId();
         this.categoryName =categoryUpdatedto.getCategoryName();
         this.category = categoryUpdatedto.getCategory();
 

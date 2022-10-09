@@ -5,6 +5,7 @@ import com.youprice.onion.entity.member.Keyword;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.repository.member.KeywordRepositoy;
 import com.youprice.onion.repository.member.MemberRepository;
+import com.youprice.onion.service.member.KeywordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -13,16 +14,15 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class KeywordServiceImpl {
+public class KeywordServiceImpl implements KeywordService {
 
  private final KeywordRepositoy keywordRepositoy;
  private  final  KeywordRepositoy.Keywordrepositoy keywordrepositoy;
  private  final  MemberRepository.Memberrepositoy memberrepositoy;
  private  final  MemberRepository memberRepositoy;
 
-
- public void KeywordCreate(KeywordCreateDTO keywordCreateDto, String userId, String keywordName){
-
+ @Override
+ public void KeywordCreate(KeywordCreateDTO keywordCreateDto, String userId, String keywordName) {
   Keyword keyword = new Keyword();
 
   Member member = new Member();
@@ -36,20 +36,18 @@ public class KeywordServiceImpl {
   }
   else  return;
 
-
  }
 
- public void KeywordList(Model model,String userId){
-
+ @Override
+ public void KeywordList(Model model, String userId) {
   List<Keyword> MykeywordList = keywordrepositoy.findKeywordList(userId);
 
 
   model.addAttribute("MykeywordList",MykeywordList);
-
  }
 
- public void KeywordAlram(String subject, String productName, Model model){ //상품등록시 설정키워드있으면 알림
-
+ @Override
+ public void KeywordAlram(String subject, String productName, Model model) {
   Keyword keyword = new Keyword();
 
 
@@ -64,16 +62,14 @@ public class KeywordServiceImpl {
   else
 
    return;
+ }
+
+ @Override
+ public List<Keyword> findKeywordList(String userId) {
+  return keywordrepositoy.findKeywordList(userId);
 
  }
 
-
-
- public List<Keyword> findKeywordList(String userId) {
-
-return keywordrepositoy.findKeywordList(userId);
-
-}
 
 
 }
