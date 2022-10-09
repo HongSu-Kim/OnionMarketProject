@@ -48,13 +48,13 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAll();
     }
 
-    //가격에 따른 데이터 조회(변경예정)
-    public Product findByPrice(int price) {
-        return productManager.findByPrice(price);
+    //상품 하나에 대한 데이터
+    public Product findOne(Long id) {
+        return productManager.findOne(id);
     }
 
-    @Override
-    public ProductDTO getProductDTO(Long productId) {
-        return modelMapper.map(productRepository.findById(productId).orElse(null), ProductDTO.class);
-    }
+//    @Override
+//    public ProductDTO getProductDTO(Long productId) {
+//        return modelMapper.map(productRepository.findById(productId).orElse(null), ProductDTO.class);
+//    }
 }
