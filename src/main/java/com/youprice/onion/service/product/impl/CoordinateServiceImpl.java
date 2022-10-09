@@ -16,33 +16,58 @@ public class CoordinateServiceImpl implements CoordinateService {
     private final CoordinateRepositoy coordinateRepositoy;
     private final CoordinateRepositoy.Coordinaterepositoy coordinaterepositoy;
 
-    public void coordinateCreate(CoordinateCreateDTO coordinateCreatedto){
-
+    @Override
+    public void coordinateCreate(CoordinateCreateDTO coordinateCreatedto) {
         Coordinate coordinate = new Coordinate();
 
         coordinate.coordinateCreate(coordinateCreatedto);
 
 
     coordinateRepositoy.save(coordinate);
-
-
-
     }
 
-    public List<Coordinate> FindGangnam(){
-
+    @Override
+    public List<Coordinate> FindGangnam() {
         return coordinaterepositoy.findGangnam();
     }
 
-    public List<Coordinate> FindSongpa(){
-
+    @Override
+    public List<Coordinate> FindSongpa() {
         return coordinaterepositoy.findSongpa();
     }
 
-    public List<Coordinate> FindGangdong(){
-
+    @Override
+    public List<Coordinate> FindGangdong() {
         return coordinaterepositoy.findGangdong();
     }
+
+//    public void coordinateCreate(CoordinateCreateDTO coordinateCreatedto){
+//
+//        Coordinate coordinate = new Coordinate();
+//
+//        coordinate.coordinateCreate(coordinateCreatedto);
+//
+//
+//    coordinateRepositoy.save(coordinate);
+//
+//
+//
+//    }
+//
+//    public List<Coordinate> FindGangnam(){
+//
+//        return coordinaterepositoy.findGangnam();
+//    }
+//
+//    public List<Coordinate> FindSongpa(){
+//
+//        return coordinaterepositoy.findSongpa();
+//    }
+//
+//    public List<Coordinate> FindGangdong(){
+//
+//        return coordinaterepositoy.findGangdong();
+//    }
 
 }
 

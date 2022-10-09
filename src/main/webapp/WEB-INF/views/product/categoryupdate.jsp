@@ -1,11 +1,14 @@
 <%@ page import="javax.validation.constraints.NotEmpty" %>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var = "cp" value = "<%=request.getContextPath()%>"/>
 
+<%
 
+    String userId = request.getParameter("userId");
+
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -23,9 +26,14 @@
 <body>
 
 
+<br/>
+<br/>
+<br/>
+
+
 <nav class="navbar navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/category/category"> ${userId} 카테고리 설정 하세요<br/> <br/></a>
+        <a class="navbar-brand" href="/category/category">카테고리 설정 하세요<br/> <br/></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar"
                 aria-controls="offcanvasDarkNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -86,40 +94,74 @@
         </div>
     </div>
 </nav>
-<br/>
-<h1>카테고리 추가하기</h1>
 
-<strong>현재 상위카데고리</strong>
-<c:forEach var="category" items="${category}">
 
-  [${category.categoryName}]
+<form:form action=""  method="post">
+    <input type="text" name="id" value="삭제할 번호 입력!"/>
+    <input type="submit"  value="삭제하기"/>
 
-</c:forEach>
-
-<form:form action="" method="post">
 
     <br/>
 
-    -------------------------------------------------------------------------<br/>
-    상위카테고리 이름: <input type="text" name="topcategoryName"/>
-     <input type="hidden" name="categoryName"/>
-    <input type="submit" value="상위카테고리 추가"/>
-    <br/><br/>
-</form:form>
-    -------------------------------------------------------------------------<br/>
-<form:form action="" method="post">
-    상위카테고리 이름: <input type="text" name="topcategoryName"/><br/>
-    하위카테고리 이름: <input type="text" name="categoryName"/>
-
-
-    <input type="submit" value="하위카테고리 추가"/><br/>
-
-    -------------------------------------------------------------------------
 </form:form>
 
-<form:form action="categoryupdate" method="get">
-    카테고리 수정하기 <input type="submit" value="수정">
-</form:form>
+-------------------------------------------------------------------------<br/>
+   <strong><상위카테고리></상위카테고리></strong><br/>
+    <c:forEach var="Topcategory" items="${Topcategory}">
+        <strong>${Topcategory.id}.${Topcategory.categoryName}</strong><br/>
+
+
+
+
+    </c:forEach>
+-------------------------------------------------------------------------<br/>
+<strong ><하위카테고리></하위카테고리></strong><br/>
+<c:forEach var="Subcategory" items="${Subcategory}">
+    <strong>${Subcategory.id}.${Subcategory.categoryName}</strong><br/>
+
+
+</c:forEach>
+
+-------------------------------------------------------------------------<br/>
+
+<%--    <c:forEach var="uniformPARENT_ID" items="${uniformPARENT_ID}">--%>
+<%--    <input type="text" name="id" value="${uniformPARENT_ID.id} ${uniformPARENT_ID.categoryName}"/><br/>--%>
+<%--    </c:forEach>--%>
+
+
+<%--        <select name="categoryName">--%>
+<%--            <c:forEach var="uniformPARENT_ID" items="${uniformPARENT_ID}">--%>
+
+<%--            <option value="${uniformPARENT_ID.categoryName}">${uniformPARENT_ID.categoryName} </option>--%>
+<%--                <br/>--%>
+
+<%--            </c:forEach>--%>
+<%--        </select>--%>
+<%--                <br/>  <br/>  <br/>--%>
+
+<%--                <strong>축구화</strong><br/>--%>
+
+<%--                <c:forEach var="footballbootPARENT_ID" items="${footballbootPARENT_ID}">--%>
+<%--                <input type="text" name="id" value="${footballbootPARENT_ID.id} ${footballbootPARENT_ID.categoryName}"/><br/>--%>
+<%--                </c:forEach>--%>
+
+
+<%--                <select name="categoryName">--%>
+<%--                    <c:forEach var="footballbootPARENT_ID" items="${footballbootPARENT_ID}">--%>
+
+<%--                        <option value="${footballbootPARENT_ID.categoryName}">${footballbootPARENT_ID.categoryName} </option>--%>
+
+
+<%--                    </c:forEach>--%>
+<%--                </select>--%>
+
+<%--                    <br/>  <br/>  <br/> <br/>  <br/>  <br/>--%>
+
+
+
+
+
+
 
 
 </body>

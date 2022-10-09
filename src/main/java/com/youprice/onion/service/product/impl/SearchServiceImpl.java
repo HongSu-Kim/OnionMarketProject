@@ -16,40 +16,35 @@ public class SearchServiceImpl implements SearchService {
  private final SearchRepositoy searchRepositoy;
  private  final SearchRepositoy.Searchrepositoy searchrepositoy;
 
-
-
- public void SearchCreate(SearchCreateDTO searchCreateDto, String SearchName){
-
-  Search search = new Search();
+ @Override
+ public void SearchCreate(SearchCreateDTO searchCreateDto, String SearchName) {
+    Search search = new Search();
 
  search.SearchCreate(searchCreateDto);
 
 
 
    searchRepositoy.save(search);
-
-
-
-
-
-
  }
 
-public Long Searchcount(){
+ @Override
+ public Long Searchcount() {
+  Search search = new Search();
   return searchrepositoy.Search();
-}
+ }
 
-
- public List<Search> searchList(){
-
+ @Override
+ public List<Search> searchList() {
   return  searchrepositoy.findSearch();
  }
 
- public Search findBySearchName(String searchName){
+ @Override
+ public Search findBySearchName(String searchName) {
   return searchRepositoy.findBySearchName(searchName);
  }
 
- public int searchupdatecount(String searchName){
+ @Override
+ public int searchupdatecount(String searchName) {
   return searchrepositoy.updatecount(searchName);
  }
 
