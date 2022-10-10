@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ProductService {
 
-    Long createProductDTO(ProductDTO productDTO, ProductImageDTO productImageDTO, MultipartFile file);
+    Long createProductDTO(ProductDTO productDTO) throws  Exception;
     List<Product> findAllProductDTO();
     Product findOne(Long id);
 
