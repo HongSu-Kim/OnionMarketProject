@@ -4,7 +4,9 @@ import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.service.member.MemberService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,29 +23,39 @@ import java.util.Optional;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
+    private final MemberRepository memberRepository;
+
     @Autowired
-    private MemberRepository memberRepository;
+    private final ModelMapper modelMapper;
+
+    @Transactional
+    @Override
+    public Long saveMember(MemberDTO memberDTO) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        memberDTO.setPwd(passwordEncoder.encode(memberDTO.getPwd()));
+
+        return memberRepository.save(memberDTO.toEntity()).getId();
+    }
 
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        Optional<Member> memberEntityWrapper = memberRepository.findByUserId(userId);
-        Member memberEntity = memberEntityWrapper.orElse(null);
+        Optional<Member> memberWrapper = memberRepository.findByUserId(userId);
+        Member member = memberWrapper.orElse(null);
 
         List<GrantedAuthority> authorities = new ArrayList<>();
 
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-        return new User(memberEntity.getUserId(), memberEntity.getPwd(), authorities);
+        return new User(member.getUserId(), member.getPwd(), authorities);
     }
 
-    @Transactional
-    @Override
-    public String saveMember(MemberDTO memberDTO) {
-        Member member = memberDTO.toEntity();
 
-        return memberRepository.save(member).getUserId();
+    @Override
+    public MemberDTO getMemberDTO(Long memberId) {
+        return modelMapper.map(memberRepository.findById(memberId).orElse(null), MemberDTO.class);
     }
 
 /*
