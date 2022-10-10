@@ -1,4 +1,4 @@
-package com.youprice.onion.service.member.impl;
+package com.youprice.onion.service.board.impl;
 
 import com.youprice.onion.entity.board.Review;
 import com.youprice.onion.entity.board.ReviewImage;
