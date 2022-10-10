@@ -8,7 +8,10 @@ import com.youprice.onion.repository.product.ProductImageRepository;
 import com.youprice.onion.repository.product.ProductRepository;
 import com.youprice.onion.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -17,36 +20,39 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
+@ToString
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final ProductRepository.ProductManager productManager;
 
     private final ProductImageServiceImpl productImageServiceImpl;
+    private final ModelMapper modelMapper;
+
     //상품 등록
-    public void createProductDTO(ProductDTO productDTO, ProductImageDTO productImageDTO, MultipartFile file, int price ) throws Exception{
+    @Override
+    @Transactional()
+    public Long createProductDTO(ProductDTO productDTO)throws Exception {
 
         Product product = new Product();
         product.createProduct(productDTO);
 
-        productRepository.save(product);
-//상품 이미지 등록(예정)
-//        ProductImage productImage = new ProductImage();
-//        product = productManager.findByPrice(price);
-//
-//
-//        productImageServiceImpl.createProductImageDTO(productImageDTO, file, product);
-
+        return productRepository.save(product).getId();
     }
     //전체 상품 조회
+    @Override
     public List<Product> findAllProductDTO() {
-        return productManager.findAll();
+        return productRepository.findAll();
     }
 
-    //가격에 따른 데이터 조회(변경예정)
-    public Product findByPrice(int price) {
-        return productManager.findByPrice(price);
+    //상품 하나에 대한 데이터
+    public Product findOne(Long id) {
+        return productManager.findOne(id);
     }
 
-
+//    @Override
+//    public ProductDTO getProductDTO(Long productId) {
+//        return modelMapper.map(productRepository.findById(productId).orElse(null), ProductDTO.class);
+//    }
 }

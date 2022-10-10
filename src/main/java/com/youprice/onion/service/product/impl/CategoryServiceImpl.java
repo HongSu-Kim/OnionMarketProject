@@ -9,81 +9,104 @@ import com.youprice.onion.service.product.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class CategoryServiceImpl  implements CategoryService {
+public class CategoryServiceImpl implements CategoryService {
 
- private  final CategoryRepositoy categoryRepositoy;
- private  final  CategoryRepositoy.Categoryrepositoy categoryrepositoy;
+    private final CategoryRepositoy categoryRepositoy;
+    private final CategoryRepositoy.Categoryrepositoy categoryrepositoy;
+
+    @Override
+    public void TopCategoryCreate(CategoryCreateDTO categoryCreatedto, String topcategoryName) {
+        Category category = new Category();
+
+        Optional<Category> DuplicatechecktopcategoryName = categoryRepositoy.findByCategoryName(topcategoryName);
+        if (DuplicatechecktopcategoryName.isPresent()) {
+            System.out.println("이미 존재하는 상위카테고리입니다!");
+            return;
+        } else
+
+            category.TopcategoryCreate(categoryCreatedto, topcategoryName);
+
+        categoryRepositoy.save(category);
+        System.out.println("상위카테고리 생성완료!");
+
+    }
+
+    @Override
+    public void SubCategoryCreate(CategoryCreateDTO categoryCreateDTO, String topcategoryName) {
+        Category category = new Category();
+        categoryCreateDTO.setCategory(categoryrepositoy.findtopcategoryName(topcategoryName));
+
+        Optional<Category> DuplicatechecksubcategoryName =
+                categoryRepositoy.findByCategoryNameAndCategory(categoryCreateDTO.getCategoryName(),categoryCreateDTO.getCategory());
+        if (DuplicatechecksubcategoryName.isPresent()) {
+            System.out.println("이미 존재하는 하위카테고리입니다!");
+            return;
+        }
+        category.SubcategoryCreate(categoryCreateDTO);
+        categoryRepositoy.save(category);
+        System.out.println("하위카테고리 생성완료!");
+
+    }
+
+    @Override
+    public void CategoryDelete(Long id) { //카테고리삭제
+        Category category = new Category();
+        categoryrepositoy.deleteCategory(id);
 
 
- public void CategoryCreate(CategoryCreateDTO categoryCreatedto){
-    Category category = new Category();
+    }
 
-     category.categoryCreate1(categoryCreatedto);
-     categoryRepositoy.save(category);
-  categoryRepositoy.findByCategory(category);
-  categoryRepositoy.save(category);
-
-
-
- }
-
- public  void CategoryDelete(CategoryUpdateDTO categoryUpdatedto){
-
-     Category category = new Category();
-     category = category.categoryUpdate(categoryUpdatedto);
-     //categoryRepositoy.deleteById(categoryUpdatedto.getCategory_id());
-     categoryRepositoy.deleteById(categoryUpdatedto.getCategory_id());
-
-
-   //  category = categoryRepositoy.findByCategoryName(categoryUpdatedto.getCategoryName());
-
-
-
-
- }
-
-    public  void CategoryUpdate(CategoryUpdateDTO categoryUpdatedto){
-
+    @Override
+    public void CategoryUpdate(CategoryUpdateDTO categoryUpdatedto) {
         Category category = new Category();
 
         category.categoryUpdate(categoryUpdatedto);
         categoryRepositoy.save(category);
-
     }
 
- public List<Category> findCategory(){
+    @Override
+    public List<Category> findCategory() {
 
-     return categoryRepositoy.findAll();
- }
 
-    public List<Category> finduniform(){
-        return categoryrepositoy.finduniform();
+        return categoryrepositoy.findCategory();
     }
 
+    @Override
+    public List<Category> findSubCategory() {
+        return categoryrepositoy.findSubcategory();
+    }
 
-    public List<Category> footballboot(){
+    @Override
+    public List<Category> finduniform() {
+        return null;
+    }
+
+    @Override
+    public List<Category> footballboot() {
         return categoryrepositoy.findfootballboot();
     }
 
-    public  List<Category> categoryList(){
-     return categoryRepositoy.findAll();
+    @Override
+    public List<Category> categoryList() {
+        return categoryRepositoy.findAll();
     }
 
-    public  List<Category> uniformPARENT_ID(){
+    @Override
+    public List<Category> uniformPARENT_ID() {
         return categoryrepositoy.uniformPARENT_ID();
     }
 
-    public  List<Category> footballbootPARENT_ID(){
+    @Override
+    public List<Category> footballbootPARENT_ID() {
         return categoryrepositoy.footballbootPARENT_ID();
     }
 
-    public  List<Category> update(){
-     return  categoryrepositoy.update();
-    }
 
 }
 

@@ -4,114 +4,82 @@ package com.youprice.onion.controller.product;
 import com.youprice.onion.dto.product.CategoryCreateDTO;
 import com.youprice.onion.dto.product.CategoryUpdateDTO;
 import com.youprice.onion.entity.product.Category;
-import com.youprice.onion.repository.product.CategoryRepositoy;
+import com.youprice.onion.service.product.CategoryService;
 import com.youprice.onion.service.product.impl.CategoryServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.query.criteria.internal.predicate.IsEmptyPredicate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
+@RequestMapping("category")
 public class CategoryController {
 
-    private  final CategoryRepositoy categoryRepositoy;
-    private  final CategoryServiceImpl categoryServiceImpl;
-   // private  final  ProductImageServiceImpl productImageService;
+    private final CategoryService categoryService;
 
 
-    @GetMapping("/category")
-    public String create1(Model model){
+    @GetMapping("category")
+    public String create1(Model model) {
 
+        List<Category> category =categoryService.findCategory();
 
-        return "category";
+        model.addAttribute("category",category);
+        
+
+        return "product/category";
     }
 
-    @PostMapping("/main/admin/{userId}")
-    public  String create(CategoryCreateDTO categoryCreatedto, Category category, Model model){
+    @PostMapping("category")
+    public String create(CategoryCreateDTO categoryCreatedto, Category category, Model model, @RequestParam("topcategoryName")
+                         String topcategoryName,@RequestParam("categoryName")String categoryName) {
 
 
-       // List<ProductImage> list = productImageService.findProduct();
-        List<Category> finduniform = categoryServiceImpl.finduniform();
-        List<Category> footballboot = categoryServiceImpl.footballboot();
+        if(categoryName =="") { //상위카테고리생성
 
-       // model.addAttribute("list",list);
-        model.addAttribute("finduniform",finduniform);
-        model.addAttribute("footballboot",footballboot);
-        categoryServiceImpl.CategoryCreate(categoryCreatedto);
+            categoryService.TopCategoryCreate(categoryCreatedto,topcategoryName);
 
-        return "category";
+        }
+
+        else //하위카테고리생성
+            categoryService.SubCategoryCreate(categoryCreatedto, topcategoryName);
+
+
+
+
+        return "redirect:/category/category";
     }
 
-    @GetMapping("/categorymain")
-    public String create(Model model){
+    @GetMapping("categoryupdate")
+    public String create(Model model) {
 
-        List<Category> list = categoryServiceImpl.findCategory();
+        List<Category> Topcategory =categoryService.findCategory();
+        List<Category> Subcategory = categoryService.findSubCategory();
 
-        model.addAttribute("list",list);
+        model.addAttribute("Topcategory",Topcategory);
+        model.addAttribute("Subcategory",Subcategory);
 
-        return "categorymain";
+        return "product/categoryupdate";
     }
 
-
-    @GetMapping("/main/categoryUpdate/{userId}")
-    public  String update(Model model){
-
-        List<Category> categoryList = categoryServiceImpl.categoryList();
-
-        List<Category> finduniform = categoryServiceImpl.finduniform();
-        List<Category> footballboot = categoryServiceImpl.footballboot();
-        List<Category> uniformPARENT_ID = categoryServiceImpl.uniformPARENT_ID();
-        List<Category> footballbootPARENT_ID = categoryServiceImpl.footballbootPARENT_ID();
+    @PostMapping("categoryupdate")
+    public String update (@RequestParam("id") Long id) {
 
 
-        model.addAttribute("finduniform",finduniform);
-        model.addAttribute("footballboot",footballboot);
-        model.addAttribute("categoryList",categoryList);
-        model.addAttribute("uniformPARENT_ID",uniformPARENT_ID);
-        model.addAttribute("footballbootPARENT_ID",footballbootPARENT_ID);
 
-        return "categorydelete";
+
+        categoryService.CategoryDelete(id);
+
+        return "redirect:/category/categoryupdate";
 
     }
-
-    @PostMapping("/main/categoryUpdate/{userId}")
-    public  String update(Model model, CategoryUpdateDTO categoryUpdatedto)
-                       {
-
-        List<Category> categoryList = categoryServiceImpl.categoryList();
-
-        List<Category> finduniform = categoryServiceImpl.finduniform();
-        List<Category> footballboot = categoryServiceImpl.footballboot();
-        List<Category> uniformPARENT_ID = categoryServiceImpl.uniformPARENT_ID();
-        List<Category> footballbootPARENT_ID = categoryServiceImpl.footballbootPARENT_ID();
-
-
-
-
-        model.addAttribute("finduniform",finduniform);
-        model.addAttribute("footballboot",footballboot);
-        model.addAttribute("categoryList",categoryList);
-        model.addAttribute("uniformPARENT_ID",uniformPARENT_ID);
-        model.addAttribute("footballbootPARENT_ID",footballbootPARENT_ID);
-
-
-
-        categoryServiceImpl.CategoryDelete(categoryUpdatedto);
-
-//
-
-
-        return "index";
-
-    }
-
-
-
-
 
 
 }

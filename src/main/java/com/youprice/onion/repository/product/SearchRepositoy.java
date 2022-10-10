@@ -38,7 +38,7 @@ public interface SearchRepositoy extends JpaRepository<Search,Long> {
 @Transactional
         public int updatecount(String SearchName) {
             return em.createQuery("update Search as m " +
-                            "set m.count = m.count+1 where m.searchName = :SearchName")
+                            "set m.searchCount = m.searchCount+1 where m.searchName = :SearchName")
                     .setParameter("SearchName", SearchName)
 
                     .executeUpdate();

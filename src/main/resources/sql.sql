@@ -15,6 +15,7 @@ DROP TABLE notice PURGE;
 DROP TABLE answer PURGE;
 DROP TABLE inquiry PURGE;
 DROP TABLE review PURGE;
+DROP TABLE review_image PURGE;
 DROP TABLE complain PURGE;
 
 DROP TABLE delivery PURGE;
@@ -39,7 +40,6 @@ DROP TABLE town PURGE;
 DROP TABLE coordinate PURGE;
 
 DROP TABLE search PURGE;
-DROP TABLE keyword_alarm PURGE;
 DROP TABLE keyword PURGE;
 DROP TABLE follow PURGE;
 DROP TABLE block PURGE;
@@ -48,7 +48,7 @@ DROP TABLE member PURGE;
 
 CREATE TABLE member (
 	member_id			NUMBER			NOT NULL,
-	role				VARCHAR2(50)    DEFAULT 'ROLE_USER' NOT NULL,
+	role				VARCHAR2(50)    DEFAULT 'ROLE_USER',
 	user_id				VARCHAR2(30)    NOT NULL,
 	pwd					VARCHAR2(60)    NOT NULL,
 	nickname			VARCHAR2(40)    NOT NULL,
@@ -97,17 +97,6 @@ CREATE TABLE keyword (
     CONSTRAINT FK_KEYWORD_MEMBER_ID FOREIGN KEY (member_id) REFERENCES  member(member_id)
 );
 
-CREATE TABLE keyword_alarm (
-    keyword_alarm_id    NUMBER          NOT NULL,
-    member_id           NUMBER          NOT NULL,
-    keyword_id          NUMBER          NOT NULL,
-    CONSTRAINT PK_KEYWORD_ALARM PRIMARY KEY (keyword_alarm_id),
-    CONSTRAINT FK_KEYWORD_ALARM_MEMBER_ID  FOREIGN KEY (member_id)   REFERENCES  member(member_id),
-    CONSTRAINT FK_KEYWORD_ALARM_KEYWORD_ID FOREIGN KEY (keyword_id ) REFERENCES  keyword(keyword_id)
-);
-
-
-
 CREATE TABLE search (
     search_id            NUMBER          NOT NULL,
     search_name          VARCHAR2(255)   NULL,
@@ -118,9 +107,9 @@ CREATE TABLE search (
 
 CREATE TABLE coordinate (
 	coordinate_id 		NUMBER        	NOT NULL,
-	town_name     		VARCHAR2(10)  	NOT NULL,
-    latitude      		VARCHAR2(20)  	NOT NULL,
-	longitude     		VARCHAR2(20)  	NOT NULL,
+	town_name     		VARCHAR2(50)  	NOT NULL,
+    latitude      		VARCHAR2(50)  	NOT NULL,
+	longitude     		VARCHAR2(50)  	NOT NULL,
 	CONSTRAINT PK_COORDINATE PRIMARY KEY (coordinate_id)
 );
 
@@ -259,7 +248,9 @@ CREATE TABLE orders (
 	order_id	    	NUMBER	        NOT NULL,
 	member_id	    	NUMBER          NOT NULL,
 	product_id	    	NUMBER          NOT NULL,
-	order_price         NUMBER          NOT NULL,
+    order_num           CHAR(15)        NOT NULL,
+    imp_uid             VARCHAR2(20)    NOT NULL,
+    order_payment       NUMBER          NOT NULL,
 	order_state     	VARCHAR2(10)    DEFAULT 'order',
 	order_date      	DATE            DEFAULT SYSDATE,
 	modified_date   	DATE            DEFAULT NULL,
@@ -298,23 +289,31 @@ CREATE TABLE complain (
 CREATE TABLE review (
 	review_id	        NUMBER	        NOT NULL,
 	order_id	        NUMBER	        NOT NULL,
-	review_type	        VARCHAR2(10)	NOT NULL,
 	review_content	    VARCHAR2(255)	NOT NULL,
 	grade	            NUMBER          NOT NULL,
 	review_date	        DATE            DEFAULT SYSDATE,
-	review_image_name   VARCHAR2(50)	NULL,
 	CONSTRAINT PK_REVIEW PRIMARY KEY (review_id),
 	CONSTRAINT FK_REVIEW_ORDER_ID FOREIGN KEY (order_id) REFERENCES orders(order_id)
+);
+CREATE TABLE review_image(
+    review_image_id     NUMBER          Not NULL,
+    review_id           NUMBER          NOT NULL,
+    original_file_name  VARCHAR2(30)    NOT NULL,
+    store_file_name     varchar2(100)   NOT NULL,
+    CONSTRAINT PK_REVIEW_IMAGE PRIMARY KEY (review_image_id),
+    CONSTRAINT FK_REVIEW_IMAGE_REVIEW_ID FOREIGN KEY (review_id) REFERENCES review(review_id)
 );
 
 CREATE TABLE inquiry (
 	inquiry_id	    	NUMBER	        NOT NULL,
 	member_id	    	NUMBER	        NOT NULL,
-	inquiry_type        VARCHAR2(20)	NOT NULL,
-	inquiry_subject     VARCHAR2(30)	NOT NULL,
+	inquiry_type        VARCHAR2(30)	NOT NULL,
+	detail_type         VARCHAR2(30)	NOT NULL,
+	inquiry_subject     VARCHAR2(50)	NOT NULL,
 	inquiry_content     VARCHAR2(255)	NOT NULL,
 	inquiry_date    	DATE            DEFAULT SYSDATE,
 	status          	VARCHAR2(10)	DEFAULT 'wait',
+	secret              char(1)         CONSTRAINT review_image_secret_CK check ( secret = '0' or secret = '1'),
 	CONSTRAINT PK_INQUIRY PRIMARY KEY (inquiry_id),
 	CONSTRAINT FK_INQUIRY_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id)
 );
@@ -352,71 +351,68 @@ CREATE TABLE notice_image (
 );
 
 
-
-INSERT INTO coordinate VALUES(1,'37.4954841','127.0333574','서울특별시 강남구 역삼1동');
-INSERT INTO coordinate VALUES(2,'37.4959674','127.0468034','서울특별시 강남구 역삼2동');
-INSERT INTO coordinate VALUES(3,'37.5115706 ','127.028461','서울특별시 강남구 논현1동');
-INSERT INTO coordinate VALUES(4,'37.517342','127.037213','서울특별시 강남구 논현2동');
-INSERT INTO coordinate VALUES(5,'37.5144424','127.062532','서울특별시 강남구 삼성1동');
-INSERT INTO coordinate VALUES(6,'37.5112','127.04595','서울특별시 강남구 삼성2동');
-INSERT INTO coordinate VALUES(7,'37.4931821','127.0567047','서울특별시 강남구 대치1동');
-INSERT INTO coordinate VALUES(8,'37.5022848','127.0642072','서울특별시 강남구 대치2동');
-INSERT INTO coordinate VALUES(9,'37.4997415','127.0579127','서울특별시 강남구 대치4동');
-INSERT INTO coordinate VALUES(10,'37.488238','127.0390246','서울특별시 강남구 도곡1동');
-INSERT INTO coordinate VALUES(11,'37.4837425','127.0464338','서울특별시 강남구 도곡2동');
-INSERT INTO coordinate VALUES(12,'37.525107','127.049291','서울특별시 강남구 청담동');
-INSERT INTO coordinate VALUES(13,'37.5240101','127.0227814','서울특별시 강남구 신사동');
-INSERT INTO coordinate VALUES(14,'37.530642','127.030713','서울특별시 강남구 압구정동');
-INSERT INTO coordinate VALUES(15,'37.4827409','127.055737','서울특별시 강남구 개포1동');
-INSERT INTO coordinate VALUES(16,'37.4771404','127.0497486','서울특별시 강남구 개포4동');
-INSERT INTO coordinate VALUES(17,'37.491839','127.0879629','서울특별시 강남구 일원1동');
-INSERT INTO coordinate VALUES(18,'37.4922048','127.0737224','서울특별시 강남구 일원2동');
-INSERT INTO coordinate VALUES(19,'37.4833484','127.0864633','서울특별시 강남구 일원본동');
-INSERT INTO coordinate VALUES(20,'37.4643683','127.1043555','서울특별시 강남구 세곡동');
-
-INSERT INTO coordinate VALUES(21 ,'37.5060716','127.0832037','  서울특별시 송파구 잠실본동');
-INSERT INTO coordinate VALUES(22 ,'37.5119488','127.088559 ','  서울특별시 송파구 잠실2동');
-INSERT INTO coordinate VALUES(23 ,'37.513333', '127.094375', '  서울특별시 송파구 잠실3동');
-INSERT INTO coordinate VALUES(24 ,'37.5201089','127.1122668','  서울특별시 송파구 잠실4동');
-INSERT INTO coordinate VALUES(25 ,'37.518142','127.10065','서울특별시 송파구 잠실6동');
-INSERT INTO coordinate VALUES(26 ,'37.5086777','127.0771146','  서울특별시 송파구 잠실7동');
-INSERT INTO coordinate VALUES(27 ,'37.538092','127.122075' , '   서울특별시 송파구 풍납1동');
-INSERT INTO coordinate VALUES(28 ,'37.528833','127.116825' ,'  서울특별시 송파구 풍납2동');
-INSERT INTO coordinate VALUES(29 ,'37.502714','127.0925354','   서울특별시 송파구 삼전동');
-INSERT INTO coordinate VALUES(30,'37.503592','127.1037' , '서울특별시 송파구 석촌동');
-INSERT INTO coordinate VALUES(31,'37.5062595',  '127.1093393','서울특별시 송파구 송파1동');
-INSERT INTO coordinate VALUES(32 ,'37.502317',  '127.1167651','서울특별시 송파구 송파2동');
-INSERT INTO coordinate VALUES(33 ,'37.510933',  '127.123925', '서울특별시 송파구 방이1동');
-INSERT INTO coordinate VALUES(34 ,'37.5164444',  '127.1114868','서울특별시 송파구 방이2동');
-INSERT INTO coordinate VALUES(35 ,'37.515425',  '127.1343'   ,'서울특별시 송파구 오륜동');
-INSERT INTO coordinate VALUES(36 ,'37.5030528',  '127.1281494','서울특별시 송파구 오금동');
-INSERT INTO coordinate VALUES(37 ,'37.4955568',  '127.1217864','서울특별시 송파구 가락본동');
-INSERT INTO coordinate VALUES(38 ,'37.4964898',  '127.1098653','서울특별시 송파구 가락1동');
-INSERT INTO coordinate VALUES(39 ,'37.4987054',  '127.1266714','서울특별시 송파구 가락2동');
-INSERT INTO coordinate VALUES(40 ,'37.4900982',  '127.1241719','서울특별시 송파구 문정1동');
-INSERT INTO coordinate VALUES(41,'37.489823',    '127.1108107','서울특별시 송파구 문정2동');
-INSERT INTO coordinate VALUES(42,'37.4785',      '127.1354   ','서울특별시 송파구 장지동');
-INSERT INTO coordinate VALUES(43,'37.4969643',   '127.1432324' ,'서울특별시 송파구 거여1동');
-INSERT INTO coordinate VALUES(44,'37.4935803',   '127.1468764','서울특별시 송파구 거여2동 ');
-INSERT INTO coordinate VALUES(45 ,'37.4960195',  '127.1499724','서울특별시 송파구 마천1동');
-INSERT INTO coordinate VALUES(46 ,'37.4968477',  '127.1485193','서울특별시 송파구 마천2동');
-INSERT INTO coordinate VALUES(47 ,'37.4811656',  '127.1439378',' 서울특별시 송파구 위례동');
-
-INSERT INTO Coordinate VALUES( 48 ,'37.551508','  127.132663' ,' 서울특별시 강동구 암사1동');
-INSERT INTO Coordinate VALUES( 49,'37.5517481','  127.1272074',' 서울특별시 강동구 암사2동');
-INSERT INTO Coordinate VALUES( 50,'37.5549912','  127.1408249','서울특별시 강동구 암사3동');
-INSERT INTO Coordinate VALUES( 51 ,'37.5572593', '127.1515382','서울특별시 강동구 고덕1동');
-INSERT INTO Coordinate VALUES( 52,'37.5605',     '127.16435 ' ,'서울특별시 강동구 고덕2동');
-INSERT INTO Coordinate VALUES( 53,'37.5649783',  '127.173909 ','서울특별시 강동구 강일동');
-INSERT INTO Coordinate VALUES( 54,'37.5512453',  '127.1443656','서울특별시 강동구 명일1동');
-INSERT INTO Coordinate VALUES( 55 ,'37.546366',  '127.1513427','서울특별시 강동구 명일2동');
-INSERT INTO Coordinate VALUES( 56 ,'37.5450159', '127.1368066','서울특별시 강동구 천호1동');
-INSERT INTO Coordinate VALUES( 57 ,'37.5435257', '127.1254351','서울특별시 강동구 천호2동');
-INSERT INTO Coordinate VALUES( 58,'37.5361455',  '127.1332269','서울특별시 강동구 천호3동');
-INSERT INTO Coordinate VALUES( 59,'37.5345598',  '127.1426791','서울특별시 강동구 길동' );
-INSERT INTO Coordinate VALUES( 60 ,'37.5506614', '127.1649058','서울특별시 강동구 상일1동');
-INSERT INTO Coordinate VALUES( 61,'37.5499518',  '127.1758801','서울특별시 강동구 상일2동');
-INSERT INTO Coordinate VALUES( 62,'37.5304417',  '127.122425',' 서울특별시 강동구 성내1동');
-INSERT INTO Coordinate VALUES( 63,'37.532425',  ' 127.129563',' 서울특별시 강동구 성내2동');
-INSERT INTO Coordinate VALUES( 64,'37.5333656','  127.1419851',' 서울특별시 강동구 둔촌1동');
-INSERT INTO Coordinate VALUES( 65 ,'37.5332885',' 127.1419221','서울특별시 강동구 둔촌2동');
+INSERT INTO coordinate VALUES(1,'서울특별시 강남구 역삼1동','37.4954841','127.0333574');
+INSERT INTO coordinate VALUES(2,'서울특별시 강남구 역삼2동','37.4959674','127.0468034');
+INSERT INTO coordinate VALUES(3,'서울특별시 강남구 논현1동','37.5115706 ','127.028461');
+INSERT INTO coordinate VALUES(4,'서울특별시 강남구 논현2동','37.517342','127.037213');
+INSERT INTO coordinate VALUES(5,'서울특별시 강남구 삼성1동','37.5144424','127.062532');
+INSERT INTO coordinate VALUES(6,'서울특별시 강남구 삼성2동','37.5112','127.04595');
+INSERT INTO coordinate VALUES(7,'서울특별시 강남구 대치1동','37.4931821','127.0567047');
+INSERT INTO coordinate VALUES(8,'서울특별시 강남구 대치2동','37.5022848','127.0642072');
+INSERT INTO coordinate VALUES(9,'서울특별시 강남구 대치4동','37.4997415','127.0579127');
+INSERT INTO coordinate VALUES(10,'서울특별시 강남구 도곡1동','37.488238','127.0390246');
+INSERT INTO coordinate VALUES(11,'서울특별시 강남구 도곡2동','37.4837425','127.0464338');
+INSERT INTO coordinate VALUES(12,'서울특별시 강남구 청담동','37.525107','127.049291');
+INSERT INTO coordinate VALUES(13,'서울특별시 강남구 신사동','37.5240101','127.0227814');
+INSERT INTO coordinate VALUES(14,'서울특별시 강남구 압구정동','37.530642','127.030713');
+INSERT INTO coordinate VALUES(15,'서울특별시 강남구 개포1동','37.4827409','127.055737');
+INSERT INTO coordinate VALUES(16,'서울특별시 강남구 개포4동','37.4771404','127.0497486');
+INSERT INTO coordinate VALUES(17,'서울특별시 강남구 일원1동','37.491839','127.0879629');
+INSERT INTO coordinate VALUES(18,'서울특별시 강남구 일원2동','37.4922048','127.0737224');
+INSERT INTO coordinate VALUES(19,'서울특별시 강남구 일원본동','37.4833484','127.0864633');
+INSERT INTO coordinate VALUES(20,'서울특별시 강남구 세곡동','37.4643683','127.1043555');
+INSERT INTO coordinate VALUES(21 ,'서울특별시 송파구 잠실본동','37.5060716','127.0832037');
+INSERT INTO coordinate VALUES(22 ,'서울특별시 송파구 잠실2동','37.5119488','127.088559 ');
+INSERT INTO coordinate VALUES(23 ,'서울특별시 송파구 잠실3동','37.513333', '127.094375');
+INSERT INTO coordinate VALUES(24 ,'서울특별시 송파구 잠실4동','37.5201089','127.1122668');
+INSERT INTO coordinate VALUES(25 ,'서울특별시 송파구 잠실6동','37.518142','127.10065');
+INSERT INTO coordinate VALUES(26 ,'서울특별시 송파구 잠실7동','37.5086777','127.0771146');
+INSERT INTO coordinate VALUES(27 , '서울특별시 송파구 풍납1동','37.538092','127.122075');
+INSERT INTO coordinate VALUES(28 ,'서울특별시 송파구 풍납2동','37.528833','127.116825');
+INSERT INTO coordinate VALUES(29 ,'서울특별시 송파구 삼전동','37.502714','127.0925354');
+INSERT INTO coordinate VALUES(30,'서울특별시 송파구 석촌동','37.503592','127.1037');
+INSERT INTO coordinate VALUES(31,'서울특별시 송파구 송파1동','37.5062595',  '127.1093393');
+INSERT INTO coordinate VALUES(32 ,'서울특별시 송파구 송파2동','37.502317',  '127.1167651');
+INSERT INTO coordinate VALUES(33 ,'서울특별시 송파구 방이1동','37.510933',  '127.123925');
+INSERT INTO coordinate VALUES(34 ,'서울특별시 송파구 방이2동','37.5164444',  '127.1114868');
+INSERT INTO coordinate VALUES(35 ,'서울특별시 송파구 오륜동','37.515425',  '127.1343');
+INSERT INTO coordinate VALUES(36 ,'서울특별시 송파구 오금동','37.5030528',  '127.1281494');
+INSERT INTO coordinate VALUES(37 ,'서울특별시 송파구 가락본동','37.4955568',  '127.1217864');
+INSERT INTO coordinate VALUES(38 ,'서울특별시 송파구 가락1동','37.4964898',  '127.1098653');
+INSERT INTO coordinate VALUES(39 ,'서울특별시 송파구 가락2동','37.4987054',  '127.1266714');
+INSERT INTO coordinate VALUES(40 ,'서울특별시 송파구 문정1동','37.4900982',  '127.1241719');
+INSERT INTO coordinate VALUES(41,'서울특별시 송파구 문정2동','37.489823',    '127.1108107');
+INSERT INTO coordinate VALUES(42,'서울특별시 송파구 장지동','37.4785',      '127.1354');
+INSERT INTO coordinate VALUES(43,'서울특별시 송파구 거여1동','37.4969643',   '127.1432324');
+INSERT INTO coordinate VALUES(44,'서울특별시 송파구 거여2동 ','37.4935803',   '127.1468764');
+INSERT INTO coordinate VALUES(45 ,'서울특별시 송파구 마천1동','37.4960195',  '127.1499724');
+INSERT INTO coordinate VALUES(46 ,'서울특별시 송파구 마천2동','37.4968477',  '127.1485193');
+INSERT INTO coordinate VALUES(47 ,' 서울특별시 송파구 위례동','37.4811656',  '127.1439378');
+INSERT INTO Coordinate VALUES(48 ,' 서울특별시 강동구 암사1동','37.551508','  127.132663');
+INSERT INTO Coordinate VALUES( 49,' 서울특별시 강동구 암사2동','37.5517481','  127.1272074');
+INSERT INTO Coordinate VALUES( 50,'서울특별시 강동구 암사3동','37.5549912','  127.1408249');
+INSERT INTO Coordinate VALUES( 51 ,'서울특별시 강동구 고덕1동','37.5572593', '127.1515382');
+INSERT INTO Coordinate VALUES( 52,'서울특별시 강동구 고덕2동','37.5605',     '127.16435 ');
+INSERT INTO Coordinate VALUES( 53,'서울특별시 강동구 강일동','37.5649783',  '127.173909 ');
+INSERT INTO Coordinate VALUES( 54,'서울특별시 강동구 명일1동','37.5512453',  '127.1443656');
+INSERT INTO Coordinate VALUES( 55 ,'서울특별시 강동구 명일2동','37.546366',  '127.1513427');
+INSERT INTO Coordinate VALUES( 56 ,'서울특별시 강동구 천호1동','37.5450159', '127.1368066');
+INSERT INTO Coordinate VALUES( 57 ,'서울특별시 강동구 천호2동','37.5435257', '127.1254351');
+INSERT INTO Coordinate VALUES( 58,'서울특별시 강동구 천호3동','37.5361455',  '127.1332269');
+INSERT INTO Coordinate VALUES( 59,'서울특별시 강동구 길동','37.5345598',  '127.1426791');
+INSERT INTO Coordinate VALUES( 60 ,'서울특별시 강동구 상일1동','37.5506614', '127.1649058');
+INSERT INTO Coordinate VALUES( 61,'서울특별시 강동구 상일2동','37.5499518',  '127.1758801');
+INSERT INTO Coordinate VALUES( 62,' 서울특별시 강동구 성내1동','37.5304417',  '127.122425');
+INSERT INTO Coordinate VALUES( 63,' 서울특별시 강동구 성내2동','37.532425',  '127.129563');
+INSERT INTO Coordinate VALUES( 64,' 서울특별시 강동구 둔촌1동','37.5333656','  127.1419851');
+INSERT INTO Coordinate VALUES( 65 ,'서울특별시 강동구 둔촌2동','37.5332885',' 127.1419221');

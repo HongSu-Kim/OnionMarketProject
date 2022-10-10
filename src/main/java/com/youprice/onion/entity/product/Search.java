@@ -16,13 +16,13 @@ public class Search {
 
     private String searchName;//키워드명
 
-    private int count; //검색수
+    private int searchCount; //검색수
 
 
     public Search SearchCreate(SearchCreateDTO searchCreateDto){
 
     this.searchName = searchCreateDto.getSearchName();
-    this.count = 1;
+    this.searchCount = 1;
 
     return this;
     }

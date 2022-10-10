@@ -15,17 +15,11 @@ public interface ProductImageRepository extends JpaRepository<ProductImage, Long
     public class ProductImageManager{
 
         private final EntityManager em;
-
+        //이미지로 상품 조회(변경 예정)
         public List<ProductImage> findByProduct_ProductId(Long id) {
             return em.createQuery("select i from ProductImage i join i.product p where p.id=:id", ProductImage.class)
                     .setParameter("id",id).getResultList();
         }
-
-//        public List<ProductImage> findAllImg(Long id) {
-//
-//            return em.createQuery("select i from ProductImage i join i.product p where p.id=:id", ProductImage.class)
-//                    .setParameter("id", id).getResultList();
-//        }
     }
 
 
