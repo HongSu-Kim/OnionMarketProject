@@ -24,8 +24,8 @@ public class Delivery {
     private String request;//요청사항
     private int deliveryCost;//배송비
 
-    public Delivery(Order order, String postcode, String address, String detailAddress, String extraAddress, String request, int deliveryCost) {
-        this.order = order;
+    public Delivery(Long orderId, String postcode, String address, String detailAddress, String extraAddress, String request, int deliveryCost) {
+        this.id = orderId;
         this.address = new Address(postcode, address, detailAddress, extraAddress);
         this.request = request;
         this.deliveryCost = deliveryCost;
