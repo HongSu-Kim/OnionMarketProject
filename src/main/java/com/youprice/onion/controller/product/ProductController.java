@@ -3,6 +3,7 @@ package com.youprice.onion.controller.product;
 import com.youprice.onion.dto.product.ProductDTO;
 import com.youprice.onion.dto.product.ProductImageDTO;
 import com.youprice.onion.entity.product.Product;
+import com.youprice.onion.service.product.ProductImageService;
 import com.youprice.onion.service.product.ProductService;
 import com.youprice.onion.service.product.impl.ProductServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import java.util.List;
 @RequestMapping("product")
 public class ProductController {
     private final ProductService productService;
+    private final ProductImageService productImageService;
 
     @GetMapping("add")//상픔 등록 주소
     public String add() {
@@ -29,8 +31,9 @@ public class ProductController {
     @PostMapping(value = "/add")//실제 상품 등록 주소
     public String addProduct(Model model, ProductDTO productDTO, ProductImageDTO productImageDTO, MultipartFile file) throws Exception{
 
-        Long productId = productService.createProductDTO(productDTO, productImageDTO, file);
-        System.out.println("productId = " + productId);
+        Long productId = productService.createProductDTO(productDTO);
+
+        productImageService.createProductImageDTO(productImageDTO,file,productId);
 
         model.addAttribute("productId",productId);
 
