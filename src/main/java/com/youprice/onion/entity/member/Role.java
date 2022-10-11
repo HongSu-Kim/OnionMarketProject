@@ -2,7 +2,6 @@ package com.youprice.onion.entity.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @AllArgsConstructor
 @Getter

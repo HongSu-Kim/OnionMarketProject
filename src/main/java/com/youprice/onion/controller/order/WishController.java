@@ -36,16 +36,21 @@ public class WishController {
     // 찜 추가
     @GetMapping("addWish")
     public String addWish(Long productId) {
+
 //		Member loginMember = (Member) httpSession.getAttribute("loginMember");
 
-		wishService.addWish(1L, 1L);//--
 //		wishService.addWish(loginMember.getId(), productId);
+		wishService.addWish(1L, 1L);//--
+
         return "redirect:/wish/wishList";
     }
 
     // 찜 삭제
     @PostMapping("removeWish")
-    public String removeWish() {
+    public String removeWish(Long wishId) {
+
+		wishService.removeWish(wishId);
+
         return "redirect:/wish/wishList";
     }
 

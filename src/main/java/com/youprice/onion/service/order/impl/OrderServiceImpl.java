@@ -2,8 +2,6 @@ package com.youprice.onion.service.order.impl;
 
 import com.youprice.onion.dto.order.OrderAddDTO;
 import com.youprice.onion.dto.order.OrderDTO;
-import com.youprice.onion.dto.order.OrderDeliveryDTO;
-import com.youprice.onion.dto.order.OrderProductDTO;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.order.Delivery;
 import com.youprice.onion.entity.order.Order;
@@ -20,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -36,8 +33,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public OrderDTO getOrderDTO(Long orderId) {
-		Optional<Order> optional = orderRepository.findById(orderId);
-		return optional.isPresent() ? new OrderDTO(optional.get()) : null;
+		return orderRepository.findById(orderId).map(OrderDTO::new).orElse(null);
 	}
 
 	// 주문 완료
@@ -65,7 +61,7 @@ public class OrderServiceImpl implements OrderService {
 	public String getOrderNum() {
 
 		LocalDateTime now = LocalDateTime.now();
-		String orderNum = null;
+		String orderNum;
 
 		do {
 			orderNum = now.format(DateTimeFormatter.BASIC_ISO_DATE).substring(2)
@@ -96,24 +92,17 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public List<OrderProductDTO> getBuyList(Long memberId) {
+	public List<OrderDTO> getBuyList(Long memberId) {
 		return orderRepository.findAllByMemberId(memberId)
-				.stream().map(order -> new OrderProductDTO(order))
+				.stream().map(OrderDTO::new)
 				.collect(Collectors.toList());
 	}
 
 	@Override
-	public List<OrderProductDTO> getSellList(Long memberId) {
+	public List<OrderDTO> getSellList(Long memberId) {
 		return orderRepository.findAllByProductMemberId(memberId)
-				.stream().map(order -> new OrderProductDTO(order))
+				.stream().map(OrderDTO::new)
 				.collect(Collectors.toList());
-	}
-
-	// order + delivery
-	@Override
-	public OrderDeliveryDTO getOrderDeliveryDTO(Long orderId) {
-		Optional<Order> optional = orderRepository.findById(orderId);
-		return optional.isPresent() ? new OrderDeliveryDTO(optional.get()) : null;
 	}
 
 }
