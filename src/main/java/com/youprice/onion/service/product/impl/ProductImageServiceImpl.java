@@ -21,10 +21,9 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 public class ProductImageServiceImpl implements ProductImageService {
 
-    @Autowired
-    ProductService productService;
     private final ProductImageRepository productImageRepository;
     private final ProductImageRepository.ProductImageManager productImageManager;
+
 
     @Override
     @Transactional
@@ -42,9 +41,10 @@ public class ProductImageServiceImpl implements ProductImageService {
 
         ProductImage productImage = new ProductImage();
 
-        Product product = productService.findOne(id);
 
-        productImage.createProductImage(productImageDTO,product,fileName);
+        //Product product = productService.findOne(id);
+
+        //productImage.createProductImage(productImageDTO,product,fileName);
 
         productImageRepository.save(productImage);
     }
