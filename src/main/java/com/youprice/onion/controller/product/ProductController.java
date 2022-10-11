@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -33,7 +34,7 @@ public class ProductController {
 
         Long productId = productService.createProductDTO(productDTO);
 
-        productImageService.createProductImageDTO(productImageDTO,file,productId);
+        //productImageService.createProductImageDTO(productImageDTO,file,productId);
 
         model.addAttribute("productId",productId);
 
@@ -43,7 +44,7 @@ public class ProductController {
     @GetMapping("productdetail")//상품 상세페이지 주소
     public String detail(Model model, Long productId) throws Exception{
 
-        Product product = productService.findOne(productId);
+        Product product = productService.findById(productId).orElse(null);
 
         model.addAttribute("dto",product);
 

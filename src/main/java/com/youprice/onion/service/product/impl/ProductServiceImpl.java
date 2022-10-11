@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -26,9 +27,6 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final ProductRepository.ProductManager productManager;
-
-    private final ProductImageServiceImpl productImageServiceImpl;
-    private final ModelMapper modelMapper;
 
     //상품 등록
     @Override
@@ -47,12 +45,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     //상품 하나에 대한 데이터
-    public Product findOne(Long id) {
-        return productManager.findOne(id);
+    @Override
+    public Optional<Product> findById(Long id) {
+        return productRepository.findById(id);
     }
 
-//    @Override
-//    public ProductDTO getProductDTO(Long productId) {
-//        return modelMapper.map(productRepository.findById(productId).orElse(null), ProductDTO.class);
-//    }
 }
