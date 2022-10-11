@@ -10,6 +10,7 @@
     <title>공지사항 작성 페이지</title>
 </head>
 <body>
+<form method="post" action="/notice/created" modelAttribute="noticeDTO">
     <div>
         <h1>공지사항 작성</h1>
     </div>
@@ -36,5 +37,10 @@
 
     </div>
 
+    <div>
+        <button type="submit">등록하기</button>
+        <button type="button" onclick="location.href='/notice/list'">취소</button>
+    </div>
+</form>
 </body>
 </html>

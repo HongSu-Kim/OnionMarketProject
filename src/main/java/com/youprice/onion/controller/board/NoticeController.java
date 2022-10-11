@@ -4,6 +4,7 @@ import com.youprice.onion.service.board.NoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -18,5 +19,19 @@ public class NoticeController {
 
         return "board/noticeForm";
     }
+
+    @PostMapping("/created")
+    public String createNotice(){
+
+        return "redirect:/notice/list";
+    }
+
+    @GetMapping("/list")
+    public String lists(){
+
+        return "board/noticeList";
+    }
+
+
 
 }
