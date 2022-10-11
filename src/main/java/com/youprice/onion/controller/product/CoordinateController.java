@@ -2,6 +2,7 @@ package com.youprice.onion.controller.product;
 
 import com.youprice.onion.dto.product.CoordinateCreateDTO;
 import com.youprice.onion.dto.product.TownFindDTO;
+import com.youprice.onion.service.product.CoordinateService;
 import com.youprice.onion.service.product.impl.CoordinateServiceImpl;
 import com.youprice.onion.service.product.impl.TownServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -18,23 +19,20 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("coordinate")
 public class CoordinateController {
 
-    private  final CoordinateServiceImpl coordinateServiceImple;
-
-    private  final TownServiceImpl townServiceImpl;
+    private final CoordinateService coordinateService;
 
 
     @GetMapping("coordinate")
-    public String createMap(){
+    public String createMap() {
 
         return "product/coordinate";
 
     }
 
     @PostMapping("coordinate")
-    public String createMap(CoordinateCreateDTO coordinateCreatedto, Model model, HttpSession session){
-    TownFindDTO townFinddto = new TownFindDTO();
-        coordinateServiceImple.coordinateCreate(coordinateCreatedto);
-
+    public String createMap(CoordinateCreateDTO coordinateCreatedto, Model model, HttpSession session) {
+        TownFindDTO townFinddto = new TownFindDTO();
+        coordinateService.coordinateCreate(coordinateCreatedto);
 
 
         return "redirect:/coordinate/coordinate";

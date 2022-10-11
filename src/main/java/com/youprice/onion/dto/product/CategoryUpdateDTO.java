@@ -10,7 +10,7 @@ import lombok.Setter;
 public class CategoryUpdateDTO {
 
 
-    private Long category_id; //카테고리번호 PK
+    private Long id; //카테고리번호 PK
 
     private String categoryName; //상위카테고리이름
 

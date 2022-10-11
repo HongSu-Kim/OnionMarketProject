@@ -93,7 +93,7 @@
 <br/><br/><br/><br/>
 <form:form action="" method="post">
 
-    <input type="hidden" name="userId" value="asd">
+    <input type="hidden" name="userId" value="asd">  <%--아이디 일시적으로 asd로설정--%>
 <input type="text" name="keywordName" value="" />
  <input type="submit" value="키워드등록하기" />
 </form:form>

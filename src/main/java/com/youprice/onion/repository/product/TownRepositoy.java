@@ -12,20 +12,13 @@ import java.util.List;
 @Repository
 public interface TownRepositoy extends JpaRepository<Town,Long> {
 
-
-
     List<Town> findAll();
-
-
-
 
     @Repository
     @RequiredArgsConstructor
 
 
     public class Townrepositoy {
-
-
 
 
         private final EntityManager em;

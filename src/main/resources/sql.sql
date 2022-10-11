@@ -15,6 +15,7 @@ DROP TABLE notice PURGE;
 DROP TABLE answer PURGE;
 DROP TABLE inquiry PURGE;
 DROP TABLE review PURGE;
+DROP TABLE review_image PURGE;
 DROP TABLE complain PURGE;
 
 DROP TABLE delivery PURGE;
@@ -288,23 +289,31 @@ CREATE TABLE complain (
 CREATE TABLE review (
 	review_id	        NUMBER	        NOT NULL,
 	order_id	        NUMBER	        NOT NULL,
-	review_type	        VARCHAR2(10)	NOT NULL,
 	review_content	    VARCHAR2(255)	NOT NULL,
 	grade	            NUMBER          NOT NULL,
 	review_date	        DATE            DEFAULT SYSDATE,
-	review_image_name   VARCHAR2(50)	NULL,
 	CONSTRAINT PK_REVIEW PRIMARY KEY (review_id),
 	CONSTRAINT FK_REVIEW_ORDER_ID FOREIGN KEY (order_id) REFERENCES orders(order_id)
+);
+CREATE TABLE review_image(
+    review_image_id     NUMBER          Not NULL,
+    review_id           NUMBER          NOT NULL,
+    original_file_name  VARCHAR2(30)    NOT NULL,
+    store_file_name     varchar2(100)   NOT NULL,
+    CONSTRAINT PK_REVIEW_IMAGE PRIMARY KEY (review_image_id),
+    CONSTRAINT FK_REVIEW_IMAGE_REVIEW_ID FOREIGN KEY (review_id) REFERENCES review(review_id)
 );
 
 CREATE TABLE inquiry (
 	inquiry_id	    	NUMBER	        NOT NULL,
 	member_id	    	NUMBER	        NOT NULL,
-	inquiry_type        VARCHAR2(20)	NOT NULL,
-	inquiry_subject     VARCHAR2(30)	NOT NULL,
+	inquiry_type        VARCHAR2(30)	NOT NULL,
+	detail_type         VARCHAR2(30)	NOT NULL,
+	inquiry_subject     VARCHAR2(50)	NOT NULL,
 	inquiry_content     VARCHAR2(255)	NOT NULL,
 	inquiry_date    	DATE            DEFAULT SYSDATE,
 	status          	VARCHAR2(10)	DEFAULT 'wait',
+	secret              char(1)         CONSTRAINT review_image_secret_CK check ( secret = '0' or secret = '1'),
 	CONSTRAINT PK_INQUIRY PRIMARY KEY (inquiry_id),
 	CONSTRAINT FK_INQUIRY_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id)
 );
