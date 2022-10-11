@@ -1,5 +1,7 @@
 package com.youprice.onion.controller.product;
 
+import com.youprice.onion.dto.product.CoordinateFindDTO;
+import com.youprice.onion.dto.product.TownAddDTO;
 import com.youprice.onion.dto.product.TownFindDTO;
 import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.entity.product.Coordinate;
@@ -37,14 +39,7 @@ public class TownController {
     @GetMapping("town")
     public String find(Model model, TownFindDTO townFinddto) {
 
-        List<Category> finduniform = categoryService.finduniform();
-        List<Category> footballboot = categoryService.footballboot();
 
-
-        model.addAttribute("finduniform", finduniform);
-        model.addAttribute("footballboot", footballboot);
-
-        //model.addAttribute("town",town);
 
 
         return "product/town";
@@ -54,15 +49,14 @@ public class TownController {
     public String find(Town town, Model model, TownFindDTO townFinddto, @RequestParam("wishtown") String wishtown) {
 
 
-        List<Coordinate> Gangnam = coordinateService.FindGangnam();
-        List<Coordinate> Songpa = coordinateService.FindSongpa();
-        List<Coordinate> Gangdong = coordinateService.FindGangdong();
+        List<CoordinateFindDTO> Gangnam = coordinateService.FindGangnam();
+        List<CoordinateFindDTO> Songpa = coordinateService.FindSongpa();
+        List<CoordinateFindDTO> Gangdong = coordinateService.FindGangdong();
 
 
         model.addAttribute("Gangnam", Gangnam);
         model.addAttribute("Songpa", Songpa);
         model.addAttribute("Gangdong", Gangdong);
-
         model.addAttribute("wishtown", wishtown);
 
 
@@ -70,9 +64,10 @@ public class TownController {
     }
 
     @PostMapping("town")
-    public String towncreate(TownFindDTO townFinddto, @RequestParam("userId") String userId) {
+    public String townAdd(TownAddDTO townAddDTO) {
 
-        townService.townCreate(townFinddto, userId);
+        townAddDTO.setMemberId(1L);
+        townService.townAdd(townAddDTO);
         return "redirect:/town/town";
 
 

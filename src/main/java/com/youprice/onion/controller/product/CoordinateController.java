@@ -1,10 +1,8 @@
 package com.youprice.onion.controller.product;
 
-import com.youprice.onion.dto.product.CoordinateCreateDTO;
+import com.youprice.onion.dto.product.CoordinateAddDTO;
 import com.youprice.onion.dto.product.TownFindDTO;
 import com.youprice.onion.service.product.CoordinateService;
-import com.youprice.onion.service.product.impl.CoordinateServiceImpl;
-import com.youprice.onion.service.product.impl.TownServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,9 +28,9 @@ public class CoordinateController {
     }
 
     @PostMapping("coordinate")
-    public String createMap(CoordinateCreateDTO coordinateCreatedto, Model model, HttpSession session) {
-        TownFindDTO townFinddto = new TownFindDTO();
-        coordinateService.coordinateCreate(coordinateCreatedto);
+    public String createMap(CoordinateAddDTO coordinateAddDTO, Model model) {
+
+        coordinateService.coordinateAdd(coordinateAddDTO);
 
 
         return "redirect:/coordinate/coordinate";

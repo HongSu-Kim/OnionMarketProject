@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class SearchCreateDTO {
+public class SearchAddDTO {
 
 
 

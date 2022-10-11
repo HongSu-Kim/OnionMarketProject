@@ -27,28 +27,14 @@ public interface SearchRepositoy extends JpaRepository<Search,Long> {
         private final EntityManager em;
 
 
-        public List<Search> findSearch() {
-
-            return em.createQuery("select  o from Search o where o.searchName = '유니폼'", Search.class)
-                    .getResultList();
-
-        }
-
 
 @Transactional
-        public int updatecount(String SearchName) {
+        public int updatecount(String SearchName) {  //검색명 입력시 검색수 1씩증가
             return em.createQuery("update Search as m " +
                             "set m.searchCount = m.searchCount+1 where m.searchName = :SearchName")
                     .setParameter("SearchName", SearchName)
 
                     .executeUpdate();
-        }
-
-        public Long Search() {
-
-            return em.createQuery("select count(o) from Search o ", Long.class)
-                    .getSingleResult();
-
         }
 
     }
