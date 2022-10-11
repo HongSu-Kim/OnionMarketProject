@@ -1,6 +1,7 @@
 package com.youprice.onion.repository.product;
 
 
+import com.youprice.onion.dto.product.CategoryFindDTO;
 import com.youprice.onion.dto.product.CategoryUpdateDTO;
 import com.youprice.onion.entity.product.Category;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +21,6 @@ public interface CategoryRepositoy extends JpaRepository<Category, Long> {
     Optional<Category> findByCategoryName(String topcategoryName);
     Optional<Category> findByCategoryNameAndCategory(String topcategoryName,Category category);
 
-    List<Category> findAll();
-
     Category deleteById(CategoryUpdateDTO id);
 
 
@@ -34,7 +33,7 @@ public interface CategoryRepositoy extends JpaRepository<Category, Long> {
 
         private final EntityManager em;
 
-        public List<Category> findCategory() {
+        public List<Category> findTopCategory() { //상위카테고리 조회
 
 
             return em.createQuery("select o from Category o where o.category is null ", Category.class)
@@ -42,66 +41,10 @@ public interface CategoryRepositoy extends JpaRepository<Category, Long> {
 
         }
 
-        public List<Category> findSubcategory() { //하위카테고리조회
+        public List<Category> findSubcategory() { //하위카테고리 조회
 
 
             return em.createQuery("select o from Category o  where o.category is not null ", Category.class)
-                    .getResultList();
-
-        }
-
-
-        public Category findtopcategoryName(String topcategoryName){
-            return em.createQuery("select o from Category o where o.categoryName= : topcategoryName", Category.class)
-                    .setParameter("topcategoryName", topcategoryName)
-                    .getSingleResult();
-        }
-
-        @Transactional
-
-        public void deleteCategory(Long id){
-
-           em.createQuery("delete from Category o where o.id=:id", Category.class)
-                    .setParameter("id", id);
-                   return;
-
-        }
-
-
-
-
-
-        public List<Category> finduniform() {
-
-
-            return em.createQuery("select o from Category o  where o.category='22'", Category.class)
-                    .getResultList();
-
-        }
-
-
-
-        public List<Category> findfootballboot() {
-
-
-            //select m from Member m join fetch m.team
-            return em.createQuery("select o from Category o  where o.category='22' ", Category.class)
-                    .getResultList();
-
-        }
-
-        public List<Category> uniformPARENT_ID() {
-
-
-            return em.createQuery("select o from Category o where o.category = '22' ", Category.class)
-                    .getResultList();
-
-        }
-
-        public List<Category> footballbootPARENT_ID() {
-
-
-            return em.createQuery("select o from Category o  where o.category='' ", Category.class)
                     .getResultList();
 
         }

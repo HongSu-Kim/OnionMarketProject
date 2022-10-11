@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class CoordinateCreateDTO {
+public class CoordinateAddDTO {
 
 
     private Long id; //좌표번호 PK
