@@ -85,8 +85,9 @@ public class Member {
     private List<Wish> wishList = new ArrayList<>(); //찜-회원번호 FK
 
     @Builder
-    public Member(Role role, String userId, String pwd, String name, String nickname, LocalDate birth, String tel, String postcode, String address, String detailAddress, String extraAddress, String email, String memberImageName) {
+    public Member(Long id, Role role, String userId, String pwd, String name, String nickname, LocalDate birth, String tel, String postcode, String address, String detailAddress, String extraAddress, String email, String memberImageName, int cash, int point, int userGrade, int complaintCount) {
 
+        this.id = id;
         this.role = role;
         this.userId = userId;
         this.pwd = pwd;
@@ -97,6 +98,10 @@ public class Member {
         this.address = new Address(postcode, address, detailAddress, extraAddress);
         this.email = email;
         this.memberImageName = memberImageName;
+        this.cash = cash;
+        this.point = point;
+        this.userGrade = userGrade;
+        this.complaintCount = complaintCount;
     }
 
 }

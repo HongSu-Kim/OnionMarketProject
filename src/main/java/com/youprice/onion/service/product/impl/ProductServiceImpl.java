@@ -8,8 +8,10 @@ import com.youprice.onion.repository.product.ProductImageRepository;
 import com.youprice.onion.repository.product.ProductRepository;
 import com.youprice.onion.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -18,6 +20,8 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
+@ToString
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
@@ -28,19 +32,13 @@ public class ProductServiceImpl implements ProductService {
 
     //상품 등록
     @Override
-    public Long createProductDTO(ProductDTO productDTO, ProductImageDTO productImageDTO, MultipartFile file) {
+    @Transactional()
+    public Long createProductDTO(ProductDTO productDTO)throws Exception {
 
         Product product = new Product();
         product.createProduct(productDTO);
 
         return productRepository.save(product).getId();
-//상품 이미지 등록(예정)
-//        ProductImage productImage = new ProductImage();
-//        product = productManager.findByPrice(price);
-//
-//
-//        productImageServiceImpl.createProductImageDTO(productImageDTO, file, product);
-
     }
     //전체 상품 조회
     @Override

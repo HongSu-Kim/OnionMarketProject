@@ -3,12 +3,14 @@ package com.youprice.onion.entity.order;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.product.Product;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Wish {
 
     @Id
@@ -23,5 +25,11 @@ public class Wish {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;//상품번호 FK
+
+
+	public  Wish(Member member, Product product) {
+		this.member = member;
+		this.product = product;
+	}
 
 }

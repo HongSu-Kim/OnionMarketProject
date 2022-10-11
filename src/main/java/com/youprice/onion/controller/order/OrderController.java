@@ -4,6 +4,7 @@ import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.dto.order.OrderAddDTO;
 import com.youprice.onion.dto.order.OrderDTO;
 import com.youprice.onion.dto.order.OrderDeliveryDTO;
+import com.youprice.onion.dto.order.OrderProductDTO;
 import com.youprice.onion.dto.product.ProductDTO;
 import com.youprice.onion.service.member.MemberService;
 import com.youprice.onion.service.order.DeliveryService;
@@ -24,7 +25,6 @@ import java.util.List;
 public class OrderController {
 
 	private final OrderService orderService;
-	private final DeliveryService deliveryService;
 	private final MemberService memberService;
 	private final ProductService productService;
 	private final HttpSession httpSession;
@@ -37,12 +37,12 @@ public class OrderController {
 
 //		MemberDTO memberDTO = memberService.getMemberDTO(loginMember.getId()););
 		MemberDTO memberDTO = memberService.getMemberDTO(1L);
-		ProductDTO productDTO = productService.getProductDTO(productId);
+//		ProductDTO productDTO = productService.getProductDTO(productId);
 
         orderAddDTO.setOrderNum(orderService.getOrderNum());
 
 		model.addAttribute("MemberDTO", memberDTO);
-		model.addAttribute("productDTO", productDTO);
+//		model.addAttribute("productDTO", productDTO);
 		model.addAttribute("orderAddDTO", orderAddDTO);
 		return "order/order";
 	}
@@ -73,7 +73,7 @@ public class OrderController {
 //		Long memberId = loginMember.getId();
 
 //		List<OrderDTO> list = orderService.getBuyList(memberId);
-		List<OrderDTO> list = orderService.getBuyList(1L);//--
+		List<OrderProductDTO> list = orderService.getBuyList(1L);//--
 
 		model.addAttribute("list", list);
 		return "order/buyList";
@@ -97,7 +97,7 @@ public class OrderController {
 //		Long memberId = loginMember.getId();
 
 //		List<OrderDTO> list = orderService.getSellList(memberId);
-		List<OrderDTO> list = orderService.getSellList(1L);//--
+		List<OrderProductDTO> list = orderService.getSellList(1L);//--
 
 		model.addAttribute("list", list);
 		return "order/sellList";
