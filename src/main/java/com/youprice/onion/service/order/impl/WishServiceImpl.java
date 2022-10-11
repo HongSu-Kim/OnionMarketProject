@@ -27,7 +27,7 @@ public class WishServiceImpl implements WishService {
 	@Override
 	public List<WishProductDTO> getWishList(Long memberId) {
 		return wishRepository.findAllByMemberId(memberId)
-				.stream().map(wish -> new WishProductDTO(wish))
+				.stream().map(WishProductDTO::new)
 				.collect(Collectors.toList());
 	}
 
@@ -38,6 +38,11 @@ public class WishServiceImpl implements WishService {
 		Product product = productRepository.findById(productId).orElse(null);
 
 		wishRepository.save(new Wish(member, product));
+	}
+
+	@Override
+	public void removeWish(Long wishId) {
+		wishRepository.deleteById(wishId);
 	}
 
 }
