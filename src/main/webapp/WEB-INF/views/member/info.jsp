@@ -2,27 +2,20 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <c:set var = "cp" value = "<%=request.getContextPath()%>"/>
 <!DOCTYPE html>
 <html>
 <head>
-
-    <title>Login</title>
-
+    <meta charset="UTF-8">
+    <title>내 정보</title>
 </head>
-
 <body>
-
-<h1>로그인</h1>
+<h1>내 정보</h1>
 <hr>
+<span sec:authentication="name"></span> 님 반갑습니다.
+<div sec:authentication="principal.authorities"></div>
 
-<form action="/member/login" method="post">
-
-    <input type="text" name="userId" placeholder="아이디를 입력해 주세요.">
-    <input type="password" name="pwd" placeholder="비밀번호를 입력해 주세요.">
-    <button type="submit">로그인</button>
-</form>
-
+<a href="/member/home">홈으로 가기</a>
 </body>
-
 </html>
