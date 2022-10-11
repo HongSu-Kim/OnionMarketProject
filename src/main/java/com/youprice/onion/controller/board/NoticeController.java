@@ -8,15 +8,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("notice")
+@RequestMapping("/notice")
 public class NoticeController {
 
     private final NoticeService noticeService;
 
-    @GetMapping("/create")
-    public String createForm(){
+    @GetMapping("/created")
+    public String createdForm(){
 
-        return "notice/create";
+        return "board/noticeForm";
     }
 
 }
