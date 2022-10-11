@@ -24,7 +24,7 @@
 		내용: <br/><textarea rows="10" cols="50" name="content">상품설명</textarea><br/>
 		상품가격: <input type="text" name="price"/><br/>
 
-<%--		상품이미지: <input type="file" name="file"/>--%>
+		상품이미지: <input type="file" name="file"/>
 	</div>
 	<div>
 		<input type="submit" value="상품 등록"/>

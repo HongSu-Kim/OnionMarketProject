@@ -21,10 +21,12 @@
 	내용: <br/><textarea rows="10" cols="50">${dto.content}</textarea><br/>
 	상품가격: ${dto.price}<br/>
 	등록일: ${dto.uploadDate} <br/>
-	<%--	이미지: ${id.file}--%>
 	<hr/>
 </div>
+<div>
+	이미지: <img src="${productImageDTO.file}"/>
 
+</div>
 <form action="/product/productmain" method="get">
 	<input type="submit" value="목록 보기"/>
 </form>
