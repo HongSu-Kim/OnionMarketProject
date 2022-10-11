@@ -10,6 +10,6 @@
     <title>Onion Market</title>
 </head>
 <body>
-
+공지사항 리스트입니다!
 </body>
 </html>
