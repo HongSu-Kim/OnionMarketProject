@@ -59,9 +59,9 @@ public class ProductServiceImpl implements ProductService {
 
         String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
 
-        UUID uuid = UUID.randomUUID();
-
-        String productImageName = uuid + "_" + file.getOriginalFilename();
+//        UUID uuid = UUID.randomUUID();
+//        uuid + "_" +
+        String productImageName = file.getOriginalFilename();
 
         File saveFile = new File(projectPath, productImageName);
 
