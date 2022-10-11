@@ -3,6 +3,8 @@ package com.youprice.onion.controller.product;
 import com.youprice.onion.dto.product.ProductDTO;
 import com.youprice.onion.dto.product.ProductImageDTO;
 import com.youprice.onion.entity.product.Product;
+import com.youprice.onion.entity.product.ProductImage;
+import com.youprice.onion.service.product.ProductImageService;
 import com.youprice.onion.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,7 @@ import java.util.List;
 @RequestMapping("product")
 public class ProductController {
     private final ProductService productService;
+    private final ProductImageService productImageService;
 
     @GetMapping("add")//상픔 등록 주소
     public String add() {
@@ -29,9 +32,7 @@ public class ProductController {
 
         Long productId = productService.addProduct(productDTO);
 
-        System.out.println("productId = " + productId);
-
-        //productService.addProductImage(productImageDTO,file,productId);
+        productService.addProductImage(productImageDTO,file,productId);
 
         model.addAttribute("productId",productId);
 
@@ -42,8 +43,10 @@ public class ProductController {
     public String detail(Model model, Long productId) throws Exception{
 
         Product product = productService.findById(productId).orElse(null);
+        List<ProductImage> productImageList = productImageService.findByProduct_ProductId(productId);
 
         model.addAttribute("dto",product);
+        model.addAttribute("productImageDTO",productImageList);
 
         return "product/productdetail";
     }
