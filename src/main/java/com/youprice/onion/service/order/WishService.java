@@ -10,4 +10,6 @@ public interface WishService {
 
 	void addWish(Long memberId, Long productId);
 
+	void removeWish(Long wishId);
+
 }

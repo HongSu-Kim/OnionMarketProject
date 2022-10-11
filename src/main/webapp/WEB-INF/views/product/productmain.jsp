@@ -23,7 +23,7 @@
 	</c:forEach>
 </div>
 
-<form action="/add">
+<form action="/product/add">
 	<input type="submit" value=" 상품 등록하기 " class="btn2"/>
 </form>
 <form action="/login">

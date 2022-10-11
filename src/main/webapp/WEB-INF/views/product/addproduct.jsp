@@ -17,7 +17,7 @@
 
 <h1>상품 등록하기</h1>
 
-<form action="/add" method="post" enctype="multipart/form-data">
+<form action="/product/add" method="post" enctype="multipart/form-data">
 	<div class="add">
 		상품명: <input type="text" name="productName"/><br/>
 		제목: <input type="text" name="subject"/><br/>
@@ -31,7 +31,7 @@
 	</div>
 </form>
 
-<form action="/" method="get">
+<form action="/product/productmain" method="get">
 	<input type="submit" value="뒤로가기"/>
 </form>
 
