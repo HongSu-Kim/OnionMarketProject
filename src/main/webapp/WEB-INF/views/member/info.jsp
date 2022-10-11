@@ -14,6 +14,7 @@
 <h1>내 정보</h1>
 <hr>
 <span sec:authentication="name"></span> 님 반갑습니다.
+<%--<span sec:authentication="name"></span> 님 반갑습니다.--%>
 <div sec:authentication="principal.authorities"></div>
 
 <a href="/member/home">홈으로 가기</a>
