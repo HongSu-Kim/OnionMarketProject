@@ -10,10 +10,8 @@ import java.util.Optional;
 
 public interface ProductService {
 
-    Long addProduct(ProductDTO productDTO) throws  Exception;
+    Long addProduct(ProductDTO productDTO,ProductImageDTO productImageDTO, MultipartFile file) throws  Exception;
     List<ProductDTO> getProductList();
     Optional<Product> findById(Long id);
-
-    void addProductImage(ProductImageDTO productImageDTO, MultipartFile file, Long id)throws Exception;
 
 }

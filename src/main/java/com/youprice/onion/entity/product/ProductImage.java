@@ -21,7 +21,7 @@ public class ProductImage {
 
         public ProductImage addProductImage(ProductImageDTO productImageDTO, Product product, String productImageName) {
 
-                this.id = productImageDTO.getId();
+                this.id = productImageDTO.getProductImageId();
                 this.product = product;
                 this.productImageName = productImageName;
 
