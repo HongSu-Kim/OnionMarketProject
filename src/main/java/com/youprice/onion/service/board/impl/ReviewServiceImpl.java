@@ -5,9 +5,11 @@ import com.youprice.onion.dto.board.ReviewFormDTO;
 import com.youprice.onion.entity.board.Review;
 import com.youprice.onion.entity.board.ReviewImage;
 import com.youprice.onion.entity.order.Order;
+import com.youprice.onion.entity.product.Product;
 import com.youprice.onion.repository.board.ReviewImageRepository;
 import com.youprice.onion.repository.board.ReviewRepository;
 import com.youprice.onion.repository.order.OrderRepository;
+import com.youprice.onion.repository.product.ProductRepository;
 import com.youprice.onion.service.board.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
     private final ReviewImageRepository reviewImageRepository;
 
     public ReviewDTO getReviewDTO(Long reviewId){
@@ -34,8 +37,9 @@ public class ReviewServiceImpl implements ReviewService {
     public Long saveReview(ReviewFormDTO form, List<MultipartFile> reviewImageName) throws IOException {
         //Order order = orderRepository.findById(form.getOrderId()).orElse(null);
         Order order = orderRepository.findById(1L).orElse(null);
+        Long sellerId = findSellerId(1L);
 
-        Review review = new Review(order, form.getReviewContent(), form.getGrade());
+        Review review = new Review(order, form.getReviewContent(), form.getGrade(),sellerId);
         Review save = reviewRepository.save(review);
         Long reviewId = save.getId();
         List<ReviewImage> list = storeImages(reviewId, reviewImageName);
@@ -43,6 +47,11 @@ public class ReviewServiceImpl implements ReviewService {
             reviewImageRepository.save(reviewImage);
         }
         return reviewId;
+    }
+    public Long findSellerId(Long buyerId){
+        Order order = orderRepository.findById(buyerId).orElse(null);
+        Product product = productRepository.findById(order.getProduct().getId()).orElse(null);
+        return product.getMember().getId();
     }
 
     public ReviewDTO findByUserId(String userId){
@@ -55,8 +64,12 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewRepository.findById(id).map(ReviewDTO::new).orElse(null);
     }
 
-    public List<ReviewDTO> findAll(){
-        return reviewRepository.findAll().stream().map(ReviewDTO::new).collect(Collectors.toList());
+    /* 특정 회원의 목록
+    public List<ReviewDTO> userReviewList(Long buyerId, Long reviewId){
+        
+    }*/
+    public List<ReviewDTO> findAllReview(){
+       return reviewRepository.findAll().stream().map(ReviewDTO::new).collect(Collectors.toList());
     }
 
     //=======================================================================================
@@ -74,6 +87,10 @@ public class ReviewServiceImpl implements ReviewService {
         }
         return storeFileList;
     }
+    public String filePath(){
+        String filePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images";
+        return filePath;
+    }
     public String storePath(MultipartFile multipartFile) throws IOException {
 
         String filePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images";
@@ -85,10 +102,8 @@ public class ReviewServiceImpl implements ReviewService {
 
         // 확장자만 추출
         String ext = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
-
         String uuid = UUID.randomUUID().toString();
         String storeFileName = uuid + "." + ext;
-
         multipartFile.transferTo(new File(filePath, storeFileName));
 
         return storeFileName;
