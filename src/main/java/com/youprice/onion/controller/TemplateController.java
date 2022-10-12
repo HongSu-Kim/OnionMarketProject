@@ -8,6 +8,6 @@ public class TemplateController {
 
 	@GetMapping("test")
 	public String test() {
-		return "layout/shop-details";
+		return "layout/shoping-cart";
 	}
 }
