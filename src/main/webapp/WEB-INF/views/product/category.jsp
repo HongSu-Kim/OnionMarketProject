@@ -23,11 +23,6 @@
 <body>
 
 
-<br/>
-<br/>
-<br/>
-
-
 <nav class="navbar navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="/category/category"> ${userId} 카테고리 설정 하세요<br/> <br/></a>
@@ -60,11 +55,11 @@
                         </a>
 
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            <c:forEach var="finduniform" items="${finduniform}">
+<%--                            <c:forEach var="finduniform" items="${finduniform}">--%>
+<%--                                ${finduniform.categoryName}--%>
+<%--                            </c:forEach>--%>
+                                <li><a class="dropdown-item" href="#"> </a></li>
 
-
-                                <li><a class="dropdown-item" href="#"> ${finduniform.categoryName}</a></li>
-                            </c:forEach>
                         </ul>
 
 
@@ -78,11 +73,12 @@
                         </a>
 
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            <c:forEach var="footballboot" items="${footballboot}">
+<%--                            <c:forEach var="footballboot" items="${footballboot}">--%>
 
+<%--                                    ${footballboot.categoryName}--%>
+<%--                                </c:forEach>--%>
+                            <li><a class="dropdown-item" href="#"></a></li>
 
-                            <li><a class="dropdown-item" href="#"> ${footballboot.categoryName}</a></li>
-                            </c:forEach>
                             <form class="d-flex" role="search">
                                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                                 <button class="btn btn-success" type="submit">Search</button>
@@ -91,18 +87,35 @@
         </div>
     </div>
 </nav>
-<br/><br/><br/>
+<br/>
 <h1>카테고리 추가하기</h1>
+
+<strong>현재 상위카데고리</strong>
+<c:forEach var="category" items="${category}">
+
+  [${category.categoryName}]
+
+</c:forEach>
 
 <form:form action="" method="post">
 
-    부모카테고리번호: <input type="text" name="category"/>
-    카테고리 이름: <input type="text" name="categoryName"/>
+    <br/>
+
+    -------------------------------------------------------------------------<br/>
+    상위카테고리 이름: <input type="text" name="topcategoryName"/>
+     <input type="hidden" name="categoryName"/>
+    <input type="submit" value="상위카테고리 추가"/>
+    <br/><br/>
+</form:form>
+    -------------------------------------------------------------------------<br/>
+<form:form action="" method="post">
+    상위카테고리 이름: <input type="text" name="topcategoryName"/><br/>
+    하위카테고리 이름: <input type="text" name="categoryName"/>
 
 
-    <input type="submit" value="추가하기"/>
+    <input type="submit" value="하위카테고리 추가"/><br/>
 
-
+    -------------------------------------------------------------------------
 </form:form>
 
 <form:form action="categoryupdate" method="get">

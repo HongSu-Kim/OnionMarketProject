@@ -8,53 +8,71 @@ import com.youprice.onion.repository.product.ProductImageRepository;
 import com.youprice.onion.repository.product.ProductRepository;
 import com.youprice.onion.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
+import lombok.ToString;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
+@ToString
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final ProductRepository.ProductManager productManager;
-
-    private final ProductImageServiceImpl productImageServiceImpl;
-    private final ModelMapper modelMapper;
+    private final ProductImageRepository productImageRepository;
 
     //상품 등록
     @Override
-    public Long createProductDTO(ProductDTO productDTO, ProductImageDTO productImageDTO, MultipartFile file) {
+    @Transactional
+    public Long addProduct(ProductDTO productDTO) {
 
         Product product = new Product();
         product.createProduct(productDTO);
 
         return productRepository.save(product).getId();
-//상품 이미지 등록(예정)
-//        ProductImage productImage = new ProductImage();
-//        product = productManager.findByPrice(price);
-//
-//
-//        productImageServiceImpl.createProductImageDTO(productImageDTO, file, product);
-
     }
     //전체 상품 조회
     @Override
-    public List<Product> findAllProductDTO() {
-        return productRepository.findAll();
+    public List<ProductDTO> getProductList() {
+        return productRepository.findAll().stream()
+                .map(product -> new ProductDTO(product))
+                .collect(Collectors.toList());
     }
 
-    //가격에 따른 데이터 조회(변경예정)
-    public Product findByPrice(int price) {
-        return productManager.findByPrice(price);
+    //상품 하나에 대한 데이터
+    @Override
+    public Optional<Product> findById(Long id) {
+        return productRepository.findById(id);
     }
 
     @Override
-    public ProductDTO getProductDTO(Long productId) {
-        return modelMapper.map(productRepository.findById(productId).orElse(null), ProductDTO.class);
+    @Transactional
+    public void addProductImage(ProductImageDTO productImageDTO, MultipartFile file, Long id) throws  Exception{
+
+        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
+
+//        UUID uuid = UUID.randomUUID();
+//        uuid + "_" +
+        String productImageName = file.getOriginalFilename();
+
+        File saveFile = new File(projectPath, productImageName);
+
+        file.transferTo(saveFile);
+
+        ProductImage productImage = new ProductImage();
+
+        Product product = productRepository.findById(id).orElse(null);
+
+        productImage.addProductImage(productImageDTO,product,productImageName);
+
+        productImageRepository.save(productImage);
     }
 }

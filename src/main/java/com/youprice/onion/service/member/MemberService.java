@@ -1,14 +1,15 @@
 package com.youprice.onion.service.member;
 
 import com.youprice.onion.dto.member.MemberDTO;
-import com.youprice.onion.repository.member.MemberRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-public interface MemberService extends UserDetailsService {
+public interface MemberService {
 
-    public String saveMember(MemberDTO memberDTO);
+    public Long saveMember(MemberDTO memberDTO);
+
+    public MemberDTO getMemberDTO(Long memberId);
 
 //    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException;
 /*

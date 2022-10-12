@@ -1,5 +1,6 @@
 package com.youprice.onion.entity.product;
 
+import com.youprice.onion.dto.product.TownAddDTO;
 import com.youprice.onion.dto.product.TownFindDTO;
 import com.youprice.onion.entity.member.Member;
 import lombok.Getter;
@@ -22,9 +23,9 @@ public class Town {
         private Member member;
 
 
-        public Town townCreate(TownFindDTO townFinddto , Coordinate coordinate, Member member){
+        public Town townCreate(TownAddDTO townAddDTO, Coordinate coordinate, Member member){
 
-            this.id = townFinddto.getId();
+            this.id = townAddDTO.getId();
             this.coordinate = coordinate;
             this.member =member;
 

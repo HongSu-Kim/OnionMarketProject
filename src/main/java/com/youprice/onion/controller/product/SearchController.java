@@ -1,12 +1,10 @@
 package com.youprice.onion.controller.product;
 
 
-import com.youprice.onion.dto.product.SearchCreateDTO;
-import com.youprice.onion.entity.product.Category;
-import com.youprice.onion.repository.product.SearchRepositoy;
-import com.youprice.onion.service.member.impl.MemberServiceImpl;
-import com.youprice.onion.service.product.impl.CategoryServiceImpl;
-import com.youprice.onion.service.product.impl.SearchServiceImpl;
+import com.youprice.onion.dto.product.SearchAddDTO;
+import com.youprice.onion.service.member.MemberService;
+import com.youprice.onion.service.product.CategoryService;
+import com.youprice.onion.service.product.SearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("search")
 public class SearchController {
 
-    private  final MemberServiceImpl memberServiceImpl;
-    private  final CategoryServiceImpl categoryServiceImpl;
-    private  final SearchServiceImpl searchServiceImpl;
+    private  final MemberService memberService;
+    private  final CategoryService categoryService;
+    private  final SearchService  searchService;
 
     @GetMapping("search")
     public String SearchCreate(Model model){
@@ -31,16 +29,16 @@ public class SearchController {
     }
 
     @PostMapping("search")
-    public String KeywordCreate(Model model, SearchCreateDTO searchCreateDto, @RequestParam("userId")String userId,
-                                @RequestParam("searchName") String searchName ){
+    public String KeywordCreate(Model model, SearchAddDTO searchAddDTO,
+                                @RequestParam("searchName") String searchName  ){
 
-        if(searchServiceImpl.findBySearchName(searchName)==null || searchServiceImpl.Searchcount()==0) {
+        if(searchService.findBySearchName(searchName)==null) {
 
-            searchServiceImpl.SearchCreate(searchCreateDto,searchName);
+            searchService.SearchCreate(searchAddDTO,searchName);
         }
 
         else
-        searchServiceImpl.searchupdatecount(searchName);
+            searchService.searchupdatecount(searchName);
 
         return "redirect:/search/search";
     }

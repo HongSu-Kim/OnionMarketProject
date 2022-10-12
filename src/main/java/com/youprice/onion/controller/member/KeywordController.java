@@ -1,11 +1,15 @@
 package com.youprice.onion.controller.member;
 
 import com.youprice.onion.dto.member.KeywordCreateDTO;
+import com.youprice.onion.dto.member.KeywordListDTO;
 import com.youprice.onion.entity.member.Keyword;
+import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.repository.member.KeywordRepositoy;
+import com.youprice.onion.service.member.KeywordService;
 import com.youprice.onion.service.member.impl.KeywordServiceImpl;
 import com.youprice.onion.service.member.impl.MemberServiceImpl;
+import com.youprice.onion.service.product.CategoryService;
 import com.youprice.onion.service.product.impl.CategoryServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -23,40 +27,26 @@ import java.util.List;
 public class KeywordController {
 
 
-    private  final MemberServiceImpl memberServiceImpl;
+    //!! 아이디 일시적으로 asd로설정
+    private final CategoryService categoryService;
 
-    private  final CategoryServiceImpl categoryServiceImpl;
-
-    private  final KeywordServiceImpl keywordServiceImpl;
-
-    private  final  KeywordRepositoy.Keywordrepositoy keywordrepositoy;
-    private  final KeywordRepositoy.Keywordrepositoy updatecount;
-    private  final KeywordRepositoy keywordRepositoy;
+    private final KeywordService keywordService;
 
     @GetMapping("keyword")
-    public String KeywordCreate(Model model){
-        List<Category> finduniform = categoryServiceImpl.finduniform();
-        List<Category> footballboot = categoryServiceImpl.footballboot();
+    public String KeywordCreate(Model model) {
 
-        model.addAttribute("finduniform",finduniform);
-        model.addAttribute("footballboot",footballboot);
+
         return "product/keyword";
     }
 
+
     @PostMapping("keyword")
-    public String KeywordCreate(Model model, KeywordCreateDTO keywordCreateDto, @RequestParam("userId")String userId
-    , @RequestParam("keywordName")String keywordName){
+    public String KeywordCreate(Model model, KeywordCreateDTO keywordCreateDto) {
 
 
-        List<Category> finduniform = categoryServiceImpl.finduniform();
-        List<Category> footballboot = categoryServiceImpl.footballboot();
+        keywordCreateDto.setMemberId(1L);
 
-        model.addAttribute("finduniform",finduniform);
-        model.addAttribute("footballboot",footballboot);
-
-
-
-        keywordServiceImpl.KeywordCreate(keywordCreateDto,userId,keywordName);
+        keywordService.KeywordCreate(keywordCreateDto);
 
 
         return "redirect:/keyword/keyword";
@@ -64,10 +54,12 @@ public class KeywordController {
 
 
     @GetMapping("mykeyword")
-    public String KeywordAlarm(Model model,@RequestParam("userId") String userId){
+    public String KeywordAlarm(Model model) {
 
-        keywordServiceImpl.KeywordList(model,userId);
 
+       List<KeywordListDTO> MykeywordList = keywordService.KeywordList(1L);
+
+       model.addAttribute("MykeywordList",MykeywordList);
         return "product/mykeyword";
     }
 

@@ -1,6 +1,8 @@
 package com.youprice.onion.service.product.impl;
 
-import com.youprice.onion.dto.product.CoordinateCreateDTO;
+import com.youprice.onion.dto.member.KeywordListDTO;
+import com.youprice.onion.dto.product.CoordinateAddDTO;
+import com.youprice.onion.dto.product.TownAddDTO;
 import com.youprice.onion.dto.product.TownFindDTO;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.product.Coordinate;
@@ -13,47 +15,37 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class TownServiceImpl implements TownService {
 
  private final TownRepositoy townRepositoy;
- private final  TownRepositoy.Townrepositoy townrepositoy;
-
  private  final CoordinateRepositoy coordinateRepositoy;
  private  final MemberRepository memberRepositoy;
- private  final  MemberRepository.Memberrepositoy memberrepositoy;
 
- public void townCreate(TownFindDTO townFinddto, String userId){
 
+ @Override
+ public void townAdd(TownAddDTO townAddDTO) {
   Town town = new Town();
-  Coordinate coordinate = new Coordinate();
-  Member member = new Member();
-CoordinateCreateDTO coordinateCreatedto = new CoordinateCreateDTO();
 
-coordinate = townFinddto.getCoordinate();
+  Member member = memberRepositoy.findById(townAddDTO.getMemberId()).orElse(null);
+  Coordinate coordinate = coordinateRepositoy.findById(townAddDTO.getCoordinateId()).orElse(null);
 
-member = memberrepositoy.findmember(userId);
-
- town.townCreate(townFinddto,coordinate,member);
+  town.townCreate(townAddDTO,coordinate,member);
 
   townRepositoy.save(town);
-
-
  }
 
+// @Override
+// public List<TownFindDTO> townList(Long memberId) {
+//
+//  return townRepositoy.findAllByMemberId(memberId)
+//          .stream().map(town -> new TownFindDTO(town))
+//          .collect(Collectors.toList());
+// }
 
-
- public List<Town> townfind(){
-
-
-
-
-return  townrepositoy.findAll();
-
-
- }
 
 
 

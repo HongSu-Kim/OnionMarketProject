@@ -1,16 +1,13 @@
 package com.youprice.onion.entity.member;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
+@AllArgsConstructor
 @Getter
 public enum Role {
-    USER("ROLE_USER"),
-    ADMIN("ROLE_ADMIN");
+    ADMIN("ROLE_ADMIN"),
+    USER("ROLE_USER");
 
-    private final String description;
-
-    Role(String description) {
-        this.description = description;
-    }
+    private String value;
 }

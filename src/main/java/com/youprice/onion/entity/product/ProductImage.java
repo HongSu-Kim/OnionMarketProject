@@ -19,11 +19,11 @@ public class ProductImage {
 
         private String productImageName; //이미지파일이름
 
-        public ProductImage createProductImage(ProductImageDTO productImageDTO, Product product) {
+        public ProductImage addProductImage(ProductImageDTO productImageDTO, Product product, String productImageName) {
 
                 this.id = productImageDTO.getId();
                 this.product = product;
-                this.productImageName = productImageDTO.getProductImageName();
+                this.productImageName = productImageName;
 
                 return this;
         }

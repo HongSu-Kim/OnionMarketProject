@@ -1,10 +1,16 @@
 package com.youprice.onion.controller.product;
 
+import com.youprice.onion.dto.product.CoordinateFindDTO;
+import com.youprice.onion.dto.product.TownAddDTO;
 import com.youprice.onion.dto.product.TownFindDTO;
 import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.entity.product.Coordinate;
 import com.youprice.onion.entity.product.Town;
+import com.youprice.onion.service.member.MemberService;
 import com.youprice.onion.service.member.impl.MemberServiceImpl;
+import com.youprice.onion.service.product.CategoryService;
+import com.youprice.onion.service.product.CoordinateService;
+import com.youprice.onion.service.product.TownService;
 import com.youprice.onion.service.product.impl.CategoryServiceImpl;
 import com.youprice.onion.service.product.impl.CoordinateServiceImpl;
 import com.youprice.onion.service.product.impl.TownServiceImpl;
@@ -23,22 +29,16 @@ import java.util.List;
 @RequestMapping("town")
 public class TownController {
 
-    private  final TownServiceImpl townServiceImpl;
-    private  final MemberServiceImpl memberServiceImpl;
-    private  final CategoryServiceImpl categoryServiceImpl;
-    private  final CoordinateServiceImpl coordinateServiceImpl;
+    //!! 아이디 일시적으로 asd로설정
+
+    private final TownService townService;
+    private final MemberService memberService;
+    private final CategoryService categoryService;
+    private final CoordinateService coordinateService;
 
     @GetMapping("town")
-    public String find(Model model , TownFindDTO townFinddto){
+    public String find(Model model, TownFindDTO townFinddto) {
 
-        List<Category> finduniform = categoryServiceImpl.finduniform();
-        List<Category> footballboot = categoryServiceImpl.footballboot();
-
-
-        model.addAttribute("finduniform",finduniform);
-        model.addAttribute("footballboot",footballboot);
-
-        //model.addAttribute("town",town);
 
 
 
@@ -46,28 +46,28 @@ public class TownController {
     }
 
     @PostMapping("townresult")
-    public String find(Town town, Model model, TownFindDTO townFinddto, @RequestParam("wishtown") String wishtown){
+    public String find(Town town, Model model, TownFindDTO townFinddto, @RequestParam("wishtown") String wishtown) {
 
 
-        List<Coordinate> Gangnam = coordinateServiceImpl.FindGangnam();
-        List<Coordinate> Songpa = coordinateServiceImpl.FindSongpa();
-        List<Coordinate> Gangdong = coordinateServiceImpl.FindGangdong();
+        List<CoordinateFindDTO> Gangnam = coordinateService.FindGangnam();
+        List<CoordinateFindDTO> Songpa = coordinateService.FindSongpa();
+        List<CoordinateFindDTO> Gangdong = coordinateService.FindGangdong();
 
 
-        model.addAttribute("Gangnam",Gangnam);
-        model.addAttribute("Songpa",Songpa);
-        model.addAttribute("Gangdong",Gangdong);
-
-        model.addAttribute("wishtown",wishtown);
+        model.addAttribute("Gangnam", Gangnam);
+        model.addAttribute("Songpa", Songpa);
+        model.addAttribute("Gangdong", Gangdong);
+        model.addAttribute("wishtown", wishtown);
 
 
         return "product/townresult";
     }
 
     @PostMapping("town")
-    public String towncreate (TownFindDTO townFinddto, @RequestParam("userId")String userId) {
+    public String townAdd(TownAddDTO townAddDTO) {
 
-        townServiceImpl.townCreate(townFinddto,userId);
+        townAddDTO.setMemberId(1L);
+        townService.townAdd(townAddDTO);
         return "redirect:/town/town";
 
 

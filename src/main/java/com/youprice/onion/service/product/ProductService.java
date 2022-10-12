@@ -6,11 +6,14 @@ import com.youprice.onion.entity.product.Product;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductService {
 
-    Long createProductDTO(ProductDTO productDTO, ProductImageDTO productImageDTO, MultipartFile file);
-    List<Product> findAllProductDTO();
+    Long addProduct(ProductDTO productDTO) throws  Exception;
+    List<ProductDTO> getProductList();
+    Optional<Product> findById(Long id);
 
-    ProductDTO getProductDTO(Long productId);
+    void addProductImage(ProductImageDTO productImageDTO, MultipartFile file, Long id)throws Exception;
+
 }

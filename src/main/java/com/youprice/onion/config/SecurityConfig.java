@@ -1,10 +1,11 @@
 package com.youprice.onion.config;
 
-import com.youprice.onion.service.member.MemberService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.youprice.onion.service.member.impl.UserDetailsServiceImpl;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,49 +14,56 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+@AllArgsConstructor
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private MemberService memberService;
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    //아래 요청은 인증에서 제외
     @Override
     public void configure(WebSecurity web) throws Exception {
+        //static 폴더의 하위 파일 목록은 인증 제외
         web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/lib/**");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
+        http.csrf().disable();
+        //페이지 권한 설정
         http.authorizeRequests()
-                .antMatchers("/user/**").authenticated()
-                .antMatchers("/admin/**").authenticated()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/member/myinfo").hasRole("USER")
                 .antMatchers("/**").permitAll();
 
+        //로그인 설정
         http.formLogin()
                 .loginPage("/member/login")
-                .defaultSuccessUrl("/member/home")
+                .usernameParameter("userId") //parameter명을 userId로 변경
+                .passwordParameter("pwd") //parameter명을 pwd로 변경
+                .defaultSuccessUrl("/member/home") //로그인 성공 시 이동 페이지
                 .permitAll();
 
+        //로그아웃 설정
         http.logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
                 .logoutSuccessUrl("/member/home")
-                .invalidateHttpSession(true);
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID");
 
+        //403 예외처리 핸들링
         http.exceptionHandling()
                 .accessDeniedPage("/member/denied");
     }
 
-    //비밀번호 체크
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(memberService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userDetailsServiceImpl).passwordEncoder(passwordEncoder());
     }
 }

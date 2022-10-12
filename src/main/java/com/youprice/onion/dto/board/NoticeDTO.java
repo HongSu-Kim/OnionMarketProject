@@ -10,6 +10,7 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 @Setter
 public class NoticeDTO {
+
     @NotEmpty(message = "공지의 타입을 지정해주세요.")
     private NoticeType noticeType; //공지타입(notice, qna, event ...)
 

@@ -1,7 +1,7 @@
 package com.youprice.onion.entity.product;
 
 
-import com.youprice.onion.dto.product.CategoryCreateDTO;
+import com.youprice.onion.dto.product.CategoryAddDTO;
 import com.youprice.onion.dto.product.CategoryUpdateDTO;
 import lombok.Getter;
 import javax.persistence.*;
@@ -30,17 +30,23 @@ public class Category {
 
 
 
-    public  Category categoryCreate1(CategoryCreateDTO categoryCreatedto) {
+    public  Category TopcategoryAdd(CategoryAddDTO categoryAddDTO, String topcategoryName) {
+        this.categoryName =topcategoryName; //상위카테고리이름
 
-        this.categoryName = categoryCreatedto.getCategoryName();
-        this.category = categoryCreatedto.getCategory();//하위카테고리이름
+        return this;
+
+    }
+
+    public  Category SubcategoryAdd(CategoryAddDTO categoryAddDTO) {
+          this.categoryName = categoryAddDTO.getCategoryName(); //하위카테고리이름
+          this.category =categoryAddDTO.getCategory();
 
         return this;
 
     }
 
     public  Category categoryUpdate(CategoryUpdateDTO categoryUpdatedto) {
-        this.id = categoryUpdatedto.getCategory_id();
+        this.id = categoryUpdatedto.getId();
         this.categoryName =categoryUpdatedto.getCategoryName();
         this.category = categoryUpdatedto.getCategory();
 
