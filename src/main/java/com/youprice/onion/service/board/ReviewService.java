@@ -17,7 +17,6 @@ public interface ReviewService {
     public ReviewDTO findReviewDTO(Long id);
     //List<ReviewDTO> userReviewList(Long buyerId, Long reviewId);
     List<ReviewDTO> findAllReview();
-//    List<ReviewImageDTO> imageList(Long reviewId);
 
     // 사진
     String filePath();

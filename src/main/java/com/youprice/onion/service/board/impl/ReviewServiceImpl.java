@@ -66,7 +66,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     /* 특정 회원의 목록
     public List<ReviewDTO> userReviewList(Long buyerId, Long reviewId){
-        
+
     }*/
     public List<ReviewDTO> findAllReview(){
        return reviewRepository.findAll().stream().map(ReviewDTO::new).collect(Collectors.toList());
