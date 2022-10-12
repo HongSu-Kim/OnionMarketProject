@@ -38,23 +38,23 @@
 </table><hr/>
 
 
-<form:form method="post" action="/review/created" enctype="multipart/form-data" id="myform">
+<form:form method="post" action="/review/created" enctype="multipart/form-data" id="myform" modelAttribute="reviewFormDTO">
 
     <div align="center">
-    <fieldset>
-        <legend class="text-bold">별점을 선택해주세요</legend>
-        <input type="radio" name="grade" value="5" id="rate1">
-        <label for="rate1">★</label>
-        <input type="radio" name="grade" value="4" id="rate2">
-        <label for="rate2">★</label>
-        <input type="radio" name="grade" value="3" id="rate3">
-        <label for="rate3">★</label>
-        <input type="radio" name="grade" value="2" id="rate4">
-        <label for="rate4">★</label>
-        <input type="radio" name="grade" value="1" id="rate5">
-        <label for="rate5">★</label>
-        <form:errors path="grade" cssClass="field-error"/>
-    </fieldset>
+        <fieldset>
+            <legend class="text-bold">별점을 선택해주세요</legend>
+            <input type="radio" name="grade" value="5" id="rate1">
+            <label for="rate1">★</label>
+            <input type="radio" name="grade" value="4" id="rate2">
+            <label for="rate2">★</label>
+            <input type="radio" name="grade" value="3" id="rate3">
+            <label for="rate3">★</label>
+            <input type="radio" name="grade" value="2" id="rate4">
+            <label for="rate4">★</label>
+            <input type="radio" name="grade" value="1" id="rate5">
+            <label for="rate5">★</label>
+            <form:errors path="grade" cssClass="field-error"/>
+        </fieldset>
     </div><hr/>
 
     <div id="review_check">
@@ -62,35 +62,35 @@
 
         <span id="review_span_2">* 해당하는 항목을 선택해주세요. (최대 3개)</span>
         <ul class="list-group">
-        <li class="list-group-item">
-            <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-            1. 친절하고 매너가 좋아요
-        </li>
-        <li class="list-group-item">
-            <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-            2. 시간 약속을 잘 지켜요
-        </li>
-        <li class="list-group-item">
-            <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-            3. 제가 있는 곳까지 와서 거래했어요
-        </li>
-        <li class="list-group-item">
-            <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-            4. 상품 설명이 자세해요.
-        </li>
-        <li class="list-group-item">
-            <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-            5. 좋은 상품을 저렴하게 판매해요.
-        </li>
-        <li class="list-group-item">
-            <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-            6. 상품 상태가 설명한 것과 같아요.
-        </li>
-    </ul>
+            <li class="list-group-item">
+                <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+                1. 친절하고 매너가 좋아요
+            </li>
+            <li class="list-group-item">
+                <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+                2. 시간 약속을 잘 지켜요
+            </li>
+            <li class="list-group-item">
+                <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+                3. 제가 있는 곳까지 와서 거래했어요
+            </li>
+            <li class="list-group-item">
+                <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+                4. 상품 설명이 자세해요.
+            </li>
+            <li class="list-group-item">
+                <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+                5. 좋은 상품을 저렴하게 판매해요.
+            </li>
+            <li class="list-group-item">
+                <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+                6. 상품 상태가 설명한 것과 같아요.
+            </li>
+        </ul>
     </div><br/>
 
     <div id="review_check">
-        <span id="review_span">* 해당하는 비매너를 선택해주세요</span>
+        <span>* 해당하는 비매너를 선택해주세요</span>
         <ul class="list-group">
             <li class="list-group-item">
                 <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
@@ -117,12 +117,13 @@
             <textarea maxlength="40" rows="1" id="review_textarea" type="text" name="reviewContent"
                       placeholder="후기를 남겨주세요. 포토 후기를 남기면 200포인트 지급!">
             </textarea>
-        <form:errors path="reviewContent" cssClass="field-error"/><br/><br/>
     </div>
+    <form:errors path="reviewContent" cssClass="field-error"/><br/><br/>
 
     <div class="d-grid gap-2 col-9 mx-auto">
         <button type="submit" class="btn btn-success">등록</button>
-        <button class="btn btn-dark">취소</button>
+        <button class="w-100 btn btn-secondary btn-lg"
+                onclick="location.href='/'" type="button">취소</button>
     </div>
 </form:form>
 

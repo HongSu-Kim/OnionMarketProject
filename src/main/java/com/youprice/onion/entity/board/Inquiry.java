@@ -8,7 +8,6 @@ import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -39,13 +38,14 @@ public class Inquiry {
     private Answer answer;
 
     public Inquiry(Member member, String inquiryType, String detailType, String inquirySubject,
-                            String inquiryContent, LocalDate inquiryDate, boolean secret) {
+                   String inquiryContent, String status, boolean secret) {
         this.member = member;
         this.inquiryType = inquiryType;
         this.detailType = detailType;
         this.inquirySubject = inquirySubject;
         this.inquiryContent = inquiryContent;
-        this.inquiryDate = inquiryDate;
+        this.inquiryDate = LocalDate.now();
+        this.status = status;
         this.secret = secret;
     }
 }

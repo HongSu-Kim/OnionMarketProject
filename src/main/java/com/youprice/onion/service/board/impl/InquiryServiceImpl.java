@@ -1,8 +1,11 @@
 package com.youprice.onion.service.board.impl;
 
 import com.youprice.onion.dto.board.InquiryDTO;
+import com.youprice.onion.dto.board.InquiryFormDTO;
 import com.youprice.onion.entity.board.Inquiry;
+import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.repository.board.InquiryRepository;
+import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.service.board.InquiryService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -10,35 +13,29 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class InquiryServiceImpl implements InquiryService {
 
     private final InquiryRepository inquiryRepository;
+    private final MemberRepository memberRepository;
     private final ModelMapper modelMapper;
 
     @Override
-    public void save(Inquiry inquiry) {
+    public void saveInquiry(InquiryFormDTO inquiryFormDTO) {
+        Member member = memberRepository.findById(inquiryFormDTO.getMemberId()).orElse(null);
+        Inquiry inquiry = new Inquiry(member, inquiryFormDTO.getInquiryType(),inquiryFormDTO.getDetailType(),
+                inquiryFormDTO.getInquirySubject(),inquiryFormDTO.getInquiryContent(),
+                inquiryFormDTO.getStatus(),inquiryFormDTO.isSecret());
         inquiryRepository.save(inquiry);
     }
-
     @Override
-    public Inquiry findById(Long id) {
-        Optional<Inquiry> inquiry = inquiryRepository.findById(id);
-
-        if(inquiry.isPresent()){
-            return inquiry.get();
-        } else {
-            throw new IllegalArgumentException();
-        }
+    public InquiryDTO findInquiryDTO(Long id) {
+        return inquiryRepository.findById(id).map(InquiryDTO::new).orElse(null);
     }
     // 수정
-    public void update(InquiryDTO inquiryDTO){
+    public void update(Long id, InquiryFormDTO form){
 
-        Inquiry inquiry = modelMapper.map(inquiryDTO, Inquiry.class);
-        inquiryRepository.save(inquiry);
     }
     // 삭제
     public void delete(InquiryDTO inquiryDTO){
@@ -46,15 +43,26 @@ public class InquiryServiceImpl implements InquiryService {
         inquiryRepository.delete(inquiry);
     }
 
+    // 페이징 리스트
     @Override
-    public Page<Inquiry> findAll(Pageable pageable) {
-        Page<Inquiry> list = inquiryRepository.findAll(pageable);
+    public Page<InquiryDTO> findAll(Pageable pageable) {
+        Page<InquiryDTO> list = inquiryRepository.findAll(pageable).map(InquiryDTO::new);
+        return list;
+    }
+    // 작성자명 검색
+    @Override
+    public Page<InquiryDTO> findByUsernameContaining(String username, Pageable pageable) {
+        Page<InquiryDTO> list = inquiryRepository.
+                findInquiriesByMember_NameContainingOrderById(username,pageable).map(InquiryDTO::new);
+        return list;
+    }
+    // 타입 검색
+    public Page<InquiryDTO> findByTypeContaining(String type,String subject,Pageable pageable) {
+        Page<InquiryDTO> list =
+                inquiryRepository.findInquiriesByInquiryTypeLikeAndInquirySubjectContainingOrderById(subject,type,pageable)
+                        .map(InquiryDTO::new);
         return list;
     }
 
-    @Override
-    public Page<Inquiry> findByUsernameContaining(String username, Pageable pageable) {
-        Page<Inquiry> findInquiry = inquiryRepository.findInquiriesByMember_NameContainingOrderById(username,pageable);
-        return  findInquiry;
-    }
+
 }
