@@ -14,8 +14,8 @@ DROP TABLE notice_image PURGE;
 DROP TABLE notice PURGE;
 DROP TABLE answer PURGE;
 DROP TABLE inquiry PURGE;
-DROP TABLE review PURGE;
 DROP TABLE review_image PURGE;
+DROP TABLE review PURGE;
 DROP TABLE complain PURGE;
 
 DROP TABLE delivery PURGE;
@@ -299,6 +299,7 @@ CREATE TABLE review (
 	review_content	    VARCHAR2(255)	NOT NULL,
 	grade	            NUMBER          NOT NULL,
 	review_date	        DATE            DEFAULT SYSDATE,
+    sales_id            NUMBER          NOT NULL,
 	CONSTRAINT PK_REVIEW PRIMARY KEY (review_id),
 	CONSTRAINT FK_REVIEW_ORDER_ID FOREIGN KEY (order_id) REFERENCES orders(order_id)
 );
