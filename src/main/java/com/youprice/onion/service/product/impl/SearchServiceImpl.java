@@ -1,6 +1,6 @@
 package com.youprice.onion.service.product.impl;
 
-import com.youprice.onion.dto.product.SearchCreateDTO;
+import com.youprice.onion.dto.product.SearchAddDTO;
 import com.youprice.onion.entity.product.Search;
 import com.youprice.onion.repository.product.SearchRepositoy;
 import com.youprice.onion.service.product.SearchService;
@@ -17,26 +17,17 @@ public class SearchServiceImpl implements SearchService {
  private  final SearchRepositoy.Searchrepositoy searchrepositoy;
 
  @Override
- public void SearchCreate(SearchCreateDTO searchCreateDto, String SearchName) {
+ public void SearchCreate(SearchAddDTO searchAddDTO, String SearchName) {
     Search search = new Search();
 
- search.SearchCreate(searchCreateDto);
+ search.SearchAdd(searchAddDTO);
 
 
 
    searchRepositoy.save(search);
  }
 
- @Override
- public Long Searchcount() {
-  Search search = new Search();
-  return searchrepositoy.Search();
- }
 
- @Override
- public List<Search> searchList() {
-  return  searchrepositoy.findSearch();
- }
 
  @Override
  public Search findBySearchName(String searchName) {
@@ -46,7 +37,7 @@ public class SearchServiceImpl implements SearchService {
  @Override
  public int searchupdatecount(String searchName) {
   return searchrepositoy.updatecount(searchName);
- }
+ } //검색시 검색수 증가
 
 
 }
