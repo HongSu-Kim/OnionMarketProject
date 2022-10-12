@@ -39,10 +39,14 @@ public class Notice{
     @OneToMany(mappedBy = "notice")
     private List<NoticeImage> noticeImageList;
 
-    public Notice(Member member, String noticeSubject,
-                  String noticeContent) {
+    public Notice(Member member, String noticeType, String noticeSubject, String noticeContent) {
         this.member = member;
-        this.noticeType = NoticeType.NOTICE;
+        for(NoticeType nt : NoticeType.class.getEnumConstants()){
+            if(nt.name().equals(noticeType)){
+                this.noticeType = nt;
+            }
+        }
+        //this.noticeType = NoticeType.NOTICE;
         this.noticeSubject = noticeSubject;
         this.noticeContent = noticeContent;
         this.noticeDate = LocalDateTime.now();
