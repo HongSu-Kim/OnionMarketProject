@@ -1,8 +1,8 @@
 package com.youprice.onion.controller.board;
 
 import com.youprice.onion.dto.board.InquiryDTO;
-import com.youprice.onion.entity.board.Inquiry;
-import com.youprice.onion.entity.member.Member;
+import com.youprice.onion.dto.board.InquiryFormDTO;
+import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.service.board.InquiryService;
 import com.youprice.onion.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 
 @Controller
 @RequiredArgsConstructor
@@ -28,37 +27,31 @@ public class InquiryController {
 
     // 저장
     @GetMapping("/created")
-    public String inquiryForm(@ModelAttribute("inquiryDTO") InquiryDTO inquiryDTO, Model model){
-        Member member = memberService.findById(1L);
-        model.addAttribute("memberDTO", member);
+    public String inquiryForm(@ModelAttribute InquiryFormDTO inquiryFormDTO, Model model){
+        MemberDTO memberDTO = memberService.getMemberDTO(1L);
+        model.addAttribute("memberDTO", memberDTO);
         return "board/inquiryForm";
     }
     @PostMapping("/created")
-    public String createInquiry(@Valid @ModelAttribute("inquiryDTO") InquiryDTO inquiryDTO, BindingResult bindingResult){
-        if (bindingResult.hasErrors()) { //에러가 있으면
+    public String createInquiry(@Valid @ModelAttribute InquiryFormDTO form, BindingResult bindingResult){
+        if (bindingResult.hasErrors()) {
             return "board/inquiryForm";
         }
-        Member member = memberService.findById(1L);
-
-        Inquiry inquiry = new Inquiry(member, inquiryDTO.getInquiryType(), inquiryDTO.getDetailType(),
-                inquiryDTO.getInquirySubject(), inquiryDTO.getInquiryContent(), LocalDate.now(), inquiryDTO.isSecret());
-        inquiryService.save(inquiry);
+        inquiryService.saveInquiry(form);
         return "redirect:/inquiry/list";
     }
 
     // 목록
     @GetMapping("/list")
-    public String lists(Model model, @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+    public String lists(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(required = false, defaultValue = "") String field,
-                        @RequestParam(required = false, defaultValue = "") String word) {
+                        @RequestParam(required = false, defaultValue = "") String word, Model model) {
 
-        Member member = memberService.findById(1L);
+        MemberDTO memberDTO = memberService.getMemberDTO(1L);
 
-        Page<Inquiry> questionlist = inquiryService.findAll(pageable);
-
-        if(field.equals("name")) {
-            questionlist = inquiryService.findByUsernameContaining(word, pageable);
-        }else if(field.equals("email")){
+        Page<InquiryDTO> questionlist = inquiryService.findAll(pageable);
+        if(word.length() != 0) {
+            questionlist = inquiryService.getSearchList(field,word, pageable);
         }
 
         int pageNumber = questionlist.getPageable().getPageNumber();
@@ -68,10 +61,10 @@ public class InquiryController {
         int endBlockPage = startBlockPage + pageBlock - 1;
         endBlockPage = totalPages < endBlockPage ? totalPages : endBlockPage;
 
-        model.addAttribute("memberDTO", member);
         model.addAttribute("startBlockPage", startBlockPage);
         model.addAttribute("endBlockPage", endBlockPage);
         model.addAttribute("questionlist", questionlist);
+        model.addAttribute("memberDTO", memberDTO);
 
         return "board/inquiryList";
     }
@@ -82,9 +75,9 @@ public class InquiryController {
                           @RequestParam(required = false, defaultValue = "") String field,
                           @RequestParam(required = false, defaultValue = "") String word){
 
-        Inquiry inquiry = inquiryService.findById(id);
+        InquiryDTO inquiryDTO = inquiryService.findInquiryDTO(id);
 
-        model.addAttribute("inquiry", inquiry);
+        model.addAttribute("inquiryDTO", inquiryDTO);
         model.addAttribute("field", field);
         model.addAttribute("word", word);
 
@@ -93,23 +86,21 @@ public class InquiryController {
     // 수정 화면
     @GetMapping("/update/{id}")
     public String updateForm(@PathVariable Long id, Model model){
-        Inquiry inquiry = inquiryService.findById(id);
-        /*if(!inquiry.getMember().getName().equals(principal.getName())) {
 
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다");
-        }*/
-        model.addAttribute("inquiry",inquiry);
+        InquiryDTO inquiryDTO = inquiryService.findInquiryDTO(id);
+
+        model.addAttribute("inquiryDTO",inquiryDTO);
         return "board/inquiryUpdate";
     }
     // 수정
     @PostMapping("/update/{id}")
     public String inquiryUpdate(@PathVariable("id") Long id,
-                                @Valid @ModelAttribute InquiryDTO inquiryDTO, BindingResult bindingResult){
-        Inquiry inquiry = inquiryService.findById(id);
+                                @Valid @ModelAttribute InquiryFormDTO form, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return "board/inquiryUpdate";
         }
-        inquiryService.update(inquiryDTO);
+        inquiryService.update(id, form);
+
         return "redirect:/inquiry/list";
     }
 }

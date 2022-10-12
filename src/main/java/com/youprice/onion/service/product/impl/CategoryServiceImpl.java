@@ -1,17 +1,19 @@
 package com.youprice.onion.service.product.impl;
 
-
-import com.youprice.onion.dto.product.CategoryCreateDTO;
+import com.youprice.onion.dto.member.KeywordListDTO;
+import com.youprice.onion.dto.order.OrderDTO;
+import com.youprice.onion.dto.product.CategoryAddDTO;
 import com.youprice.onion.dto.product.CategoryUpdateDTO;
+import com.youprice.onion.dto.product.CategoryFindDTO;
 import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.repository.product.CategoryRepositoy;
 import com.youprice.onion.service.product.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -21,7 +23,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepositoy.Categoryrepositoy categoryrepositoy;
 
     @Override
-    public void TopCategoryCreate(CategoryCreateDTO categoryCreatedto, String topcategoryName) {
+    public void TopCategoryAdd(CategoryAddDTO categoryCreatedto, String topcategoryName) { //상위카테고리 생성
         Category category = new Category();
 
         Optional<Category> DuplicatechecktopcategoryName = categoryRepositoy.findByCategoryName(topcategoryName);
@@ -30,25 +32,26 @@ public class CategoryServiceImpl implements CategoryService {
             return;
         } else
 
-            category.TopcategoryCreate(categoryCreatedto, topcategoryName);
+            category.TopcategoryAdd(categoryCreatedto, topcategoryName);
 
         categoryRepositoy.save(category);
         System.out.println("상위카테고리 생성완료!");
 
     }
 
+
     @Override
-    public void SubCategoryCreate(CategoryCreateDTO categoryCreateDTO, String topcategoryName) {
+    public void SubCategoryAdd(CategoryAddDTO categoryAddDTO, String topcategoryName) { //하위카테고리생성
         Category category = new Category();
-        categoryCreateDTO.setCategory(categoryrepositoy.findtopcategoryName(topcategoryName));
+        categoryAddDTO.setCategory(categoryRepositoy.findByCategoryName(topcategoryName).orElse(null));
 
         Optional<Category> DuplicatechecksubcategoryName =
-                categoryRepositoy.findByCategoryNameAndCategory(categoryCreateDTO.getCategoryName(),categoryCreateDTO.getCategory());
+                categoryRepositoy.findByCategoryNameAndParent(categoryAddDTO.getCategoryName(), categoryAddDTO.getCategory());
         if (DuplicatechecksubcategoryName.isPresent()) {
             System.out.println("이미 존재하는 하위카테고리입니다!");
             return;
         }
-        category.SubcategoryCreate(categoryCreateDTO);
+        category.SubcategoryAdd(categoryAddDTO);
         categoryRepositoy.save(category);
         System.out.println("하위카테고리 생성완료!");
 
@@ -57,55 +60,60 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void CategoryDelete(Long id) { //카테고리삭제
         Category category = new Category();
-        categoryrepositoy.deleteCategory(id);
-
+        categoryRepositoy.deleteById(id);
 
     }
 
     @Override
-    public void CategoryUpdate(CategoryUpdateDTO categoryUpdatedto) {
+    public void CategoryUpdate(CategoryUpdateDTO categoryUpdatedto) { //카테고리수정
         Category category = new Category();
+//
+//        category.categoryUpdate(categoryUpdatedto);
+//        categoryRepositoy.save(category);
+    }
 
-        category.categoryUpdate(categoryUpdatedto);
-        categoryRepositoy.save(category);
+
+    @Override
+    public List<CategoryFindDTO> CategoryIdFind(String name) { //카테고리이름으로 카테고리조회
+
+        Category category = new Category();
+        category =categoryRepositoy.findAllByCategoryName(name);
+        System.out.println(category.getId()); //114
+
+
+
+  return categoryRepositoy.findAllByParentId(category.getId())
+          .stream().map(CategoryFindDTO::new)
+          .collect(Collectors.toList());
+
+
+        // @Override
+// public List<TownFindDTO> townList(Long memberId) {
+//
+//  return townRepositoy.findAllByMemberId(memberId)
+//          .stream().map(town -> new TownFindDTO(town))
+//          .collect(Collectors.toList());
+// }
+
+
     }
 
     @Override
-    public List<Category> findCategory() {
+    public List<Category> findTopCategory() {
 
 
-        return categoryrepositoy.findCategory();
+        return categoryrepositoy.findTopCategory(); //parent_id가 null인 상위카테고리조회
     }
 
     @Override
-    public List<Category> findSubCategory() {
-        return categoryrepositoy.findSubcategory();
+    public List<Category> findSubCategory() { //parent_id가 null이 아닌 카테고리조회
+
+        return  categoryrepositoy.findSubcategory();
+
+
     }
 
-    @Override
-    public List<Category> finduniform() {
-        return null;
-    }
 
-    @Override
-    public List<Category> footballboot() {
-        return categoryrepositoy.findfootballboot();
-    }
-
-    @Override
-    public List<Category> categoryList() {
-        return categoryRepositoy.findAll();
-    }
-
-    @Override
-    public List<Category> uniformPARENT_ID() {
-        return categoryrepositoy.uniformPARENT_ID();
-    }
-
-    @Override
-    public List<Category> footballbootPARENT_ID() {
-        return categoryrepositoy.footballbootPARENT_ID();
-    }
 
 
 }

@@ -22,7 +22,7 @@ public class Keyword {
     
     public Keyword keywordCreate(KeywordCreateDTO keywordCreateDto, Member member){
 
-  //  this.id = keywordCreateDto.getId();
+    this.id = keywordCreateDto.getId();
     this.member = member;
     this.keywordName = keywordCreateDto.getKeywordName();
 

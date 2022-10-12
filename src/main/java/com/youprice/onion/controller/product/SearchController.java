@@ -1,15 +1,10 @@
 package com.youprice.onion.controller.product;
 
 
-import com.youprice.onion.dto.product.SearchCreateDTO;
-import com.youprice.onion.entity.product.Category;
-import com.youprice.onion.repository.product.SearchRepositoy;
+import com.youprice.onion.dto.product.SearchAddDTO;
 import com.youprice.onion.service.member.MemberService;
-import com.youprice.onion.service.member.impl.MemberServiceImpl;
 import com.youprice.onion.service.product.CategoryService;
 import com.youprice.onion.service.product.SearchService;
-import com.youprice.onion.service.product.impl.CategoryServiceImpl;
-import com.youprice.onion.service.product.impl.SearchServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,13 +29,14 @@ public class SearchController {
     }
 
     @PostMapping("search")
-    public String KeywordCreate(Model model, SearchCreateDTO searchCreateDto, @RequestParam("userId")String userId,
-                                @RequestParam("searchName") String searchName ){
+    public String KeywordCreate(Model model, SearchAddDTO searchAddDTO,
+                                @RequestParam("searchName") String searchName  ){
 
-        if(searchService.findBySearchName(searchName)==null || searchService.Searchcount()==0) {
+        if(searchService.findBySearchName(searchName)==null) {
 
-            searchService.SearchCreate(searchCreateDto,searchName);
+            searchService.SearchCreate(searchAddDTO,searchName);
         }
+
 
         else
             searchService.searchupdatecount(searchName);

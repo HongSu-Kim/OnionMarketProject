@@ -1,7 +1,7 @@
 package com.youprice.onion.entity.product;
 
 
-import com.youprice.onion.dto.product.CategoryCreateDTO;
+import com.youprice.onion.dto.product.CategoryAddDTO;
 import com.youprice.onion.dto.product.CategoryUpdateDTO;
 import lombok.Getter;
 import javax.persistence.*;
@@ -20,26 +20,26 @@ public class Category {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id") //부모카테고리번호
-    private Category category;
+    private Category parent;
 
-    @OneToMany(mappedBy = "category") //자식카테고리번호
-    private  List<Category> categoryList = new ArrayList<>();
+    @OneToMany(mappedBy = "parent") //자식카테고리번호
+    private  List<Category> childList = new ArrayList<>();
 
     @OneToMany(mappedBy = "category")//상품카테고리번호
     private List<ProductCategory> productCategoryList = new ArrayList<>();
 
 
 
-    public  Category TopcategoryCreate(CategoryCreateDTO categoryCreatedto,String topcategoryName) {
+    public  Category TopcategoryAdd(CategoryAddDTO categoryAddDTO, String topcategoryName) {
         this.categoryName =topcategoryName; //상위카테고리이름
 
         return this;
 
     }
 
-    public  Category SubcategoryCreate(CategoryCreateDTO categoryCreatedto) {
-          this.categoryName = categoryCreatedto.getCategoryName(); //하위카테고리이름
-          this.category =categoryCreatedto.getCategory();
+    public  Category SubcategoryAdd(CategoryAddDTO categoryAddDTO) {
+          this.categoryName = categoryAddDTO.getCategoryName(); //하위카테고리이름
+          this.parent =categoryAddDTO.getCategory();
 
         return this;
 
@@ -48,7 +48,7 @@ public class Category {
     public  Category categoryUpdate(CategoryUpdateDTO categoryUpdatedto) {
         this.id = categoryUpdatedto.getId();
         this.categoryName =categoryUpdatedto.getCategoryName();
-        this.category = categoryUpdatedto.getCategory();
+        this.parent = categoryUpdatedto.getCategory();
 
         return this;
 

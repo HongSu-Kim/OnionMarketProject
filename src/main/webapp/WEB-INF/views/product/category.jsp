@@ -55,11 +55,11 @@
                         </a>
 
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            <c:forEach var="finduniform" items="${finduniform}">
+<%--                            <c:forEach var="finduniform" items="${finduniform}">--%>
+<%--                                ${finduniform.categoryName}--%>
+<%--                            </c:forEach>--%>
+                                <li><a class="dropdown-item" href="#"> </a></li>
 
-
-                                <li><a class="dropdown-item" href="#"> ${finduniform.categoryName}</a></li>
-                            </c:forEach>
                         </ul>
 
 
@@ -73,11 +73,12 @@
                         </a>
 
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            <c:forEach var="footballboot" items="${footballboot}">
+<%--                            <c:forEach var="footballboot" items="${footballboot}">--%>
 
+<%--                                    ${footballboot.categoryName}--%>
+<%--                                </c:forEach>--%>
+                            <li><a class="dropdown-item" href="#"></a></li>
 
-                            <li><a class="dropdown-item" href="#"> ${footballboot.categoryName}</a></li>
-                            </c:forEach>
                             <form class="d-flex" role="search">
                                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                                 <button class="btn btn-success" type="submit">Search</button>

@@ -15,11 +15,25 @@
 
 <h1>메인 페이지</h1>
 <hr>
-<a<%-- sec:authorize="isAnonymous()"--%> href="<%=request.getContextPath()%>/member/login">로그인</a>
-<a<%-- sec:authorize="isAnonymous()"--%> href="<%=request.getContextPath()%>/member/join">회원가입</a>
-<a<%-- sec:authorize="isAuthenticated()"--%> href="<%=request.getContextPath()%>/member/logout">로그아웃</a>
-<a<%-- sec:authorize="hasRole('ROLE_USER')"--%> href="<%=request.getContextPath()%>/member/info">내정보</a>
-<a<%-- sec:authorize="hasRole('ROLE_ADMIN')"--%> href="<%=request.getContextPath()%>/member/admin">어드민</a>
+
+    <sec:authorize access="isAnonymous()">
+        <a href="/member/login">로그인</a>
+    </sec:authorize>
+    <sec:authorize access="isAnonymous()">
+        <a href="/member/join">회원가입</a>
+    </sec:authorize>
+    <sec:authorize access="isAuthenticated()">
+        <a href="/member/logout">로그아웃</a>
+    </sec:authorize>
+    <sec:authorize access="isAnonymous()">
+        <a sec:authorize access="isAuthenticated()" href="/member/info">내정보</a>
+    </sec:authorize>
+    <sec:authorize access="isAuthenticated()">
+        <a sec:authorize access="isAuthenticated()" href="/member/info">내정보</a>
+    </sec:authorize>
+    <sec:authorize access="hasRole('ROLE_ADMIN')">
+        <a href="/member/admin">어드민</a>
+    </sec:authorize>
 
 </body>
 </html>

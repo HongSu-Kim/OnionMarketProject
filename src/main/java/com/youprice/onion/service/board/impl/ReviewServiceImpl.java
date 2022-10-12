@@ -1,12 +1,17 @@
 package com.youprice.onion.service.board.impl;
 
+import com.youprice.onion.dto.board.ReviewDTO;
+import com.youprice.onion.dto.board.ReviewFormDTO;
 import com.youprice.onion.entity.board.Review;
 import com.youprice.onion.entity.board.ReviewImage;
+import com.youprice.onion.entity.order.Order;
+import com.youprice.onion.entity.product.Product;
 import com.youprice.onion.repository.board.ReviewImageRepository;
 import com.youprice.onion.repository.board.ReviewRepository;
+import com.youprice.onion.repository.order.OrderRepository;
+import com.youprice.onion.repository.product.ProductRepository;
 import com.youprice.onion.service.board.ReviewService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,60 +19,63 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
 
-    private final ModelMapper modelMapper;
     private final ReviewRepository reviewRepository;
-    private final ReviewImageRepository
-            reviewImageRepository;
+    private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
+    private final ReviewImageRepository reviewImageRepository;
 
-    /*
     public ReviewDTO getReviewDTO(Long reviewId){
-        return modelMapper.map(reviewRepository.findById(reviewId).orElse(null), ReviewDTO.class);
-    }*/
+        return reviewRepository.findById(reviewId).map(ReviewDTO::new).orElse(null);
+    }
+    public Long saveReview(ReviewFormDTO form, List<MultipartFile> reviewImageName) throws IOException {
+        //Order order = orderRepository.findById(form.getOrderId()).orElse(null);
+        Order order = orderRepository.findById(1L).orElse(null);
+        Long sellerId = findSellerId(1L);
 
-    public void addReview(Long reviewId, List<MultipartFile> imageFiles) throws IOException {
-        List<ReviewImage> list = storeImages(reviewId, imageFiles);
-
+        Review review = new Review(order, form.getReviewContent(), form.getGrade(),sellerId);
+        Review save = reviewRepository.save(review);
+        Long reviewId = save.getId();
+        List<ReviewImage> list = storeImages(reviewId, reviewImageName);
         for(ReviewImage reviewImage : list){
             reviewImageRepository.save(reviewImage);
         }
+        return reviewId;
+    }
+    public Long findSellerId(Long buyerId){
+        Order order = orderRepository.findById(buyerId).orElse(null);
+        Product product = productRepository.findById(order.getProduct().getId()).orElse(null);
+        return product.getMember().getId();
     }
 
-    public Long save(Review review){
-        reviewRepository.save(review);
-        return review.getId();
+    public ReviewDTO findByUserId(String userId){
+        Review review = reviewRepository.findByOrder_Member_UserId(userId).orElse(null);
+        ReviewDTO reviewDTO = new ReviewDTO(review);
+        return reviewDTO;
     }
 
-    public Optional<Review> findByUserId(String userId){
-        return findAll().stream().filter(r -> r.getOrder().getMember().getUserId().equals(userId)).findFirst();
+    public ReviewDTO findReviewDTO(Long id){
+        return reviewRepository.findById(id).map(ReviewDTO::new).orElse(null);
     }
 
-    public Review findById(Long id){
-        Optional<Review> review= reviewRepository.findById(id);
+    /* 특정 회원의 목록
+    public List<ReviewDTO> userReviewList(Long buyerId, Long reviewId){
 
-        if(review.isPresent()){
-            return review.get();
-        } else {
-            throw new IllegalArgumentException();
-        }
-    }
-
-    public List<Review> findAll(){
-        List<Review> allReview = reviewRepository.findAll();
-        return allReview;
+    }*/
+    public List<ReviewDTO> findAllReview(){
+       return reviewRepository.findAll().stream().map(ReviewDTO::new).collect(Collectors.toList());
     }
 
     //=======================================================================================
     public List<ReviewImage> storeImages(Long reviewId, List<MultipartFile> multipartFiles) throws IOException {
         List<ReviewImage> storeFileList = new ArrayList<>();
-        Review review = findById(reviewId);
-
+        Review review = reviewRepository.findById(reviewId).orElse(null);
         for (MultipartFile multipartFile : multipartFiles) {
 
             if(!multipartFile.isEmpty()){
@@ -79,7 +87,10 @@ public class ReviewServiceImpl implements ReviewService {
         }
         return storeFileList;
     }
-
+    public String filePath(){
+        String filePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images";
+        return filePath;
+    }
     public String storePath(MultipartFile multipartFile) throws IOException {
 
         String filePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images";
@@ -91,13 +102,10 @@ public class ReviewServiceImpl implements ReviewService {
 
         // 확장자만 추출
         String ext = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
-
         String uuid = UUID.randomUUID().toString();
         String storeFileName = uuid + "." + ext;
-
         multipartFile.transferTo(new File(filePath, storeFileName));
 
-        // 넘기는건 중복되지 않게 생성된 파일경로
         return storeFileName;
     }
 

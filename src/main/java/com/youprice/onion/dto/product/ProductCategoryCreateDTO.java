@@ -1,5 +1,7 @@
 package com.youprice.onion.dto.product;
 
+import com.youprice.onion.entity.product.Category;
+import com.youprice.onion.entity.product.Product;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,13 +10,13 @@ import lombok.Setter;
 public class ProductCategoryCreateDTO {
 
 
-    private Long product_category_id; //상품카테고리번호 PK
+    private Long id; //상품카테고리번호 PK
 
 
-    private int product_id;//상품번호 FK
+    private Product product;//상품번호 FK
 
 
-    private Long category_id;//카테고리번호 FK
+    private Category category;//카테고리번호 FK
 
 
 }
