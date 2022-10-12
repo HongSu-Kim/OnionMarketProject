@@ -12,6 +12,5 @@ public interface InquiryService {
     void delete(InquiryDTO inquiryDTO);
 
     Page<InquiryDTO> findAll(Pageable pageable);
-    Page<InquiryDTO> findByUsernameContaining(String username, Pageable pageable);
-    Page<InquiryDTO> findByTypeContaining(String type,String subject,Pageable pageable);
+    Page<InquiryDTO> getSearchList(String field, String word, Pageable pageable);
 }

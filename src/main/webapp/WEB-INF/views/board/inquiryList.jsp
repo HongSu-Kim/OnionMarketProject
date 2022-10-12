@@ -21,9 +21,9 @@
         <select name="field" id="field" class="form-control form-control-sm" style="width: 130px;">
             <option selected="selected">전체</option>
             <option value="name">작성자</option>
-            <option value="memberInfo">[문의유형]회원정보</option>
-            <option value="purchase">[문의유형]거래</option>
-            <option value="etc">[문의유형]기타서비스</option>
+            <option value="회원정보">[문의유형]회원정보</option>
+            <option value="거래">[문의유형]거래</option>
+            <option value="기타서비스">[문의유형]기타서비스</option>
         </select>
 
         <input type="text" id="searchBox" name="word" class="form-control me-2" placeholder="검색어를 입력하세요">
