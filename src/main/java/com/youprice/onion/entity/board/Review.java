@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,6 +26,7 @@ public class Review {
     private String reviewContent; // 리뷰내용
     private Integer grade; // 평점
     private LocalDateTime reviewDate; //등록일
+    private Long salesId; // 판매자
 
     /*@OneToMany(mappedBy = "review")
     private List<ReviewComment> reviewComment;*/
@@ -34,10 +34,11 @@ public class Review {
     @OneToMany(mappedBy = "review") // 이미지
     private List<ReviewImage> reviewImageName;
 
-    public Review(Order order, String reviewContent, Integer grade) {
+    public Review(Order order, String reviewContent, Integer grade, Long salesId) {
         this.order = order;
         this.reviewContent = reviewContent;
         this.grade = grade;
         this.reviewDate = LocalDateTime.now();
+        this.salesId = salesId;
     }
 }

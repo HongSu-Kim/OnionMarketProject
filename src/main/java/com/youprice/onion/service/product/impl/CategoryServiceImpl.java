@@ -1,6 +1,7 @@
 package com.youprice.onion.service.product.impl;
 
 import com.youprice.onion.dto.member.KeywordListDTO;
+import com.youprice.onion.dto.order.OrderDTO;
 import com.youprice.onion.dto.product.CategoryAddDTO;
 import com.youprice.onion.dto.product.CategoryUpdateDTO;
 import com.youprice.onion.dto.product.CategoryFindDTO;
@@ -38,13 +39,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     }
 
+
     @Override
     public void SubCategoryAdd(CategoryAddDTO categoryAddDTO, String topcategoryName) { //하위카테고리생성
         Category category = new Category();
         categoryAddDTO.setCategory(categoryRepositoy.findByCategoryName(topcategoryName).orElse(null));
 
         Optional<Category> DuplicatechecksubcategoryName =
-                categoryRepositoy.findByCategoryNameAndCategory(categoryAddDTO.getCategoryName(), categoryAddDTO.getCategory());
+                categoryRepositoy.findByCategoryNameAndParent(categoryAddDTO.getCategoryName(), categoryAddDTO.getCategory());
         if (DuplicatechecksubcategoryName.isPresent()) {
             System.out.println("이미 존재하는 하위카테고리입니다!");
             return;
@@ -70,6 +72,32 @@ public class CategoryServiceImpl implements CategoryService {
 //        categoryRepositoy.save(category);
     }
 
+
+    @Override
+    public List<CategoryFindDTO> CategoryIdFind(String name) { //카테고리이름으로 카테고리조회
+
+        Category category = new Category();
+        category =categoryRepositoy.findAllByCategoryName(name);
+        System.out.println(category.getId()); //114
+
+
+
+  return categoryRepositoy.findAllByParentId(category.getId())
+          .stream().map(CategoryFindDTO::new)
+          .collect(Collectors.toList());
+
+
+        // @Override
+// public List<TownFindDTO> townList(Long memberId) {
+//
+//  return townRepositoy.findAllByMemberId(memberId)
+//          .stream().map(town -> new TownFindDTO(town))
+//          .collect(Collectors.toList());
+// }
+
+
+    }
+
     @Override
     public List<Category> findTopCategory() {
 
@@ -84,6 +112,8 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     }
+
+
 
 
 }
