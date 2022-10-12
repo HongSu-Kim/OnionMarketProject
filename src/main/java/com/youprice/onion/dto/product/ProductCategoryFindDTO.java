@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class ProductCategoryCreateDTO {
+public class ProductCategoryFindDTO {
 
 
     private Long id; //상품카테고리번호 PK

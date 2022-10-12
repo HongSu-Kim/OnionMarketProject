@@ -2,6 +2,7 @@ package com.youprice.onion.service.member.impl;
 
 import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.entity.member.Member;
+import com.youprice.onion.entity.member.Role;
 import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -35,23 +36,15 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Long saveMember(MemberDTO memberDTO) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        memberDTO.setPwd(passwordEncoder.encode(memberDTO.getPwd()));
+        memberDTO.setPwd(passwordEncoder.encode(memberDTO.getPwd())); //패스워드 암호화 저장
+        if (memberDTO.getUserId() != "admin") {
+            memberDTO.setRole(Role.valueOf("USER"));
+        } else {
+            memberDTO.setRole(Role.valueOf("ADMIN"));
+        }
 
         return memberRepository.save(memberDTO.toEntity()).getId();
     }
-
-    @Override
-    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        Optional<Member> memberWrapper = memberRepository.findByUserId(userId);
-        Member member = memberWrapper.orElse(null);
-
-        List<GrantedAuthority> authorities = new ArrayList<>();
-
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-
-        return new User(member.getUserId(), member.getPwd(), authorities);
-    }
-
 
     @Override
     public MemberDTO getMemberDTO(Long memberId) {

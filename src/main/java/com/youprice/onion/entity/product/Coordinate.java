@@ -2,7 +2,7 @@ package com.youprice.onion.entity.product;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.youprice.onion.dto.product.CoordinateCreateDTO;
+import com.youprice.onion.dto.product.CoordinateAddDTO;
 import lombok.Getter;
 import javax.persistence.*;
 
@@ -25,12 +25,12 @@ public class Coordinate {
 
         @OneToMany(mappedBy = "coordinate") //동네번호
         private List<Town> townList = new ArrayList<>();
-        public Coordinate coordinateCreate(CoordinateCreateDTO coordinateCreatedto){
+        public Coordinate coordinateAdd(CoordinateAddDTO coordinateAddDTO){
 
-                this.id = coordinateCreatedto.getId();
-                this.townName = coordinateCreatedto.getTownName();
-                this.latitude = coordinateCreatedto.getLatitude();
-                this.longitude = coordinateCreatedto.getLongitude();
+                this.id = coordinateAddDTO.getId();
+                this.townName = coordinateAddDTO.getTownName();
+                this.latitude = coordinateAddDTO.getLatitude();
+                this.longitude = coordinateAddDTO.getLongitude();
 
                 return this;
         }

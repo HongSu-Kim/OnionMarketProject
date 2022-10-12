@@ -5,11 +5,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-public interface MemberService extends UserDetailsService {
+public interface MemberService {
 
     public Long saveMember(MemberDTO memberDTO);
-
-    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException;
 
     public MemberDTO getMemberDTO(Long memberId);
 
