@@ -2,6 +2,7 @@ package com.youprice.onion.controller.board;
 
 import com.youprice.onion.dto.board.InquiryDTO;
 import com.youprice.onion.dto.board.InquiryFormDTO;
+import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.service.board.InquiryService;
 import com.youprice.onion.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,9 @@ public class InquiryController {
 
     // 저장
     @GetMapping("/created")
-    public String inquiryForm(@ModelAttribute InquiryFormDTO inquiryFormDTO){
+    public String inquiryForm(@ModelAttribute InquiryFormDTO inquiryFormDTO, Model model){
+        MemberDTO memberDTO = memberService.getMemberDTO(1L);
+        model.addAttribute("memberDTO", memberDTO);
         return "board/inquiryForm";
     }
     @PostMapping("/created")
@@ -45,15 +48,8 @@ public class InquiryController {
                         @RequestParam(required = false, defaultValue = "") String word, Model model) {
 
         Page<InquiryDTO> questionlist = inquiryService.findAll(pageable);
-
-        if(field.equals("name")) {
-            questionlist = inquiryService.findByUsernameContaining(word, pageable);
-        } else if(field.equals("memberInfo")) {
-            questionlist = inquiryService.findByTypeContaining("회원정보",word, pageable);
-        } else if(field.equals("purchase")) {
-            questionlist = inquiryService.findByTypeContaining("거래",word, pageable);
-        } else if(field.equals("etc")) {
-            questionlist = inquiryService.findByTypeContaining("기타서비스",word,pageable);
+        if(word.length() != 0) {
+            questionlist = inquiryService.getSearchList(field,word, pageable);
         }
 
         int pageNumber = questionlist.getPageable().getPageNumber();
