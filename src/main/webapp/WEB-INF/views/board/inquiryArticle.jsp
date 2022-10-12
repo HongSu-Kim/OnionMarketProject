@@ -14,21 +14,21 @@
     </div>
 
     <div>
-        제목 : ${inquiry.inquirySubject}
+        제목 : ${inquiryDTO.inquirySubject}
     </div><hr/>
     <div>
-        내용 : <span readonly>${inquiry.inquiryContent}</span>
+        내용 : <span readonly>${inquiryDTO.inquiryContent}</span>
     </div>
 
     <hr class="my-4">
     <div class="row">
         <div class="col">
             <button class="w-100 btn btn-primary btn-lg"
-                    onclick="location.href='/inquiry/article/${item.id}/update'" type="button">문의글 수정</button>
+                    onclick="location.href='/inquiry/update/${inquiryDTO.inquiryId}'" type="button">문의글 수정</button>
         </div>
         <div class="col">
             <button class="w-100 btn btn-secondary btn-lg"
-            onclick="location.href='/inquiry/list?field=${param.field}&word=${param.word}&page=${param.page}'" type="button">목록으로</button>
+                    onclick="location.href='/inquiry/list?field=${param.field}&word=${param.word}&page=${param.page}'" type="button">목록으로</button>
         </div>
     </div>
 </div> <!-- /container -->
