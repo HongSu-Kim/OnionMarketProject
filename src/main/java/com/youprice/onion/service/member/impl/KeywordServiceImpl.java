@@ -2,7 +2,6 @@ package com.youprice.onion.service.member.impl;
 
 import com.youprice.onion.dto.member.KeywordCreateDTO;
 import com.youprice.onion.dto.member.KeywordListDTO;
-import com.youprice.onion.dto.order.OrderProductDTO;
 import com.youprice.onion.entity.member.Keyword;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.repository.member.KeywordRepositoy;

@@ -43,10 +43,10 @@ public class ProductCategoryController {
     public  String productcategoryFind(Model model, @RequestParam("categoryName")String categoryName){
 
     List<Category> productcategory =categoryService.findTopCategory();
-  //  List<CategoryFindDTO> categoryList =  categoryService.findCategoryId(categoryName);
+    List<CategoryFindDTO> categoryList = categoryService.CategoryIdFind(categoryName);
 
     model.addAttribute("productcategory",productcategory);
-   // model.addAttribute("categoryList",categoryList);
+    model.addAttribute("categoryList",categoryList);
 
     return "product/productcategoryList";
 

@@ -3,6 +3,7 @@ package com.youprice.onion.repository.member;
 import com.youprice.onion.entity.member.Keyword;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.order.Order;
+import com.youprice.onion.entity.product.Category;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -19,6 +20,8 @@ public interface KeywordRepositoy extends JpaRepository<Keyword, Long> {
     public Keyword findByKeywordNameAndMember(String name, Member id);
 
     List<Keyword> findAllByMemberId(Long memberId);
+
+
 
     @Repository
     @RequiredArgsConstructor

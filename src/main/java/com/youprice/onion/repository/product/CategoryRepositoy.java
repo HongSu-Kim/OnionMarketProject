@@ -19,9 +19,18 @@ import java.util.Optional;
 public interface CategoryRepositoy extends JpaRepository<Category, Long> {
 
     Optional<Category> findByCategoryName(String topcategoryName);
-    Optional<Category> findByCategoryNameAndCategory(String topcategoryName,Category category);
+    Optional<Category> findByCategoryNameAndParent(String topcategoryName,Category category);
+
+     Category findAllByCategoryName(String categoryName);
+
+   List<Category> findAllByParent(Long id);
+
+   List<Category> findAllByParentId(Long id);
+
 
     Category deleteById(CategoryUpdateDTO id);
+
+
 
 
     @Repository
@@ -36,7 +45,7 @@ public interface CategoryRepositoy extends JpaRepository<Category, Long> {
         public List<Category> findTopCategory() { //상위카테고리 조회
 
 
-            return em.createQuery("select o from Category o where o.category is null ", Category.class)
+            return em.createQuery("select o from Category o where o.parent is null ", Category.class)
                     .getResultList();
 
         }
@@ -44,7 +53,7 @@ public interface CategoryRepositoy extends JpaRepository<Category, Long> {
         public List<Category> findSubcategory() { //하위카테고리 조회
 
 
-            return em.createQuery("select o from Category o  where o.category is not null ", Category.class)
+            return em.createQuery("select o from Category o  where o.parent is not null ", Category.class)
                     .getResultList();
 
         }
