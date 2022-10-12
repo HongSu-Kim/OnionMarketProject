@@ -16,6 +16,13 @@ public class CategoryFindDTO {
 
     private String categoryName; //하위카테고리이름
 
+    public CategoryFindDTO(Category category) {
+
+        id =category.getId();
+        categoryId = category.getParent().getId();
+        categoryName = category.getCategoryName();
+    }
+
 
 
 

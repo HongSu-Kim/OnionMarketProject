@@ -14,8 +14,8 @@ DROP TABLE notice_image PURGE;
 DROP TABLE notice PURGE;
 DROP TABLE answer PURGE;
 DROP TABLE inquiry PURGE;
-DROP TABLE review PURGE;
 DROP TABLE review_image PURGE;
+DROP TABLE review PURGE;
 DROP TABLE complain PURGE;
 
 DROP TABLE delivery PURGE;
@@ -41,6 +41,7 @@ DROP TABLE coordinate PURGE;
 
 DROP TABLE search PURGE;
 DROP TABLE keyword PURGE;
+DROP TABLE prohibition_keyword PURGE;
 DROP TABLE follow PURGE;
 DROP TABLE block PURGE;
 DROP TABLE member PURGE;
@@ -95,6 +96,12 @@ CREATE TABLE keyword (
     keyword_name    	VARCHAR2(255)   NULL,
     CONSTRAINT PK_KEYWORD PRIMARY KEY (keyword_id),
     CONSTRAINT FK_KEYWORD_MEMBER_ID FOREIGN KEY (member_id) REFERENCES  member(member_id)
+);
+
+CREATE TABLE prohibition_keyword (
+    prohibition_keyword_id      	NUMBER          NOT NULL,
+    prohibition_keyword_name    	VARCHAR2(255)   NULL,
+    CONSTRAINT PK_PROHIBITION_KEYWORD  PRIMARY KEY (prohibition_keyword_id)
 );
 
 CREATE TABLE search (
@@ -292,6 +299,7 @@ CREATE TABLE review (
 	review_content	    VARCHAR2(255)	NOT NULL,
 	grade	            NUMBER          NOT NULL,
 	review_date	        DATE            DEFAULT SYSDATE,
+    sales_id            NUMBER          NOT NULL,
 	CONSTRAINT PK_REVIEW PRIMARY KEY (review_id),
 	CONSTRAINT FK_REVIEW_ORDER_ID FOREIGN KEY (order_id) REFERENCES orders(order_id)
 );

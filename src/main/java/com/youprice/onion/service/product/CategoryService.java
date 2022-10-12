@@ -20,6 +20,6 @@ public interface CategoryService {
 
     List<Category> findSubCategory(); //하위 카테고리찾기
 
-
+    List<CategoryFindDTO> CategoryIdFind(String name);
 
 }

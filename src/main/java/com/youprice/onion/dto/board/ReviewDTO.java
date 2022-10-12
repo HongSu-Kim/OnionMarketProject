@@ -1,11 +1,14 @@
 package com.youprice.onion.dto.board;
 
 import com.youprice.onion.entity.board.Review;
+import com.youprice.onion.entity.board.ReviewImage;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -18,11 +21,14 @@ public class ReviewDTO {
     private Integer grade; // 평점
     private LocalDateTime reviewDate; //등록일
 
+    private List<ReviewImageDTO> reviewImageList;
+
     public ReviewDTO(Review review) {
         this.reviewId = review.getId();
         this.orderId = review.getOrder().getId();
         this.reviewContent = review.getReviewContent();
         this.grade = review.getGrade();
         this.reviewDate = review.getReviewDate();
+        this.reviewImageList = review.getReviewImageName().stream().map(ReviewImageDTO::new).collect(Collectors.toList());
     }
 }

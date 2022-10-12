@@ -39,8 +39,7 @@ public class InquiryServiceImpl implements InquiryService {
     }
     // 삭제
     public void delete(InquiryDTO inquiryDTO){
-        Inquiry inquiry = modelMapper.map(inquiryDTO, Inquiry.class);
-        inquiryRepository.delete(inquiry);
+
     }
 
     // 페이징 리스트
@@ -49,20 +48,17 @@ public class InquiryServiceImpl implements InquiryService {
         Page<InquiryDTO> list = inquiryRepository.findAll(pageable).map(InquiryDTO::new);
         return list;
     }
-    // 작성자명 검색
-    @Override
-    public Page<InquiryDTO> findByUsernameContaining(String username, Pageable pageable) {
-        Page<InquiryDTO> list = inquiryRepository.
-                findInquiriesByMember_NameContainingOrderById(username,pageable).map(InquiryDTO::new);
-        return list;
+    // 검색
+    public Page<InquiryDTO> getSearchList(String field, String word, Pageable pageable){
+        if(field.equals("name")) {
+            return inquiryRepository.findInquiriesByMember_NameContainingOrderById(word, pageable).map(InquiryDTO::new);
+        } else  {
+            return inquiryRepository.findInquiriesByInquiryTypeLikeAndInquirySubjectContainingOrderById(field, word, pageable).map(InquiryDTO::new);
+        }
     }
-    // 타입 검색
-    public Page<InquiryDTO> findByTypeContaining(String type,String subject,Pageable pageable) {
-        Page<InquiryDTO> list =
-                inquiryRepository.findInquiriesByInquiryTypeLikeAndInquirySubjectContainingOrderById(subject,type,pageable)
-                        .map(InquiryDTO::new);
-        return list;
-    }
+
+
+
 
 
 }

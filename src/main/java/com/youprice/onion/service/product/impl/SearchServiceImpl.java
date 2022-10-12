@@ -20,6 +20,10 @@ public class SearchServiceImpl implements SearchService {
  public void SearchCreate(SearchAddDTO searchAddDTO, String SearchName) {
     Search search = new Search();
 
+    if(SearchName == ""){
+     System.out.println("공백입니다");
+     return ;
+    }
  search.SearchAdd(searchAddDTO);
 
 
