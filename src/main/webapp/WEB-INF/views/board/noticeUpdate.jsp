@@ -10,6 +10,6 @@
     <title>Onion Market</title>
 </head>
 <body>
-
+공지사항을 수정하는 곳입니다
 </body>
 </html>
