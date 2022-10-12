@@ -20,10 +20,10 @@ public class Category {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id") //부모카테고리번호
-    private Category category;
+    private Category parent;
 
-    @OneToMany(mappedBy = "category") //자식카테고리번호
-    private  List<Category> categoryList = new ArrayList<>();
+    @OneToMany(mappedBy = "parent") //자식카테고리번호
+    private  List<Category> childList = new ArrayList<>();
 
     @OneToMany(mappedBy = "category")//상품카테고리번호
     private List<ProductCategory> productCategoryList = new ArrayList<>();
@@ -39,7 +39,7 @@ public class Category {
 
     public  Category SubcategoryAdd(CategoryAddDTO categoryAddDTO) {
           this.categoryName = categoryAddDTO.getCategoryName(); //하위카테고리이름
-          this.category =categoryAddDTO.getCategory();
+          this.parent =categoryAddDTO.getCategory();
 
         return this;
 
@@ -48,7 +48,7 @@ public class Category {
     public  Category categoryUpdate(CategoryUpdateDTO categoryUpdatedto) {
         this.id = categoryUpdatedto.getId();
         this.categoryName =categoryUpdatedto.getCategoryName();
-        this.category = categoryUpdatedto.getCategory();
+        this.parent = categoryUpdatedto.getCategory();
 
         return this;
 
