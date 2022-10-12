@@ -58,4 +58,29 @@ public class ProductController {
 
         return "product/productmain";//상품 리스트 메인 화면페이지
     }
+
+    @GetMapping(value = "update")//상품 업데이트 주소
+    public String update(Model model) {
+
+
+
+        return "product/updateproduct";
+    }
+
+    @PostMapping(value = "update")//실제 상품 업데이트 주소
+    public String updateProduct(Model model, ProductDTO productDTO, ProductImageDTO productImageDTO, MultipartFile file) throws Exception{
+
+
+
+        return "product/productdetail";
+    }
+
+    @GetMapping(value = "delete")//상품 삭제 주소
+    public String removeProduct(Long productId, Long productImageId, MultipartFile file) throws Exception {
+
+        productService.deleteProduct(productId, productImageId, file);
+
+
+        return "redirect:/product/productmain";//삭제 후 메인 화면
+    }
 }
