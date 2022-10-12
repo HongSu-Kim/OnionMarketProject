@@ -39,8 +39,7 @@ public class InquiryServiceImpl implements InquiryService {
     }
     // 삭제
     public void delete(InquiryDTO inquiryDTO){
-        Inquiry inquiry = modelMapper.map(inquiryDTO, Inquiry.class);
-        inquiryRepository.delete(inquiry);
+
     }
 
     // 페이징 리스트

@@ -47,6 +47,8 @@ public class InquiryController {
                         @RequestParam(required = false, defaultValue = "") String field,
                         @RequestParam(required = false, defaultValue = "") String word, Model model) {
 
+        MemberDTO memberDTO = memberService.getMemberDTO(1L);
+
         Page<InquiryDTO> questionlist = inquiryService.findAll(pageable);
         if(word.length() != 0) {
             questionlist = inquiryService.getSearchList(field,word, pageable);
@@ -62,6 +64,7 @@ public class InquiryController {
         model.addAttribute("startBlockPage", startBlockPage);
         model.addAttribute("endBlockPage", endBlockPage);
         model.addAttribute("questionlist", questionlist);
+        model.addAttribute("memberDTO", memberDTO);
 
         return "board/inquiryList";
     }
