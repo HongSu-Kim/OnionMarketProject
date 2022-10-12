@@ -28,6 +28,14 @@
 		이미지: <img src="${productImageDTO.productImageName}"/>
 	</c:forEach>
 </div>
+<form action="/product/update" method="get">
+	<input type="submit" value="상품 수정"/>
+</form>
+
+<form action="/product/delete" method="get">
+	<input type="submit" value="상품 삭제"/>
+</form>
+
 <form action="/product/productmain" method="get">
 	<input type="submit" value="목록 보기"/>
 </form>
