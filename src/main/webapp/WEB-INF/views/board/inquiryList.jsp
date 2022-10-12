@@ -59,18 +59,18 @@
             </thead>
             <tbody>
 
-            <c:forEach var="dto" items="${questionlist.content}">
+            <c:forEach var="dto" items="${questionlist.content }">
                 <tr>
-                    <td>${dto.id}</td>
+                    <td>${dto.inquiryId}</td>
                     <td>${dto.inquiryType}/${dto.detailType}</td>
 
                     <!-- 비밀글 표시 -->
                     <c:if test="${dto.secret == true}">
                         <c:choose>
                             <%-- <c:when test="${dto.member.userId eq member.userid || member.role eq '[ROLE_ADMIN, ROLE_USER]'}"> --%>
-                            <c:when test="${dto.member.userId eq memberDTO.userId}">
-                            <!-- 작성자이거나 관리자일 때 볼 수 있는 링크 -->
-                                <td>Q <a href="/inquiry/article/${dto.id}?field=${param.field}&word=${param.word}&page=${param.page}">
+                            <c:when test="${dto.memberId eq memberDTO.memberId}">
+                                <!-- 작성자이거나 관리자일 때 볼 수 있는 링크 -->
+                                <td>Q <a href="/inquiry/article/${dto.inquiryId}?field=${param.field}&word=${param.word}&page=${param.page}">
                                     <i class="icofont-lock"></i>
                                     <c:out value="${dto.inquirySubject}"/>
                                 </a></td>
@@ -86,14 +86,14 @@
 
                     <c:if test="${dto.secret == false}">
                         <td>
-                            <a href="/inquiry/article/${dto.id}?field=${param.field}&word=${param.word}&page=${param.page}">
+                            <a href="/inquiry/article/${dto.inquiryId}?field=${param.field}&word=${param.word}&page=${param.page}">
                                 Q ${dto.inquirySubject}
                             </a>
                         </td>
                     </c:if>
 
                     <td>${dto.inquiryDate}</td>
-                    <td>${dto.member.userId}</td>
+                    <td>${dto.memberId}</td>
                     <td>${dto.status}</td>
                 </tr>
             </c:forEach>

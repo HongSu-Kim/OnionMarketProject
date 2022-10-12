@@ -42,20 +42,20 @@
 
         <form:errors path="inquiryDTO" cssClass="field-error"/>
 
-        <form:form method="post" action="/inquiry/update/${inquiry.id}" modelAttribute="inquiryDTO">
+        <form:form method="post" action="/inquiry/update/${inquiryDTO.inquiryId}" modelAttribute="inquiryFormDTO">
 
             <!-- 비밀글 체크 -->
             <div class="form-check form-check-inline mt-3">
-                <c:if test="${inquiry.secret == true}">
-                <input class="form-check-input" type="checkbox" name="secret" id="secret"
-                       checked="checked"></c:if>
+                <c:if test="${inquiryDTO.secret == true}">
+                    <input class="form-check-input" type="checkbox" name="secret" id="secret"
+                           checked="checked"></c:if>
                 <label class="form-check-label">비밀글 설정</label>
             </div><br/><br/>
 
             <div>
                 <label for="inquiryType">문의 유형</label>
                 <select id="inquiryType" name="inquiryType" onchange="selectType();" style="width: 300px;">
-                    <option selected="selected" value="${inquiry.inquiryType}">${inquiry.inquiryType}</option>
+                    <option selected="selected" value="inquiryType">${inquiryDTO.inquiryType}</option>
                     <option value="회원정보">회원정보/계정</option>
                     <option value="거래">거래</option>
                     <option value="기타서비스">기타 서비스</option>
@@ -65,7 +65,7 @@
             <div>
                 <span>상세 선택</span>
                 <select id="type_회원정보" onchange="selectDetail(this);">
-                    <option selected="selected"  value="${inquiry.detailType}">${inquiry.detailType}</option>
+                    <option selected="selected">${inquiryDTO.detailType}</option>
                     <option value="회원가입,정보수정">회원가입/정보수정</option>
                     <option value="아이디,비밀번호">아이디/비밀번호</option>
                     <option value="로그인">로그인</option>
@@ -92,14 +92,14 @@
 
             <div>
                 <label for="inquirySubject">제목</label>
-                <input type="text" id="inquirySubject" name="inquirySubject" value="${inquiry.inquirySubject}",
-                       class="form-control" placeholder="제목을 입력하세요">
+                <input type="text" id="inquirySubject" name="inquirySubject"
+                       class="form-control" placeholder="${inquiryDTO.inquirySubject}">
                 <form:errors path="inquirySubject" cssClass="field-error"/>
             </div>
             <div>
                 <label for="inquiryContent">내용</label>
-                <input type="text" id="inquiryContent" name="inquiryContent" value="${inquiry.inquiryContent}",
-                       class="form-control" placeholder="내용을 입력하세요">
+                <input type="text" id="inquiryContent" name="inquiryContent"
+                       class="form-control" placeholder="${inquiryDTO.inquiryContent}">
                 <form:errors path="inquiryContent" cssClass="field-error"/>
             </div>
             <hr class="my-4">
