@@ -5,7 +5,6 @@ import com.youprice.onion.dto.board.ReviewFormDTO;
 import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.service.board.ReviewService;
 import com.youprice.onion.service.member.MemberService;
-import com.youprice.onion.service.order.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -44,14 +43,22 @@ public class ReviewController {
     }
 
     @GetMapping("/list")
-    public String reviewLists(Model model) {
+    public String reviewLists(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                                Model model) {
         MemberDTO memberDTO = memberService.getMemberDTO(1L);
-        List<ReviewDTO> reviewList = reviewService.findAllReview();
+        Page<ReviewDTO> reviewList = reviewService.findAll(pageable);
 
-        //List<ReviewDTO> reviewList = reviewService.userReviewList(1L,reviewId);
+        int pageNumber = reviewList.getPageable().getPageNumber();
+        int totalPages = reviewList.getTotalPages();
+        int pageBlock = 5;
+        int startBlockPage = ((pageNumber)/pageBlock)*pageBlock + 1;
+        int endBlockPage = startBlockPage + pageBlock - 1;
+        endBlockPage = totalPages < endBlockPage ? totalPages : endBlockPage;
 
-        model.addAttribute("reviewList",reviewList);
-        model.addAttribute("memberDTO",memberDTO);
+        model.addAttribute("startBlockPage", startBlockPage);
+        model.addAttribute("endBlockPage", endBlockPage);
+        model.addAttribute("reviewList", reviewList);
+        model.addAttribute("memberDTO", memberDTO);
 
         return "board/reviewList";
     }
