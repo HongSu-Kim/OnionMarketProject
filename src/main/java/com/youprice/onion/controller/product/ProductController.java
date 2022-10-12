@@ -30,9 +30,7 @@ public class ProductController {
     @PostMapping("add")//실제 상품 등록 주소
     public String addProduct(Model model, ProductDTO productDTO, ProductImageDTO productImageDTO, MultipartFile file) throws Exception{
 
-        Long productId = productService.addProduct(productDTO);
-
-        productService.addProductImage(productImageDTO,file,productId);
+        Long productId = productService.addProduct(productDTO,productImageDTO,file);
 
         model.addAttribute("productId",productId);
 
