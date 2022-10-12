@@ -12,6 +12,8 @@ import com.youprice.onion.repository.order.OrderRepository;
 import com.youprice.onion.repository.product.ProductRepository;
 import com.youprice.onion.service.board.ReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,7 +22,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -68,8 +69,10 @@ public class ReviewServiceImpl implements ReviewService {
     public List<ReviewDTO> userReviewList(Long buyerId, Long reviewId){
 
     }*/
-    public List<ReviewDTO> findAllReview(){
-       return reviewRepository.findAll().stream().map(ReviewDTO::new).collect(Collectors.toList());
+    @Override
+    public Page<ReviewDTO> findAll(Pageable pageable) {
+        Page<ReviewDTO> list = reviewRepository.findAll(pageable).map(ReviewDTO::new);
+        return list;
     }
 
     //=======================================================================================
@@ -88,6 +91,7 @@ public class ReviewServiceImpl implements ReviewService {
         return storeFileList;
     }
     public String filePath(){
+        //user.dir -> C:\Users\osr\Desktop\study\OnionMarketProject
         String filePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images";
         return filePath;
     }

@@ -1,13 +1,12 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<c:set var = "cp" value = "<%=request.getContextPath()%>"/>
 <!DOCTYPE HTML>
 <html>
 <head>
     <meta charset="utf-8">
-    <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/resources/css/inquiryList.css" rel="stylesheet">
 </head>
 <body id="inquiryBody">
 <div class="container">
@@ -46,9 +45,9 @@
             </thead>
             <tbody>
 
-            <c:forEach var="dto" items="${reviewList }">
+            <c:forEach var="dto" items="${reviewList.content }">
                 <tr>
-                    <td>${dto.reviewId}</td>
+                    <td>${reviewList.totalElements - (reviewList.number * reviewList.size) - reviewList.content.indexOf(dto)}</td>
                     <td>${dto.orderId}
                     <td>
                         <div>
@@ -62,6 +61,42 @@
                     <td>${dto.reviewDate}</td>
                 </tr>
             </c:forEach>
+
+            <!-- 페이징 -->
+            <div class="text-xs-center">
+                <ul class="pagination justify-content-center">
+
+                    <!-- 이전 -->
+                    <c:choose>
+                        <c:when test="${reviewList.first}"></c:when>
+                        <c:otherwise>
+                            <li class="page-item"><a class="page-link" href="/inquiry/list/?page=0">처음으로</a></li>
+                            <li class="page-item"><a class="page-link" href="/inquiry/list/?page=${reviewList.number-1}">◀</a></li>
+                        </c:otherwise>
+                    </c:choose>
+
+                    <!-- 페이지 그룹 -->
+                    <c:forEach begin="${startBlockPage}" end="${endBlockPage}" var="i">
+                        <c:choose>
+                            <c:when test="${reviewList.pageable.pageNumber+1 == i}">
+                                <li class="page-item disabled"><a class="page-link" href="/review/list/?page=${i-1}">${i}</a></li>
+                            </c:when>
+                            <c:otherwise>
+                                <li class="page-item"><a class="page-link" href="/review/list/?page=${i-1}">${i}</a></li>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+
+                    <!-- 다음 -->
+                    <c:choose>
+                        <c:when test="${reviewList.last}"></c:when>
+                        <c:otherwise>
+                            <li class="page-item "><a class="page-link" href="/review/list/?page=${reviewList.number+1}">▶</a></li>
+                            <li class="page-item "><a class="page-link" href="/review/list/?page=${reviewList.totalPages-1}">끝으로</a></li>
+                        </c:otherwise>
+                    </c:choose>
+                </ul>
+            </div>
 
             </tbody>
         </table>
