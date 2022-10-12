@@ -1,6 +1,7 @@
 package com.youprice.onion.repository.product;
 
 
+import com.youprice.onion.entity.member.Keyword;
 import com.youprice.onion.entity.product.Town;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,27 +15,9 @@ public interface TownRepositoy extends JpaRepository<Town,Long> {
 
     List<Town> findAll();
 
-    @Repository
-    @RequiredArgsConstructor
+    List<Town> findAllByMemberId(Long memberId);
 
 
-    public class Townrepositoy {
-
-
-        private final EntityManager em;
-
-
-        public List<Town> findAll(){
-
-            String jpql = "select o from Town o join fetch o.coordinate" ;
-
-            //select m from Member m join fetch m.team
-            return  em.createQuery(jpql,Town.class )
-                    .getResultList();
-
-        }
-
-    }
 }
 
 

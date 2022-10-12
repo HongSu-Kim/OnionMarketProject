@@ -1,5 +1,7 @@
 package com.youprice.onion.dto.order;
 
+import com.youprice.onion.dto.member.MemberDTO;
+import com.youprice.onion.dto.product.ProductDTO;
 import com.youprice.onion.entity.order.Order;
 import lombok.*;
 
@@ -19,9 +21,13 @@ public class OrderDTO {
 	private String orderState;//주문상태-order,delivery,cancel,complete
     private LocalDateTime orderDate;//주문시간
     private LocalDateTime modifiedDate;//수정시간
-	private DeliveryDTO deliveryDTO;//delivery
+
+	private MemberDTO memberDTO;
+	private ProductDTO productDTO;
 
 	public OrderDTO(Order order) {
+
+		// order
 		orderId = order.getId();
 		memberId = order.getMember().getId();
 		productId = order.getProduct().getId();
@@ -31,7 +37,9 @@ public class OrderDTO {
 		orderState = order.getOrderState().name();
 		orderDate = order.getOrderDate();
 		modifiedDate = order.getModifiedDate();
-		deliveryDTO = new DeliveryDTO(order.getDelivery());
+
+//		memberDTO = new MemberDTO(order.getMember());
+//		productDTO = new ProductDTO(order.getProduct());
 	}
 
 }

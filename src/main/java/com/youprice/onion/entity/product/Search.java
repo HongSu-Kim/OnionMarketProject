@@ -1,7 +1,7 @@
 package com.youprice.onion.entity.product;
 
 
-import com.youprice.onion.dto.product.SearchCreateDTO;
+import com.youprice.onion.dto.product.SearchAddDTO;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -19,9 +19,9 @@ public class Search {
     private int searchCount; //검색수
 
 
-    public Search SearchCreate(SearchCreateDTO searchCreateDto){
+    public Search SearchAdd(SearchAddDTO searchAddDTO){
 
-    this.searchName = searchCreateDto.getSearchName();
+    this.searchName = searchAddDTO.getSearchName();
     this.searchCount = 1;
 
     return this;

@@ -22,11 +22,10 @@ public class ProductCategory {
       private Category category;//카테고리번호 FK
 
 
-      public  ProductCategory productCategoryCreate(Product product, Category category, ProductCategoryCreateDTO productCategorydto) {
+      public  ProductCategory productCategoryCreate(ProductCategoryCreateDTO productCategoryCreateDTO,Product product, Category category) {
 
 
 
-          this.id = productCategorydto.getProduct_category_id();
           this.product = product;
           this.category = category;
 

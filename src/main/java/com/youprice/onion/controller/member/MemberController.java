@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("member")
 public class MemberController {
 
-    private final MemberServiceImpl memberServiceImpl;
+    private final MemberService memberService;
 
     //메인 페이지
     @GetMapping("/")
@@ -39,8 +39,8 @@ public class MemberController {
     //회원가입 처리
     @PostMapping("/join")
     public String join(MemberDTO memberDTO) {
-        memberServiceImpl.saveMember(memberDTO);
-        return "redirect:member/login";
+        memberService.saveMember(memberDTO);
+        return "redirect:login";
     }
 
     //로그인 페이지
@@ -52,6 +52,12 @@ public class MemberController {
     @GetMapping("/logout")
     public String logout() {
         return "member/logout";
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("/info")
+    public String infoView() {
+        return "member/info";
     }
 
     //접근 거부 페이지

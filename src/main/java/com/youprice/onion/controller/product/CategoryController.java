@@ -1,21 +1,17 @@
 package com.youprice.onion.controller.product;
 
 
-import com.youprice.onion.dto.product.CategoryCreateDTO;
-import com.youprice.onion.dto.product.CategoryUpdateDTO;
+import com.youprice.onion.dto.product.CategoryAddDTO;
+import com.youprice.onion.dto.product.CategoryFindDTO;
 import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.service.product.CategoryService;
-import com.youprice.onion.service.product.impl.CategoryServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.query.criteria.internal.predicate.IsEmptyPredicate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -26,10 +22,10 @@ public class CategoryController {
     private final CategoryService categoryService;
 
 
-    @GetMapping("category")
-    public String create1(Model model) {
+    @GetMapping("category") //카테고리조회
+    public String CategoryAdd(Model model) {
 
-        List<Category> category =categoryService.findCategory();
+        List<Category> category =categoryService.findTopCategory();
 
         model.addAttribute("category",category);
         
@@ -37,19 +33,19 @@ public class CategoryController {
         return "product/category";
     }
 
-    @PostMapping("category")
-    public String create(CategoryCreateDTO categoryCreatedto, Category category, Model model, @RequestParam("topcategoryName")
-                         String topcategoryName,@RequestParam("categoryName")String categoryName) {
+    @PostMapping("category") //카테고리생성
+    public String CategoryAdd(CategoryAddDTO categoryCreatedto, Category category, Model model, @RequestParam("topcategoryName")
+                         String topcategoryName, @RequestParam("categoryName")String categoryName) {
 
 
         if(categoryName =="") { //상위카테고리생성
 
-            categoryService.TopCategoryCreate(categoryCreatedto,topcategoryName);
+            categoryService.TopCategoryAdd(categoryCreatedto,topcategoryName);
 
         }
 
         else //하위카테고리생성
-            categoryService.SubCategoryCreate(categoryCreatedto, topcategoryName);
+            categoryService.SubCategoryAdd(categoryCreatedto, topcategoryName);
 
 
 
@@ -57,10 +53,10 @@ public class CategoryController {
         return "redirect:/category/category";
     }
 
-    @GetMapping("categoryupdate")
+    @GetMapping("categoryupdate") //카테고리 수정
     public String create(Model model) {
 
-        List<Category> Topcategory =categoryService.findCategory();
+        List<Category> Topcategory =categoryService.findTopCategory();
         List<Category> Subcategory = categoryService.findSubCategory();
 
         model.addAttribute("Topcategory",Topcategory);
@@ -69,7 +65,9 @@ public class CategoryController {
         return "product/categoryupdate";
     }
 
-    @PostMapping("categoryupdate")
+
+
+    @PostMapping("categoryupdate") //카테고리 삭제
     public String update (@RequestParam("id") Long id) {
 
 

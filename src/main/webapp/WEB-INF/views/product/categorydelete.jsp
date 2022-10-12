@@ -142,7 +142,7 @@
 
 
 <form:form action=""  method="post">
-    <input type="text" name="category_id" value="삭제할 번호를 입력!"/>
+    <input type="text" name="id" value="삭제할 번호를 입력!"/>
     <input type="submit"  value="삭제하기"/>
 
 

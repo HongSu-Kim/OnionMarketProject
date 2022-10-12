@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -23,10 +24,9 @@ public class Review {
     @JoinColumn(name = "order_id")
     private Order order; // 주문번호 FK
 
-    private String reviewType; // 리뷰타입
     private String reviewContent; // 리뷰내용
     private Integer grade; // 평점
-    private LocalDate reviewDate; //등록일
+    private LocalDateTime reviewDate; //등록일
 
     /*@OneToMany(mappedBy = "review")
     private List<ReviewComment> reviewComment;*/
@@ -34,11 +34,10 @@ public class Review {
     @OneToMany(mappedBy = "review") // 이미지
     private List<ReviewImage> reviewImageName;
 
-    public Review(Order order, String reviewContent, Integer grade, LocalDate reviewDate) {
+    public Review(Order order, String reviewContent, Integer grade) {
         this.order = order;
         this.reviewContent = reviewContent;
         this.grade = grade;
-        this.reviewDate = reviewDate;
+        this.reviewDate = LocalDateTime.now();
     }
-
 }

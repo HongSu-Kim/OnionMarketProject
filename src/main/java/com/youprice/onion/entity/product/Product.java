@@ -29,6 +29,10 @@ public class Product {
     @JoinColumn(name = "member_id")
     private Member member;//회원번호 FK
 
+    @ManyToOne(fetch = FetchType.LAZY )
+    @JoinColumn(name = "town_id")
+    private Town town;//동네번호 FK
+
     private String productName; //상품명
     private String subject; //제목
     private String content; //내용
@@ -78,7 +82,7 @@ public class Product {
 
     public Product createProduct(ProductDTO productDTO) {
 
-        this.id = productDTO.getId();
+        this.id = productDTO.getProductId();
         this.productName = productDTO.getProductName();
         this.subject = productDTO.getSubject();
         this.content = productDTO.getContent();

@@ -1,7 +1,9 @@
 package com.youprice.onion.controller.member;
 
 import com.youprice.onion.dto.member.KeywordCreateDTO;
+import com.youprice.onion.dto.member.KeywordListDTO;
 import com.youprice.onion.entity.member.Keyword;
+import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.repository.member.KeywordRepositoy;
 import com.youprice.onion.service.member.KeywordService;
@@ -32,27 +34,19 @@ public class KeywordController {
 
     @GetMapping("keyword")
     public String KeywordCreate(Model model) {
-        List<Category> finduniform = categoryService.finduniform();
-        List<Category> footballboot = categoryService.footballboot();
 
-        model.addAttribute("finduniform", finduniform);
-        model.addAttribute("footballboot", footballboot);
+
         return "product/keyword";
     }
 
+
     @PostMapping("keyword")
-    public String KeywordCreate(Model model, KeywordCreateDTO keywordCreateDto, @RequestParam("userId") String userId
-            , @RequestParam("keywordName") String keywordName) {
+    public String KeywordCreate(Model model, KeywordCreateDTO keywordCreateDto) {
 
 
-        List<Category> finduniform = categoryService.finduniform();
-        List<Category> footballboot = categoryService.footballboot();
+        keywordCreateDto.setMemberId(1L);
 
-        model.addAttribute("finduniform", finduniform);
-        model.addAttribute("footballboot", footballboot);
-
-
-        keywordService.KeywordCreate(keywordCreateDto, userId, keywordName);
+        keywordService.KeywordCreate(keywordCreateDto);
 
 
         return "redirect:/keyword/keyword";
@@ -60,10 +54,12 @@ public class KeywordController {
 
 
     @GetMapping("mykeyword")
-    public String KeywordAlarm(Model model, @RequestParam("userId") String userId) {
+    public String KeywordAlarm(Model model) {
 
-        keywordService.KeywordList(model, userId);
 
+       List<KeywordListDTO> MykeywordList = keywordService.KeywordList(1L);
+
+       model.addAttribute("MykeywordList",MykeywordList);
         return "product/mykeyword";
     }
 
