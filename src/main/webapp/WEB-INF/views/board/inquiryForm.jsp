@@ -43,7 +43,8 @@
 
     <form:errors path="inquiryDTO" cssClass="field-error"/>
 
-    <form:form method="post" action="/inquiry/created" modelAttribute="inquiryDTO">
+    <form:form method="post" action="/inquiry/created" modelAttribute="inquiryFormDTO">
+        <%-- <input type="hidden" name="memberId" value="${memberDTO.memberId}">--%>
 
         <!-- 비밀글 체크 -->
         <div class="form-check form-check-inline mt-3">
@@ -91,14 +92,12 @@
 
         <div>
             <label for="inquirySubject">제목</label>
-            <input type="text" id="inquirySubject" name="inquirySubject" value="${inquiryDTO.inquirySubject}",
-                   class="form-control" placeholder="제목을 입력하세요">
+            <input type="text" id="inquirySubject" name="inquirySubject" class="form-control" placeholder="제목을 입력하세요">
             <form:errors path="inquirySubject" cssClass="field-error"/>
         </div>
         <div>
             <label for="inquiryContent">내용</label>
-            <input type="text" id="inquiryContent" name="inquiryContent" value="${inquiryDTO.inquiryContent}",
-                   class="form-control" placeholder="내용을 입력하세요">
+            <input type="text" id="inquiryContent" name="inquiryContent" class="form-control" placeholder="내용을 입력하세요">
             <form:errors path="inquiryContent" cssClass="field-error"/>
         </div>
         <hr class="my-4">
@@ -106,7 +105,7 @@
             <div class="col">
                 <button class="w-100 btn btn-success btn-lg" type="submit">등록하기</button>
                 <button class="w-100 btn btn-secondary btn-lg"
-                        onclick="location.href='/'" type="button">취소</button>
+                        onclick="location.href='/inquiry/list'" type="button">취소</button>
             </div>
         </div>
     </form:form>
