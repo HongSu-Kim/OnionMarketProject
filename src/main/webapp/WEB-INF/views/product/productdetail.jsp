@@ -16,17 +16,26 @@
 
 <div>
 	<h1>상품 정보</h1>
-	상품명: ${dto.productName}<br/>
-	제목: ${dto.subject}<br/>
-	내용: <br/><textarea rows="10" cols="50">${dto.content}</textarea><br/>
-	상품가격: ${dto.price}<br/>
-	등록일: ${dto.uploadDate} <br/>
+		상품명: ${dto.productName}<br/>
+		제목: ${dto.subject}<br/>
+		내용: <br/><textarea rows="10" cols="50">${dto.content}</textarea><br/>
+		상품가격: ${dto.price}<br/>
+		등록일: ${dto.uploadDate} <br/>
 	<hr/>
 </div>
 <div>
-	이미지: <img src="${productImageDTO.file}"/>
-
+	<c:forEach var="productImageDTO" items="${productImageDTO}">
+		이미지: <img src="${productImageDTO.productImageName}"/>
+	</c:forEach>
 </div>
+<form action="/product/update" method="get">
+	<input type="submit" value="상품 수정"/>
+</form>
+
+<form action="/product/delete" method="get">
+	<input type="submit" value="상품 삭제"/>
+</form>
+
 <form action="/product/productmain" method="get">
 	<input type="submit" value="목록 보기"/>
 </form>
