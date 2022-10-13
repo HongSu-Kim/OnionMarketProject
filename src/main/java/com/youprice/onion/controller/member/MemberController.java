@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("member")
 public class MemberController {
 
@@ -36,9 +36,9 @@ public class MemberController {
         return "member/join";
     }
 
-    //회원가입 처리
-    @PostMapping("/join")
-    public String join(MemberDTO memberDTO) {
+    //회원가입
+    @PostMapping("/joinProc")
+    public String joinProc(MemberDTO memberDTO) {
         memberService.saveMember(memberDTO);
         return "redirect:login";
     }
