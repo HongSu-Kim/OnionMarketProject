@@ -245,7 +245,6 @@ CREATE TABLE wish (
 	wish_id         	NUMBER  		NOT NULL,
 	member_id       	NUMBER  		NOT NULL,
 	product_id      	NUMBER  		NOT NULL,
-	created_date    	DATE    		DEFAULT SYSDATE,
 	CONSTRAINT PK_WISH PRIMARY KEY (wish_id),
 	CONSTRAINT FK_WISH_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id),
 	CONSTRAINT FK_WISH_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id)

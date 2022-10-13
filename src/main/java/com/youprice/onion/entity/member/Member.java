@@ -85,8 +85,8 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Wish> wishList = new ArrayList<>(); //찜-회원번호 FK
 
-    @OneToMany(mappedBy = "member")
-    private List<Review> reviewList = new ArrayList<>(); //리뷰-회원번호 FK
+//    @OneToMany(mappedBy = "member")
+//    private List<Review> reviewList = new ArrayList<>(); //리뷰-회원번호 FK
 
     @Builder
     public Member(Long id, Role role, String userId, String pwd, String name, String nickname, LocalDate birth, String tel, String postcode, String address, String detailAddress, String extraAddress, String email, String memberImageName, int cash, int point, int userGrade, int complaintCount) {
