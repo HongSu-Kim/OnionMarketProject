@@ -26,10 +26,16 @@
     <div>
         내용:${noticeDTO.noticeContent}
     </div>
+    <div>
+        <c:forEach items="${noticeDTO.noticeImageList}" var="noticeImageDTO">
+            <img src="/images/${noticeImageDTO.noticeImageName}" width="300" height="300"/>
+        </c:forEach>
+    </div>
 
     <div>
         <button class="button" onclick="location.href='/notice/update/${id}'">수정하기</button>
         <button class="button" onclick="location.href='/notice/delete/${id}'">삭제</button>
+        <button class="button" onclick="location.href='/notice/list'" aline="center">돌아가기</button>
     </div>
 
 </body>

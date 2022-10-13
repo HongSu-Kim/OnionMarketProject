@@ -2,11 +2,13 @@ package com.youprice.onion.entity.board;
 
 import com.youprice.onion.entity.board.Notice;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class NoticeImage {
 
     @Id
@@ -20,4 +22,8 @@ public class NoticeImage {
 
     private String noticeImageName; //첨부파일명
 
+    public NoticeImage(Notice notice, String noticeImageName) {
+        this.notice = notice;
+        this.noticeImageName = noticeImageName;
+    }
 }
