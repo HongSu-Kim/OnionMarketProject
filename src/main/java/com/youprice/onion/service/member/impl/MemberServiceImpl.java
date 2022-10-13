@@ -34,9 +34,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     @Override
-    public Long saveMember(MemberDTO.Request dto) {
+    public Long saveMember(MemberDTO memberDTO) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        dto.setPwd(passwordEncoder.encode(dto.getPwd())); //패스워드 암호화 저장
+        memberDTO.setPwd(passwordEncoder.encode(memberDTO.getPwd())); //패스워드 암호화 저장
 /*
 
         if (!memberDTO.getUserId().equals("admin")) {
@@ -45,7 +45,7 @@ public class MemberServiceImpl implements MemberService {
             memberDTO.setRole(Role.valueOf("ADMIN"));
         }
 */
-        return memberRepository.save(dto.toEntity()).getId();
+        return memberRepository.save(memberDTO.toEntity()).getId();
     }
 
     @Override
