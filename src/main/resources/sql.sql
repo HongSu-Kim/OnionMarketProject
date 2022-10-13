@@ -331,7 +331,6 @@ CREATE TABLE answer (
 	answer_id	    	NUMBER	        NOT NULL,
 	inquiry_id	    	NUMBER	        NOT NULL,
 	member_id	    	NUMBER	        NOT NULL,
-	answer_subject      VARCHAR2(30)    NOT NULL,
 	answer_content      VARCHAR2(255)	NOT NULL,
 	answer_date     	DATE            DEFAULT SYSDATE,
 	CONSTRAINT PK_ANSWER PRIMARY KEY (answer_id),
