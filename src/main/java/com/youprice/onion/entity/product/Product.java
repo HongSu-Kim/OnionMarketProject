@@ -83,11 +83,18 @@ public class Product {
     public Product createProduct(ProductDTO productDTO) {
 
         this.id = productDTO.getProductId();
+//        this.member = member.getUserId();
+//        this.town = town.getId();
         this.productName = productDTO.getProductName();
         this.subject = productDTO.getSubject();
         this.content = productDTO.getContent();
         this.price = productDTO.getPrice();
         this.uploadDate = LocalDateTime.now();
+        this.updateDate = LocalDateTime.now();
+        this.viewCount = 0;
+        this.productProgress = ProductProgress.TRADINGS;
+        this.payStatus = "yes";
+        this.blindStatus = "no";
 
         return this;
     }
