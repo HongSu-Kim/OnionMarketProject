@@ -5,6 +5,9 @@ import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.service.board.NoticeService;
 import com.youprice.onion.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.file.ConfigurationSource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -12,8 +15,13 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.List;
 
 import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
@@ -34,9 +42,10 @@ public class NoticeController {
     }
 
     @PostMapping("/created")
-    public String createNotice(@Valid @ModelAttribute NoticeDTO noticeDTO){
+    public String createNotice(@Valid @ModelAttribute NoticeDTO noticeDTO, Model model
+                            , @RequestParam("noticeImageName")List<MultipartFile> noticeImageName) throws IOException {
         System.out.println(noticeDTO.getNoticeType());
-        noticeService.saveNotice(noticeDTO);
+        noticeService.saveNotice(noticeDTO, noticeImageName);
 
         return "redirect:/notice/list";
     }
@@ -88,6 +97,12 @@ public class NoticeController {
         model.addAttribute("memberDTO", memberDTO);
 
         return "board/noticeArticle";
+    }
+
+    @ResponseBody
+    @GetMapping("/images/{filename}")
+    public Resource image(@PathVariable String filename) throws MalformedURLException{
+        return new UrlResource("file:" + noticeService.filePath()+filename);
     }
 
     //수정 화면으로 이동
