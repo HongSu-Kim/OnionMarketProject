@@ -1,5 +1,6 @@
 package com.youprice.onion.entity.board;
 
+import com.youprice.onion.dto.board.InquiryFormDTO;
 import com.youprice.onion.entity.member.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,15 +38,26 @@ public class Inquiry {
     @OneToOne(mappedBy = "inquiry")
     private Answer answer;
 
-    public Inquiry(Member member, String inquiryType, String detailType, String inquirySubject,
-                   String inquiryContent, String status, boolean secret) {
+    public Inquiry(Member member, InquiryFormDTO inquiryFormDTO) {
         this.member = member;
-        this.inquiryType = inquiryType;
-        this.detailType = detailType;
-        this.inquirySubject = inquirySubject;
-        this.inquiryContent = inquiryContent;
+        this.inquiryType = inquiryFormDTO.getInquiryType();
+        this.detailType = inquiryFormDTO.getDetailType();
+        this.inquirySubject = inquiryFormDTO.getInquirySubject();
+        this.inquiryContent = inquiryFormDTO.getInquiryContent();
         this.inquiryDate = LocalDate.now();
+        this.status = inquiryFormDTO.getStatus();
+        this.secret = inquiryFormDTO.isSecret();
+    }
+
+    public void updateInquiry(Long id, InquiryFormDTO inquiryFormDTO){
+        this.id = id;
+        this.inquiryType = inquiryFormDTO.getInquiryType();
+        this.detailType = inquiryFormDTO.getDetailType();
+        this.inquirySubject = inquiryFormDTO.getInquirySubject();
+        this.inquiryContent = inquiryFormDTO.getInquiryContent();
+        this.secret = inquiryFormDTO.isSecret();
+    }
+    public void modifyStatus(String status){
         this.status = status;
-        this.secret = secret;
     }
 }
