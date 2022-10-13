@@ -1,6 +1,6 @@
 package com.youprice.onion.security.auth;
 
-import com.youprice.onion.dto.member.MemberDTO;
+import com.youprice.onion.dto.member.SessionDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -17,11 +17,11 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
 
     private final HttpSession session;
 
-    //@LoginUser 어노테이션이 붙어 있고, 파라미터 클래스 타입이 UserDto.Response인가 판단 후 true반환
+    //@LoginUser 어노테이션이 붙어 있고, 파라미터 클래스 타입이 SessionDTO인가 판단 후 true 반환
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         boolean isLoginUserAnnotation = parameter.getParameterAnnotation(LoginUser.class) != null;
-        boolean isUserClass = MemberDTO.Response.class.equals(parameter.getParameterType());
+        boolean isUserClass = SessionDTO.class.equals(parameter.getParameterType());
         return isLoginUserAnnotation && isUserClass;
     }
 
