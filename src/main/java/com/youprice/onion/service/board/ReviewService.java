@@ -19,6 +19,8 @@ public interface ReviewService {
     public ReviewDTO findReviewDTO(Long id);
     //List<ReviewDTO> userReviewList(Long buyerId, Long reviewId);
     Page<ReviewDTO> findAll(Pageable pageable);
+    void updateReview(Long id, ReviewFormDTO form);
+    void deleteReview(ReviewDTO reviewDTO); // 삭제
 
     // 사진
     String filePath();
