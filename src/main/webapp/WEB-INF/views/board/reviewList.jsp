@@ -30,8 +30,6 @@
         </c:if>
     </div><br/>
 
-
-    <hr class="my-4">
     <div>
         <table class="table">
             <thead>
@@ -41,6 +39,7 @@
                 <th>리뷰 내용</th>
                 <th>별점</th>
                 <th>등록일</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -57,11 +56,23 @@
                         </div>
                         ${dto.reviewContent}
                     </td>
-                    <td>${dto.grade}</td>
+                    <td>
+                        <c:forEach var="i" begin="1" end="${dto.grade}">
+                            ★
+                        </c:forEach>
+                    </td>
                     <td>${dto.reviewDate}</td>
+
+                    <!-- 세션아이디와 같을때만 -->
+                        <%-- <c:if test="${memberDTO.id == }"><button type=submit>수정하기</button></c:if> --%>
+                    <td>
+                        <button onclick="location.href='/review/update/${dto.reviewId}'">수정</button>
+                        <button onclick="location.href='/review/delete/${dto.reviewId}'">삭제</button>
+                    </td>
                 </tr>
             </c:forEach>
-
+            </tbody>
+        </table>
             <!-- 페이징 -->
             <div class="text-xs-center">
                 <ul class="pagination justify-content-center">
@@ -70,8 +81,8 @@
                     <c:choose>
                         <c:when test="${reviewList.first}"></c:when>
                         <c:otherwise>
-                            <li class="page-item"><a class="page-link" href="/inquiry/list/?page=0">처음으로</a></li>
-                            <li class="page-item"><a class="page-link" href="/inquiry/list/?page=${reviewList.number-1}">◀</a></li>
+                            <li class="page-item"><a class="page-link" href="/review/list/?page=0">처음으로</a></li>
+                            <li class="page-item"><a class="page-link" href="/review/list/?page=${reviewList.number-1}">◀</a></li>
                         </c:otherwise>
                     </c:choose>
 
@@ -98,8 +109,6 @@
                 </ul>
             </div>
 
-            </tbody>
-        </table>
     </div>
 
 

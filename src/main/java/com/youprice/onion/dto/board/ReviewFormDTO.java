@@ -7,6 +7,8 @@ import lombok.Setter;
 public class ReviewFormDTO {
 
     private Long orderId;
+    private Long memberId;
     private String reviewContent;
     private Integer grade;
+    private Long salesId;
 }

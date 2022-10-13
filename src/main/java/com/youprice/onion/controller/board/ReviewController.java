@@ -124,7 +124,7 @@ public class ReviewController {
         ReviewDTO reviewDTO = reviewService.findReviewDTO(id);
         reviewService.deleteReview(reviewDTO);
 
-        return "redirect:/inquiry/list";
+        return "redirect:/review/list";
     }
 
 }
