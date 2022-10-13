@@ -1,13 +1,13 @@
 package com.youprice.onion.controller.member;
 
 import com.youprice.onion.dto.member.MemberDTO;
+import com.youprice.onion.dto.member.SessionDTO;
+import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.service.member.MemberService;
-import com.youprice.onion.service.member.impl.MemberServiceImpl;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,8 +38,8 @@ public class MemberController {
 
     //회원가입
     @PostMapping("/joinProc")
-    public String joinProc(MemberDTO.Request dto) {
-        memberService.saveMember(dto);
+    public String joinProc(MemberDTO memberDTO) {
+        memberService.saveMember(memberDTO);
         return "redirect:login";
     }
 
