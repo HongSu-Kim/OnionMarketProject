@@ -36,7 +36,7 @@ public class Review {
     /*@OneToMany(mappedBy = "review")
     private List<ReviewComment> reviewComment;*/
 
-    @OneToMany(mappedBy = "review") // 이미지
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL) // 이미지
     private List<ReviewImage> reviewImageName;
 
     public Review(Order order, Member member, String reviewContent, Integer grade, Long salesId) {

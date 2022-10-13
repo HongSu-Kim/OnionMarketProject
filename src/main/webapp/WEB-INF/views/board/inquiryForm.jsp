@@ -9,10 +9,6 @@
     <meta charset="utf-8">
     <title>문의 작성 페이지</title>
 
-    <link rel="stylesheet" type="text/css" href="/resources/css/bootstrap.min.css"/>
-    <script type="text/javascript" src="/resources/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/resources/js/ajaxUtil.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <style>
         .container {
             max-width: 1000px;
@@ -21,6 +17,9 @@
             border-color: #f07682;
             color: #dc3545;
             font-weight: bold;
+        }
+        .detailSelect{
+            display: none; !important;
         }
     </style>
 </head>
@@ -65,21 +64,21 @@
 
         <div>
             <span>상세 선택</span>
-            <select id="type_회원정보" onchange="selectDetail(this);">
+            <select id="type_회원정보" class="detailSelect" onchange="selectDetail(this);">
                 <option selected="selected">선택해주세요</option>
                 <option value="회원가입,정보수정">회원가입/정보수정</option>
                 <option value="아이디,비밀번호">아이디/비밀번호</option>
                 <option value="로그인">로그인</option>
                 <option value="회원등급">회원등급</option>
             </select>
-            <select id="type_거래" style="display: none" onchange="selectDetail(this);">
+            <select id="type_거래" class="detailSelect" onchange="selectDetail(this);">
                 <option selected="selected">선택해주세요</option>
                 <option value="거래방법">거래방법</option>
                 <option value="거래내역확인">거래내역확인</option>
                 <option value="상품찾기,문의">상품찾기/문의</option>
                 <option value="거래확정,후기">거래확정/후기</option>
             </select>
-            <select id="type_기타서비스" style="display: none" onchange="selectDetail(this);">
+            <select id="type_기타서비스" class="detailSelect" onchange="selectDetail(this);">
                 <option selected="selected">선택해주세요</option>
                 <option value="이벤트">이벤트</option>
                 <option value="광고등록방법">광고등록방법</option>
