@@ -28,6 +28,7 @@
 	<link rel="stylesheet" href="/template/css/owl.carousel.min.css" type="text/css">
 	<link rel="stylesheet" href="/template/css/slicknav.min.css" type="text/css">
 	<link rel="stylesheet" href="/template/css/style.css" type="text/css">
+	<link rel="stylesheet" href="/css/onion.css" type="text/css">
 
 	<link rel="stylesheet" href="${cp}<tiles:getAsString name = 'css1'/>"/>
 	<link rel="stylesheet" href="${cp}<tiles:getAsString name = 'css2'/>"/>
@@ -61,10 +62,10 @@
 	<script src="/template/js/owl.carousel.min.js"></script>
 	<script src="/template/js/main.js"></script>
 
-	<!-- jQuery -->
-<%--	<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>--%>
 	<!-- iamport.payment.js -->
 	<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
+	<!-- 주소 api -->
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 	<script src="${cp}<tiles:getAsString name = 'js1'/>"></script>
 	<script src="${cp}<tiles:getAsString name = 'js2'/>"></script>

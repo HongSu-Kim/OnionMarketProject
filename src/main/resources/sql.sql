@@ -245,7 +245,6 @@ CREATE TABLE wish (
 	wish_id         	NUMBER  		NOT NULL,
 	member_id       	NUMBER  		NOT NULL,
 	product_id      	NUMBER  		NOT NULL,
-	created_date    	DATE    		DEFAULT SYSDATE,
 	CONSTRAINT PK_WISH PRIMARY KEY (wish_id),
 	CONSTRAINT FK_WISH_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id),
 	CONSTRAINT FK_WISH_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id)
@@ -296,12 +295,14 @@ CREATE TABLE complain (
 CREATE TABLE review (
 	review_id	        NUMBER	        NOT NULL,
 	order_id	        NUMBER	        NOT NULL,
+    member_id       	NUMBER          NOT NULL,
 	review_content	    VARCHAR2(255)	NOT NULL,
 	grade	            NUMBER          NOT NULL,
 	review_date	        DATE            DEFAULT SYSDATE,
     sales_id            NUMBER          NOT NULL,
 	CONSTRAINT PK_REVIEW PRIMARY KEY (review_id),
-	CONSTRAINT FK_REVIEW_ORDER_ID FOREIGN KEY (order_id) REFERENCES orders(order_id)
+	CONSTRAINT FK_REVIEW_ORDER_ID FOREIGN KEY (order_id) REFERENCES orders(order_id),
+    CONSTRAINT FK_REVIEW_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id)
 );
 CREATE TABLE review_image(
     review_image_id     NUMBER          Not NULL,

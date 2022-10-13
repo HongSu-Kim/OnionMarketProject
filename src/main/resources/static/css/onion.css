@@ -1,0 +1,26 @@
+.header {
+    position: fixed;
+    width: 100%;
+    background-color: #fff;
+    z-index: 2;
+}
+
+.hero__categories {
+    position: relative;
+}
+
+.hero__categories ul {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 46px;
+    width: 100%;
+    z-index: 9;
+    background: #ffffff;
+}
+
+.breadcrumb-section {
+    position: relative;
+    top: 160px;
+    margin-bottom: 160px;
+}

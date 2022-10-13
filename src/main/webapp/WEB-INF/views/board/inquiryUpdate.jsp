@@ -1,15 +1,13 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
+<c:set var = "cp" value = "<%=request.getContextPath()%>"/>
 <!DOCTYPE HTML>
 <html>
 <head>
     <meta charset="utf-8">
     <title>문의 작성 페이지</title>
-
-    <link rel="stylesheet" type="text/css" href="/resources/css/bootstrap.min.css"/>
-    <script type="text/javascript" src="/resources/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/resources/js/ajaxUtil.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <style>
@@ -20,6 +18,9 @@
             border-color: #f07682;
             color: #dc3545;
             font-weight: bold;
+        }
+        .detailSelect{
+            display: none; !important;
         }
     </style>
 </head>
@@ -44,18 +45,19 @@
 
         <form:form method="post" action="/inquiry/update/${inquiryDTO.inquiryId}" modelAttribute="inquiryFormDTO">
 
+            <input type="hidden" name="memberId" value="${memberDTO.id}">
+
             <!-- 비밀글 체크 -->
             <div class="form-check form-check-inline mt-3">
-                <c:if test="${inquiryDTO.secret == true}">
                     <input class="form-check-input" type="checkbox" name="secret" id="secret"
-                           checked="checked"></c:if>
+                           checked="checked" placeholder="${secret}">
                 <label class="form-check-label">비밀글 설정</label>
             </div><br/><br/>
 
             <div>
                 <label for="inquiryType">문의 유형</label>
                 <select id="inquiryType" name="inquiryType" onchange="selectType();" style="width: 300px;">
-                    <option selected="selected" value="inquiryType">${inquiryDTO.inquiryType}</option>
+                    <option selected="selected" value="${inquiryDTO.inquiryType}">${inquiryDTO.inquiryType}</option>
                     <option value="회원정보">회원정보/계정</option>
                     <option value="거래">거래</option>
                     <option value="기타서비스">기타 서비스</option>
@@ -64,21 +66,21 @@
 
             <div>
                 <span>상세 선택</span>
-                <select id="type_회원정보" onchange="selectDetail(this);">
-                    <option selected="selected">${inquiryDTO.detailType}</option>
+                <select id="type_회원정보" class="detailSelect" onchange="selectDetail(this);">
+                    <option selected="${inquiryDTO.detailType}">${inquiryDTO.detailType}</option>
                     <option value="회원가입,정보수정">회원가입/정보수정</option>
                     <option value="아이디,비밀번호">아이디/비밀번호</option>
                     <option value="로그인">로그인</option>
                     <option value="회원등급">회원등급</option>
                 </select>
-                <select id="type_거래" style="display: none" onchange="selectDetail(this);">
+                <select id="type_거래" class="detailSelect" style="display: none" onchange="selectDetail(this);">
                     <option selected="selected">선택해주세요</option>
                     <option value="거래방법">거래방법</option>
                     <option value="거래내역확인">거래내역확인</option>
                     <option value="상품찾기,문의">상품찾기/문의</option>
                     <option value="거래확정,후기">거래확정/후기</option>
                 </select>
-                <select id="type_기타서비스" style="display: none" onchange="selectDetail(this);">
+                <select id="type_기타서비스" class="detailSelect" style="display: none" onchange="selectDetail(this);">
                     <option selected="selected">선택해주세요</option>
                     <option value="이벤트">이벤트</option>
                     <option value="광고등록방법">광고등록방법</option>
@@ -107,7 +109,7 @@
                 <div class="col">
                     <button class="w-100 btn btn-success btn-lg" type="submit">수정하기</button>
                     <button class="w-100 btn btn-secondary btn-lg"
-                            onclick="location.href='/'" type="button">취소</button>
+                            onclick="location.href='/inquiry/list'" type="button">취소</button>
                 </div>
             </div>
         </form:form>
