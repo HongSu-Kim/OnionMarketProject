@@ -17,7 +17,8 @@
 <div>
 <h2>공지사항</h2>
 </div>
-    <!-- 검색 -->
+<br/>
+    <!-- 검색
     <form action="/notice/list" method="GET">
         <select name="field" id="field">
             <option selected="selected">전체</option>
@@ -29,6 +30,7 @@
         <input type="text" id="searchBox" name="word"/>
         <button type="submit">검색</button>
     </form>
+    -->
 
     <!-- 리스트 -->
     <div>
@@ -57,14 +59,28 @@
         </table>
     </div>
 
+    <!-- 검색 -->
+    <form action="/notice/list" method="GET">
+        <select name="field" id="field">
+            <option selected="selected">전체</option>
+            <option value="NOTICE">공지사항</option>
+            <option value="QNA">QnA</option>
+            <option value="EVENT">이벤트</option>
+        </select>
+
+        <input type="text" id="searchBox" name="word"/>
+        <button type="submit">검색</button>
+    </form>
+
     <!-- 등록버튼 -->
-    <div>
+    <div align="right">
 
-
+        <!-- 운영진일때만 버튼 보이게 설정 -->
         <button class="button"><a href="/notice/created">등록</a></button>
 
-
     </div>
+
+
     <!-- 페이징 -->
     <div class="text-xs-center">
         <ul class="pagination justify-content-center">
