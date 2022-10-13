@@ -1,6 +1,6 @@
 package com.youprice.onion.service.order.impl;
 
-import com.youprice.onion.dto.order.WishProductDTO;
+import com.youprice.onion.dto.order.WishDTO;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.order.Wish;
 import com.youprice.onion.entity.product.Product;
@@ -25,9 +25,9 @@ public class WishServiceImpl implements WishService {
 	private final ProductRepository productRepository;
 
 	@Override
-	public List<WishProductDTO> getWishList(Long memberId) {
+	public List<WishDTO> getWishList(Long memberId) {
 		return wishRepository.findAllByMemberId(memberId)
-				.stream().map(WishProductDTO::new)
+				.stream().map(WishDTO::new)
 				.collect(Collectors.toList());
 	}
 
