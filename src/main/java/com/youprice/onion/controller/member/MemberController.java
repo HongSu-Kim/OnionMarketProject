@@ -38,8 +38,8 @@ public class MemberController {
 
     //회원가입
     @PostMapping("/joinProc")
-    public String joinProc(MemberDTO memberDTO) {
-        memberService.saveMember(memberDTO);
+    public String joinProc(MemberDTO.Request dto) {
+        memberService.saveMember(dto);
         return "redirect:login";
     }
 
