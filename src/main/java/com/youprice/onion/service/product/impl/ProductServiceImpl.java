@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,11 +31,27 @@ public class ProductServiceImpl implements ProductService {
     //상품 등록
     @Override
     @Transactional
-    public Long addProduct(ProductDTO productDTO) {
+    public Long addProduct(ProductDTO productDTO, ProductImageDTO productImageDTO, MultipartFile file)throws  Exception {
 
         Product product = new Product();
+        ProductImage productImage = new ProductImage();
+
         product.createProduct(productDTO);
 
+        productRepository.save(product);
+
+        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
+
+        String productImageName = file.getOriginalFilename();
+
+        File saveFile = new File(projectPath, productImageName);
+
+        file.transferTo(saveFile);
+        product = productRepository.findById(product.getId()).orElse(null);
+
+        productImage.addProductImage(productImageDTO,product,productImageName);
+
+        productImageRepository.save(productImage);
         return productRepository.save(product).getId();
     }
     //전체 상품 조회
@@ -53,26 +68,14 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findById(id);
     }
 
+    //상품 삭제
     @Override
     @Transactional
-    public void addProductImage(ProductImageDTO productImageDTO, MultipartFile file, Long id) throws  Exception{
+    public void deleteProduct(Long productId, Long productImageId, MultipartFile file) throws Exception {
 
-        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
-
-//        UUID uuid = UUID.randomUUID();
-//        uuid + "_" +
-        String productImageName = file.getOriginalFilename();
-
-        File saveFile = new File(projectPath, productImageName);
-
-        file.transferTo(saveFile);
-
-        ProductImage productImage = new ProductImage();
-
-        Product product = productRepository.findById(id).orElse(null);
-
-        productImage.addProductImage(productImageDTO,product,productImageName);
-
-        productImageRepository.save(productImage);
+        File deleteFile = new File(String.valueOf(file));
+        deleteFile.delete();
+        productImageRepository.deleteById(productImageId);
+        productRepository.deleteById(productId);
     }
 }

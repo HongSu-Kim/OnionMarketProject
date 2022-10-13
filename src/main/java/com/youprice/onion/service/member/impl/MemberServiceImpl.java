@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@Service
 @RequiredArgsConstructor
+@Service
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
@@ -37,12 +37,14 @@ public class MemberServiceImpl implements MemberService {
     public Long saveMember(MemberDTO memberDTO) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         memberDTO.setPwd(passwordEncoder.encode(memberDTO.getPwd())); //패스워드 암호화 저장
-        if (memberDTO.getUserId() != "admin") {
+/*
+
+        if (!memberDTO.getUserId().equals("admin")) {
             memberDTO.setRole(Role.valueOf("USER"));
         } else {
             memberDTO.setRole(Role.valueOf("ADMIN"));
         }
-
+*/
         return memberRepository.save(memberDTO.toEntity()).getId();
     }
 
@@ -50,49 +52,5 @@ public class MemberServiceImpl implements MemberService {
     public MemberDTO getMemberDTO(Long memberId) {
         return modelMapper.map(memberRepository.findById(memberId).orElse(null), MemberDTO.class);
     }
-
-/*
-
-    private final MemberRepository memberRepository;
-    private final MemberMapper memberMapper;
-
-    private final BCryptPasswordEncoder encoder;
-
-    //회원가입
-    @Override
-    public Long memberJoin(MemberDTO.RequestMemberDTO dto) {
-        //비밀번호 암호화
-        dto.encryptPassword(encoder.encode(dto.getPwd()));
-
-        Member member = dto.toEntity();
-        memberRepository.save(member);
-        log.info("회원가입 성공");
-
-        return member.getId();
-    }
-
-    @Override
-    public Long memberInfoModify(MemberDTO.RequestMemberDTO dto) {
-        return null;
-    }
-
-    @Override
-    public boolean checkUserIdDuplication(String userId) {
-        boolean userIdDuplicate = memberRepository.existsByUserId(userId);
-        return userIdDuplicate;
-    }
-
-    @Override
-    public boolean checkNicknameDuplication(String nickname) {
-        boolean nicknameDuplicate = memberRepository.existsByNickname(nickname);
-        return nicknameDuplicate;
-    }
-
-    @Override
-    public boolean checkEmailDuplication(String email) {
-        boolean emailDuplicate = memberRepository.existsByEmail(email);
-        return emailDuplicate;
-    }
-*/
 
 }

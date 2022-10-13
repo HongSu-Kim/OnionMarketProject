@@ -1,14 +1,12 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var = "cp" value = "<%=request.getContextPath()%>"/>
 <!DOCTYPE HTML>
 <html>
 <head>
     <meta charset="utf-8">
-<%--    <link href="/resources/css/bootstrap.min.css" rel="stylesheet">--%>
-<%--    <link href="/resources/css/inquiryList.css" rel="stylesheet">--%>
 </head>
 <body id="inquiryBody">
 <div class="container">
@@ -61,7 +59,7 @@
 
             <c:forEach var="dto" items="${questionlist.content }">
                 <tr>
-                    <td>${dto.inquiryId}</td>
+                    <td>${questionlist.totalElements - (questionlist.number * questionlist.size) - questionlist.content.indexOf(dto)}</td>
                     <td>${dto.inquiryType}/${dto.detailType}</td>
 
                     <!-- 비밀글 표시 -->
