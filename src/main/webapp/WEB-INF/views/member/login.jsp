@@ -16,7 +16,7 @@
 <h1>로그인</h1>
 <hr>
 
-<form action="/member/login" method="post">
+<form action="/member/loginProc" method="post">
 
     <input type="text" name="userId" placeholder="아이디를 입력해 주세요.">
     <input type="password" name="pwd" placeholder="비밀번호를 입력해 주세요.">
