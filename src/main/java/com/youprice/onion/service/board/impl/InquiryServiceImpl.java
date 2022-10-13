@@ -8,10 +8,12 @@ import com.youprice.onion.repository.board.InquiryRepository;
 import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.service.board.InquiryService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -19,14 +21,12 @@ public class InquiryServiceImpl implements InquiryService {
 
     private final InquiryRepository inquiryRepository;
     private final MemberRepository memberRepository;
-    private final ModelMapper modelMapper;
 
+    // 저장
     @Override
     public void saveInquiry(InquiryFormDTO inquiryFormDTO) {
         Member member = memberRepository.findById(inquiryFormDTO.getMemberId()).orElse(null);
-        Inquiry inquiry = new Inquiry(member, inquiryFormDTO.getInquiryType(),inquiryFormDTO.getDetailType(),
-                inquiryFormDTO.getInquirySubject(),inquiryFormDTO.getInquiryContent(),
-                inquiryFormDTO.getStatus(),inquiryFormDTO.isSecret());
+        Inquiry inquiry = new Inquiry(member, inquiryFormDTO);
         inquiryRepository.save(inquiry);
     }
     @Override
@@ -34,12 +34,18 @@ public class InquiryServiceImpl implements InquiryService {
         return inquiryRepository.findById(id).map(InquiryDTO::new).orElse(null);
     }
     // 수정
-    public void update(Long id, InquiryFormDTO form){
+    @Transactional
+    public void updateInquiry(Long id, InquiryFormDTO form){
+        Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(()-> new NoSuchElementException());
+        Long inquiryId = inquiry.getId();
+        inquiry.updateInquiry(inquiryId, form);
 
+        inquiryRepository.save(inquiry);
     }
     // 삭제
-    public void delete(InquiryDTO inquiryDTO){
-
+    public void deleteInquiry(InquiryDTO inquiryDTO){
+        Inquiry inquiry = inquiryRepository.findById(inquiryDTO.getInquiryId()).orElse(null);
+        inquiryRepository.delete(inquiry);
     }
 
     // 페이징 리스트
@@ -56,8 +62,6 @@ public class InquiryServiceImpl implements InquiryService {
             return inquiryRepository.findInquiriesByInquiryTypeLikeAndInquirySubjectContainingOrderById(field, word, pageable).map(InquiryDTO::new);
         }
     }
-
-
 
 
 

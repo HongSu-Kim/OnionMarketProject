@@ -10,12 +10,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 @RequiredArgsConstructor
@@ -88,18 +92,29 @@ public class InquiryController {
     public String updateForm(@PathVariable Long id, Model model){
 
         InquiryDTO inquiryDTO = inquiryService.findInquiryDTO(id);
+        MemberDTO memberDTO = memberService.getMemberDTO(inquiryDTO.getMemberId());
 
         model.addAttribute("inquiryDTO",inquiryDTO);
+        model.addAttribute("memberDTO",memberDTO);
         return "board/inquiryUpdate";
     }
     // 수정
     @PostMapping("/update/{id}")
-    public String inquiryUpdate(@PathVariable("id") Long id,
+    public String update(@PathVariable("id") Long id,
                                 @Valid @ModelAttribute InquiryFormDTO form, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return "board/inquiryUpdate";
         }
-        inquiryService.update(id, form);
+        inquiryService.updateInquiry(id, form);
+        return "redirect:/inquiry/article/{id}";
+    }
+
+    // 삭제
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable("id") Long id){
+
+        InquiryDTO inquiryDTO = inquiryService.findInquiryDTO(id);
+        inquiryService.deleteInquiry(inquiryDTO);
 
         return "redirect:/inquiry/list";
     }

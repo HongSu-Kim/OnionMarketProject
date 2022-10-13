@@ -1,11 +1,12 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<c:set var = "cp" value = "<%=request.getContextPath()%>"/>
 <!DOCTYPE HTML>
 <html>
 <head>
     <meta charset="utf-8">
-    <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
-
 </head>
 <body>
 <div class="tab-content align-content-center" style="max-width: 1200px; margin: 10px;">
@@ -24,7 +25,11 @@
     <div class="row">
         <div class="col">
             <button class="w-100 btn btn-primary btn-lg"
-                    onclick="location.href='/inquiry/update/${inquiryDTO.inquiryId}'" type="button">문의글 수정</button>
+                    onclick="location.href='/inquiry/update/${inquiryDTO.inquiryId}'" type="button">수정</button>
+        </div>
+        <div class="col">
+            <button class="w-100 btn btn-primary btn-lg"
+                    onclick="location.href='/inquiry/delete/${inquiryDTO.inquiryId}'" type="button">삭제</button>
         </div>
         <div class="col">
             <button class="w-100 btn btn-secondary btn-lg"
