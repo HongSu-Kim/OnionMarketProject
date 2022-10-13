@@ -50,9 +50,11 @@ public class Order {
     private List<Review> reviewList = new ArrayList<>();
 
 
-    public Order(Member member, Product product, int orderPayment) {
-        this.member = member;
+    public Order(Member member, Product product, String orderNum, String imp_uid, int orderPayment) {
+		this.member = member;
         this.product = product;
+		this.orderNum = orderNum;
+		this.imp_uid = imp_uid;
         this.orderPayment = orderPayment;
         this.orderState = OrderState.ORDER;
         this.orderDate = LocalDateTime.now();

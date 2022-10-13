@@ -6,23 +6,22 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="utf-8" />
 
-    <title>Login</title>
+<title>buyList</title>
 
 </head>
-
 <body>
-
-<h1>로그인</h1>
-<hr>
-
-<form action="/member/loginProc" method="post">
-
-    <input type="text" name="userId" placeholder="아이디를 입력해 주세요.">
-    <input type="password" name="pwd" placeholder="비밀번호를 입력해 주세요.">
-    <button type="submit">로그인</button>
-</form>
-
+	<jsp:include page="orderNav.jsp"/>
+	<div class="buyList">
+		<c:forEach var="orderDTO" items="${page.content}">
+			<div>
+				<p>주문번호 : ${orderDTO.imp_uid}</p>
+				<p>결제금액 : ${orderDTO.orderPayment}</p>
+				<p>주문상태 : ${orderDTO.orderState.kor}</p>
+				<p>주문날짜 : ${orderDTO.orderDate}</p>
+			</div>
+		</c:forEach>
+	</div>
 </body>
-
 </html>

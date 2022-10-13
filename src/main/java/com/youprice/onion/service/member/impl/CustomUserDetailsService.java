@@ -1,14 +1,13 @@
 package com.youprice.onion.service.member.impl;
 
 import com.youprice.onion.dto.member.CustomUserDetails;
-import com.youprice.onion.dto.member.MemberSessionDTO;
+import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
@@ -24,7 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
         Member member = memberRepository.findByUserId(userId).orElseThrow(() -> new UsernameNotFoundException("해당 사용자가 존재하지 않습니다. : " + userId));
 
-        session.setAttribute("member", new MemberSessionDTO(member));
+        session.setAttribute("member", new SessionDTO(member));
 
         //시큐리티 세션에 유저 정보 저장
         return new CustomUserDetails(member);
