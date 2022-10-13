@@ -1,4 +1,4 @@
-package com.youprice.onion.dto.member;
+package com.youprice.onion.security.auth;
 
 import com.youprice.onion.entity.member.Member;
 import lombok.*;

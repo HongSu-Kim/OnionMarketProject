@@ -17,10 +17,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -46,6 +46,50 @@ public class MemberServiceImpl implements MemberService {
         }
 */
         return memberRepository.save(memberDTO.toEntity()).getId();
+    }
+
+    //회원가입 시 유효성 및 중복 체크
+    //유효성 검사에 실패한 필드는 key 값과 에러 메시지를 응답
+    //Key : valid_{dto 필드명}
+    //Message : dto에서 작성한 message 값
+    @Transactional(readOnly = true)
+    @Override
+    public Map<String, String> validateHandling(Errors errors) {
+        Map<String, String> validatorResult = new HashMap<>();
+
+        //유효성 검사에 실패한 필드 목록을 받음
+        for (FieldError error : errors.getFieldErrors()) {
+            String validKeyName = String.format("valid_%s", error.getField());
+            validatorResult.put(validKeyName, error.getDefaultMessage());
+        }
+        return validatorResult;
+    }
+
+    @Transactional
+    @Override
+    public void checkUserIdDuplication(MemberDTO memberDTO) {
+        boolean userIdDuplicate = memberRepository.existsByUserId(memberDTO.toEntity().getUserId());
+        if (userIdDuplicate) {
+            throw new IllegalStateException("이미 존재하는 아이디 입니다.");
+        }
+    }
+
+    @Transactional
+    @Override
+    public void checkNicknameDuplication(MemberDTO memberDTO) {
+        boolean nicknameDuplicate = memberRepository.existsByNickname(memberDTO.toEntity().getNickname());
+        if (nicknameDuplicate) {
+            throw new IllegalStateException("이미 존재하는 닉네임 입니다.");
+        }
+    }
+
+    @Transactional
+    @Override
+    public void checkEmailDuplication(MemberDTO memberDTO) {
+        boolean emailDuplicate = memberRepository.existsByEmail(memberDTO.toEntity().getEmail());
+        if (emailDuplicate) {
+            throw new IllegalStateException("이미 존재하는 이메일 입니다.");
+        }
     }
 
     @Override
