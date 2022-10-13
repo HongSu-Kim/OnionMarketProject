@@ -17,7 +17,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true) //특정 주소로 접근하면 권한 및 인증을 미리 체크
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -48,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/member/login")
                 .usernameParameter("userId") //parameter명을 userId로 변경
                 .passwordParameter("pwd") //parameter명을 pwd로 변경
-                .loginProcessingUrl("loginProc") //Security에서 해당 주소로 오는 요청을 낚아채서 수행
+                .loginProcessingUrl("/member/loginProc") //Security에서 해당 주소로 오는 요청을 낚아채서 수행
                 .defaultSuccessUrl("/member/home") //로그인 성공 시 이동 페이지
                 .permitAll();
 
