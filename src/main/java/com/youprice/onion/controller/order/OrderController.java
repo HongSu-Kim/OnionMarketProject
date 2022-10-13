@@ -1,46 +1,49 @@
 package com.youprice.onion.controller.order;
 
 import com.youprice.onion.dto.member.MemberDTO;
+import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.order.DeliveryDTO;
 import com.youprice.onion.dto.order.OrderAddDTO;
 import com.youprice.onion.dto.order.OrderDTO;
 import com.youprice.onion.dto.product.ProductDTO;
+import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.service.member.MemberService;
 import com.youprice.onion.service.order.DeliveryService;
 import com.youprice.onion.service.order.OrderService;
+import com.youprice.onion.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("order")
+@Slf4j
 public class OrderController {
 
 	private final OrderService orderService;
 	private final DeliveryService deliveryService;
 	private final MemberService memberService;
-	private final HttpSession httpSession;
+	private final ProductService productService;
 
 	// 주문 페이지
 	@GetMapping("order")
-	public String order(Model model, OrderAddDTO orderAddDTO, Long productId) {
+	public String order(@LoginUser SessionDTO sessionDTO, Model model, OrderAddDTO orderAddDTO, Long productId) {
+		if (sessionDTO == null) return "redirect:/member/login";
 
-//		User user = (User) httpSession.getAttribute("loginMember");
-//		Member loginMember = (Member) httpSession.getAttribute("loginMember");
-
-//		MemberDTO memberDTO = memberService.getMemberDTO(loginMember.getId()););
-		MemberDTO memberDTO = memberService.getMemberDTO(1L);//--
+		MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());//--
 //		ProductDTO productDTO = productService.getProductDTO(productId);
 		ProductDTO productDTO = null;//--
-
         orderAddDTO.setOrderNum(orderService.getOrderNum());
 
-		model.addAttribute("memberDTO", memberDTO);
+//		model.addAttribute("memberDTO", memberDTO);
 		model.addAttribute("productDTO", productDTO);
 		model.addAttribute("orderAddDTO", orderAddDTO);
 		return "order/order";
@@ -66,15 +69,12 @@ public class OrderController {
 
 	// 구매 내역 조회 페이지
 	@GetMapping("buyList")
-	public String buyList(Model model) {
+	public String buyList(@LoginUser SessionDTO sessionDTO, Model model, @PageableDefault Pageable pageable) {
+		if (sessionDTO == null) return "redirect:/member/login";
 
-//		Member loginMember = (Member) httpSession.getAttribute("loginMember");
-//		Long memberId = loginMember.getId();
+		Page<OrderDTO> page = orderService.getBuyList(sessionDTO.getId(), pageable);
 
-//		List<OrderDTO> list = orderService.getBuyList(memberId);
-		List<OrderDTO> list = orderService.getBuyList(1L);//--
-
-		model.addAttribute("list", list);
+		model.addAttribute("page", page);
 		return "order/buyList";
 	}
 
@@ -90,15 +90,12 @@ public class OrderController {
 
 	// 판매 내역 조회 페이지
 	@GetMapping("sellList")
-	public String sellList(Model model) {
+	public String sellList(@LoginUser SessionDTO sessionDTO, Model model, @PageableDefault Pageable pageable) {
+		if (sessionDTO == null) return "redirect:/member/login";
 
-//		Member loginMember = (Member) httpSession.getAttribute("loginMember");
-//		Long memberId = loginMember.getId();
+		Page<OrderDTO> page = orderService.getSellList(sessionDTO.getId(), pageable);
 
-//		List<OrderDTO> list = orderService.getSellList(memberId);
-		List<OrderDTO> list = orderService.getSellList(1L);//--
-
-		model.addAttribute("list", list);
+		model.addAttribute("page", page);
 		return "order/sellList";
 	}
 	

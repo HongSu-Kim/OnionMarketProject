@@ -3,6 +3,7 @@ package com.youprice.onion.dto.order;
 import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.dto.product.ProductDTO;
 import com.youprice.onion.entity.order.Order;
+import com.youprice.onion.entity.order.OrderState;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -18,7 +19,7 @@ public class OrderDTO {
 	private String orderNum;//주문번호
 	private String imp_uid;//결제번호
 	private int orderPayment;//결제금액
-	private String orderState;//주문상태-order,delivery,cancel,complete
+	private OrderState orderState;//주문상태-order,delivery,cancel,complete
     private LocalDateTime orderDate;//주문시간
     private LocalDateTime modifiedDate;//수정시간
 
@@ -34,7 +35,7 @@ public class OrderDTO {
 		orderNum = order.getOrderNum();
 		imp_uid = order.getImp_uid();
 		orderPayment = order.getOrderPayment();
-		orderState = order.getOrderState().name();
+		orderState = order.getOrderState();
 		orderDate = order.getOrderDate();
 		modifiedDate = order.getModifiedDate();
 
