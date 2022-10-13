@@ -21,9 +21,7 @@ import java.util.stream.Collectors;
 public class NoticeServiceImpl implements NoticeService {
 
     private final NoticeRepository noticeRepository;
-
     private final MemberRepository memberRepository;
-
     private final ModelMapper modelMapper;
 
     public void saveNotice(NoticeDTO noticeDTO){
@@ -43,8 +41,8 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public void delete(NoticeDTO noticeDTO) {
-
+    public void delete(Long id) {
+        noticeRepository.deleteById(id);
     }
 
     @Override

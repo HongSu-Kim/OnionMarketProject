@@ -15,7 +15,7 @@ public interface NoticeService {
 
     void update(Long id, NoticeDTO noticeDTO);
 
-    void delete(NoticeDTO noticeDTO);
+    void delete(Long id);
 
     Page<NoticeDTO> findAllNotice(Pageable pageable);
 
