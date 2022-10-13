@@ -1,9 +1,6 @@
 package com.youprice.onion.controller.board;
 
-import com.youprice.onion.dto.board.InquiryDTO;
-import com.youprice.onion.dto.board.InquiryFormDTO;
-import com.youprice.onion.dto.board.ReviewDTO;
-import com.youprice.onion.dto.board.ReviewFormDTO;
+import com.youprice.onion.dto.board.*;
 import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.dto.order.OrderDTO;
 import com.youprice.onion.dto.product.ProductImageDTO;
@@ -110,12 +107,12 @@ public class ReviewController {
     // 수정
     @PostMapping("/update/{id}")
     public String update(@PathVariable("id") Long id,
-                         @Valid @ModelAttribute ReviewFormDTO form, BindingResult bindingResult){
+                         @Valid @ModelAttribute ReviewUpdateDTO form, BindingResult bindingResult) throws IOException {
         if(bindingResult.hasErrors()){
             return "board/reviewUpdate";
         }
         reviewService.updateReview(id, form);
-        return "redirect:/review/article/{id}";
+        return "redirect:/review/list";
     }
 
     // 삭제

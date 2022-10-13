@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -22,6 +24,8 @@ public class InquiryDTO {
     private LocalDate inquiryDate; // 문의등록일
     private String status; // 답변상태
     private boolean secret;
+    private List<AnswerDTO> answer;
+
 
     public InquiryDTO(Inquiry inquiry) {
         this.inquiryId = inquiry.getId();
@@ -33,6 +37,7 @@ public class InquiryDTO {
         this.inquiryDate = inquiry.getInquiryDate();
         this.status = inquiry.getStatus();
         this.secret = inquiry.isSecret();
+        this.answer = inquiry.getAnswer().stream().map(AnswerDTO::new).collect(Collectors.toList());
     }
 
 }

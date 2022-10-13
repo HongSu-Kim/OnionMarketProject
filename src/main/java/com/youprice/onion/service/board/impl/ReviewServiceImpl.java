@@ -1,10 +1,6 @@
 package com.youprice.onion.service.board.impl;
 
-import com.youprice.onion.dto.board.InquiryDTO;
-import com.youprice.onion.dto.board.InquiryFormDTO;
-import com.youprice.onion.dto.board.ReviewDTO;
-import com.youprice.onion.dto.board.ReviewFormDTO;
-import com.youprice.onion.entity.board.Inquiry;
+import com.youprice.onion.dto.board.*;
 import com.youprice.onion.entity.board.Review;
 import com.youprice.onion.entity.board.ReviewImage;
 import com.youprice.onion.entity.member.Member;
@@ -84,13 +80,21 @@ public class ReviewServiceImpl implements ReviewService {
         return list;
     }
 
-    // 수정
+    // 수정 (이미지 전체 삭제)
     @Transactional
-    public void updateReview(Long id, ReviewFormDTO form){
+    public void updateReview(Long id, ReviewUpdateDTO form) throws IOException {
         Review review = reviewRepository.findById(id).orElseThrow(() -> new NoSuchElementException());
         Long reviewId = review.getId();
         review.updateReview(reviewId, form);
 
+        List<ReviewImage> imageList = reviewImageRepository.findByReviewId(id);
+        for(ReviewImage reviewImage : imageList){
+            reviewImageRepository.delete(reviewImage);
+        }
+        List<ReviewImage> list = storeImages(reviewId, form.getReviewImageName());
+        for(ReviewImage reviewImage : list){
+            reviewImageRepository.save(reviewImage);
+        }
         reviewRepository.save(review);
     }
     // 삭제
@@ -115,12 +119,10 @@ public class ReviewServiceImpl implements ReviewService {
         return storeFileList;
     }
     public String filePath(){
-        //user.dir -> C:\Users\osr\Desktop\study\OnionMarketProject
         String filePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images";
         return filePath;
     }
     public String storePath(MultipartFile multipartFile) throws IOException {
-
         String filePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images";
 
         if(multipartFile.isEmpty()){

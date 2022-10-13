@@ -22,16 +22,18 @@ public class InquiryServiceImpl implements InquiryService {
     private final InquiryRepository inquiryRepository;
     private final MemberRepository memberRepository;
 
-    // 저장
-    @Override
-    public void saveInquiry(InquiryFormDTO inquiryFormDTO) {
-        Member member = memberRepository.findById(inquiryFormDTO.getMemberId()).orElse(null);
-        Inquiry inquiry = new Inquiry(member, inquiryFormDTO);
-        inquiryRepository.save(inquiry);
-    }
+
     @Override
     public InquiryDTO findInquiryDTO(Long id) {
         return inquiryRepository.findById(id).map(InquiryDTO::new).orElse(null);
+    }
+    // 저장
+    @Override
+    public Long saveInquiry(InquiryFormDTO inquiryFormDTO) {
+        Member member = memberRepository.findById(inquiryFormDTO.getMemberId()).orElse(null);
+        Inquiry inquiry = new Inquiry(member, inquiryFormDTO);
+        inquiryRepository.save(inquiry);
+        return inquiry.getId();
     }
     // 수정
     @Transactional
@@ -40,6 +42,12 @@ public class InquiryServiceImpl implements InquiryService {
         Long inquiryId = inquiry.getId();
         inquiry.updateInquiry(inquiryId, form);
 
+        inquiryRepository.save(inquiry);
+    }
+    // 답변상태 수정
+    public void modifyStatus(Long inquiryId){
+        Inquiry inquiry = inquiryRepository.findById(inquiryId).orElse(null);
+        inquiry.modifyStatus("답변완료");
         inquiryRepository.save(inquiry);
     }
     // 삭제
@@ -57,9 +65,11 @@ public class InquiryServiceImpl implements InquiryService {
     // 검색
     public Page<InquiryDTO> getSearchList(String field, String word, Pageable pageable){
         if(field.equals("name")) {
-            return inquiryRepository.findInquiriesByMember_NameContainingOrderById(word, pageable).map(InquiryDTO::new);
-        } else  {
-            return inquiryRepository.findInquiriesByInquiryTypeLikeAndInquirySubjectContainingOrderById(field, word, pageable).map(InquiryDTO::new);
+            return inquiryRepository.findAllByMember_NameContaining(word, pageable).map(InquiryDTO::new);
+        } else if(field.equals("all")){
+            return inquiryRepository.findAllByInquirySubjectContaining(word, pageable).map(InquiryDTO::new);
+        } else {
+            return inquiryRepository.findAllByInquiryTypeContainingAndInquirySubjectContaining(field, word, pageable).map(InquiryDTO::new);
         }
     }
 
