@@ -2,11 +2,17 @@ package com.youprice.onion.service.product.impl;
 
 import com.youprice.onion.dto.product.SearchAddDTO;
 import com.youprice.onion.entity.product.Search;
+import com.youprice.onion.repository.member.ProhibitionKeywordRepositoy;
 import com.youprice.onion.repository.product.SearchRepositoy;
 import com.youprice.onion.service.product.SearchService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -16,14 +22,33 @@ public class SearchServiceImpl implements SearchService {
  private final SearchRepositoy searchRepositoy;
  private  final SearchRepositoy.Searchrepositoy searchrepositoy;
 
+ private  final ProhibitionKeywordRepositoy prohibitionKeywordRepositoy;
+
  @Override
- public void SearchCreate(SearchAddDTO searchAddDTO, String SearchName) {
+ public void SearchCreate(SearchAddDTO searchAddDTO, String SearchName, HttpServletResponse response) throws IOException {
     Search search = new Search();
 
     if(SearchName == ""){
-     System.out.println("공백입니다");
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out =response.getWriter();
+
+        out.println("<script>alert('공백입니다 키워드를 다시입력하세요');history.go(-1); </script>");
+        out.flush();
      return ;
     }
+
+    if(prohibitionKeywordRepositoy.findAllByProhibitionKeywordName(SearchName)!=null ){
+
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out =response.getWriter();
+
+        out.println("<script>alert('금지어입니다 다시입력하세요');history.go(-1); </script>");
+        out.flush();
+
+
+        return;
+    }
+
  search.SearchAdd(searchAddDTO);
 
 

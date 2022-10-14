@@ -27,7 +27,6 @@ import java.util.List;
 public class KeywordController {
 
 
-    //!! 아이디 일시적으로 asd로설정
     private final CategoryService categoryService;
 
     private final KeywordService keywordService;
