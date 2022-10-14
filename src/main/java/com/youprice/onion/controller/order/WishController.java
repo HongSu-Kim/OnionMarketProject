@@ -1,6 +1,9 @@
 package com.youprice.onion.controller.order;
 
-import com.youprice.onion.dto.order.WishProductDTO;
+import com.youprice.onion.dto.member.MemberDTO;
+import com.youprice.onion.dto.member.SessionDTO;
+import com.youprice.onion.dto.order.WishDTO;
+import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.service.order.WishService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,16 +21,14 @@ import java.util.List;
 public class WishController {
 
     private final WishService wishService;
-	private final HttpSession httpSession;
+	private final HttpSession session;
 
     // 찜 목록 페이지
     @GetMapping("wishList")
-    public String wishList(Model model) {
+    public String wishList(@LoginUser SessionDTO sessionDTO, Model model) {
+		if (sessionDTO == null) return "redirect:/member/login";
 
-//		Member loginMember = (Member) httpSession.getAttribute("loginMember");
-
-//		List<Wish> list = wishService.getWishList(logonMember.getId());
-		List<WishProductDTO> list = wishService.getWishList(1L);//--
+		List<WishDTO> list = wishService.getWishList(sessionDTO.getId());
 
 		model.addAttribute("list", list);
         return "wish/wishList";
@@ -35,12 +36,10 @@ public class WishController {
 
     // 찜 추가
     @GetMapping("addWish")
-    public String addWish(Long productId) {
+    public String addWish(@LoginUser SessionDTO sessionDTO, Long productId) {
+		if (sessionDTO == null) return "redirect:/member/login";
 
-//		Member loginMember = (Member) httpSession.getAttribute("loginMember");
-
-//		wishService.addWish(loginMember.getId(), productId);
-		wishService.addWish(1L, 1L);//--
+		wishService.addWish(sessionDTO.getId(), productId);
 
         return "redirect:/wish/wishList";
     }

@@ -9,6 +9,8 @@ import org.aspectj.weaver.ast.Not;
 
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Getter
@@ -28,6 +30,8 @@ public class NoticeDTO {
 
     private LocalDateTime noticeDate; //작성일자
 
+    private List<NoticeImageDTO> noticeImageList;
+
     private int hitCount; //조회수
 
     public NoticeDTO(Notice notice) {
@@ -38,5 +42,6 @@ public class NoticeDTO {
         this.noticeContent = notice.getNoticeContent();
         this.noticeDate = notice.getNoticeDate();
         this.hitCount = notice.getHitCount();
+        this.noticeImageList = notice.getNoticeImageList().stream().map(NoticeImageDTO::new).collect(Collectors.toList());
     }
 }

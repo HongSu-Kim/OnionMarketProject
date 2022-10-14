@@ -1,23 +1,42 @@
 package com.youprice.onion.controller.member;
 
 import com.youprice.onion.dto.member.MemberDTO;
+import com.youprice.onion.dto.member.SessionDTO;
+import com.youprice.onion.security.auth.LoginUser;
+import com.youprice.onion.security.validator.CustomValidators;
 import com.youprice.onion.service.member.MemberService;
-import com.youprice.onion.service.member.impl.MemberServiceImpl;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
+import java.util.Map;
+
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("member")
 public class MemberController {
 
     private final MemberService memberService;
+
+    private final CustomValidators.UserIdValidator userIdValidator;
+    private final CustomValidators.NicknameValidator nicknameValidator;
+    private final CustomValidators.EmailValidator emailValidator;
+
+    //회원가입 시 유효성 검증에 필요
+    @InitBinder
+    public void validatorBinder(WebDataBinder binder) {
+        binder.addValidators(userIdValidator);
+        binder.addValidators(nicknameValidator);
+        binder.addValidators(emailValidator);
+    }
 
     //메인 페이지
     @GetMapping("/")
@@ -36,9 +55,23 @@ public class MemberController {
         return "member/join";
     }
 
-    //회원가입 처리
-    @PostMapping("/join")
-    public String join(MemberDTO memberDTO) {
+    //회원가입
+    @PostMapping("/joinProc")
+    public String joinProc(@Valid MemberDTO memberDTO, Errors errors, Model model) {
+
+        if (errors.hasErrors()) {
+            //회원가입 실패 시 입력 데이터 값을 유지
+            model.addAttribute("memberDTO", memberDTO);
+
+            //유효성 통과 못한 필드와 메시지를 핸들링
+            Map<String, String> validatorResult = memberService.validateHandling(errors);
+            for (String key : validatorResult.keySet()) {
+                model.addAttribute(key, validatorResult.get(key));
+            }
+
+            //회원가입 페이지로 다시 리턴
+            return "member/join";
+        }
         memberService.saveMember(memberDTO);
         return "redirect:login";
     }

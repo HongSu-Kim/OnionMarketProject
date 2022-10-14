@@ -1,19 +1,14 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
+<c:set var = "cp" value = "<%=request.getContextPath()%>"/>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>리뷰 작성 페이지</title>
-    <link rel="stylesheet" type="text/css" href="/resources/css/reviewForm.css"/>
-    <link rel="stylesheet" type="text/css" href="/resources/css/star.css"/>
-    <link rel="stylesheet" type="text/css" href="/resources/css/bootstrap.min.css"/>
     <style>
-        .container {
-            max-width: 1000px;
-        }
         .field-error{
             border-color: #f07682;
             color: #dc3545;
@@ -32,13 +27,25 @@
     <tbody>
     <tr>
         <td>상품 이미지</td>
-        <td>상품 상세 정보</td>
+        <%-- <td><img src="/productImage/${productImageDTO.productImageName}"/></td> --%>
+        <td>상품 상세 정보
+            <div>
+<%--                상품명 :${productDTO.productName}--%>
+<%--                제목 :${productDTO.subject}--%>
+<%--                가격 :${productDTO.price}--%>
+            </div>
+        </td>
+
     </tr>
     </tbody>
 </table><hr/>
 
+<form:form method="post" action="/review/created/${orderDTO.orderId}" enctype="multipart/form-data" id="myform" modelAttribute="reviewFormDTO">
 
-<form:form method="post" action="/review/created" enctype="multipart/form-data" id="myform" modelAttribute="reviewFormDTO">
+    <input type="hidden" name="memberId" value="${memberDTO.id}">
+    <input type="hidden" name="orderId" value="${orderDTO.orderId}">
+    <input type="hidden" name="salesId" value="${memberDTO.id}">
+
 
     <div align="center">
         <fieldset>
@@ -53,12 +60,11 @@
             <label for="rate4">★</label>
             <input type="radio" name="grade" value="1" id="rate5">
             <label for="rate5">★</label>
-            <form:errors path="grade" cssClass="field-error"/>
         </fieldset>
     </div><hr/>
 
     <div id="review_check">
-        <div>'판매자이름'님을 평가해주세요.</div><br/>
+        <div>님을 평가해주세요.</div><br/>
 
         <span id="review_span_2">* 해당하는 항목을 선택해주세요. (최대 3개)</span>
         <ul class="list-group">
@@ -123,7 +129,7 @@
     <div class="d-grid gap-2 col-9 mx-auto">
         <button type="submit" class="btn btn-success">등록</button>
         <button class="w-100 btn btn-secondary btn-lg"
-                onclick="location.href='/'" type="button">취소</button>
+                onclick="location.href='/review/list'" type="button">취소</button>
     </div>
 </form:form>
 

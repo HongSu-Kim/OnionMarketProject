@@ -14,7 +14,7 @@
 </head>
 <body>
 <form:errors path="noticeDTO"/>
-<form:form method="post" action="/notice/created" modelAttribute="noticeDTO">
+<form:form method="post" action="/notice/created" enctype="multipart/form-data" id="myform" modelAttribute="noticeDTO">
 
     <input type="hidden" name="memberId" value="${memberDTO.id}">
 
@@ -23,7 +23,7 @@
     </div>
 
     <div>
-        <label for="noticeType">공지 유형</label>
+        <!--<label for="noticeType">공지 유형</label>-->
         <select id="noticeType" name="noticeType">
             <option selected="selected">선택해주세요</option>
             <option value="NOTICE">공지사항</option>
@@ -31,17 +31,20 @@
             <option value="EVENT">이벤트</option>
         </select>
     </div>
-
+    <br/>
     <div>
         <label for="noticeSubject">제목</label>
         <input type="text" id="noticeSubject" name="noticeSubject"/>
     </div>
-
+    <br/>
     <div>
         <label for="noticeContent">내용</label>
         <input type="text" id="noticeContent" name="noticeContent"/>
-
     </div>
+    <br/>
+
+    <label class="fileButton" for="noticeImage"><p id="fileFont">사진/동영상 첨부하기</p></label>
+    <input type="file" id="noticeImage" name="noticeImageName" multiple="multiple" style="display: none"/>
 
     <div>
         <button type="submit">등록하기</button>

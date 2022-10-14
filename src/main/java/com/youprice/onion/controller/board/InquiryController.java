@@ -1,8 +1,10 @@
 package com.youprice.onion.controller.board;
 
+import com.youprice.onion.dto.board.AnswerDTO;
 import com.youprice.onion.dto.board.InquiryDTO;
 import com.youprice.onion.dto.board.InquiryFormDTO;
 import com.youprice.onion.dto.member.MemberDTO;
+import com.youprice.onion.service.board.AnswerService;
 import com.youprice.onion.service.board.InquiryService;
 import com.youprice.onion.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,6 +26,7 @@ import javax.validation.Valid;
 public class InquiryController {
 
     private final InquiryService inquiryService;
+    private final AnswerService answerService;
     private final MemberService memberService;
 
     // 저장
@@ -76,8 +80,10 @@ public class InquiryController {
                           @RequestParam(required = false, defaultValue = "") String word){
 
         InquiryDTO inquiryDTO = inquiryService.findInquiryDTO(id);
+        List<AnswerDTO> answerList = answerService.findByInquiryId(id);
 
         model.addAttribute("inquiryDTO", inquiryDTO);
+        model.addAttribute("answerList", answerList);
         model.addAttribute("field", field);
         model.addAttribute("word", word);
 
@@ -88,18 +94,29 @@ public class InquiryController {
     public String updateForm(@PathVariable Long id, Model model){
 
         InquiryDTO inquiryDTO = inquiryService.findInquiryDTO(id);
+        MemberDTO memberDTO = memberService.getMemberDTO(inquiryDTO.getMemberId());
 
         model.addAttribute("inquiryDTO",inquiryDTO);
+        model.addAttribute("memberDTO",memberDTO);
         return "board/inquiryUpdate";
     }
     // 수정
     @PostMapping("/update/{id}")
-    public String inquiryUpdate(@PathVariable("id") Long id,
+    public String update(@PathVariable("id") Long id,
                                 @Valid @ModelAttribute InquiryFormDTO form, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return "board/inquiryUpdate";
         }
-        inquiryService.update(id, form);
+        inquiryService.updateInquiry(id, form);
+        return "redirect:/inquiry/article/{id}";
+    }
+
+    // 삭제
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable("id") Long id){
+
+        InquiryDTO inquiryDTO = inquiryService.findInquiryDTO(id);
+        inquiryService.deleteInquiry(inquiryDTO);
 
         return "redirect:/inquiry/list";
     }

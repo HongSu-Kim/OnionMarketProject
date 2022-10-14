@@ -1,29 +1,21 @@
 package com.youprice.onion.service.member;
 
 import com.youprice.onion.dto.member.MemberDTO;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.validation.Errors;
+
+import java.util.Map;
 
 public interface MemberService {
 
     public Long saveMember(MemberDTO memberDTO);
 
+    public Map<String, String> validateHandling(Errors errors);
+
+    //userId, nickname, email 중복 여부 확인
+    public void checkUserIdDuplication(MemberDTO memberDTO);
+    public void checkNicknameDuplication(MemberDTO memberDTO);
+    public void checkEmailDuplication(MemberDTO memberDTO);
+
     public MemberDTO getMemberDTO(Long memberId);
-
-//    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException;
-/*
-    //회원가입
-    Long memberJoin(MemberDTO.RequestMemberDTO dto);
-
-    //회원정보 수정
-    Long memberInfoModify(MemberDTO.RequestMemberDTO dto);
-
-    public boolean checkUserIdDuplication(String userId);
-
-    public boolean checkNicknameDuplication(String nickname);
-
-    public boolean checkEmailDuplication(String email);
-    */
 
 }
