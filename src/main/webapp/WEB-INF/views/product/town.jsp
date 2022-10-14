@@ -20,7 +20,7 @@
 
 
 원하는 동네 검색: <input type="text" name="wishtown" value="" />
-
+    <input type="hidden" name="memberId" value="${memberDTO.id}">
    <input type="submit" value="동네설정하기"/>
 </form:form>
 

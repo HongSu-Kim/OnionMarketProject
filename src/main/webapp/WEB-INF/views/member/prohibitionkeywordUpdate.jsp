@@ -31,7 +31,7 @@
                <br/>
                 <select name="updatekeyword">
                     <c:forEach var="prohibitionKeywordFindDTOList" items="${prohibitionKeywordFindDTOList}">
-                    <option value="${prohibitionKeywordFindDTOList.prohibitionKeywordName}">
+                    <option selected value="${prohibitionKeywordFindDTOList.prohibitionKeywordName}">
                             ${prohibitionKeywordFindDTOList.prohibitionKeywordName}
                         </option>
 

@@ -37,12 +37,12 @@ public class SearchServiceImpl implements SearchService {
      return ;
     }
 
-    if(prohibitionKeywordRepositoy.findAllByProhibitionKeywordName(SearchName)!=null ){
+    if(prohibitionKeywordRepositoy.findAllByProhibitionKeywordName(SearchName)!=null ){ //금지키워드 조건 예시
 
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out =response.getWriter();
 
-        out.println("<script>alert('금지어입니다 다시입력하세요');history.go(-1); </script>");
+         out.println("<script>alert('금지어입니다 다시입력하세요');history.go(-1); </script>");
         out.flush();
 
 

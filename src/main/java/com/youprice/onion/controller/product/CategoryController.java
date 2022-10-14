@@ -8,10 +8,12 @@ import com.youprice.onion.service.product.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -23,35 +25,52 @@ public class CategoryController {
 
 
     @GetMapping("category") //카테고리조회
-    public String CategoryAdd(Model model) {
+    public String CategoryAdd(Model model,CategoryAddDTO categoryAddDTO) {
 
         List<Category> category =categoryService.findTopCategory();
 
         model.addAttribute("category",category);
+        model.addAttribute("categoryAddDTO",categoryAddDTO);
         
 
         return "product/category";
     }
-
     @PostMapping("category") //카테고리생성
-    public String CategoryAdd(CategoryAddDTO categoryCreatedto, Category category, Model model, @RequestParam("topcategoryName")
-                         String topcategoryName, @RequestParam("categoryName")String categoryName) {
+    public String CategoryAdd(Category category, Model model
+    , @Valid @ModelAttribute CategoryAddDTO categoryAddDTO, BindingResult bindingResult) {
 
 
-        if(categoryName =="") { //상위카테고리생성
-
-            categoryService.TopCategoryAdd(categoryCreatedto,topcategoryName);
-
+        if(bindingResult.hasErrors()){
+           model.addAttribute("category",categoryService.findTopCategory());
+            return "product/category";
         }
 
-        else //하위카테고리생성
-            categoryService.SubCategoryAdd(categoryCreatedto, topcategoryName);
-
+    else
 
 
 
         return "redirect:/category/category";
     }
+//    @PostMapping("category") //카테고리생성
+//    public String CategoryAdd(CategoryAddDTO categoryCreatedto, Category category, Model model, @RequestParam("topcategoryName")
+//                         String topcategoryName, @RequestParam("categoryName")String categoryName,HttpServletResponse response)throws IOException {
+//
+//
+//        if(categoryName =="") { //상위카테고리생성
+//
+//            categoryService.TopCategoryAdd(categoryCreatedto,topcategoryName,response);
+//
+//
+//        }
+//
+//        else //하위카테고리생성
+//            categoryService.SubCategoryAdd(categoryCreatedto, topcategoryName,response);
+//
+//
+//
+//
+//        return "redirect:/category/category";
+//    }
 
     @GetMapping("categoryupdate") //카테고리 수정
     public String create(Model model) {
