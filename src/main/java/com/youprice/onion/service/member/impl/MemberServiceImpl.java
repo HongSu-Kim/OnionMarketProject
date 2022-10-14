@@ -1,6 +1,7 @@
 package com.youprice.onion.service.member.impl;
 
 import com.youprice.onion.dto.member.MemberDTO;
+import com.youprice.onion.dto.member.MemberJoinDTO;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.member.Role;
 import com.youprice.onion.repository.member.MemberRepository;
@@ -34,9 +35,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     @Override
-    public Long saveMember(MemberDTO memberDTO) {
+    public Long saveMember(MemberJoinDTO memberJoinDTO) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        memberDTO.setPwd(passwordEncoder.encode(memberDTO.getPwd())); //패스워드 암호화 저장
+        memberJoinDTO.setPwd(passwordEncoder.encode(memberJoinDTO.getPwd())); //패스워드 암호화 저장
 /*
 
         if (!memberDTO.getUserId().equals("admin")) {
@@ -45,7 +46,7 @@ public class MemberServiceImpl implements MemberService {
             memberDTO.setRole(Role.valueOf("ADMIN"));
         }
 */
-        return memberRepository.save(memberDTO.toEntity()).getId();
+        return memberRepository.save(memberJoinDTO.toEntity()).getId();
     }
 
     //회원가입 시 유효성 및 중복 체크
