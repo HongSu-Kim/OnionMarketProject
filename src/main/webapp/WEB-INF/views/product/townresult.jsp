@@ -12,7 +12,7 @@
 
 
 <form:form action="town" method="post">
-
+    <input type="hidden" name="memberId" value="${memberDTO.id}"/>
    원하는 지역번호 입력: <input type="text" name="coordinateId" value="" style="width: 15%;">
    <input type="submit" value="동네설정하기"/>
 </form:form>
