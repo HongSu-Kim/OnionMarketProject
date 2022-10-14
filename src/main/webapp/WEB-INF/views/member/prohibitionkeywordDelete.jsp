@@ -9,24 +9,34 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>게 시 판</title>
+    <title></title>
 
 
 </head>
 <body>
 
 
-<form:form action="townresult" method="post">
+        </div>
+    </div>
+</nav>
+<br/><br/><br/><br/>
+<form:form action="" method="post">
 
 
-원하는 동네 검색: <input type="text" name="wishtown" value="" />
-    <input type="hidden" name="memberId" value="${memberDTO.id}">
-   <input type="submit" value="동네설정하기"/>
+ <input type="text" name="prohibitionKeywordName"/>
+
+
+    <input type="submit" value="금지 키워드 삭제"/>
 </form:form>
 
-<strong> [동네예시]<br/><br/>
-강남구 / 송파구 / 강동구
-</strong>
+        <금지키워드 리스트>
+
+            <c:forEach var="prohibitionKeywordFindDTOList" items="${prohibitionKeywordFindDTOList}">
+               <br/>
+                <strong>${prohibitionKeywordFindDTOList.prohibitionKeywordName}</strong>
+
+                </c:forEach>
+
 
 <br/><br/>
 

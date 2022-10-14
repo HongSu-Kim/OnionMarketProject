@@ -5,13 +5,15 @@ import com.youprice.onion.dto.product.CategoryFindDTO;
 import com.youprice.onion.dto.product.CategoryUpdateDTO;
 import com.youprice.onion.entity.product.Category;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 public interface CategoryService {
 
 
-     void TopCategoryAdd(CategoryAddDTO categoryAddDTO, String topcategoryName);
-    void SubCategoryAdd(CategoryAddDTO categoryAddDTO, String topcategoryName);
+     void TopCategoryAdd(CategoryAddDTO categoryAddDTO, String topcategoryName, HttpServletResponse response)throws IOException;
+    void SubCategoryAdd(CategoryAddDTO categoryAddDTO, String topcategoryName,HttpServletResponse response)throws IOException;
     void CategoryDelete(Long id);
 
     void CategoryUpdate(CategoryUpdateDTO categoryUpdatedto);

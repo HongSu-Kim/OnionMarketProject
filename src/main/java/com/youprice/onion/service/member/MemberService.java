@@ -1,13 +1,14 @@
 package com.youprice.onion.service.member;
 
 import com.youprice.onion.dto.member.MemberDTO;
+import com.youprice.onion.dto.member.MemberJoinDTO;
 import org.springframework.validation.Errors;
 
 import java.util.Map;
 
 public interface MemberService {
 
-    public Long saveMember(MemberDTO memberDTO);
+    public Long saveMember(MemberJoinDTO memberJoinDTO);
 
     public Map<String, String> validateHandling(Errors errors);
 
