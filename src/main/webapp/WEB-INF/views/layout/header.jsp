@@ -143,7 +143,7 @@
 						<li><a href="#">마이페이지</a>
 							<ul class="header__menu__dropdown">
 								<li><a href="/member/login">Login</a></li>
-								<li><a href="/member/info">Join</a></li>
+								<li><a href="/member/join">Join</a></li>
 								<li><a href="/member/info">Info</a></li>
 								<li><a href="#">Temp4</a></li>
 							</ul>

@@ -11,16 +11,20 @@ import com.youprice.onion.service.member.MemberService;
 import com.youprice.onion.service.order.DeliveryService;
 import com.youprice.onion.service.order.OrderService;
 import com.youprice.onion.service.product.ProductService;
+import com.youprice.onion.util.PaymentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
+import java.io.*;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -32,19 +36,21 @@ public class OrderController {
 	private final DeliveryService deliveryService;
 	private final MemberService memberService;
 	private final ProductService productService;
+	private final PaymentService paymentService;
 
 	// 주문 페이지
 	@GetMapping("order")
 	public String order(@LoginUser SessionDTO sessionDTO, Model model, OrderAddDTO orderAddDTO, Long productId) {
 		if (sessionDTO == null) return "redirect:/member/login";
 
-		MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());//--
+		MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
 //		ProductDTO productDTO = productService.getProductDTO(productId);
-		ProductDTO productDTO = null;//--
         orderAddDTO.setOrderNum(orderService.getOrderNum());
+		orderAddDTO.setDeliveryCost(100);
 
-//		model.addAttribute("memberDTO", memberDTO);
-		model.addAttribute("productDTO", productDTO);
+		model.addAttribute("memberDTO", memberDTO);
+//		model.addAttribute("productDTO", productDTO);
+		model.addAttribute("productDTO", null);//--
 		model.addAttribute("orderAddDTO", orderAddDTO);
 		return "order/order";
 	}
@@ -52,11 +58,21 @@ public class OrderController {
 	// 주문
 	@PostMapping("order")
 	@ResponseBody
-	public String order(@RequestBody OrderAddDTO orderAddDTO) {
+	public ResponseEntity<?> order(@RequestBody OrderAddDTO orderAddDTO) throws IOException {
+		try{
+			Long orderId = orderService.addOrder(orderAddDTO);
+			return new ResponseEntity<>("redirect:/order/complete?orderId=" + orderId, HttpStatus.OK);
 
-		Long orderId = orderService.addOrder(orderAddDTO);
-
-		return "redirect:/order/complete?orderId=" + orderId;
+		} catch (Exception e) {
+			try {
+				log.error("데이터베이스 입력오류입니다 : " + e.toString());
+				paymentService.paymentCancel(orderAddDTO);
+			} catch (Exception e2) {
+				log.error("결제 취소중 오류입니다 : " + e.toString());
+				return new ResponseEntity<>("결제 취소중 오류입니다\n고객센터에 문의하세요", HttpStatus.SERVICE_UNAVAILABLE);
+			}
+			return new ResponseEntity<>("오류가 발생해 결제가 취소되었습니다.", HttpStatus.SERVICE_UNAVAILABLE);
+		}
 	}
 
 	// 완료 페이지

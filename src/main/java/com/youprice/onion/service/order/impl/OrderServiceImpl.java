@@ -2,7 +2,6 @@ package com.youprice.onion.service.order.impl;
 
 import com.youprice.onion.dto.order.OrderAddDTO;
 import com.youprice.onion.dto.order.OrderDTO;
-import com.youprice.onion.dto.product.ProductDTO;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.order.Delivery;
 import com.youprice.onion.entity.order.Order;
@@ -12,16 +11,21 @@ import com.youprice.onion.repository.order.DeliveryRepository;
 import com.youprice.onion.repository.order.OrderRepository;
 import com.youprice.onion.repository.product.ProductRepository;
 import com.youprice.onion.service.order.OrderService;
+import com.youprice.onion.util.PaymentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -42,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
 	// 주문 완료
 	@Override
 	@Transactional
-	public Long addOrder(OrderAddDTO orderAddDTO) {
+	public Long addOrder(OrderAddDTO orderAddDTO) throws IOException {
 
 		Member member = memberRepository.findById(orderAddDTO.getMemberId()).orElse(null);
 		Product product = productRepository.findById(orderAddDTO.getProductId()).orElse(null);
@@ -96,7 +100,19 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public Page<OrderDTO> getBuyList(Long memberId, Pageable pageable) {
-		return orderRepository.findAllByMemberId(memberId, pageable).map(OrderDTO::new);
+
+		List<Order> allByMemberId = orderRepository.findAllByMemberId(memberId, pageable);
+		List<OrderDTO> list = allByMemberId.stream().map(OrderDTO::new).collect(Collectors.toList());
+		Long listSize = orderRepository.countByMemberId(memberId);
+
+		log.error(String.valueOf(allByMemberId.size()));
+		log.error(String.valueOf(list.size()));
+		log.error(listSize.toString());
+
+//		int start = (int) pageable.getOffset();
+//		int end = (start + pageable.getPageSize()) > list.size() ? list.size() : (start + pageable.getPageSize());
+//		return new PageImpl<>(list.subList(start, end), pageable, list.size());
+		return new PageImpl<>(list, pageable, list.size());
 	}
 
 	@Override
