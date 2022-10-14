@@ -1,6 +1,7 @@
 package com.youprice.onion.entity.board;
 
 import com.youprice.onion.dto.board.ReviewFormDTO;
+import com.youprice.onion.dto.board.ReviewUpdateDTO;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.order.Order;
 import lombok.Getter;
@@ -48,10 +49,10 @@ public class Review {
         this.salesId = salesId;
     }
 
-    public void updateReview(Long id, ReviewFormDTO reviewFormDTO){
+    public void updateReview(Long id, ReviewUpdateDTO form){
         this.id = id;
-        this.reviewContent = reviewFormDTO.getReviewContent();
-        this.grade = reviewFormDTO.getGrade();
+        this.reviewContent = form.getReviewContent();
+        this.grade = form.getGrade();
         this.reviewDate = LocalDate.now();
     }
 }
