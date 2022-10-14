@@ -30,6 +30,7 @@ public class ReviewDTO {
         this.reviewContent = review.getReviewContent();
         this.grade = review.getGrade();
         this.reviewDate = review.getReviewDate();
+        this.salesId = review.getSalesId();
         this.reviewImageList = review.getReviewImageName().stream().map(ReviewImageDTO::new).collect(Collectors.toList());
     }
 }
