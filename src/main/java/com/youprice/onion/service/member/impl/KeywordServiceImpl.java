@@ -11,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -25,8 +28,18 @@ public class KeywordServiceImpl implements KeywordService {
  private  final  MemberRepository memberRepositoy;
 
  @Override
- public void KeywordCreate(KeywordCreateDTO keywordCreateDto) {
+ public void KeywordCreate(KeywordCreateDTO keywordCreateDto, HttpServletResponse response) throws IOException {
   Keyword keyword = new Keyword();
+  response.setContentType("text/html;charset=UTF-8");
+  PrintWriter out =response.getWriter();
+
+  if(keywordCreateDto.getKeywordName() == ""){
+
+
+   out.println("<script>alert('공백입니다 키워드를 다시입력하세요');history.go(-1); </script>");
+   out.flush();
+   return ;
+  }
 
 
 
@@ -36,16 +49,19 @@ public class KeywordServiceImpl implements KeywordService {
 
   if(keywordRepositoy.findByKeywordNameAndMember(keywordCreateDto.getKeywordName(),member) ==null){
    keywordRepositoy.save(keyword);
+   out.println("<script>alert('등록완료!');history.go(-1); </script>");
+   out.flush();
   }
   else  return;
 
  }
 
+
  @Override
- public List<KeywordListDTO> KeywordList(Long memberId) {
+ public List<KeywordListDTO> KeywordList(Long memberDTO) {
 
 
-return keywordRepositoy.findAllByMemberId(memberId)
+return keywordRepositoy.findAllByMemberId(memberDTO)
                 .stream().map(keyword -> new KeywordListDTO(keyword))
                 .collect(Collectors.toList());
 

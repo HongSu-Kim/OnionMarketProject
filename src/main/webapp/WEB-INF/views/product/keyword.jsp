@@ -28,7 +28,7 @@
 
 <nav class="navbar navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="keyword"> ${userId} 어서오세요<br/> <br/></a>
+        <a class="navbar-brand" href="keyword"><br/> <br/></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar"
                 aria-controls="offcanvasDarkNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -93,14 +93,20 @@
 <br/><br/><br/><br/>
 <form:form action="" method="post">
 
-    <input type="hidden" name="userId" value="asd">  <%--아이디 일시적으로 asd로설정--%>
+
+        <input type="hidden" name="memberId" value="${memberDTO.id}">
+
+
+
 <input type="text" name="keywordName" value="" />
+
  <input type="submit" value="키워드등록하기" />
+
 </form:form>
 
 <form:form action="mykeyword" method="get">
 
-    <input type="hidden" name="userId" value="asd">
+<%--    <input type="hidden" name="userId" value="asd">--%>
 
     <input type="submit" value="MY키워드확인" />
 </form:form>
