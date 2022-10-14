@@ -1,8 +1,10 @@
 package com.youprice.onion.controller.board;
 
+import com.youprice.onion.dto.board.AnswerDTO;
 import com.youprice.onion.dto.board.InquiryDTO;
 import com.youprice.onion.dto.board.InquiryFormDTO;
 import com.youprice.onion.dto.member.MemberDTO;
+import com.youprice.onion.service.board.AnswerService;
 import com.youprice.onion.service.board.InquiryService;
 import com.youprice.onion.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -10,16 +12,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
-import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -27,6 +26,7 @@ import java.security.Principal;
 public class InquiryController {
 
     private final InquiryService inquiryService;
+    private final AnswerService answerService;
     private final MemberService memberService;
 
     // 저장
@@ -80,8 +80,10 @@ public class InquiryController {
                           @RequestParam(required = false, defaultValue = "") String word){
 
         InquiryDTO inquiryDTO = inquiryService.findInquiryDTO(id);
+        List<AnswerDTO> answerList = answerService.findByInquiryId(id);
 
         model.addAttribute("inquiryDTO", inquiryDTO);
+        model.addAttribute("answerList", answerList);
         model.addAttribute("field", field);
         model.addAttribute("word", word);
 

@@ -17,7 +17,7 @@
     <!-- 검색 -->
     <form action="/inquiry/list" class="d-flex" method="GET">
         <select name="field" id="field" class="form-control form-control-sm" style="width: 130px;">
-            <option selected="selected">전체</option>
+            <option selected="selected" value="all">전체</option>
             <option value="name">작성자</option>
             <option value="회원정보">[문의유형]회원정보</option>
             <option value="거래">[문의유형]거래</option>
@@ -69,14 +69,14 @@
                             <c:when test="${dto.memberId eq memberDTO.id}">
                                 <!-- 작성자이거나 관리자일 때 볼 수 있는 링크 -->
                                 <td>Q <a href="/inquiry/article/${dto.inquiryId}?field=${param.field}&word=${param.word}&page=${param.page}">
-                                    <i class="icofont-lock"></i>
-                                    <c:out value="${dto.inquirySubject}"/>
+                                        <%-- [${answerList.size() }] --%>
+                                    <c:out value="${dto.inquirySubject}"/><c:if test="${dto.answer.size() != 0}">[${dto.answer.size()}]</c:if>
                                 </a></td>
                             </c:when>
 
                             <c:otherwise>
                                 <td class="text-secondary"><i class="icofont-lock"></i>
-                                    🔒<c:out value="${dto.inquirySubject}"/>
+                                    🔒<c:out value="${dto.inquirySubject}"/><c:if test="${dto.answer.size() != 0}">[${dto.answer.size()}]</c:if>
                                 </td>
                             </c:otherwise>
                         </c:choose>
@@ -86,6 +86,7 @@
                         <td>
                             <a href="/inquiry/article/${dto.inquiryId}?field=${param.field}&word=${param.word}&page=${param.page}">
                                 Q ${dto.inquirySubject}
+                                <c:if test="${dto.answer != null}">[${dto.answer.size()}]</c:if>
                             </a>
                         </td>
                     </c:if>

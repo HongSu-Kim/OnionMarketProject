@@ -12,6 +12,9 @@ import java.util.Optional;
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findByUserId(String userId);
+    boolean existsByUserId(String userId); //해당 데이터가 존재할 경우 true, 존재하지 않을 경우 false 반환
+    boolean existsByNickname(String nickname);
+    boolean existsByEmail(String email);
 
     @Repository
     @RequiredArgsConstructor
