@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("search")
@@ -30,11 +33,11 @@ public class SearchController {
 
     @PostMapping("search")
     public String KeywordCreate(Model model, SearchAddDTO searchAddDTO,
-                                @RequestParam("searchName") String searchName  ){
+                                @RequestParam("searchName") String searchName, HttpServletResponse response) throws IOException {
 
         if(searchService.findBySearchName(searchName)==null) {
 
-            searchService.SearchCreate(searchAddDTO,searchName);
+            searchService.SearchCreate(searchAddDTO,searchName,response);
         }
 
 
