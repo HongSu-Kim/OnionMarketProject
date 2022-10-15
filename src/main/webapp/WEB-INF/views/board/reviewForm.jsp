@@ -42,9 +42,9 @@
 
 <form:form method="post" action="/review/created/${orderDTO.orderId}" enctype="multipart/form-data" id="myform" modelAttribute="reviewFormDTO">
 
-    <input type="hidden" name="memberId" value="${memberDTO.id}">
+    <input type="hidden" name="memberId" value="${sessionDTO.id}">
     <input type="hidden" name="orderId" value="${orderDTO.orderId}">
-    <input type="hidden" name="salesId" value="${memberDTO.id}">
+    <input type="hidden" name="salesId" value="${sessionDTO.id}">
 
 
     <div align="center">

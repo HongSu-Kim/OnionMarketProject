@@ -18,7 +18,7 @@
 </head>
 <body id="review_body">
 
-<form:form method="post" action="/review/update/{id}" enctype="multipart/form-data" id="myform" modelAttribute="reviewFormDTO">
+<form:form method="post" action="/review/update/${reviewDTO.reviewId}" enctype="multipart/form-data" id="myform" modelAttribute="form">
 
     <input type="hidden" name="reviewId" value="${reviewDTO.reviewId}">
 

@@ -4,6 +4,8 @@ import com.youprice.onion.dto.board.AnswerDTO;
 import com.youprice.onion.dto.board.InquiryDTO;
 import com.youprice.onion.dto.board.InquiryFormDTO;
 import com.youprice.onion.dto.member.MemberDTO;
+import com.youprice.onion.dto.member.SessionDTO;
+import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.service.board.AnswerService;
 import com.youprice.onion.service.board.InquiryService;
 import com.youprice.onion.service.member.MemberService;
@@ -31,9 +33,11 @@ public class InquiryController {
 
     // 저장
     @GetMapping("/created")
-    public String inquiryForm(@ModelAttribute InquiryFormDTO inquiryFormDTO, Model model){
-        MemberDTO memberDTO = memberService.getMemberDTO(1L);
-        model.addAttribute("memberDTO", memberDTO);
+    public String inquiryForm(@ModelAttribute InquiryFormDTO inquiryFormDTO, Model model,
+                              @LoginUser SessionDTO sessionDTO){
+        if(sessionDTO != null){
+            model.addAttribute("sessionDTO", sessionDTO);
+        }
         return "board/inquiryForm";
     }
     @PostMapping("/created")
@@ -49,9 +53,11 @@ public class InquiryController {
     @GetMapping("/list")
     public String lists(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(required = false, defaultValue = "") String field,
-                        @RequestParam(required = false, defaultValue = "") String word, Model model) {
-
-        MemberDTO memberDTO = memberService.getMemberDTO(1L);
+                        @RequestParam(required = false, defaultValue = "") String word,
+                        @LoginUser SessionDTO sessionDTO, Model model) {
+        if(sessionDTO != null){
+            model.addAttribute("sessionDTO", sessionDTO);
+        }
 
         Page<InquiryDTO> questionlist = inquiryService.findAll(pageable);
         if(word.length() != 0) {
@@ -68,7 +74,6 @@ public class InquiryController {
         model.addAttribute("startBlockPage", startBlockPage);
         model.addAttribute("endBlockPage", endBlockPage);
         model.addAttribute("questionlist", questionlist);
-        model.addAttribute("memberDTO", memberDTO);
 
         return "board/inquiryList";
     }
@@ -91,13 +96,14 @@ public class InquiryController {
     }
     // 수정 화면
     @GetMapping("/update/{id}")
-    public String updateForm(@PathVariable Long id, Model model){
-
+    public String updateForm(@PathVariable Long id, @LoginUser SessionDTO sessionDTO, Model model){
+        if(sessionDTO != null){
+            model.addAttribute("sessionDTO", sessionDTO);
+        }
         InquiryDTO inquiryDTO = inquiryService.findInquiryDTO(id);
-        MemberDTO memberDTO = memberService.getMemberDTO(inquiryDTO.getMemberId());
 
         model.addAttribute("inquiryDTO",inquiryDTO);
-        model.addAttribute("memberDTO",memberDTO);
+        model.addAttribute("sessionDTO",sessionDTO);
         return "board/inquiryUpdate";
     }
     // 수정

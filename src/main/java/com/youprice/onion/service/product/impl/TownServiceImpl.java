@@ -38,13 +38,13 @@ public class TownServiceImpl implements TownService {
   townRepositoy.save(town);
  }
 
-// @Override
-// public List<TownFindDTO> townList(Long memberId) {
-//
-//  return townRepositoy.findAllByMemberId(memberId)
-//          .stream().map(town -> new TownFindDTO(town))
-//          .collect(Collectors.toList());
-// }
+ @Override
+ public List<TownFindDTO> townList(Long id) { //townId로 찾기
+
+  return townRepositoy.findAllById(id)
+          .stream().map(town -> new TownFindDTO(town))
+          .collect(Collectors.toList());
+ }
 
 
 
