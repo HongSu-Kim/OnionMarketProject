@@ -4,6 +4,8 @@ import com.youprice.onion.dto.board.AnswerDTO;
 import com.youprice.onion.dto.board.AnswerFormDTO;
 import com.youprice.onion.dto.board.InquiryDTO;
 import com.youprice.onion.dto.member.MemberDTO;
+import com.youprice.onion.dto.member.SessionDTO;
+import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.service.board.AnswerService;
 import com.youprice.onion.service.board.InquiryService;
 import com.youprice.onion.service.member.MemberService;
@@ -25,12 +27,13 @@ public class AnswerController {
     private final MemberService memberService;
 
     @GetMapping("/created/{id}")
-    public String answerForm(@PathVariable("id") Long inquiryId, Model model){
+    public String answerForm(@PathVariable("id") Long inquiryId, Model model,
+                             @LoginUser SessionDTO sessionDTO){
         InquiryDTO inquiryDTO = inquiryService.findInquiryDTO(inquiryId);
-        MemberDTO memberDTO = memberService.getMemberDTO(inquiryDTO.getMemberId());
-
+        if(sessionDTO != null){
+            model.addAttribute("sessionDTO", sessionDTO);
+        }
         model.addAttribute("inquiryDTO", inquiryDTO);
-        model.addAttribute("memberDTO", memberDTO);
         return "board/answerForm";
     }
 
@@ -47,13 +50,14 @@ public class AnswerController {
 
     // 수정 화면
     @GetMapping("/update/{id}")
-    public String updateForm(@PathVariable Long id, Model model){
-
+    public String updateForm(@PathVariable Long id, Model model, @LoginUser SessionDTO sessionDTO){
         AnswerDTO answerDTO = answerService.findAnswerDTO(id);
-        MemberDTO memberDTO = memberService.getMemberDTO(answerDTO.getMemberId());
 
+        if(sessionDTO != null){
+            model.addAttribute("sessionDTO", sessionDTO);
+        }
         model.addAttribute("answerDTO",answerDTO);
-        model.addAttribute("memberDTO",memberDTO);
+        model.addAttribute("sessionDTO",sessionDTO);
         return "board/answerForm";
     }
     // 수정
