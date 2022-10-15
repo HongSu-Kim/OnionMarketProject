@@ -66,7 +66,8 @@
                     <c:if test="${dto.secret == true}">
                         <c:choose>
                             <%-- <c:when test="${dto.member.userId eq member.userid || member.role eq '[ROLE_ADMIN, ROLE_USER]'}"> --%>
-                            <c:when test="${dto.memberId eq sessionDTO.id || sessionDTO.role eq 'ROLE_ADMIN'}">
+                            <c:when test="${dto.memberId eq sessionDTO.id}">
+                                <%--|| sessionDTO.role eq 'ROLE_ADMIN'--%>
                                 <!-- 작성자이거나 관리자일 때 볼 수 있는 링크 -->
                                 <td>Q <a href="/inquiry/article/${dto.inquiryId}?field=${param.field}&word=${param.word}&page=${param.page}">
                                     <c:out value="${dto.inquirySubject}"/><c:if test="${dto.answer.size() != 0}">[${dto.answer.size()}]</c:if>
