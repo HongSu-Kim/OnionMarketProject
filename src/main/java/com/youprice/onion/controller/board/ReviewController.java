@@ -7,6 +7,7 @@ import com.youprice.onion.dto.order.OrderDTO;
 import com.youprice.onion.dto.product.ProductImageDTO;
 import com.youprice.onion.entity.product.ProductImage;
 import com.youprice.onion.security.auth.LoginUser;
+import com.youprice.onion.service.board.ReviewImageService;
 import com.youprice.onion.service.board.ReviewService;
 import com.youprice.onion.service.member.MemberService;
 import com.youprice.onion.service.order.OrderService;
@@ -36,6 +37,7 @@ import java.util.List;
 public class ReviewController {
 
     private final ReviewService reviewService;
+    private final ReviewImageService reviewImageService;
     private final OrderService orderService;
     private final ProductService productService;
     private final ProductImageService productImageService;
@@ -102,13 +104,21 @@ public class ReviewController {
     @GetMapping("/update/{id}")
     public String updateForm(@PathVariable Long id, Model model,@LoginUser SessionDTO sessionDTO){
         ReviewDTO reviewDTO = reviewService.findReviewDTO(id);
+        List<ReviewImageDTO> imageList = reviewImageService.findByReviewId(id);
+
         if(sessionDTO != null){
             model.addAttribute("sessionDTO", sessionDTO);
         }
-
         model.addAttribute("reviewDTO",reviewDTO);
+        model.addAttribute("imageList",imageList);
         model.addAttribute("sessionDTO",sessionDTO);
         return "board/reviewUpdate";
+    }
+    // 첨부사진 개별 삭제
+    @GetMapping("/images/delete/{id}/{reviewId}")
+    public String imageDelete(@PathVariable("id") Long imageId, @PathVariable("reviewId") Long reviewId){
+        reviewImageService.deleteImage(imageId);
+        return "redirect:/review/update/" + reviewId;
     }
     // 수정
     @PostMapping("/update/{id}")
