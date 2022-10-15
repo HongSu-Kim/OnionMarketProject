@@ -9,5 +9,5 @@ import java.util.List;
 public interface TownService {
 
     void townAdd(TownAddDTO townAddDTO);
-  //  List<TownFindDTO> townList(Long memberId);
+   List<TownFindDTO> townList(Long id);
 }
