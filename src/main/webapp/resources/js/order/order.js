@@ -13,7 +13,7 @@ $('#payment').click(function() {
         pay_method: "card", // 결제방식
         merchant_uid: $('#orderNum').val(), // 주문번호
         name: $('#productName').val(), // 상품명
-        amount: parseInt($('#price').val()) + parseInt($('#deliveryCost').val()), // 결제 금액 : 주문가격 + 배송비
+        amount: parseInt($('#orderPayment').val()), // 결제 금액 : 주문가격 + 배송비
         buyer_name: $('#name').val(), // 주문자명
         buyer_tel: $('#tel').val(), // 주문자 연락처
         buyer_email: $('#email').val(), // 주문자 이메일
@@ -46,18 +46,9 @@ $('#payment').click(function() {
                 success: function (url) { // DB 입력 성공
                     location.href = url
                 },
-                error: function (e) { // DB 입력중 오류
-                    alert(e.responseText);
-                    console.log(e.responseText)
-                    // jQuery.ajax({
-                    //     url: "{환불요청을 받을 서비스 URL}", // 예: http://www.myservice.com/payments/cancel
-                    //     type: "POST",
-                    //     contentType: "application/json",
-                    //     data: JSON.stringify({
-                    //         merchant_uid: $('#orderNum').val(), // 결제건의 주문번호
-                    //         cancel_request_amount:  parseInt($('#price').val()) + parseInt($('#deliveryCost').val()), // 환불금액
-                    //     })
-                    // });
+                error: function (error) { // DB 입력중 오류
+                    alert(error.responseText)
+                    location.href = "redirect:/product/productMain"
                 }
             }).done(function (data) {
                 // 가맹점 서버 결제 API 성공시 로직

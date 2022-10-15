@@ -14,18 +14,18 @@
         <h2><a href="/inquiry/list" id="hrefDeco">후기 목록</a></h2>
     </div>
 
-    <c:if test="${memberDTO.name != null}">
-        <p>${memberDTO.name}. 접속중입니다</p>
+    <c:if test="${sessionDTO.name != null}">
+        <p>${sessionDTO.name}. 접속중입니다</p>
     </c:if>
 
 
     <div>
-        <c:if test="${memberDTO.name != null}">
+        <c:if test="${sessionDTO.name != null}">
             <form action="/member/logout" method="post">
                 <button class="btn btn-danger float-end" type="submit">로그아웃</button>
             </form></c:if>
 
-        <c:if test="${memberDTO.name == null}">
+        <c:if test="${sessionDTO.name == null}">
             <button class="btn btn-primary float-end" onclick="location.href='/member/login'" type="button">로그인</button>
         </c:if>
     </div><br/>
@@ -57,9 +57,7 @@
                         ${dto.reviewContent}
                     </td>
                     <td>
-                        <c:forEach var="i" begin="1" end="${dto.grade}">
-                            ★
-                        </c:forEach>
+                        <c:forEach var="i" begin="1" end="${dto.grade}">★</c:forEach>
                     </td>
                     <td>${dto.reviewDate}</td>
 

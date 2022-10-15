@@ -1,8 +1,6 @@
 package com.youprice.onion.controller.member;
 
-import com.youprice.onion.dto.member.MemberDTO;
-import com.youprice.onion.dto.member.SessionDTO;
-import com.youprice.onion.security.auth.LoginUser;
+import com.youprice.onion.dto.member.MemberJoinDTO;
 import com.youprice.onion.security.validator.CustomValidators;
 import com.youprice.onion.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -57,11 +55,11 @@ public class MemberController {
 
     //회원가입
     @PostMapping("/joinProc")
-    public String joinProc(@Valid MemberDTO memberDTO, Errors errors, Model model) {
+    public String joinProc(@Valid MemberJoinDTO memberJoinDTO, Errors errors, Model model) {
 
         if (errors.hasErrors()) {
             //회원가입 실패 시 입력 데이터 값을 유지
-            model.addAttribute("memberDTO", memberDTO);
+            model.addAttribute("memberJoinDTO", memberJoinDTO);
 
             //유효성 통과 못한 필드와 메시지를 핸들링
             Map<String, String> validatorResult = memberService.validateHandling(errors);
@@ -72,7 +70,7 @@ public class MemberController {
             //회원가입 페이지로 다시 리턴
             return "member/join";
         }
-        memberService.saveMember(memberDTO);
+        memberService.saveMember(memberJoinDTO);
         return "redirect:login";
     }
 

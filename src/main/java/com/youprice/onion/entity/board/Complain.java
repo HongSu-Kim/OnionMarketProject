@@ -4,12 +4,14 @@ import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.product.Product;
 import com.youprice.onion.entity.chat.Chatroom;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Complain {
 
     @Id
@@ -34,4 +36,17 @@ public class Complain {
     private String complainContent; // 신고내용
     private String status; // 처리상태
 
+    public Complain(Member member, Product product, Chatroom chatroom, String complainType,
+                                                String complainContent, String status) {
+        this.member = member;
+        this.product = product;
+        this.chatroom = chatroom;
+        this.complainType = complainType;
+        this.complainDate = LocalDateTime.now();
+        this.complainContent = complainContent;
+        this.status = status;
+    }
+    public void updateStatus(String status){
+        this.status = status;
+    }
 }

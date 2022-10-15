@@ -30,7 +30,9 @@
                 <input type="password" class="form-control" name="pwd" placeholder="비밀번호를 입력해주세요">
             </div>
 
-            <button class="form-control btn btn-primary bi bi-lock-fill"> 로그인</button>
+            <button class="form-control btn btn-primary bi bi-lock-fill">로그인</button>
+            <div>&nbsp;</div>
+            <a href="/member/join" role="button" class="form-control btn btn-primary bi bi-lock-fill">회원가입</a>
         </form>
     </div>
 </div>

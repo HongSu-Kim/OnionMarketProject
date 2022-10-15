@@ -16,7 +16,7 @@
     <c:choose>
         <c:when test="${answerDTO == null}">
             <form:form method="post" action="/answer/created/${inquiryDTO.inquiryId}" modelAttribute="answerFormDTO">
-                <input type="hidden" name="memberId" value="${memberDTO.id}">
+                <input type="hidden" name="memberId" value="${sessionDTO.id}">
                 <input type="hidden" name="inquiryId" value="${inquiryDTO.inquiryId}">
 
                 <h4>답변 작성하기</h4>
@@ -29,7 +29,7 @@
 
         <c:otherwise>
             <form:form method="post" action="/answer/update/${answerDTO.answerId}" modelAttribute="answerFormDTO">
-                <input type="hidden" name="memberId" value="${memberDTO.id}">
+                <input type="hidden" name="memberId" value="${sessionDTO.id}">
                 <input type="hidden" name="inquiryId" value="${answerDTO.answerId}">
 
                 <h4>답변 수정하기</h4>

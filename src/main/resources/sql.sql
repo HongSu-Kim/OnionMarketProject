@@ -257,7 +257,7 @@ CREATE TABLE orders (
     order_num           CHAR(15)        NOT NULL,
     imp_uid             VARCHAR2(20)    NOT NULL,
     order_payment       NUMBER          NOT NULL,
-	order_state     	VARCHAR2(10)    DEFAULT 'order',
+	order_state     	VARCHAR2(10)    DEFAULT 'ORDER',
 	order_date      	DATE            DEFAULT SYSDATE,
 	modified_date   	DATE            DEFAULT NULL,
 	CONSTRAINT PK_ORDERS PRIMARY KEY (order_id),
@@ -308,7 +308,7 @@ CREATE TABLE review_image(
     review_image_id     NUMBER          Not NULL,
     review_id           NUMBER          NOT NULL,
     original_file_name  VARCHAR2(30)    NOT NULL,
-    store_file_name     varchar2(100)   NOT NULL,
+    store_image_name     varchar2(100)   NOT NULL,
     CONSTRAINT PK_REVIEW_IMAGE PRIMARY KEY (review_image_id),
     CONSTRAINT FK_REVIEW_IMAGE_REVIEW_ID FOREIGN KEY (review_id) REFERENCES review(review_id)
 );
