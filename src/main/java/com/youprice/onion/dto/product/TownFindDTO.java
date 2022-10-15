@@ -19,10 +19,10 @@ public class TownFindDTO {
     private Long memberId; //회원번호 FK
 
 
-//    public TownFindDTO(Town town) {
-//
-//        id =town.getId();
-//        memberId = town.getMember().getId();
-//        coordinateId = town.getCoordinate().getId();
-//    }
+    public TownFindDTO(Town town) {
+
+        id =town.getId();
+        coordinateId = town.getCoordinate().getId();
+    }
+
 }
