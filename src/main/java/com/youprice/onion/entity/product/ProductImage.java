@@ -1,11 +1,14 @@
 package com.youprice.onion.entity.product;
+import com.sun.xml.bind.v2.schemagen.xmlschema.TypeHost;
 import com.youprice.onion.dto.product.ProductImageDTO;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class ProductImage {
 
         @Id
@@ -19,12 +22,9 @@ public class ProductImage {
 
         private String productImageName; //이미지파일이름
 
-        public ProductImage addProductImage(ProductImageDTO productImageDTO, Product product, String productImageName) {
-
-                this.id = productImageDTO.getProductImageId();
+        public ProductImage(Product product,String productImageName) {
                 this.product = product;
                 this.productImageName = productImageName;
-
-                return this;
         }
+
 }
