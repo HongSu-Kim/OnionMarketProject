@@ -30,8 +30,8 @@ public class ProductDTO {
     public ProductDTO(Product product) {
 
         productId = product.getId();
-        memberId = Long.valueOf(1); //product.getMember().getId();
-        townId = Long.valueOf(1); //product.getTown().getId();
+        memberId = product.getMember().getId();
+        townId = product.getTown().getId();
         productName = product.getProductName();
         subject = product.getSubject();
         content = product.getContent();

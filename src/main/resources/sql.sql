@@ -133,7 +133,7 @@ CREATE TABLE product (
 	product_id          NUMBER          NOT NULL,
 	member_id           NUMBER          NOT NULL,
 	town_id             NUMBER          NOT NULL,
-	product_name        VARCHAR2(255)   NULL,
+	category_id         NUMBER          NOT NULL,
 	subject             VARCHAR2(255)   NULL,
 	content             VARCHAR2(255)   NULL,
 	price               VARCHAR2(255)   NULL,
