@@ -40,6 +40,15 @@
     </div><hr/>
 
 
+    <%-- 첨부사진 개별 삭제 --%>
+    <c:forEach items="${imageList}" var="reviewImageDTO">
+        <span>
+            <img src="/images/${reviewImageDTO.storeImageName}" width="300" height="300"/>
+            <button type="button" onclick="location.href='/review/images/delete/${reviewImageDTO.id}/${reviewDTO.reviewId}'">
+                삭제</button>
+        </span>
+    </c:forEach>
+
     <!-- 사진 첨부 -->
     <label class="fileButton" for="reviewImg"><p id="fileFont">사진/동영상 첨부하기</p></label>
     <input type="file" id="reviewImg" name="reviewImageName" multiple="multiple" style="display: none"/>
@@ -56,7 +65,7 @@
     <div class="d-grid gap-2 col-9 mx-auto">
         <button type="submit" class="btn btn-success">등록</button>
         <button class="w-100 btn btn-secondary btn-lg"
-                onclick="location.href='/'" type="button">취소</button>
+                onclick="location.href='/review/list'" type="button">취소</button>
     </div>
 </form:form>
 
