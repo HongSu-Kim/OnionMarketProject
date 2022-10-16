@@ -118,8 +118,8 @@
 			<div class="col-lg-6">
 				<nav class="header__menu">
 					<ul>
-						<li><a href="/">홈</a></li>
-						<li><a href="#">상품</a>
+						<li><a href="/product/main">홈</a></li>
+						<li><a href="/product/main">상품</a>
 							<ul class="header__menu__dropdown">
 								<li><a href="/product/main">Product Main</a></li>
 								<li><a href="#">Temp2</a></li>

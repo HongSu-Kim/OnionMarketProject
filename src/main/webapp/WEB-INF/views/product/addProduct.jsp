@@ -54,10 +54,12 @@
 		상품명: <input type="text" name="productName"/><br/>
 		제목: <input type="text" name="subject"/><br/>
 		동네 선택<br/>
-		<input type="radio" id="town1" name="townId"/><label for="town1">${townList.get(0).getTownName}</label>
-		<%--c:if로 동네가 2개 이상일 경우 생성--%>
-<%--		<input type="radio" id="town2" name="townId"/><label for="town2">${townList.get(1).getTownName}</label>--%>
-<%--		<input type="radio" id="town3" name="townId"/><label for="town3">${townList.get(2).getTownName}</label>--%>
+		<%--townList foreach로 설정--%>
+		<input type="radio" id="town1" name="townName"/><label for="town1">${townName}</label>
+		<br/>
+		경매 등록<br/>
+		<input type="checkbox" name="auctionStatus" value="예"/>
+		<input type="checkbox" name="auctionStatus" value="아니오" checked/>
 		<br/>
 		카테고리 선택<br/>
 		<select>
@@ -76,7 +78,6 @@
 		<button type="button" class="btnAdd">이미지 추가</button><br/>
 	</div>
 	<div>
-<%--		<input type="hidden" name="townId" value="${townId}"/>--%>
 		<input type="submit" value="상품 등록"/>
 	</div>
 </form>

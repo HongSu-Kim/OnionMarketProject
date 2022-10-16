@@ -2,16 +2,12 @@ package com.youprice.onion.service.product.impl;
 
 import com.youprice.onion.dto.product.*;
 import com.youprice.onion.entity.member.Member;
-import com.youprice.onion.entity.product.Category;
-import com.youprice.onion.entity.product.Product;
-import com.youprice.onion.entity.product.ProductImage;
-import com.youprice.onion.entity.product.Town;
+import com.youprice.onion.entity.order.Order;
+import com.youprice.onion.entity.product.*;
 import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.repository.member.ProhibitionKeywordRepositoy;
-import com.youprice.onion.repository.product.CategoryRepositoy;
-import com.youprice.onion.repository.product.ProductImageRepository;
-import com.youprice.onion.repository.product.ProductRepository;
-import com.youprice.onion.repository.product.TownRepositoy;
+import com.youprice.onion.repository.order.OrderRepository;
+import com.youprice.onion.repository.product.*;
 import com.youprice.onion.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +30,10 @@ public class ProductServiceImpl implements ProductService {
 
     private final MemberRepository memberRepository;
     private final TownRepositoy townRepositoy;
-    private final CategoryRepositoy categoryRepositoy;
+    private final CategoryRepositoy categoryRepository;
+    private final AuctionRepository auctionRepository;
+    private final OrderRepository orderRepository;
+
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
 
@@ -49,9 +48,12 @@ public class ProductServiceImpl implements ProductService {
 
         Member member = memberRepository.findById(productAddDTO.getMemberId()).orElse(null);
         Town town = townRepositoy.findById(productAddDTO.getMemberId()).orElse(null);
-        Category category = categoryRepositoy.findById(productAddDTO.getCategoryId()).orElse(null);
+        Category category = categoryRepository.findById(productAddDTO.getCategoryId()).orElse(null);
+        Auction auction = auctionRepository.findById(productAddDTO.getAuctionId()).orElse(null);
+        Order order = null;
+
         // 상품 등록
-        Product product = new Product(member,town,category,productAddDTO.getSubject(),productAddDTO.getContent(),productAddDTO.getPrice(),productAddDTO.getUploadDate());
+        Product product = new Product(member,town,category,auction,order,productAddDTO.getSubject(),productAddDTO.getContent(),productAddDTO.getPrice(),productAddDTO.getUploadDate());
 
         Long productId = productRepository.save(product).getId();
 
@@ -108,6 +110,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDTO getProductDTO(Long productId) {
         return productRepository.findById(productId).map(ProductDTO::new).orElse(null);
     }
+
     //이미지리스트
     public List<ProductImage> productImages(Long productId, List<MultipartFile> fileList) throws Exception{
         List<ProductImage> productImageList = new ArrayList<>();
@@ -137,6 +140,7 @@ public class ProductServiceImpl implements ProductService {
 
         return fileName;
     }
+
     //조회수 증가
     @Override
     @Transactional
@@ -144,10 +148,21 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.updateView(productId);
     }
 
-	@Override
-	public Page<ProductSellListDTO> getProductSellListDTO(Long memberId, Pageable pageable) {
-		return productRepository.findByMemberId(memberId, pageable).map(ProductSellListDTO::new);
-	}
+    @Override
+    public Long getTownId(String townName) {
+        return townRepositoy.getTownId(townName);
+    }
+
+    public TownFindDTO findTownId(String townName) {
+        return townRepositoy.findByCoordinateTownName(townName).map(TownFindDTO::new).orElse(null);
+    }
+
+
+    @Override
+    public Page<ProductSellListDTO> getProductSellListDTO(Long memberId, Pageable pageable) {
+      return productRepository.findByMemberId(memberId, pageable).map(ProductSellListDTO::new);
+    }
+  
 
 //    @Override
 //    public String getFirstImage(List<ProductImageDTO> productImageList) throws Exception {

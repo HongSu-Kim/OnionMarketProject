@@ -19,11 +19,12 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Override
-    Optional<Product> findById(Long ID);
+    Optional<Product> findById(Long productId);
 
     @Modifying
     @Query("update Product p set p.viewCount = p.viewCount + 1 where p.id = ?1")
-    int updateView(@RequestParam("productId") Long id);
-
-	Page<Product> findByMemberId(Long memberId, Pageable pageable);
+    
+    int updateView(@RequestParam("productId") Long productId);
+    
+	  Page<Product> findByMemberId(Long memberId, Pageable pageable);
 }
