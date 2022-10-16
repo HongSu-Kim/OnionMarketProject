@@ -2,9 +2,12 @@ package com.youprice.onion.controller.board;
 
 import com.youprice.onion.dto.board.*;
 import com.youprice.onion.dto.member.MemberDTO;
+import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.order.OrderDTO;
 import com.youprice.onion.dto.product.ProductImageDTO;
 import com.youprice.onion.entity.product.ProductImage;
+import com.youprice.onion.security.auth.LoginUser;
+import com.youprice.onion.service.board.ReviewImageService;
 import com.youprice.onion.service.board.ReviewService;
 import com.youprice.onion.service.member.MemberService;
 import com.youprice.onion.service.order.OrderService;
@@ -34,20 +37,24 @@ import java.util.List;
 public class ReviewController {
 
     private final ReviewService reviewService;
+    private final ReviewImageService reviewImageService;
     private final OrderService orderService;
     private final ProductService productService;
     private final ProductImageService productImageService;
     private final MemberService memberService;
 
     @GetMapping("/created/{orderId}")
-    public String createdForm(@PathVariable("orderId") Long orderId, Model model) {
+    public String createdForm(@PathVariable("orderId") Long orderId, Model model,
+                              @LoginUser SessionDTO sessionDTO) {
         OrderDTO orderDTO = orderService.getOrderDTO(orderId);
-        MemberDTO memberDTO = memberService.getMemberDTO(1L);
+        if(sessionDTO != null){
+            model.addAttribute("sessionDTO", sessionDTO);
+        }
         //ProductDTO productDTO = productService.findById(orderDTO.getProductId()).orElse(null);
         //ProductImageDTO productImageDTO = productImageService.findByProduct_ProductId(orderDTO.getProductId()).get(0);
 
         model.addAttribute("orderDTO", orderDTO);
-        model.addAttribute("memberDTO", memberDTO);
+        model.addAttribute("sessionDTO", sessionDTO);
         //model.addAttribute("productImageDTO", productImageDTO);
         //model.addAttribute("productDTO", productDTO);
         return "board/reviewForm";
@@ -68,10 +75,11 @@ public class ReviewController {
 
     @GetMapping("/list")
     public String reviewLists(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
-                                Model model) {
-        MemberDTO memberDTO = memberService.getMemberDTO(1L);
+                                Model model, @LoginUser SessionDTO sessionDTO) {
         Page<ReviewDTO> reviewList = reviewService.findAll(pageable);
-
+        if(sessionDTO != null){
+            model.addAttribute("sessionDTO", sessionDTO);
+        }
         int pageNumber = reviewList.getPageable().getPageNumber();
         int totalPages = reviewList.getTotalPages();
         int pageBlock = 5;
@@ -82,7 +90,6 @@ public class ReviewController {
         model.addAttribute("startBlockPage", startBlockPage);
         model.addAttribute("endBlockPage", endBlockPage);
         model.addAttribute("reviewList", reviewList);
-        model.addAttribute("memberDTO", memberDTO);
 
         return "board/reviewList";
     }
@@ -95,14 +102,23 @@ public class ReviewController {
 
     // 수정 화면
     @GetMapping("/update/{id}")
-    public String updateForm(@PathVariable Long id, Model model){
+    public String updateForm(@PathVariable Long id, Model model,@LoginUser SessionDTO sessionDTO){
         ReviewDTO reviewDTO = reviewService.findReviewDTO(id);
-        OrderDTO orderDTO = orderService.getOrderDTO(reviewDTO.getOrderId());
-        MemberDTO memberDTO = memberService.getMemberDTO(orderDTO.getMemberId());
+        List<ReviewImageDTO> imageList = reviewImageService.findByReviewId(id);
 
+        if(sessionDTO != null){
+            model.addAttribute("sessionDTO", sessionDTO);
+        }
         model.addAttribute("reviewDTO",reviewDTO);
-        model.addAttribute("memberDTO",memberDTO);
+        model.addAttribute("imageList",imageList);
+        model.addAttribute("sessionDTO",sessionDTO);
         return "board/reviewUpdate";
+    }
+    // 첨부사진 개별 삭제
+    @GetMapping("/images/delete/{id}/{reviewId}")
+    public String imageDelete(@PathVariable("id") Long imageId, @PathVariable("reviewId") Long reviewId){
+        reviewImageService.deleteImage(imageId);
+        return "redirect:/review/update/" + reviewId;
     }
     // 수정
     @PostMapping("/update/{id}")

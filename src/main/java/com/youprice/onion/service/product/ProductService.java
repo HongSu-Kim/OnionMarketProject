@@ -1,19 +1,24 @@
 package com.youprice.onion.service.product;
 
-import com.youprice.onion.dto.product.ProductDTO;
-import com.youprice.onion.dto.product.ProductImageDTO;
-import com.youprice.onion.entity.product.Product;
+import com.youprice.onion.dto.product.*;
 import com.youprice.onion.entity.product.ProductImage;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ProductService {
+    //상품등록
+    Long addProduct(ProductAddDTO productAddDTO, List<MultipartFile> fileList) throws  Exception;
+    //상품수정
+    Long updateProduct(Long productId, ProductUpdateDTO updateDTO) throws Exception;
+    //상품 삭제
+    void deleteProduct(Long productId) throws Exception;
+    //상품목록 전체
+    List<ProductListDTO> getProductList();
+    //상품 하나 조회
+    ProductDTO getProductDTO(Long productId);
+    List<ProductImage> productImages(Long productId, List<MultipartFile> fileList)throws  Exception;
+    //조회수 증가
+    int updateView(Long productId);
 
-    Long addProduct(ProductDTO productDTO,ProductImageDTO productImageDTO, MultipartFile file) throws  Exception;
-    List<ProductDTO> getProductList();
-    Optional<Product> findById(Long id);
-
-    void deleteProduct(Long productId, Long productImageId, MultipartFile file) throws Exception;
 }

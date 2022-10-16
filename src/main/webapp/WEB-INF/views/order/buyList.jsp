@@ -12,7 +12,6 @@
 
 </head>
 <body>
-	<jsp:include page="orderNav.jsp"/>
 	<div class="buyList">
 		<c:forEach var="orderDTO" items="${page.content}">
 			<div>

@@ -80,17 +80,13 @@ public class ReviewServiceImpl implements ReviewService {
         return list;
     }
 
-    // 수정 (이미지 전체 삭제)
+    // 수정
     @Transactional
     public void updateReview(Long id, ReviewUpdateDTO form) throws IOException {
         Review review = reviewRepository.findById(id).orElseThrow(() -> new NoSuchElementException());
         Long reviewId = review.getId();
         review.updateReview(reviewId, form);
 
-        List<ReviewImage> imageList = reviewImageRepository.findByReviewId(id);
-        for(ReviewImage reviewImage : imageList){
-            reviewImageRepository.delete(reviewImage);
-        }
         List<ReviewImage> list = storeImages(reviewId, form.getReviewImageName());
         for(ReviewImage reviewImage : list){
             reviewImageRepository.save(reviewImage);
@@ -111,7 +107,7 @@ public class ReviewServiceImpl implements ReviewService {
 
             if(!multipartFile.isEmpty()){
                 String originalFilename = multipartFile.getOriginalFilename(); // 원본파일명
-                String storeImageName = storePath(multipartFile); // uuid 반환
+                String storeImageName = storePath(multipartFile); // uuid 변환
                 ReviewImage reviewImage = new ReviewImage(review, originalFilename, storeImageName);
                 storeFileList.add(reviewImage);
             }
@@ -119,8 +115,7 @@ public class ReviewServiceImpl implements ReviewService {
         return storeFileList;
     }
     public String filePath(){
-        String filePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images";
-        return filePath;
+        return System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images";
     }
     public String storePath(MultipartFile multipartFile) throws IOException {
         String filePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images";

@@ -3,6 +3,7 @@ package com.youprice.onion.controller.product;
 
 import com.youprice.onion.dto.product.SearchAddDTO;
 import com.youprice.onion.service.member.MemberService;
+import com.youprice.onion.service.member.ProhibitionKeywordService;
 import com.youprice.onion.service.product.CategoryService;
 import com.youprice.onion.service.product.SearchService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class SearchController {
     private  final MemberService memberService;
     private  final CategoryService categoryService;
     private  final SearchService  searchService;
+    private  final  ProhibitionKeywordService prohibitionKeywordService;
 
     @GetMapping("search")
     public String SearchCreate(Model model){
@@ -37,6 +39,7 @@ public class SearchController {
 
         if(searchService.findBySearchName(searchName)==null) {
 
+       // prohibitionKeywordService.ProhibitionKeywordFind(searchName);
             searchService.SearchCreate(searchAddDTO,searchName,response);
         }
 

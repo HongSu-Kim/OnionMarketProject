@@ -31,9 +31,9 @@
 
     <div>
         <h4 class="mb-3">* 회원 정보</h4>
-        이름 : ${memberDTO.name} <br/>
-        email : ${memberDTO.email} <br/>
-        tel : ${memberDTO.tel}
+        이름 : ${sessionDTO.name} <br/>
+        email : ${sessionDTO.email} <br/>
+        tel : ${sessionDTO.tel}
     </div>
     <hr/>
 
@@ -44,7 +44,7 @@
     <form:errors path="inquiryDTO" cssClass="field-error"/>
 
     <form:form method="post" action="/inquiry/created" modelAttribute="inquiryFormDTO">
-         <input type="hidden" name="memberId" value="${memberDTO.id}">
+         <input type="hidden" name="memberId" value="${sessionDTO.id}">
 
         <!-- 비밀글 체크 -->
         <div class="form-check form-check-inline mt-3">

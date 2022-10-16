@@ -32,7 +32,6 @@ import java.util.List;
 @RequestMapping("town")
 public class TownController {
 
-    //!! 아이디 일시적으로 asd로설정
 
     private final TownService townService;
     private final MemberService memberService;
@@ -40,12 +39,17 @@ public class TownController {
     private final CoordinateService coordinateService;
 
     @GetMapping("town")
-    public String find(Model model, TownFindDTO townFinddto, @LoginUser SessionDTO sessionDTO) {
+    public String find(Model model, @LoginUser SessionDTO sessionDTO) {
 
         if (sessionDTO == null) return "redirect:/member/login";
         MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
 
         model.addAttribute("memberDTO",memberDTO);
+
+
+        List<TownFindDTO> townList = townService.townLists(memberDTO.getId()); //참고
+
+        model.addAttribute("townList",townList);
 
 
 
@@ -55,7 +59,7 @@ public class TownController {
     }
 
     @PostMapping("townresult")
-    public String find(Town town, Model model, TownFindDTO townFinddto, @RequestParam("wishtown") String wishtown,
+    public String find(Town town, Model model, @RequestParam("wishtown") String wishtown,
                        @LoginUser SessionDTO sessionDTO) {
 
 
