@@ -2,11 +2,13 @@ package com.youprice.onion.service.product.impl;
 
 import com.youprice.onion.dto.product.*;
 import com.youprice.onion.entity.member.Member;
+import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.entity.product.Product;
 import com.youprice.onion.entity.product.ProductImage;
 import com.youprice.onion.entity.product.Town;
 import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.repository.member.ProhibitionKeywordRepositoy;
+import com.youprice.onion.repository.product.CategoryRepositoy;
 import com.youprice.onion.repository.product.ProductImageRepository;
 import com.youprice.onion.repository.product.ProductRepository;
 import com.youprice.onion.repository.product.TownRepositoy;
@@ -30,6 +32,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final MemberRepository memberRepository;
     private final TownRepositoy townRepositoy;
+    private final CategoryRepositoy categoryRepositoy;
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
 
@@ -43,10 +46,10 @@ public class ProductServiceImpl implements ProductService {
     public Long addProduct(ProductAddDTO productAddDTO, List<MultipartFile> fileList) throws Exception {
 
         Member member = memberRepository.findById(productAddDTO.getMemberId()).orElse(null);
-        Town town = townRepositoy.findById(91L).orElse(null);
-        //productAddDTO.getTownId()
+        Town town = townRepositoy.findById(productAddDTO.getMemberId()).orElse(null);
+        Category category = categoryRepositoy.findById(productAddDTO.getCategoryId()).orElse(null);
         // 상품 등록
-        Product product = new Product(member,town,productAddDTO.getProductName(),productAddDTO.getSubject(),productAddDTO.getContent(),productAddDTO.getPrice(),productAddDTO.getUploadDate());
+        Product product = new Product(member,town,category,productAddDTO.getSubject(),productAddDTO.getContent(),productAddDTO.getPrice(),productAddDTO.getUploadDate());
 
         Long productId = productRepository.save(product).getId();
 

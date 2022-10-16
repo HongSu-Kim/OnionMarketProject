@@ -1,5 +1,6 @@
 package com.youprice.onion.dto.product;
 
+import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.entity.product.ProductProgress;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ProductUpdateDTO {
 
-    private String productName; //상품명
+    private Category category; //카테고리
     private String subject; //제목
     private String content; //내용
     private int price; //상품가격

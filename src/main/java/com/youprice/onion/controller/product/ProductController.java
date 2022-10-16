@@ -22,17 +22,16 @@ import java.util.List;
 @RequestMapping("product")
 public class ProductController {
     private final ProductService productService;
-    private final CoordinateService coordinateService;
     private final TownService townService;
-
     private final ProductImageService productImageService;
 
     @GetMapping("add")//상픔 등록 주소
     public String add(Model model, @LoginUser SessionDTO userSession) {
 
-        //세션아이디로 set memberId
         List<TownFindDTO> townList = townService.townList(userSession.getId());
 
+        System.out.println("townName = " + townList.get(0).getTownName());
+        
         model.addAttribute("townList",townList);
 
         return "product/addProduct";//상품등록 페이지
@@ -42,8 +41,6 @@ public class ProductController {
 
         productAddDTO.setMemberId(userSession.getId());
         productAddDTO.setTownId(townId);
-
-        System.out.println("productAddDTO = " + productAddDTO.getTownId());
 
         Long productId = productService.addProduct(productAddDTO,fileList);
 

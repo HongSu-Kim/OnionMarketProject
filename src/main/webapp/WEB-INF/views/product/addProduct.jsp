@@ -56,8 +56,8 @@
 		동네 선택<br/>
 		<input type="radio" id="town1" name="townId"/><label for="town1">${townList.get(0).getTownName}</label>
 		<%--c:if로 동네가 2개 이상일 경우 생성--%>
-		<input type="radio" id="town2" name="townId"/><label for="town2">${townList.get(1).getTownName}</label>
-		<input type="radio" id="town3" name="townId"/><label for="town3">${townList.get(2).getTownName}</label>
+<%--		<input type="radio" id="town2" name="townId"/><label for="town2">${townList.get(1).getTownName}</label>--%>
+<%--		<input type="radio" id="town3" name="townId"/><label for="town3">${townList.get(2).getTownName}</label>--%>
 		<br/>
 		카테고리 선택<br/>
 		<select>
@@ -76,7 +76,7 @@
 		<button type="button" class="btnAdd">이미지 추가</button><br/>
 	</div>
 	<div>
-		<input type="hidden" name="townId" value="${townId}"/>
+<%--		<input type="hidden" name="townId" value="${townId}"/>--%>
 		<input type="submit" value="상품 등록"/>
 	</div>
 </form>

@@ -38,7 +38,9 @@ public class Product {
     @JoinColumn(name = "town_id")
     private Town town;//동네번호 FK
 
-    private String productName; //상품명
+    @ManyToOne(fetch = FetchType.LAZY )
+    @JoinColumn(name = "category_id")
+    private Category category; //카테고리번호 FK
     private String subject; //제목
     private String content; //내용
     private int price; //상품가격
@@ -84,15 +86,11 @@ public class Product {
     @OneToOne(mappedBy = "product")
     private Auction auction;
 
-    //카테고리 참조 양방향
-    @OneToOne(mappedBy = "product")
-    private Category category;
-
-    public Product(Member member,Town town,String productName, String subject, String content, int price, LocalDateTime uploadDate) {
+    public Product(Member member,Town town,Category category, String subject, String content, int price, LocalDateTime uploadDate) {
 
         this.member = member;
         this.town = town;
-        this.productName = productName;
+        this.category = category;
         this.subject = subject;
         this.content = content;
         this.price = price;
@@ -110,7 +108,7 @@ public class Product {
 
     public void updateProduct(Long id, ProductUpdateDTO updateDTO) {
         this.id = id;
-        this.productName = updateDTO.getProductName();
+        this.category = updateDTO.getCategory();
         this.subject = updateDTO.getSubject();
         this.content = updateDTO.getContent();
         this.price = updateDTO.getPrice();

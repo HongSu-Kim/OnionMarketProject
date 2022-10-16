@@ -14,8 +14,8 @@ public class ProductAddDTO {
 
     private Long memberId;//회원번호
     private Long townId;//동네번호
+    private Long categoryId;//카테고리번호
 
-    private String productName; //상품명
     private String subject; //제목
     private String content; //내용
     private int price; //상품가격
@@ -26,5 +26,4 @@ public class ProductAddDTO {
     private String blindStatus; //블라인드현황
     //이미지는 배열로
     private String productImageName;//이미지 이름
-    private String category;//카테고리
 }
