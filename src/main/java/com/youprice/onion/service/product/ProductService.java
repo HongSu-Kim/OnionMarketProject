@@ -13,12 +13,18 @@ public interface ProductService {
     Long updateProduct(Long productId, ProductUpdateDTO updateDTO) throws Exception;
     //상품 삭제
     void deleteProduct(Long productId) throws Exception;
+
     //상품목록 전체
     List<ProductListDTO> getProductList();
     //상품 하나 조회
     ProductDTO getProductDTO(Long productId);
     List<ProductImage> productImages(Long productId, List<MultipartFile> fileList)throws  Exception;
+
     //조회수 증가
     int updateView(Long productId);
 
+    //townId 조회
+    Long getTownId(String townName);
+
+    TownFindDTO findTownId(String townName);
 }

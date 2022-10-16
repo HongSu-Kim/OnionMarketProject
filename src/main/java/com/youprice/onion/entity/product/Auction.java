@@ -14,8 +14,7 @@ public class Auction {
     @Column(name = "auction_id")
     private Long id; //경매번호 PK
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @OneToOne(mappedBy = "auction")
     private Product product; //상품번호 FK
     
     private LocalDateTime auctionDeadline; //경매기한
