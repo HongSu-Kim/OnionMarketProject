@@ -24,3 +24,7 @@
     top: 160px;
     margin-bottom: 160px;
 }
+
+td img {
+    display: inline-block;
+}
