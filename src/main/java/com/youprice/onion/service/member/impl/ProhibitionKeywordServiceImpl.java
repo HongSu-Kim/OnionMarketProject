@@ -97,6 +97,11 @@ public class ProhibitionKeywordServiceImpl implements ProhibitionKeywordService 
 
     }
 
-
+    @Override
+    public boolean ProhibitionKeywordFind(String ProhibitionKeyword) { //금지어 체크 메소드
+        prohibitionKeywordRepositoy.findAllByProhibitionKeywordName(ProhibitionKeyword);
+        System.out.println("금지어입니다");
+        return false;
+    }
 }
 

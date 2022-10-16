@@ -14,8 +14,11 @@ import java.util.List;
 public interface TownRepositoy extends JpaRepository<Town,Long> {
 
 
-    List<Town> findAll();
-    List<Town> findAllById(Long id);
+
+    List<Town> findAllById(Long townId);
+
+    List<Town> findAllByMemberId(Long memberId);
+
 
 
 }

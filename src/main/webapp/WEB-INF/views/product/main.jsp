@@ -4,7 +4,6 @@
 
 <%
 	request.setCharacterEncoding("UTF-8");
-//	String cp = request.getContextPath();
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -16,10 +15,13 @@
 
 <h3>상품 리스트입니다</h3>
 <div>
-	<c:forEach var="dto" items="${dto}">
-		제목: ${dto.subject}<br/>
-		상품가격: ${dto.price}
-		등록일: ${dto.uploadDate}<br/>
+	<c:forEach var="list"  items="${list}">
+		<a href="/product/detail?productId=${list.productId}">
+		제목: ${list.subject}<br/>
+		</a>
+		<img src="/img/product/${list.productImageName}"/><br/>
+		상품가격: ${list.price}
+		등록일: ${list.uploadDate}<br/>
 	</c:forEach>
 </div>
 
