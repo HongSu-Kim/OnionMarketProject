@@ -15,6 +15,8 @@ import com.youprice.onion.repository.product.TownRepositoy;
 import com.youprice.onion.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -141,6 +143,11 @@ public class ProductServiceImpl implements ProductService {
     public int updateView(Long productId) {
         return productRepository.updateView(productId);
     }
+
+	@Override
+	public Page<ProductSellListDTO> getProductSellListDTO(Long memberId, Pageable pageable) {
+		return productRepository.findByMemberId(memberId, pageable).map(ProductSellListDTO::new);
+	}
 
 //    @Override
 //    public String getFirstImage(List<ProductImageDTO> productImageList) throws Exception {
