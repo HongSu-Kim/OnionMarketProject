@@ -25,8 +25,8 @@ public class Category {
     @OneToMany(mappedBy = "parent") //자식카테고리번호
     private  List<Category> childList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "category")//상품카테고리번호
-    private List<ProductCategory> productCategoryList = new ArrayList<>();
+    @OneToMany(mappedBy = "category")//카테고리번호
+    private List<Product> categoryList = new ArrayList<>();
 
 
 

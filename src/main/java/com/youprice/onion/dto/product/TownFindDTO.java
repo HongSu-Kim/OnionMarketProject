@@ -15,6 +15,8 @@ public class TownFindDTO {
 
     private Long coordinateId; //좌표번호 FK
 
+    private String townName; //동네이름
+
 
     private Long memberId; //회원번호 FK
 
@@ -22,7 +24,9 @@ public class TownFindDTO {
     public TownFindDTO(Town town) {
 
         id =town.getId();
+        memberId =town.getMember().getId();
         coordinateId = town.getCoordinate().getId();
+        townName = town.getCoordinate().getTownName();
     }
 
 }

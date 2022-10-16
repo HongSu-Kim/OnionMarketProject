@@ -18,6 +18,8 @@ public interface ProhibitionKeywordService {
 
     List<ProhibitionKeywordFindDTO> prohibitionKewordList();
 
+    boolean ProhibitionKeywordFind(String ProhibitionKeywordName );
+
 
 
 }
