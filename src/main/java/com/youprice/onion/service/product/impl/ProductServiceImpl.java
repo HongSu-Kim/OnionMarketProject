@@ -47,12 +47,17 @@ public class ProductServiceImpl implements ProductService {
         Category category = categoryRepository.findById(productAddDTO.getCategoryId()).orElse(null);
         Order order = null;
 
+        //경매 현황=null -> 경매 기한=null
+        if(productAddDTO.getAuctionStatus()==Boolean.FALSE) {
+            productAddDTO.setAuctionDeadline(null);
+        }
+
         // 상품 등록
         Product product = new Product(member,town,category,order,productAddDTO.getSubject(),productAddDTO.getContent(),productAddDTO.getPrice());
 
-        if(productAddDTO.getAuctionStatus()!=true) {
-            productAddDTO.setAuctionDeadline(null);
-        }
+        System.out.println("productAddDTO = " + productAddDTO.getAuctionStatus());
+
+
 
         Long productId = productRepository.save(product).getId();
 

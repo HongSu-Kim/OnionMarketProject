@@ -27,7 +27,6 @@
 			} else {
 				$(this).attr('value', 'false');
 			}
-
 			$('#checkbox-value').text($('#checkbox1').val());
 		});
 	</script>
@@ -70,7 +69,7 @@
 		<label for="town1">${townName}</label><input type="radio" id="town1" name="townName" value="${townName}"/>
 		<br/>
 		경매 등록<%--true/false로 변경--%>
-		<input type="checkbox" name="auctionStatus" id="checkbox1" value="false"/>
+		<input type="checkbox" name="auctionStatus" id="checkbox1"/>
 
 		<br/>
 
