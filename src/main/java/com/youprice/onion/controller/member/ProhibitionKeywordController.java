@@ -61,10 +61,11 @@ public class ProhibitionKeywordController {
     @PostMapping("prohibitionkeywordUpdate")
 
     public String prohibitionkeywordUpdate(ProhibitionKeywordUpdateDTO prohibitionKeywordUpdateDTO
-    ,@RequestParam("updatekeyword")String updatekeyword) {
+    ,@RequestParam("updatekeyword")String updatekeyword,HttpServletResponse response)throws IOException {
 
 
-        prohibitionKeywordService.ProhibitionKeywordUpdate(prohibitionKeywordUpdateDTO,updatekeyword);
+
+        prohibitionKeywordService.ProhibitionKeywordUpdate(prohibitionKeywordUpdateDTO,updatekeyword,response);
 
         return "redirect:/prohibitionkeyword/prohibitionkeywordUpdate";
     }

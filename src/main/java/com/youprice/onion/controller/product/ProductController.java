@@ -2,17 +2,16 @@ package com.youprice.onion.controller.product;
 
 import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.product.*;
+import com.youprice.onion.entity.product.Auction;
 import com.youprice.onion.security.auth.LoginUser;
-import com.youprice.onion.service.product.CoordinateService;
-import com.youprice.onion.service.product.ProductImageService;
-import com.youprice.onion.service.product.ProductService;
-import com.youprice.onion.service.product.TownService;
+import com.youprice.onion.service.product.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -23,6 +22,8 @@ import java.util.List;
 public class ProductController {
     private final ProductService productService;
     private final TownService townService;
+
+    private final AuctionService auctionService;
     private final ProductImageService productImageService;
 
     @GetMapping("add")//상픔 등록 주소
@@ -31,25 +32,37 @@ public class ProductController {
         List<TownFindDTO> townList = townService.townLists(userSession.getId());
         String townName = townList.get(0).getTownName();
 
-
-
         model.addAttribute("townName", townName);
 
         return "product/addProduct";//상품등록 페이지
     }
     @PostMapping("add")//실제 상품 등록 주소
-    public String addProduct(Model model, @LoginUser SessionDTO userSession, String townName, ProductAddDTO productAddDTO, List<MultipartFile> fileList) throws Exception{
+    public String addProduct(Model model, @LoginUser SessionDTO userSession, @RequestParam("townName") String townName,
+                             AuctionAddDTO auctionAddDTO, ProductAddDTO productAddDTO, List<MultipartFile> fileList) throws Exception{
 
         productAddDTO.setMemberId(userSession.getId());
-        productAddDTO.setTownId(productService.getTownId(townName));//동네 이름으로 동네번호 조회
-//        TownFindDTO findDTO = productService.findTownId(townName);
-//        productAddDTO.setTownId(findDTO.getId());
-//        productAddDTO.setAuctionId();/*경매 아이디 조회 서비스(경매현황으로)*/
+
+        /*동네 이름으로 동네번호 조회 및 set*/
+        TownFindDTO townFindDTO = productService.findTownId(townName);
+        productAddDTO.setTownId(townFindDTO.getId());
+
+        /*카테고리 이름으로 카테고리번호 등록*/
+        productAddDTO.setCategoryId(2L);
+
+        /*경매번호 조회 및 set (경매현황으로)*/
+        Long auctionId = auctionService.addAuction(auctionAddDTO);
+        productAddDTO.setAuctionId(auctionId);
+
+//        AuctionFindDTO auctionFindDTO = auctionService.findAuctionId(auctionAddDTO.getAuctionStatus());
+//        productAddDTO.setAuctionId(auctionFindDTO.getAuctionId());
+
         //bindresult로 금지키워드 서비스호출
+
 
         Long productId = productService.addProduct(productAddDTO,fileList);
 
         model.addAttribute("productId",productId);
+        model.addAttribute("auctionDTO",auctionId);
 
         return "redirect:/product/detail?productId="+productId;//상품 상세페이지로 이동
     }
@@ -57,7 +70,7 @@ public class ProductController {
     @GetMapping("detail")//상품 상세페이지 주소
     public String detail(Long productId, Model model) throws Exception{
 
-        productService.updateView(productId);
+        productService.updateView(productId);//조회수 증가
 
         ProductDTO productDTO = productService.getProductDTO(productId);
 

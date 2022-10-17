@@ -10,7 +10,8 @@ import java.util.Map;
 
 public interface MemberService {
 
-    public Long saveMember(MemberJoinDTO memberJoinDTO, MultipartFile profileImage) throws IOException;
+//    public Long saveMember(MemberJoinDTO memberJoinDTO, MultipartFile profileImage) throws IOException;
+    public Long saveMember(MemberJoinDTO memberJoinDTO) throws IOException;
 
     public Map<String, String> validateHandling(Errors errors);
 
@@ -20,7 +21,7 @@ public interface MemberService {
     public void checkEmailDuplication(MemberDTO memberDTO);
 
     //회원정보 수정
-    public void modify(MemberDTO memberDTO, MultipartFile modifyProfileImage) throws IOException;
+    public void modify(MemberDTO memberDTO/*, MultipartFile modifyProfileImage*/) throws IOException;
 
     public MemberDTO getMemberDTO(Long memberId);
 
