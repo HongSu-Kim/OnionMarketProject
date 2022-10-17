@@ -19,25 +19,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     boolean existsByNickname(String nickname);
     boolean existsByEmail(String email);
 
-    @Repository
-    @RequiredArgsConstructor
 
-
-    public class Memberrepositoy {
-
-        private final EntityManager em;
-
-        public List<Member> findMemberId(String userId) {
-
-            return em.createQuery("select o from Member o where o.userId = :userId ", Member.class)
-                    .setParameter("userId", userId).getResultList();
-        }
-
-        public Member findmember(String userId) {
-
-            return em.createQuery("select o from Member o where o.userId = :userId ", Member.class)
-                    .setParameter("userId", userId).getSingleResult();
-        }
-
-    }
 }

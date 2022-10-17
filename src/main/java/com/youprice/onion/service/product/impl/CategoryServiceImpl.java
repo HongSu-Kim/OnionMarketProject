@@ -73,6 +73,12 @@ public class CategoryServiceImpl implements CategoryService {
             out.flush();
             return;
         }
+        if(topcategoryName==""){
+            out.println("<script>alert('상위카테고리가 공백입니다 상위키워드를 다시입력하세요');history.go(-1); </script>");
+            out.flush();
+            return;
+
+        }
 
         if(categoryAddDTO.getCategoryName() == "") {
 

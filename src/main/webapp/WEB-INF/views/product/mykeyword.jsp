@@ -91,21 +91,27 @@
     </div>
 </nav>
 <br/><br/><br/><br/>
-<form action="/keywordAlarm" method="post">
-<input type="hidden" name="userId" value="${userId}">
+<form:form action="" method="post">
 
-    내키워드보기<br/><br/>
+
+    등록한 키워드<br/><br/>
 
     <c:forEach var="MykeywordList" items="${MykeywordList}">
+        <strong>${MykeywordList.keywordName} </strong>
 
-        <strong>#${MykeywordList.keywordName}</strong>
+        <button type="submit"  class="btn btnEvent" name="id" value="${MykeywordList.id} ">
+            <img src="https://cdn.pixabay.com/photo/2017/11/10/05/24/delete-2935433_960_720.png" alt="btnImages" class="btnImages"
+                 height="23" width="23" border="0" align="left">
+        </button>
+
+
 
     </c:forEach>
 
 
 
 
-</form>
+</form:form>
 
 
 <br/><br/>
