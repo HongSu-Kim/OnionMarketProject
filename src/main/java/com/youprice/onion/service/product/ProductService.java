@@ -26,9 +26,9 @@ public interface ProductService {
     int updateView(Long productId);
 
     //townId 조회
-//    Long getTownId(String townName);
-//
-//    TownFindDTO findTownId(String townName);
+    Long getTownId(String townName);
+
+    TownFindDTO findTownId(String townName);
     
 	  Page<ProductSellListDTO> getProductSellListDTO(Long memberId, Pageable pageable);
     
