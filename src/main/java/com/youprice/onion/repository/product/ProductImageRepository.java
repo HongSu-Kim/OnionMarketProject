@@ -12,8 +12,9 @@ import java.util.Optional;
 @Repository
 public interface ProductImageRepository extends JpaRepository<ProductImage, Long> {
 
-    //이미지로 상품 조회
+    //상품번호로 이미지 전체조회
     List<ProductImage> findAllByProductId(Long productId);
+    //상품번호로 하나의 이미지 조회
     List<ProductImage> findByProductId(Long ID);
 
 }
