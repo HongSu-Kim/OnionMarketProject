@@ -10,13 +10,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class WishProductDTO {
+public class WishDTO {
 
 	private Long wishId;//찜번호 Pk
 	private MemberDTO memberDTO;
 	private ProductDTO productDTO;
 
-	public WishProductDTO(Wish wish) {
+	public WishDTO(Wish wish) {
 		wishId = wish.getId();
 //		memberDTO = new MemberDTO(wish.getMember());
 		productDTO = new ProductDTO(wish.getProduct());

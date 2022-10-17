@@ -19,7 +19,6 @@ DROP TABLE review PURGE;
 DROP TABLE complain PURGE;
 
 DROP TABLE delivery PURGE;
-DROP TABLE orders PURGE;
 DROP TABLE wish PURGE;
 
 DROP TABLE chat PURGE;
@@ -32,9 +31,11 @@ DROP TABLE category PURGE;
 DROP TABLE product_tag PURGE;
 DROP TABLE tag PURGE;
 DROP TABLE bidding PURGE;
-DROP TABLE auction PURGE;
 DROP TABLE product_image PURGE;
 DROP TABLE product PURGE;
+DROP TABLE auction PURGE;
+
+DROP TABLE orders PURGE;
 
 DROP TABLE town PURGE;
 DROP TABLE coordinate PURGE;
@@ -129,11 +130,33 @@ CREATE TABLE town (
 	CONSTRAINT FK_TOWN_COORDINATE_ID FOREIGN KEY (coordinate_id) REFERENCES coordinate(coordinate_id)
 );
 
+CREATE TABLE orders (
+                        order_id	    	NUMBER	        NOT NULL,
+                        member_id	    	NUMBER          NOT NULL,
+                        order_num           CHAR(15)        NOT NULL,
+                        imp_uid             VARCHAR2(20)    NOT NULL,
+                        order_payment       NUMBER          NOT NULL,
+                        order_state     	VARCHAR2(10)    DEFAULT 'ORDER',
+                        order_date      	DATE            DEFAULT SYSDATE,
+                        modified_date   	DATE            DEFAULT NULL,
+                        CONSTRAINT PK_ORDERS PRIMARY KEY (order_id),
+                        CONSTRAINT FK_ORDERS_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id)
+);
+
+CREATE TABLE auction (
+                         auction_id          NUMBER          NOT NULL,
+                         auction_deadline    DATE            NULL,
+                         auction_status      VARCHAR2(20)    NULL,
+                         CONSTRAINT PK_AUCTION PRIMARY KEY (auction_id)
+);
+
 CREATE TABLE product (
 	product_id          NUMBER          NOT NULL,
 	member_id           NUMBER          NOT NULL,
 	town_id             NUMBER          NOT NULL,
-	product_name        VARCHAR2(255)   NULL,
+	category_id         NUMBER          NOT NULL,
+	auction_id          NUMBER          NULL,
+	order_id            NUMBER          NULL,
 	subject             VARCHAR2(255)   NULL,
 	content             VARCHAR2(255)   NULL,
 	price               VARCHAR2(255)   NULL,
@@ -145,7 +168,9 @@ CREATE TABLE product (
 	blind_status        VARCHAR2(20)   NULL,
 	CONSTRAINT PK_PRODUCT PRIMARY KEY (product_id),
 	CONSTRAINT FK_PRODUCT_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id),
-	CONSTRAINT FK_PRODUCT_TOWN_ID FOREIGN KEY (town_id) REFERENCES town(town_id)
+	CONSTRAINT FK_PRODUCT_TOWN_ID FOREIGN KEY (town_id) REFERENCES town(town_id),
+	CONSTRAINT FK_PRODUCT_AUCTION_ID FOREIGN KEY (auction_id) REFERENCES  auction(auction_id),
+	CONSTRAINT FK_PRODUCT_ORDER_ID FOREIGN KEY (order_id) REFERENCES orders(order_id)
 );
 
 CREATE TABLE product_image (
@@ -154,15 +179,6 @@ CREATE TABLE product_image (
 	product_image_name 	VARCHAR2(50) 	NOT NULL,
 	CONSTRAINT PK_PRODUCT_IMAGE PRIMARY KEY (product_image_id),
 	CONSTRAINT FK_PRODUCT_IMAGE_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id)
-);
-
-CREATE TABLE auction (
-    auction_id          NUMBER          NOT NULL,
-    product_id          NUMBER          NOT NULL,
-    auction_deadline    DATE            NULL,
-    auction_status      VARCHAR2(20)    NULL,
-    CONSTRAINT PK_AUCTION PRIMARY KEY (auction_id),
-    CONSTRAINT FK_AUCTION_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id)
 );
 
 CREATE TABLE bidding (
@@ -245,25 +261,9 @@ CREATE TABLE wish (
 	wish_id         	NUMBER  		NOT NULL,
 	member_id       	NUMBER  		NOT NULL,
 	product_id      	NUMBER  		NOT NULL,
-	created_date    	DATE    		DEFAULT SYSDATE,
 	CONSTRAINT PK_WISH PRIMARY KEY (wish_id),
 	CONSTRAINT FK_WISH_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id),
 	CONSTRAINT FK_WISH_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id)
-);
-
-CREATE TABLE orders (
-	order_id	    	NUMBER	        NOT NULL,
-	member_id	    	NUMBER          NOT NULL,
-	product_id	    	NUMBER          NOT NULL,
-    order_num           CHAR(15)        NOT NULL,
-    imp_uid             VARCHAR2(20)    NOT NULL,
-    order_payment       NUMBER          NOT NULL,
-	order_state     	VARCHAR2(10)    DEFAULT 'order',
-	order_date      	DATE            DEFAULT SYSDATE,
-	modified_date   	DATE            DEFAULT NULL,
-	CONSTRAINT PK_ORDERS PRIMARY KEY (order_id),
-	CONSTRAINT FK_ORDERS_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id),
-	CONSTRAINT FK_ORDERS_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id)
 );
 
 CREATE TABLE delivery (
@@ -309,7 +309,7 @@ CREATE TABLE review_image(
     review_image_id     NUMBER          Not NULL,
     review_id           NUMBER          NOT NULL,
     original_file_name  VARCHAR2(30)    NOT NULL,
-    store_file_name     varchar2(100)   NOT NULL,
+    store_image_name     varchar2(100)   NOT NULL,
     CONSTRAINT PK_REVIEW_IMAGE PRIMARY KEY (review_image_id),
     CONSTRAINT FK_REVIEW_IMAGE_REVIEW_ID FOREIGN KEY (review_id) REFERENCES review(review_id)
 );
@@ -332,7 +332,6 @@ CREATE TABLE answer (
 	answer_id	    	NUMBER	        NOT NULL,
 	inquiry_id	    	NUMBER	        NOT NULL,
 	member_id	    	NUMBER	        NOT NULL,
-	answer_subject      VARCHAR2(30)    NOT NULL,
 	answer_content      VARCHAR2(255)	NOT NULL,
 	answer_date     	DATE            DEFAULT SYSDATE,
 	CONSTRAINT PK_ANSWER PRIMARY KEY (answer_id),

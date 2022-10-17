@@ -1,0 +1,7 @@
+.checkout__input input {
+    color: black;
+}
+
+td a.primary-btn,td a.primary-btn.cart-btn {
+    padding: 3px 10px 3px;
+}

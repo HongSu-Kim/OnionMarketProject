@@ -7,6 +7,9 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
@@ -24,10 +27,7 @@ public class MemberDTO {
     private String pwd;
     private String name;
     private String nickname;
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birth;
-
     private String tel;
     private String postcode;
     private String address;

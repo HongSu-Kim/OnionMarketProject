@@ -1,11 +1,14 @@
 package com.youprice.onion.controller.product;
 
+import com.youprice.onion.dto.member.MemberDTO;
+import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.product.CoordinateFindDTO;
 import com.youprice.onion.dto.product.TownAddDTO;
 import com.youprice.onion.dto.product.TownFindDTO;
 import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.entity.product.Coordinate;
 import com.youprice.onion.entity.product.Town;
+import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.service.member.MemberService;
 import com.youprice.onion.service.member.impl.MemberServiceImpl;
 import com.youprice.onion.service.product.CategoryService;
@@ -29,7 +32,6 @@ import java.util.List;
 @RequestMapping("town")
 public class TownController {
 
-    //!! 아이디 일시적으로 asd로설정
 
     private final TownService townService;
     private final MemberService memberService;
@@ -37,7 +39,18 @@ public class TownController {
     private final CoordinateService coordinateService;
 
     @GetMapping("town")
-    public String find(Model model, TownFindDTO townFinddto) {
+    public String find(Model model, @LoginUser SessionDTO sessionDTO) {
+
+        if (sessionDTO == null) return "redirect:/member/login";
+        MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
+
+        model.addAttribute("memberDTO",memberDTO);
+
+
+        List<TownFindDTO> townList = townService.townLists(memberDTO.getId()); //참고
+
+        model.addAttribute("townList",townList);
+
 
 
 
@@ -46,13 +59,16 @@ public class TownController {
     }
 
     @PostMapping("townresult")
-    public String find(Town town, Model model, TownFindDTO townFinddto, @RequestParam("wishtown") String wishtown) {
+    public String find(Town town, Model model, @RequestParam("wishtown") String wishtown,
+                       @LoginUser SessionDTO sessionDTO) {
 
 
         List<CoordinateFindDTO> Gangnam = coordinateService.FindGangnam();
         List<CoordinateFindDTO> Songpa = coordinateService.FindSongpa();
         List<CoordinateFindDTO> Gangdong = coordinateService.FindGangdong();
+        MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
 
+        model.addAttribute("memberDTO",memberDTO);
 
         model.addAttribute("Gangnam", Gangnam);
         model.addAttribute("Songpa", Songpa);
@@ -64,9 +80,9 @@ public class TownController {
     }
 
     @PostMapping("town")
-    public String townAdd(TownAddDTO townAddDTO) {
+    public String townAdd(Model model,TownAddDTO townAddDTO) {
 
-        townAddDTO.setMemberId(1L);
+
         townService.townAdd(townAddDTO);
         return "redirect:/town/town";
 

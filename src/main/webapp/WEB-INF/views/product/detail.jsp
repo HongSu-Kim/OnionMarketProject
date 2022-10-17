@@ -1,0 +1,213 @@
+<%@ page import="javax.validation.constraints.NotEmpty" %>
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<%
+	request.setCharacterEncoding("UTF-8");
+%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>상품 정보</title>
+</head>
+<body>
+<!-- Product Details Section Begin -->
+<section class="product-details spad">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6 col-md-6">
+				<div class="product__details__pic">
+					<div class="product__details__pic__item">
+						<c:forEach var="imageList" items="${imageList}">
+						<img class="product__details__pic__item--large"
+							 src="/img/product/${imageList.productImageName}" alt=""/>
+						</c:forEach>
+					</div>
+
+					<div class="product__details__pic__slider owl-carousel">
+						<img data-imgbigurl="img/product/details/product-details-2.jpg"
+							 src="img/product/details/thumb-1.jpg" alt="">
+						<img data-imgbigurl="img/product/details/product-details-3.jpg"
+							 src="img/product/details/thumb-2.jpg" alt="">
+						<img data-imgbigurl="img/product/details/product-details-5.jpg"
+							 src="img/product/details/thumb-3.jpg" alt="">
+						<img data-imgbigurl="img/product/details/product-details-4.jpg"
+							 src="img/product/details/thumb-4.jpg" alt="">
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6 col-md-6">
+				<div class="product__details__text">
+					<h3>${dto.subject}</h3>
+					<div class="product__details__rating">
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star-half-o"></i>
+						<span>(18 reviews)</span>
+					</div>
+					<div class="product__details__price">${dto.price}원</div>
+					<p>${dto.productName}</p>
+					<p><c:if test="${empty dto.updateDate}">${dto.uploadDate}</c:if>
+						${dto.updateDate}</p>
+<%--					<p>Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Vestibulum ac diam sit amet quam--%>
+<%--						vehicula elementum sed sit amet dui. Sed porttitor lectus nibh. Vestibulum ac diam sit amet--%>
+<%--						quam vehicula elementum sed sit amet dui. Proin eget tortor risus.</p>--%>
+					<div class="product__details__quantity">
+						<div class="quantity">
+							<div class="pro-qty">
+								<input type="text" value="1">
+							</div>
+						</div>
+					</div>
+					<a href="#" class="primary-btn">ADD TO CART</a>
+					<a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+					<ul>
+						<li><b>Availability</b> <span>${dto.productProgress}</span></li>
+						<li><b>Shipping</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li>
+						<li><b>Weight</b> <span>0.5 kg</span></li>
+						<li><b>Share on</b>
+							<div class="share">
+								<a href="#"><i class="fa fa-facebook"></i></a>
+								<a href="#"><i class="fa fa-twitter"></i></a>
+								<a href="#"><i class="fa fa-instagram"></i></a>
+								<a href="#"><i class="fa fa-pinterest"></i></a>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-lg-12">
+				<div class="product__details__tab">
+					<ul class="nav nav-tabs" role="tablist">
+						<li class="nav-item">
+							<a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab"
+							   aria-selected="true">상품 설명</a>
+						</li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane active" id="tabs-1" role="tabpanel">
+							<div class="product__details__tab__desc">
+								<h6>Products Infomation</h6>
+								<p>
+									${dto.content}
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- Product Details Section End -->
+
+<!-- Related Product Section Begin -->
+<section class="related-product">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="section-title related__product__title">
+					<h2>Related Product</h2>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-3 col-md-4 col-sm-6">
+				<div class="product__item">
+					<div class="product__item__pic set-bg" data-setbg="img/product/product-1.jpg">
+						<ul class="product__item__pic__hover">
+							<li><a href="#"><i class="fa fa-heart"></i></a></li>
+							<li><a href="#"><i class="fa fa-retweet"></i></a></li>
+							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+						</ul>
+					</div>
+					<div class="product__item__text">
+						<h6><a href="#">Crab Pool Security</a></h6>
+						<h5>$30.00</h5>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-4 col-sm-6">
+				<div class="product__item">
+					<div class="product__item__pic set-bg" data-setbg="img/product/product-2.jpg">
+						<ul class="product__item__pic__hover">
+							<li><a href="#"><i class="fa fa-heart"></i></a></li>
+							<li><a href="#"><i class="fa fa-retweet"></i></a></li>
+							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+						</ul>
+					</div>
+					<div class="product__item__text">
+						<h6><a href="#">Crab Pool Security</a></h6>
+						<h5>$30.00</h5>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-4 col-sm-6">
+				<div class="product__item">
+					<div class="product__item__pic set-bg" data-setbg="img/product/product-3.jpg">
+						<ul class="product__item__pic__hover">
+							<li><a href="#"><i class="fa fa-heart"></i></a></li>
+							<li><a href="#"><i class="fa fa-retweet"></i></a></li>
+							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+						</ul>
+					</div>
+					<div class="product__item__text">
+						<h6><a href="#">Crab Pool Security</a></h6>
+						<h5>$30.00</h5>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-4 col-sm-6">
+				<div class="product__item">
+					<div class="product__item__pic set-bg" data-setbg="img/product/product-7.jpg">
+						<ul class="product__item__pic__hover">
+							<li><a href="#"><i class="fa fa-heart"></i></a></li>
+							<li><a href="#"><i class="fa fa-retweet"></i></a></li>
+							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+						</ul>
+					</div>
+					<div class="product__item__text">
+						<h6><a href="#">Crab Pool Security</a></h6>
+						<h5>$30.00</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- Related Product Section End -->
+<div>
+	<h1>상품 정보</h1>
+		상품명: ${dto.productName}<br/>
+		제목: ${dto.subject}<br/>
+		상품가격: ${dto.price}<br/>
+		등록일: <c:if test="${empty dto.updateDate}">${dto.uploadDate}</c:if>
+				${dto.updateDate}
+
+	<hr/>
+</div>
+<div>
+	<c:forEach var="imageList" items="${imageList}">
+		이미지: <img src="/img/product/${imageList.productImageName}"/>
+	</c:forEach>
+</div>
+<form action="/product/update" method="get">
+	<input type="hidden" name="productId" value="${productId}">
+	<input type="submit" value="상품 수정"/>
+</form>
+
+<form action="/product/delete" method="get">
+	<input type="hidden" name="productId" value="${productId}">
+	<input type="submit" value="상품 삭제"/>
+</form>
+
+<form action="/product/main" method="get">
+	<input type="submit" value="목록 보기"/>
+</form>
+
+</body>
+</html>

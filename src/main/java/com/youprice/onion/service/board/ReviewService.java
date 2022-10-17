@@ -3,6 +3,7 @@ package com.youprice.onion.service.board;
 import com.youprice.onion.dto.board.ReviewDTO;
 import com.youprice.onion.dto.board.ReviewFormDTO;
 import com.youprice.onion.dto.board.ReviewImageDTO;
+import com.youprice.onion.dto.board.ReviewUpdateDTO;
 import com.youprice.onion.entity.board.ReviewImage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +20,7 @@ public interface ReviewService {
     public ReviewDTO findReviewDTO(Long id);
     //List<ReviewDTO> userReviewList(Long buyerId, Long reviewId);
     Page<ReviewDTO> findAll(Pageable pageable);
-    void updateReview(Long id, ReviewFormDTO form);
+    void updateReview(Long id, ReviewUpdateDTO form) throws IOException;
     void deleteReview(ReviewDTO reviewDTO); // 삭제
 
     // 사진

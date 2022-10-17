@@ -12,9 +12,14 @@ import com.youprice.onion.repository.order.OrderRepository;
 import com.youprice.onion.repository.product.ProductRepository;
 import com.youprice.onion.service.order.OrderService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -24,6 +29,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 @Transactional(readOnly = true)
+@Slf4j
 public class OrderServiceImpl implements OrderService {
 
 	private final OrderRepository orderRepository;
@@ -39,19 +45,22 @@ public class OrderServiceImpl implements OrderService {
 	// 주문 완료
 	@Override
 	@Transactional
-	public Long addOrder(OrderAddDTO orderAddDTO) {
+	public Long addOrder(OrderAddDTO orderAddDTO) throws IOException {
 
 		Member member = memberRepository.findById(orderAddDTO.getMemberId()).orElse(null);
 		Product product = productRepository.findById(orderAddDTO.getProductId()).orElse(null);
 
 		// 주문내역 생성
-		Order order = new Order(member, product, orderAddDTO.getOrderPayment());
+		Order order = new Order(member, orderAddDTO.getOrderNum(), orderAddDTO.getImp_uid(), orderAddDTO.getOrderPayment());
 		Long orderId = orderRepository.save(order).getId();
 
 		// 배송정보 생성
-		Delivery delivery = new Delivery(orderId, orderAddDTO.getPostcode(), orderAddDTO.getAddress(), orderAddDTO.getDetailAddress(),
+		Delivery delivery = new Delivery(order, orderAddDTO.getPostcode(), orderAddDTO.getAddress(), orderAddDTO.getDetailAddress(),
 				orderAddDTO.getExtraAddress(), orderAddDTO.getRequest(), orderAddDTO.getDeliveryCost());
 		deliveryRepository.save(delivery);
+
+//		product.order(order);
+//		productRepository.save(product);
 
 		return orderId;
 	}
@@ -92,17 +101,19 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public List<OrderDTO> getBuyList(Long memberId) {
-		return orderRepository.findAllByMemberId(memberId)
-				.stream().map(OrderDTO::new)
-				.collect(Collectors.toList());
+	public Page<OrderDTO> getBuyList(Long memberId, Pageable pageable) {
+
+//		List<Order> allByMemberId = orderRepository.findAllByMemberId(memberId, pageable);
+//		List<OrderDTO> list = allByMemberId.stream().map(OrderDTO::new).collect(Collectors.toList());
+//		Long listSize = orderRepository.countByMemberId(memberId);
+//		return new PageImpl<>(list, pageable, list.size());
+
+		return orderRepository.findAllByMemberId(memberId, pageable).map(OrderDTO::new);
 	}
 
-	@Override
-	public List<OrderDTO> getSellList(Long memberId) {
-		return orderRepository.findAllByProductMemberId(memberId)
-				.stream().map(OrderDTO::new)
-				.collect(Collectors.toList());
-	}
+//	@Override
+//	public Page<OrderDTO> getSellList(Long memberId, Pageable pageable) {
+//		return orderRepository.findAllByProductMemberId(memberId, pageable).map(OrderDTO::new);
+//	}
 
 }

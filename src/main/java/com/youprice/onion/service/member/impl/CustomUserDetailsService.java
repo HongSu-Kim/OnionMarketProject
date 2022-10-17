@@ -1,6 +1,6 @@
 package com.youprice.onion.service.member.impl;
 
-import com.youprice.onion.dto.member.CustomUserDetails;
+import com.youprice.onion.security.auth.CustomUserDetails;
 import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.repository.member.MemberRepository;

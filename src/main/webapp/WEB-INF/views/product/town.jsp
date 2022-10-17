@@ -15,12 +15,21 @@
 </head>
 <body>
 
+<%--예시 참고바람--%>
+<c:forEach var="townList" items="${townList}">
+    타운번호: ${townList.id}<br/>
+    회원번호:${townList.memberId}<br/>
+    동네이름: ${townList.townName}<br/>
+    <br/>
+
+</c:forEach>
+
 
 <form:form action="townresult" method="post">
 
 
 원하는 동네 검색: <input type="text" name="wishtown" value="" />
-
+    <input type="hidden" name="memberId" value="${memberDTO.id}">
    <input type="submit" value="동네설정하기"/>
 </form:form>
 

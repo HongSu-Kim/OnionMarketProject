@@ -1,6 +1,6 @@
 package com.youprice.onion.service.order.impl;
 
-import com.youprice.onion.dto.order.WishProductDTO;
+import com.youprice.onion.dto.order.WishDTO;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.order.Wish;
 import com.youprice.onion.entity.product.Product;
@@ -9,6 +9,8 @@ import com.youprice.onion.repository.order.WishRepository;
 import com.youprice.onion.repository.product.ProductRepository;
 import com.youprice.onion.service.order.WishService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -25,10 +27,8 @@ public class WishServiceImpl implements WishService {
 	private final ProductRepository productRepository;
 
 	@Override
-	public List<WishProductDTO> getWishList(Long memberId) {
-		return wishRepository.findAllByMemberId(memberId)
-				.stream().map(WishProductDTO::new)
-				.collect(Collectors.toList());
+	public Page<WishDTO> getWishList(Long memberId, Pageable pageable) {
+		return wishRepository.findAllByMemberId(memberId, pageable).map(WishDTO::new);
 	}
 
 	@Override

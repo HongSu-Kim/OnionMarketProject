@@ -5,12 +5,16 @@ import com.youprice.onion.dto.order.OrderDTO;
 import com.youprice.onion.dto.product.CategoryAddDTO;
 import com.youprice.onion.dto.product.CategoryUpdateDTO;
 import com.youprice.onion.dto.product.CategoryFindDTO;
+import com.youprice.onion.entity.member.ProhibitionKeyword;
 import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.repository.product.CategoryRepositoy;
 import com.youprice.onion.service.product.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,37 +27,65 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepositoy.Categoryrepositoy categoryrepositoy;
 
     @Override
-    public void TopCategoryAdd(CategoryAddDTO categoryCreatedto, String topcategoryName) { //상위카테고리 생성
+    public void TopCategoryAdd(CategoryAddDTO categoryCreatedto, String topcategoryName, HttpServletResponse response)throws IOException { //상위카테고리 생성
         Category category = new Category();
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out =response.getWriter();
 
         Optional<Category> DuplicatechecktopcategoryName = categoryRepositoy.findByCategoryName(topcategoryName);
         if (DuplicatechecktopcategoryName.isPresent()) {
-            System.out.println("이미 존재하는 상위카테고리입니다!");
+            out.println("<script>alert('이미존재하는 상위키워드입니다 다시입력하세요');history.go(-1); </script>");
+            out.flush();
             return;
-        } else
+        }
+
+        if(topcategoryName == "") {
+            
+            out.println("<script>alert('공백입니다 상위키워드를 다시입력하세요');history.go(-1); </script>");
+            out.flush();
+            return;
+        }
+
+
+
+        else
 
             category.TopcategoryAdd(categoryCreatedto, topcategoryName);
 
         categoryRepositoy.save(category);
-        System.out.println("상위카테고리 생성완료!");
+        out.println("<script>alert('상위카테고리 생성완료!');history.go(-1); </script>");
+        out.flush();
 
     }
 
 
     @Override
-    public void SubCategoryAdd(CategoryAddDTO categoryAddDTO, String topcategoryName) { //하위카테고리생성
+    public void SubCategoryAdd(CategoryAddDTO categoryAddDTO, String topcategoryName,HttpServletResponse response)throws IOException { //하위카테고리생성
         Category category = new Category();
         categoryAddDTO.setCategory(categoryRepositoy.findByCategoryName(topcategoryName).orElse(null));
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out =response.getWriter();
 
         Optional<Category> DuplicatechecksubcategoryName =
                 categoryRepositoy.findByCategoryNameAndParent(categoryAddDTO.getCategoryName(), categoryAddDTO.getCategory());
         if (DuplicatechecksubcategoryName.isPresent()) {
-            System.out.println("이미 존재하는 하위카테고리입니다!");
+            out.println("<script>alert('이미존재하는 하위키워드입니다 다시입력하세요');history.go(-1); </script>");
+            out.flush();
             return;
         }
+
+        if(categoryAddDTO.getCategoryName() == "") {
+
+            out.println("<script>alert('공백입니다 하위키워드를 다시입력하세요');history.go(-1); </script>");
+            out.flush();
+            return;
+        }
+
         category.SubcategoryAdd(categoryAddDTO);
         categoryRepositoy.save(category);
-        System.out.println("하위카테고리 생성완료!");
+        out.println("<script>alert('하위카테고리 생성완료!');history.go(-1); </script>");
+        out.flush();
+
 
     }
 

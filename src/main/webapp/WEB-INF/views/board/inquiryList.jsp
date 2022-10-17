@@ -8,7 +8,7 @@
 <head>
     <meta charset="utf-8">
 </head>
-<body id="inquiryBody">
+<body>
 <div class="container">
     <div class="py-5 text-center">
         <h2><a href="/inquiry/list" id="hrefDeco">1:1 문의 목록</a></h2>
@@ -17,7 +17,7 @@
     <!-- 검색 -->
     <form action="/inquiry/list" class="d-flex" method="GET">
         <select name="field" id="field" class="form-control form-control-sm" style="width: 130px;">
-            <option selected="selected">전체</option>
+            <option selected="selected" value="all">전체</option>
             <option value="name">작성자</option>
             <option value="회원정보">[문의유형]회원정보</option>
             <option value="거래">[문의유형]거래</option>
@@ -30,13 +30,13 @@
     <!-- 검색 끝 -->
 
        <div>
-            <c:if test="${memberDTO.name != null}">
+            <c:if test="${sessionDTO.name != null}">
                 <form action="/member/logout" method="post">
                     <button class="btn btn-danger float-end" type="submit">로그아웃</button>
                 </form></c:if>
 
             <button class="btn btn-success float-end" onclick="location.href='/inquiry/created'" type="button">1:1 문의 등록</button>
-            <c:if test="${memberDTO.name == null}">
+            <c:if test="${sessionDTO.name == null}">
             <button class="btn btn-primary float-end" onclick="location.href='/member/login'" type="button">로그인</button>
             </c:if>
        </div><br/>
@@ -66,17 +66,17 @@
                     <c:if test="${dto.secret == true}">
                         <c:choose>
                             <%-- <c:when test="${dto.member.userId eq member.userid || member.role eq '[ROLE_ADMIN, ROLE_USER]'}"> --%>
-                            <c:when test="${dto.memberId eq memberDTO.id}">
+                            <c:when test="${dto.memberId eq sessionDTO.id}">
+                                <%--|| sessionDTO.role eq 'ROLE_ADMIN'--%>
                                 <!-- 작성자이거나 관리자일 때 볼 수 있는 링크 -->
                                 <td>Q <a href="/inquiry/article/${dto.inquiryId}?field=${param.field}&word=${param.word}&page=${param.page}">
-                                    <i class="icofont-lock"></i>
-                                    <c:out value="${dto.inquirySubject}"/>
+                                    <c:out value="${dto.inquirySubject}"/><c:if test="${dto.answer.size() != 0}">[${dto.answer.size()}]</c:if>
                                 </a></td>
                             </c:when>
 
                             <c:otherwise>
                                 <td class="text-secondary"><i class="icofont-lock"></i>
-                                    🔒<c:out value="${dto.inquirySubject}"/>
+                                    🔒<c:out value="${dto.inquirySubject}"/><c:if test="${dto.answer.size() != 0}">[${dto.answer.size()}]</c:if>
                                 </td>
                             </c:otherwise>
                         </c:choose>
@@ -86,6 +86,7 @@
                         <td>
                             <a href="/inquiry/article/${dto.inquiryId}?field=${param.field}&word=${param.word}&page=${param.page}">
                                 Q ${dto.inquirySubject}
+                                <c:if test="${dto.answer.size() != 0}">[${dto.answer.size()}]</c:if>
                             </a>
                         </td>
                     </c:if>

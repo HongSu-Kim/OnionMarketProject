@@ -1,8 +1,6 @@
 package com.youprice.onion.service.board;
 
 import com.youprice.onion.dto.board.NoticeDTO;
-import com.youprice.onion.dto.board.NoticeImageDTO;
-import com.youprice.onion.entity.board.Notice;
 import com.youprice.onion.entity.board.NoticeImage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

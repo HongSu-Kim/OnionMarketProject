@@ -1,12 +1,13 @@
 package com.youprice.onion.service.order;
 
-import com.youprice.onion.dto.order.WishProductDTO;
+import com.youprice.onion.dto.order.WishDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 
 public interface WishService {
 
-	List<WishProductDTO> getWishList(Long memberId);
+	Page<WishDTO> getWishList(Long memberId, Pageable pageable);
 
 	void addWish(Long memberId, Long productId);
 
