@@ -16,6 +16,8 @@ public interface TownRepositoy extends JpaRepository<Town,Long> {
 
     List<Town> findAllByMemberId(Long memberId);
 
+
+
     Optional<Town> findByCoordinateTownName(String townName);
 
 //
