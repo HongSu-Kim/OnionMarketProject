@@ -21,7 +21,7 @@ public interface MemberService {
     public void checkEmailDuplication(MemberDTO memberDTO);
 
     //회원정보 수정
-    public void modify(MemberDTO memberDTO, MultipartFile modifyProfileImage) throws IOException;
+    public void modify(MemberDTO memberDTO/*, MultipartFile modifyProfileImage*/) throws IOException;
 
     public MemberDTO getMemberDTO(Long memberId);
 
