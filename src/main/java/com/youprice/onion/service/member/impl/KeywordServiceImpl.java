@@ -27,7 +27,6 @@ public class KeywordServiceImpl implements KeywordService {
 
  private final KeywordRepositoy keywordRepositoy;
  private  final  KeywordRepositoy.Keywordrepositoy keywordrepositoy;
- private  final  MemberRepository.Memberrepositoy memberrepositoy;
  private  final  MemberRepository memberRepositoy;
 
  @Override
