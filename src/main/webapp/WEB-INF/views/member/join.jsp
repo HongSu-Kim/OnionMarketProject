@@ -10,13 +10,13 @@
     <title>Join</title>
 
 </head>
-<body>
+<body onload="document.myForm.userId.focus();">
 
 <h1>회원 가입</h1>
 <hr>
 <div id="posts_list">
     <div class="container col-md-4">
-        <form action="/member/joinProc" method="post">
+        <form action="/member/joinProc" method="post" name="myForm">
             <%--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">--%>
             <div class="form-group">
                 <label>아이디</label>
