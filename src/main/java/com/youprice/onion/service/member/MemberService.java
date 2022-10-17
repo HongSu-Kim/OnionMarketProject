@@ -10,7 +10,8 @@ import java.util.Map;
 
 public interface MemberService {
 
-    public Long saveMember(MemberJoinDTO memberJoinDTO, MultipartFile profileImage) throws IOException;
+//    public Long saveMember(MemberJoinDTO memberJoinDTO, MultipartFile profileImage) throws IOException;
+    public Long saveMember(MemberJoinDTO memberJoinDTO) throws IOException;
 
     public Map<String, String> validateHandling(Errors errors);
 

@@ -32,6 +32,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Autowired
     private final ModelMapper modelMapper;
+/*
 
     @Transactional
     @Override
@@ -40,6 +41,15 @@ public class MemberServiceImpl implements MemberService {
         memberJoinDTO.setPwd(passwordEncoder.encode(memberJoinDTO.getPwd())); //패스워드 암호화 저장
         String profileImageStore = storePath(profileImage); // uuid 반환
         memberJoinDTO.setMemberImageName(profileImageStore);
+        return memberRepository.save(memberJoinDTO.toEntity()).getId();
+    }
+*/
+
+    @Transactional
+    @Override
+    public Long saveMember(MemberJoinDTO memberJoinDTO) throws IOException {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        memberJoinDTO.setPwd(passwordEncoder.encode(memberJoinDTO.getPwd())); //패스워드 암호화 저장
         return memberRepository.save(memberJoinDTO.toEntity()).getId();
     }
 
