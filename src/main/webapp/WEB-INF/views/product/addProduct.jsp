@@ -17,6 +17,14 @@
 		function goBack(){
 			window.history.back();
 		}
+
+		function clickCheck(target) {
+			document.querySelectorAll(`input[type=checkbox]`)
+					.forEach(el => el.checked = false);
+
+			target.checked = true;
+		}
+
 	</script>
 
 	<script type="text/javascript">
@@ -51,15 +59,16 @@
 
 <form action="/product/add" method="post" enctype="multipart/form-data">
 	<div class="add">
-		상품명: <input type="text" name="productName"/><br/>
 		제목: <input type="text" name="subject"/><br/>
 		동네 선택<br/>
 		<%--townList foreach로 설정--%>
-		<input type="radio" id="town1" name="townName"/><label for="town1">${townName}</label>
+		<label for="town1">${townName}</label><input type="radio" id="town1" name="townName" value="${townName}"/>
 		<br/>
 		경매 등록<br/>
-		<input type="checkbox" name="auctionStatus" value="예"/>
-		<input type="checkbox" name="auctionStatus" value="아니오" checked/>
+		<label for="yes">예</label>
+		<input type="checkbox" id="yes" name="auctionStatus" onclick="clickCheck(this)"/>
+		<label for="no">아니오</label>
+		<input type="checkbox" id="no" name="auctionStatus" onclick="clickCheck(this)" checked/>
 		<br/>
 		카테고리 선택<br/>
 		<select>
@@ -70,7 +79,7 @@
 			</optgroup>
 		</select><br/><br/>
 		상품가격: <input type="text" name="price"/><br/>
-		내용: <br/><textarea rows="10" cols="50" name="content">상품설명</textarea><br/>
+		설명: <br/><textarea rows="10" cols="50" name="content">상품설명</textarea><br/>
 		<hr/>
 		<div class='addInput'>
 
