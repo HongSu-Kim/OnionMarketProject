@@ -5,10 +5,7 @@ import com.youprice.onion.entity.member.Role;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Getter
@@ -23,12 +20,12 @@ public class MemberJoinDTO { //회원가입 할 때 필요한 DTO (MemberDTO)에
     private Role role;
 
     @NotBlank(message = "아이디는 필수 입력값입니다.")
-    @Pattern(regexp = "^[a-z0-9]{5,20}$", message = "아이디는 5~20자리 영어 소문자와 숫자만 사용하세요.")
+    @Pattern(regexp = "^[a-z0-9]{5,20}$", message = "아이디는 5~20자리 영어 소문자와 숫자만 사용해 주세요.")
     private String userId;
 
     @NotBlank(message = "비밀번호는 필수 입력값입니다.")
 //    @Pattern(regexp = "(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,20}", message = "비밀번호는 8~20자 영문 소문자, 숫자, 특수문자를 사용하세요.")
-    @Pattern(regexp = "(?=.*[a-z])(?=.*[0-9]).{4,20}", message = "비밀번호는 4~20자리 영문 소문자, 숫자를 사용하세요.")
+    @Pattern(regexp = "(?=.*[a-z])(?=.*[0-9]).{4,20}", message = "비밀번호는 4~20자리 영문 소문자, 숫자를 사용해 주세요.")
     private String pwd;
 
     @NotBlank(message = "이름은 필수 입력값입니다.")
@@ -40,6 +37,7 @@ public class MemberJoinDTO { //회원가입 할 때 필요한 DTO (MemberDTO)에
     private String nickname;
 
     @NotNull(message = "생년월일은 필수 입력값입니다.")
+    @PastOrPresent(message = "생년월일은 과거 또는 현재의 날짜여야 합니다.")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birth;
 

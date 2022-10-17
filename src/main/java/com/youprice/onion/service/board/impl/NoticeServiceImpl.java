@@ -49,7 +49,11 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public void update(Long id, NoticeDTO noticeDTO) {
+        Notice notice = noticeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("수정이 불가합니다"));
+        Long noticeId = notice.getId();
+        notice.updateNotice(id, noticeDTO);
 
+        noticeRepository.save(notice);
     }
 
     @Override
@@ -100,7 +104,16 @@ public class NoticeServiceImpl implements NoticeService {
         return storeImageList;
     }
 
+    public int updateView(Long id){
+        return noticeRepository.updateView(id);
+    } //조회수 상승
 
+    /*
+    public Page<NoticeDTO> searchNotice(String filed, String word, Pageable pageable){
+        Page<NoticeDTO> noticeList = noticeRepository.searchSubject(filed, word, pageable);
+        return noticeList;
+    }
+    */
 
 
 }

@@ -5,7 +5,6 @@ import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.service.board.NoticeService;
 import com.youprice.onion.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.file.ConfigurationSource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
@@ -24,7 +23,6 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
-
 
 @Controller
 @RequiredArgsConstructor
@@ -55,22 +53,21 @@ public class NoticeController {
     public String lists(@PageableDefault(size=10, sort="id", direction = Sort.Direction.DESC) Pageable pageable
                         ,@RequestParam(required = false, defaultValue = "") String field
                         ,@RequestParam(required = false, defaultValue = "") String word
-                        ,Model model){
+                        ,Model model) {
         MemberDTO memberDTO = memberService.getMemberDTO(19l);
 
         Page<NoticeDTO> noticelist = noticeService.findAllNotice(pageable);
 
         /*
-        if(word.length() != 0) {
-            noticelist = noticeService.getSearchList(field,word, pageable);
+        if (word.length() != 0) {
+            noticelist = noticeService.searchNotice(field, word, pageable);
         }
         */
-
 
         int pageNumber = noticelist.getPageable().getPageNumber();
         int totalPages = noticelist.getTotalPages();
         int pageBlock = 5;
-        int startBlockPage = ((pageNumber)/pageBlock)*pageBlock + 1;
+        int startBlockPage = ((pageNumber) / pageBlock) * pageBlock + 1;
         int endBlockPage = startBlockPage + pageBlock - 1;
         endBlockPage = totalPages < endBlockPage ? totalPages : endBlockPage;
 
@@ -90,6 +87,7 @@ public class NoticeController {
 
         MemberDTO memberDTO = memberService.getMemberDTO(19l);
         NoticeDTO noticeDTO = noticeService.findNoticeDTO(id);
+        noticeService.updateView(id);
 
         model.addAttribute("noticeDTO", noticeDTO);
         model.addAttribute("field", field);
@@ -116,10 +114,10 @@ public class NoticeController {
     }
 
     //수정 실행
-    @PostMapping("/update/{id}")
+    @PutMapping ("/update/{id}")
     public String noticeUpdate(@PathVariable Long id, NoticeDTO noticeDTO){
         noticeService.update(id, noticeDTO);
-        return"";
+        return"redirect:/notice/article/{id}";
     }
 
     //삭제 실행
