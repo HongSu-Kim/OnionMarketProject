@@ -116,9 +116,9 @@ public class ReviewController {
     }
     // 첨부사진 개별 삭제
     @GetMapping("/images/delete/{id}/{reviewId}")
-    public String imageDelete(@PathVariable("id") Long imageId, @PathVariable("reviewId") Long reviewId){
+    public String imageDelete(@PathVariable("id") Long imageId, Long reviewId){
         reviewImageService.deleteImage(imageId);
-        return "redirect:/review/update/" + reviewId;
+        return "redirect:/review/update/{reviewId}";
     }
     // 수정
     @PostMapping("/update/{id}")

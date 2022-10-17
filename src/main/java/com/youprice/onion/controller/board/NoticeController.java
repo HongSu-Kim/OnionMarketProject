@@ -1,6 +1,7 @@
 package com.youprice.onion.controller.board;
 
 import com.youprice.onion.dto.board.NoticeDTO;
+import com.youprice.onion.dto.board.NoticeUpdateDTO;
 import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.service.board.NoticeService;
 import com.youprice.onion.service.member.MemberService;
@@ -51,18 +52,16 @@ public class NoticeController {
     //공지 리스트
     @GetMapping("/list")
     public String lists(@PageableDefault(size=10, sort="id", direction = Sort.Direction.DESC) Pageable pageable
-                        ,@RequestParam(required = false, defaultValue = "") String field
                         ,@RequestParam(required = false, defaultValue = "") String word
                         ,Model model) {
+
         MemberDTO memberDTO = memberService.getMemberDTO(19l);
 
         Page<NoticeDTO> noticelist = noticeService.findAllNotice(pageable);
 
-        /*
         if (word.length() != 0) {
-            noticelist = noticeService.searchNotice(field, word, pageable);
+            noticelist = noticeService.searchNotice(word, pageable);
         }
-        */
 
         int pageNumber = noticelist.getPageable().getPageNumber();
         int totalPages = noticelist.getTotalPages();
@@ -82,7 +81,6 @@ public class NoticeController {
     //각 공지 내부 페이지
     @GetMapping("/article/{id}")
     public String noticeArticle(@PathVariable Long id, Model model,
-                                @RequestParam(required = false, defaultValue = "") String field,
                                 @RequestParam(required = false, defaultValue = "") String word){
 
         MemberDTO memberDTO = memberService.getMemberDTO(19l);
@@ -90,7 +88,6 @@ public class NoticeController {
         noticeService.updateView(id);
 
         model.addAttribute("noticeDTO", noticeDTO);
-        model.addAttribute("field", field);
         model.addAttribute("word", word);
         model.addAttribute("memberDTO", memberDTO);
 
@@ -114,11 +111,25 @@ public class NoticeController {
     }
 
     //수정 실행
-    @PutMapping ("/update/{id}")
-    public String noticeUpdate(@PathVariable Long id, NoticeDTO noticeDTO){
-        noticeService.update(id, noticeDTO);
-        return"redirect:/notice/article/{id}";
+    @PostMapping ("/update/{id}")
+    public String noticeUpdate(@PathVariable Long id,
+                              @ModelAttribute NoticeUpdateDTO noticeUpdateDTO
+    ){
+        noticeService.update(id, noticeUpdateDTO);
+
+        return"redirect:/notice/list";
     }
+
+    //수정~>내부 이미지 삭제
+    @GetMapping("/image/delete/{imageId}/{noticeId}")
+    public String noticeImageDelete(@PathVariable Long imageId, Long noticeId){
+        noticeService.imageDelete(imageId);
+        return "redirect:/notice/update/{noticeId}";
+    }
+
+    //수정~>내부 이미지 등록
+    @PostMapping("/image/")
+
 
     //삭제 실행
     @GetMapping ("/delete/{id}")

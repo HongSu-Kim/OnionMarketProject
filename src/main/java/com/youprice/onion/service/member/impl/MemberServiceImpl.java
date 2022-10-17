@@ -33,7 +33,7 @@ public class MemberServiceImpl implements MemberService {
     @Autowired
     private final ModelMapper modelMapper;
 /*
-
+    //회원정보 수정
     @Transactional
     @Override
     public Long saveMember(MemberJoinDTO memberJoinDTO, MultipartFile profileImage) throws IOException {
@@ -114,21 +114,27 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    //회원정보 수정
     @Transactional
     @Override
-    public void modify(MemberDTO memberDTO, MultipartFile modifyProfileImage) throws IOException {
+    public void modify(MemberDTO memberDTO/*, MultipartFile modifyProfileImage*/) throws IOException {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         Member member = memberRepository.findByUserId(memberDTO.toEntity().getUserId()).orElseThrow(() ->
                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
         String encPwd = passwordEncoder.encode(memberDTO.getPwd());
-        String profileImageStore = storePath(modifyProfileImage); // uuid 반환
-        memberDTO.setMemberImageName(profileImageStore);
+/*        String profileImageStore = storePath(modifyProfileImage); // uuid 반환
+        memberDTO.setMemberImageName(profileImageStore);*/
         member.modify(encPwd, memberDTO.getNickname(), memberDTO.getTel(), memberDTO.getPostcode(), memberDTO.getAddress(), memberDTO.getDetailAddress(), memberDTO.getExtraAddress(), memberDTO.getEmail(), memberDTO.getMemberImageName());
 
     }
 
     @Override
+    public MemberDTO getMemberDTO(Long memberId) {
+        return modelMapper.map(memberRepository.findById(memberId).orElse(null), MemberDTO.class);
+    }
+
+/*    @Override
     public MemberDTO getMemberDTO(Long memberId) {
 
         Long sender = 1L;
@@ -139,7 +145,7 @@ public class MemberServiceImpl implements MemberService {
         }
         // 채팅로직
         return null;
-    }
+    }*/
 
     //차단 추가
     public void makeBlock(Long memberId, Long targetId) {

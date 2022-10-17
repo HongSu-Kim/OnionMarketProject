@@ -8,9 +8,6 @@ import org.springframework.data.domain.Pageable;
 public interface WishService {
 
 	Page<WishDTO> getWishList(Long memberId, Pageable pageable);
-
 	void addWish(Long memberId, Long productId);
-
 	void removeWish(Long wishId);
-
 }

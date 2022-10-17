@@ -6,7 +6,7 @@
 			<div class="col-lg-3 col-md-6 col-sm-6">
 				<div class="footer__about">
 					<div class="footer__about__logo">
-						<a href="./index.html"><img src="/template/img/logo.png" alt=""></a>
+						<a href="https://technext.github.io/ogani/index.html" target="_blank"><img src="/template/img/logo.png" alt=""></a>
 					</div>
 					<ul>
 						<li>(Team)youprice</li>
