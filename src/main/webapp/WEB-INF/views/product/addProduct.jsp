@@ -9,24 +9,28 @@
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>상품 등록</title>
-	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script type="text/javascript">
 		function goBack(){
 			window.history.back();
 		}
 
-		function clickCheck(target) {
-			document.querySelectorAll(`input[type=checkbox]`)
-					.forEach(el => el.checked = false);
+		$('#checkbox-value').text($('#checkbox1').val());
 
-			target.checked = true;
-		}
+		$("#checkbox1").on('change', function() {
+			if ($(this).is(':checked')) {
+				$(this).attr('value', 'true');
+			} else {
+				$(this).attr('value', 'false');
+			}
 
+			$('#checkbox-value').text($('#checkbox1').val());
+		});
 	</script>
-
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('.btnAdd').click(function () {
@@ -52,6 +56,7 @@
 			}
 		}
 	</script>
+
 </head>
 <body>
 
@@ -64,20 +69,13 @@
 		<%--townList foreach로 설정--%>
 		<label for="town1">${townName}</label><input type="radio" id="town1" name="townName" value="${townName}"/>
 		<br/>
-		경매 등록<br/>
-		<label for="yes">예</label>
-		<input type="checkbox" id="yes" name="auctionStatus" onclick="clickCheck(this)"/>
-		<label for="no">아니오</label>
-		<input type="checkbox" id="no" name="auctionStatus" onclick="clickCheck(this)" checked/>
+		경매 등록<%--true/false로 변경--%>
+		<input type="checkbox" name="auctionStatus" id="checkbox1" value="false"/>
+
 		<br/>
+
 		카테고리 선택<br/>
-		<select>
-			<optgroup label="전자기기">
-				<option value="computer">컴퓨터</option>
-				<option value="phone">핸드폰</option>
-				<option value="tv">티비</option>
-			</optgroup>
-		</select><br/><br/>
+
 		상품가격: <input type="text" name="price"/><br/>
 		설명: <br/><textarea rows="10" cols="50" name="content">상품설명</textarea><br/>
 		<hr/>
@@ -89,6 +87,7 @@
 	<div>
 		<input type="submit" value="상품 등록"/>
 	</div>
+
 </form>
 
 <div>
@@ -100,3 +99,53 @@
 
 </body>
 </html>
+
+
+<%--<div>--%>
+<%--	<ul>--%>
+<%--		<li class="menu">--%>
+<%--			<a><img src="" alt="상위메뉴이미지1"/></a>--%>
+<%--			<ul class="hide">--%>
+<%--				<li>메뉴1-1</li>--%>
+<%--				<li>메뉴1-2</li>--%>
+<%--				<li>메뉴1-3</li>--%>
+<%--				<li>메뉴1-4</li>--%>
+<%--				<li>메뉴1-5</li>--%>
+<%--				<li>메뉴1-6</li>--%>
+<%--			</ul>--%>
+<%--		</li>--%>
+
+<%--		<li class="menu">--%>
+<%--			<a><img src="" alt="상위메뉴이미지2"/></a>--%>
+<%--			<ul class="hide">--%>
+<%--				<li>메뉴2-1</li>--%>
+<%--				<li>메뉴2-2</li>--%>
+<%--				<li>메뉴2-3</li>--%>
+<%--				<li>메뉴2-4</li>--%>
+<%--				<li>메뉴2-5</li>--%>
+<%--				<li>메뉴2-6</li>--%>
+<%--			</ul>--%>
+<%--		</li>--%>
+<%--	</ul>--%>
+<%--</div>--%>
+<%--<script>--%>
+<%--	$(document).ready(function(){--%>
+<%--		$(".menu>a").click(function(){--%>
+<%--			var submenu = $(this).next("ul");--%>
+
+<%--			// submenu 가 화면상에 보일때는 위로 부드럽게 접고 아니면 아래로 부드럽게 펼치기--%>
+<%--			if( submenu.is(":visible") ){--%>
+<%--				submenu.slideUp(1000);--%>
+<%--			}else{--%>
+<%--				submenu.slideDown(1000);--%>
+<%--			}--%>
+<%--		}).mouseover(function(){--%>
+<%--			$(this).next("ul").slideDown();--%>
+<%--		});--%>
+<%--	});--%>
+<%--</script>--%>
+
+<%--<style>--%>
+<%--	.menu a{cursor:pointer;}--%>
+<%--	.menu .hide{display:none;}--%>
+<%--</style>--%>

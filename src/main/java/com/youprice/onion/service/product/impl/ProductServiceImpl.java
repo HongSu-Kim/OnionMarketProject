@@ -6,7 +6,6 @@ import com.youprice.onion.entity.order.Order;
 import com.youprice.onion.entity.product.*;
 import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.repository.member.ProhibitionKeywordRepositoy;
-import com.youprice.onion.repository.order.OrderRepository;
 import com.youprice.onion.repository.product.*;
 import com.youprice.onion.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -31,9 +30,6 @@ public class ProductServiceImpl implements ProductService {
     private final MemberRepository memberRepository;
     private final TownRepositoy townRepositoy;
     private final CategoryRepositoy categoryRepository;
-    private final AuctionRepository auctionRepository;
-    private final OrderRepository orderRepository;
-
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
 
@@ -49,19 +45,14 @@ public class ProductServiceImpl implements ProductService {
         Member member = memberRepository.findById(productAddDTO.getMemberId()).orElse(null);
         Town town = townRepositoy.findById(productAddDTO.getTownId()).orElse(null);
         Category category = categoryRepository.findById(productAddDTO.getCategoryId()).orElse(null);
-
-        Auction auction = new Auction();
-
-        if(productAddDTO.getAuctionId()!=null) {
-            auction = auctionRepository.findById(productAddDTO.getAuctionId()).orElse(null);
-        }else {
-            auction = null;
-        }
-
         Order order = null;
 
         // 상품 등록
-        Product product = new Product(member,town,category,auction,order,productAddDTO.getSubject(),productAddDTO.getContent(),productAddDTO.getPrice(),productAddDTO.getUploadDate());
+        Product product = new Product(member,town,category,order,productAddDTO.getSubject(),productAddDTO.getContent(),productAddDTO.getPrice());
+
+        if(productAddDTO.getAuctionStatus()!=true) {
+            productAddDTO.setAuctionDeadline(null);
+        }
 
         Long productId = productRepository.save(product).getId();
 
@@ -126,7 +117,7 @@ public class ProductServiceImpl implements ProductService {
         for(MultipartFile file: fileList) {
 
             if(!file.isEmpty()) {
-                String productImageName = file.getOriginalFilename();
+                String productImageName = filePath(file);
                 ProductImage saveFile = new ProductImage(product, productImageName);
                 productImageList.add(saveFile);
             }

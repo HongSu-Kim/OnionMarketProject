@@ -2,7 +2,6 @@ package com.youprice.onion.controller.product;
 
 import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.product.*;
-import com.youprice.onion.entity.product.Auction;
 import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.service.product.*;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +21,6 @@ import java.util.List;
 public class ProductController {
     private final ProductService productService;
     private final TownService townService;
-
-    private final AuctionService auctionService;
     private final ProductImageService productImageService;
 
     @GetMapping("add")//상픔 등록 주소
@@ -38,7 +35,7 @@ public class ProductController {
     }
     @PostMapping("add")//실제 상품 등록 주소
     public String addProduct(Model model, @LoginUser SessionDTO userSession, @RequestParam("townName") String townName,
-                             AuctionAddDTO auctionAddDTO, ProductAddDTO productAddDTO, List<MultipartFile> fileList) throws Exception{
+                             ProductAddDTO productAddDTO, List<MultipartFile> fileList) throws Exception{
 
         productAddDTO.setMemberId(userSession.getId());
 
@@ -49,12 +46,7 @@ public class ProductController {
         /*카테고리 이름으로 카테고리번호 등록*/
         productAddDTO.setCategoryId(2L);
 
-        /*경매번호 조회 및 set (경매현황으로)*/
-        Long auctionId = auctionService.addAuction(auctionAddDTO);
-        productAddDTO.setAuctionId(auctionId);
-
-//        AuctionFindDTO auctionFindDTO = auctionService.findAuctionId(auctionAddDTO.getAuctionStatus());
-//        productAddDTO.setAuctionId(auctionFindDTO.getAuctionId());
+        /*경매 boolean으로 deadline체크*/
 
         //bindresult로 금지키워드 서비스호출
 
@@ -62,7 +54,6 @@ public class ProductController {
         Long productId = productService.addProduct(productAddDTO,fileList);
 
         model.addAttribute("productId",productId);
-        model.addAttribute("auctionDTO",auctionId);
 
         return "redirect:/product/detail?productId="+productId;//상품 상세페이지로 이동
     }

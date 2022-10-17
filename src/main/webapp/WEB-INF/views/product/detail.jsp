@@ -67,7 +67,6 @@
 					<ul>
 						<li><b>Availability</b> <span>${dto.productProgress}</span></li>
 						<li><b>Shipping</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li>
-						<li><b>Auction</b> <span>${auctionDTO.auctionStatus}</span></li>
 						<li><b>Share on</b>
 							<div class="share">
 								<a href="#"><i class="fa fa-facebook"></i></a>
