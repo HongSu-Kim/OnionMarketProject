@@ -55,6 +55,7 @@ public class MemberController {
     public String joinView() {
         return "member/join";
     }
+/*
 
     //회원가입
     @PostMapping("/joinProc")
@@ -77,6 +78,29 @@ public class MemberController {
         memberService.saveMember(memberJoinDTO, profileImage);
         return "redirect:login";
     }
+*/
+
+    //회원가입
+    @PostMapping("/joinProc")
+    public String joinProc(@Valid MemberJoinDTO memberJoinDTO, Errors errors, Model model) throws IOException {
+
+        if (errors.hasErrors()) {
+            //회원가입 실패 시 입력 데이터 값을 유지
+            model.addAttribute("memberJoinDTO", memberJoinDTO);
+
+            //유효성 통과 못한 필드와 메시지를 핸들링
+            Map<String, String> validatorResult = memberService.validateHandling(errors);
+            for (String key : validatorResult.keySet()) {
+                model.addAttribute(key, validatorResult.get(key));
+            }
+
+            //회원가입 페이지로 다시 리턴
+            return "member/join";
+        }
+        memberService.saveMember(memberJoinDTO);
+        return "redirect:login";
+    }
+
 
     //로그인 페이지
     @GetMapping("/login")
@@ -98,9 +122,11 @@ public class MemberController {
         if (sessionDTO != null) {
             model.addAttribute("member", sessionDTO);
         }
+        
         return "member/modify";
     }
 
+    //관심 카테고리
     @RequestMapping(value = "/selcategory", method = RequestMethod.POST)
     @ResponseBody
     public void selCategory(@RequestParam(value = "categoryArrTest[]")List<String>categoryArr) {
