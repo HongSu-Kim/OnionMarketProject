@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!-- Page Preloder -->
 <div id="preloder">
@@ -105,6 +106,8 @@
 		</div>
 	</div>
 	 --%>
+
+		<!-- nav -->
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-3">
@@ -126,7 +129,7 @@
 						</li>
 						<li><a href="#">거래내역</a>
 							<ul class="header__menu__dropdown">
-								<li><a href="/wish/wishList">Wish List</a></li>
+								<li><a href="/wish/list">Wish List</a></li>
 								<li><a href="/order/buyList">Buy List</a></li>
 								<li><a href="/order/sellList">Sell List</a></li>
 								<li><a href="#">Temp4</a></li>
@@ -165,6 +168,8 @@
 			<i class="fa fa-bars"></i>
 		</div>
 	</div>
+
+		<!-- product search -->
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-3">
@@ -174,7 +179,7 @@
 						<span>All departments</span>
 					</div>
 					<ul>
-						<li><a href="#">Fresh Meat</a></li>
+						<li><a href="/product/list?categoryId=">Fresh Meat</a></li>
 						<li><a href="#">Vegetables</a></li>
 						<li><a href="#">Fruit & Nut Gifts</a></li>
 						<li><a href="#">Fresh Berries</a></li>
@@ -213,6 +218,7 @@
 			</div>
 		</div>
 	</div>
+
 </header>
 <!-- Header Section End -->
 

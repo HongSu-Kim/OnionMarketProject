@@ -50,83 +50,83 @@
 				<h4>배송 정보</h4>
 				<div class="row">
 
-							<!-- 배송 정보 -->
-							<div class="col-8 col-md-6">
-								<%--<div class="row">
-									<div class="col-lg-6">
-										<div class="checkout__input">
-											<p>Fist Name<span>*</span></p>
-											<input type="text">
-										</div>
-									</div>
-									<div class="col-lg-6">
-										<div class="checkout__input">
-											<p>Last Name<span>*</span></p>
-											<input type="text">
-										</div>
-									</div>
-								</div>--%>
+					<!-- 배송 정보 -->
+					<div class="col-8 col-md-6">
+						<%--<div class="row">
+							<div class="col-lg-6">
 								<div class="checkout__input">
-									<p>주문자명<span>*</span></p>
-									<input type="text" id="name" name="name" value="${memberDTO.name}" placeholder="주문자명"/>
-								</div>
-								<div class="checkout__input">
-									<p>
-										배송 주소<span>*</span>
-										<a type="button" class="primary-btn cart-btn" style="padding: 8px 15px 7px" onclick="sample6_execDaumPostcode()">우편번호 찾기</a>
-									</p>
-									<input type="text" class="checkout__input__add" id="postcode" name="postcode" value="${memberDTO.postcode}" placeholder="우편번호">
-									<form:errors path="postcode"/>
-									<input type="text" class="checkout__input__add" id="address" name="address" value="${memberDTO.address}" placeholder="주소">
-									<form:errors path="address"/>
-									<input type="text" class="checkout__input__add" id="detailAddress" name="detailAddress" value="${memberDTO.detailAddress}" placeholder="상세주소">
-									<input type="text" id="extraAddress" name="extraAddress" value="${memberDTO.extraAddress}" placeholder="참고항목">
-									<form:errors path="extraAddress"/>
-								</div>
-								<div class="row">
-									<div class="col-lg-6">
-										<div class="checkout__input">
-											<p>주문자 연락처<span>*</span></p>
-											<input type="text" id="tel" name="tel" value="${memberDTO.tel}"/>
-										</div>
-									</div>
-									<div class="col-lg-6">
-										<div class="checkout__input">
-											<p>주문자 이메일<span>*</span></p>
-											<input type="text" id="email" name="email" value="${memberDTO.email}"/>
-										</div>
-									</div>
-								</div>
-								<div class="checkout__input">
-									<p>요청사항</p>
-									<input type="text" id="request" name="request" value="${orderAddDTO.request}" placeholder="요청사항"/>
+									<p>Fist Name<span>*</span></p>
+									<input type="text">
 								</div>
 							</div>
+							<div class="col-lg-6">
+								<div class="checkout__input">
+									<p>Last Name<span>*</span></p>
+									<input type="text">
+								</div>
+							</div>
+						</div>--%>
+						<div class="checkout__input">
+							<p>주문자명<span>*</span></p>
+							<input type="text" id="name" name="name" value="${memberDTO.name}" placeholder="주문자명"/>
+						</div>
+						<div class="checkout__input">
+							<p>
+								배송 주소<span>*</span>
+								<a type="button" class="primary-btn cart-btn" style="padding: 8px 15px 7px" onclick="sample6_execDaumPostcode()">우편번호 찾기</a>
+							</p>
+							<input type="text" class="checkout__input__add" id="postcode" name="postcode" value="${memberDTO.postcode}" placeholder="우편번호">
+							<form:errors path="postcode"/>
+							<input type="text" class="checkout__input__add" id="address" name="address" value="${memberDTO.address}" placeholder="주소">
+							<form:errors path="address"/>
+							<input type="text" class="checkout__input__add" id="detailAddress" name="detailAddress" value="${memberDTO.detailAddress}" placeholder="상세주소">
+							<input type="text" id="extraAddress" name="extraAddress" value="${memberDTO.extraAddress}" placeholder="참고항목">
+							<form:errors path="extraAddress"/>
+						</div>
+						<div class="row">
+							<div class="col-lg-6">
+								<div class="checkout__input">
+									<p>주문자 연락처<span>*</span></p>
+									<input type="text" id="tel" name="tel" value="${memberDTO.tel}"/>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="checkout__input">
+									<p>주문자 이메일<span>*</span></p>
+									<input type="text" id="email" name="email" value="${memberDTO.email}"/>
+								</div>
+							</div>
+						</div>
+						<div class="checkout__input">
+							<p>요청사항</p>
+							<input type="text" id="request" name="request" value="${orderAddDTO.request}" placeholder="요청사항"/>
+						</div>
+					</div>
 
-							<!-- 결제 정보 -->
-							<div class="col-4 col-md-6">
-								<div class="checkout__order">
-									<h4>결제 정보</h4>
-									<input type="hidden" id="productPrice" name="productPrice" value="${productDTO.productPrice}">
-									<input type="hidden" id="deliveryCost" name="deliveryCost" value="${orderAddDTO.deliveryCost}">
+					<!-- 결제 정보 -->
+					<div class="col-4 col-md-6">
+						<div class="checkout__order">
+							<h4>결제 정보</h4>
+							<input type="hidden" id="productPrice" name="productPrice" value="${productDTO.productPrice}">
+							<input type="hidden" id="deliveryCost" name="deliveryCost" value="${orderAddDTO.deliveryCost}">
 <%--									<input type="hidden" id="orderPayment" name="orderPayment" value="${productDTO.productPrice + orderAddDTO.deliveryCost}">--%>
-									<input type="text" id="orderPayment" name="orderPayment" value="${productDTO.productPrice + orderAddDTO.deliveryCost}" placeholder="orderPayment">
-									<div class="checkout__order__products">Products <span>Total</span></div>
-									<ul>
-										<li>${productDTO.productName} <span>${productDTO.productPrice}</span></li>
-										<li>배송비 <span>${orderAddDTO.deliveryCost}</span></li>
-									</ul>
-									<div class="checkout__order__total">결제금액 <span>${productDTO.productPrice + orderAddDTO.deliveryCost}</span></div>
-									<%--<div class="checkout__input__checkbox">
-										<label for="acc-or">
-											Create an account?
-											<input type="checkbox" id="acc-or">
-											<span class="checkmark"></span>
-										</label>
-									</div>--%>
-									<button type="button" class="site-btn" id="payment">결제하기</button>
-								</div>
-							</div>
+							<input type="text" id="orderPayment" name="orderPayment" value="${productDTO.productPrice + orderAddDTO.deliveryCost}" placeholder="orderPayment">
+							<div class="checkout__order__products">Products <span>Total</span></div>
+							<ul>
+								<li>${productDTO.productName} <span>${productDTO.productPrice}</span></li>
+								<li>배송비 <span>${orderAddDTO.deliveryCost}</span></li>
+							</ul>
+							<div class="checkout__order__total">결제금액 <span>${productDTO.productPrice + orderAddDTO.deliveryCost}</span></div>
+							<%--<div class="checkout__input__checkbox">
+								<label for="acc-or">
+									Create an account?
+									<input type="checkbox" id="acc-or">
+									<span class="checkmark"></span>
+								</label>
+							</div>--%>
+							<button type="button" class="site-btn" id="payment">결제하기</button>
+						</div>
+					</div>
 
 						</div>
 			</form:form>

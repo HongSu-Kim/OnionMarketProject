@@ -2,6 +2,8 @@ package com.youprice.onion.service.product;
 
 import com.youprice.onion.dto.product.*;
 import com.youprice.onion.entity.product.ProductImage;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -27,4 +29,7 @@ public interface ProductService {
     Long getTownId(String townName);
 
     TownFindDTO findTownId(String townName);
+    
+	  Page<ProductSellListDTO> getProductSellListDTO(Long memberId, Pageable pageable);
+    
 }
