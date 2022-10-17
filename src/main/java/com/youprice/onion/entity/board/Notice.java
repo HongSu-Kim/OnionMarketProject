@@ -1,5 +1,6 @@
 package com.youprice.onion.entity.board;
 
+import com.youprice.onion.dto.board.NoticeDTO;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.order.OrderState;
 import com.youprice.onion.entity.product.Product;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -32,7 +34,7 @@ public class Notice{
 
     private String noticeSubject; //공지제목
     private String noticeContent; //공지내용
-    private LocalDateTime noticeDate; //작성일자
+    private LocalDate noticeDate; //작성일자
     private int hitCount; //조회수
 
 
@@ -49,8 +51,15 @@ public class Notice{
         //this.noticeType = NoticeType.NOTICE;
         this.noticeSubject = noticeSubject;
         this.noticeContent = noticeContent;
-        this.noticeDate = LocalDateTime.now();
+        this.noticeDate = LocalDate.now();
         this.hitCount = 0;
+    }
+
+    public void updateNotice(Long id, NoticeDTO noticeDTO){
+       this.id = id;
+       this.noticeSubject = noticeDTO.getNoticeSubject();
+       this.noticeContent = noticeDTO.getNoticeContent();
+
     }
 
 }

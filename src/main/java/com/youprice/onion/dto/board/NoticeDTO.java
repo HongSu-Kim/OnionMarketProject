@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.aspectj.weaver.ast.Not;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,10 +30,11 @@ public class NoticeDTO {
 
     private String noticeContent; //공지내용
 
-    private LocalDateTime noticeDate; //작성일자
+    private LocalDate noticeDate; //작성일자
 
     private List<NoticeImageDTO> noticeImageList;
 
+    @Column(columnDefinition = "integer default 0", nullable = false)
     private int hitCount; //조회수
 
     public NoticeDTO(Notice notice) {

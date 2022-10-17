@@ -27,8 +27,14 @@
         내용:${noticeDTO.noticeContent}
     </div>
     <div>
+        작성일자:${noticeDTO.noticeDate}
+    </div>
+    <div>
+        조회수:${noticeDTO.hitCount}
+    </div>
+    <div>
         <c:forEach items="${noticeDTO.noticeImageList}" var="noticeImageDTO">
-            <img src="/images/${noticeImageDTO.noticeImageName}" width="300" height="300"/>
+            <img src="/images/notice/${noticeImageDTO.noticeImageName}" width="900" height="1200"/>
         </c:forEach>
     </div>
 
