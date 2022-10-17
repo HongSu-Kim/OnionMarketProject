@@ -47,9 +47,17 @@ public class ProductServiceImpl implements ProductService {
     public Long addProduct(ProductAddDTO productAddDTO, List<MultipartFile> fileList) throws Exception {
 
         Member member = memberRepository.findById(productAddDTO.getMemberId()).orElse(null);
-        Town town = townRepositoy.findById(productAddDTO.getMemberId()).orElse(null);
+        Town town = townRepositoy.findById(productAddDTO.getTownId()).orElse(null);
         Category category = categoryRepository.findById(productAddDTO.getCategoryId()).orElse(null);
-        Auction auction = auctionRepository.findById(productAddDTO.getAuctionId()).orElse(null);
+
+        Auction auction = new Auction();
+
+        if(productAddDTO.getAuctionId()!=null) {
+            auction = auctionRepository.findById(productAddDTO.getAuctionId()).orElse(null);
+        }else {
+            auction = null;
+        }
+
         Order order = null;
 
         // 상품 등록
@@ -148,11 +156,7 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.updateView(productId);
     }
 
-    @Override
-    public Long getTownId(String townName) {
-        return townRepositoy.getTownId(townName);
-    }
-
+    //동네 번호 조회
     public TownFindDTO findTownId(String townName) {
         return townRepositoy.findByCoordinateTownName(townName).map(TownFindDTO::new).orElse(null);
     }
