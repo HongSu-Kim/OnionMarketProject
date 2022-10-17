@@ -24,7 +24,6 @@ DROP TABLE wish PURGE;
 DROP TABLE chat PURGE;
 DROP TABLE chatroom PURGE;
 
-DROP TABLE product_category PURGE;
 DROP TABLE member_category PURGE;
 
 DROP TABLE product_tag PURGE;
@@ -153,7 +152,7 @@ CREATE TABLE category (
 
 CREATE TABLE auction (
     auction_id          NUMBER          NOT NULL,
-    auction_deadline    DATE            NULL,
+    auction_dead_line    DATE            NULL,
     auction_status      VARCHAR2(20)    NULL,
     CONSTRAINT PK_AUCTION PRIMARY KEY (auction_id)
 );
@@ -224,15 +223,6 @@ CREATE TABLE member_category (
 	CONSTRAINT PK_MEMBER_CATEGORY PRIMARY KEY (member_category_id),
 	CONSTRAINT FK_MC_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id),
 	CONSTRAINT FK_MC_CATEGORY_ID FOREIGN KEY (category_id) REFERENCES category(category_id)
-);
-
-CREATE TABLE product_category (
-	product_category_id NUMBER  		NOT NULL,
-	category_id         NUMBER  		NOT NULL,
-	product_id          NUMBER  		NOT NULL,
-	CONSTRAINT PK_PRODUCT_CATEGORY PRIMARY KEY (product_category_id),
-	CONSTRAINT FK_PC_CATEGORY_ID FOREIGN KEY (category_id) REFERENCES category(category_id),
-	CONSTRAINT FK_PC_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id)
 );
 
 CREATE TABLE chatroom (
