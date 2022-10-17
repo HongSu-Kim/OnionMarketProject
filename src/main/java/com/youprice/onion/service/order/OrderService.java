@@ -18,6 +18,6 @@ public interface OrderService {
 
 	Page<OrderDTO> getBuyList(Long memberId, Pageable pageable);
 
-	Page<OrderDTO> getSellList(Long memberId, Pageable pageable);
+//	Page<OrderDTO> getSellList(Long memberId, Pageable pageable);
 
 }

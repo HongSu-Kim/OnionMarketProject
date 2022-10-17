@@ -11,14 +11,14 @@
 
 </head>
 
-<body>
+<body onload="document.myForm.userId.focus();">
 
 <h1>로그인</h1>
 <hr>
 
 <div id="posts_list">
     <div class="container col-md-6">
-        <form action="/member/loginProc" method="post">
+        <form action="/member/loginProc" method="post" name="myForm">
             <%--<input type="hidden" name="_csrf" value="{{_csrf.token}}"/>--%>
             <div class="form-group">
                 <label>아이디</label>
@@ -29,6 +29,10 @@
                 <label>비밀번호</label>
                 <input type="password" class="form-control" name="pwd" placeholder="비밀번호를 입력해주세요">
             </div>
+
+            <c:if test="${not empty error}">
+                <p id="valid" class="alert alert-danger">${exception}</p>
+            </c:if>
 
             <button class="form-control btn btn-primary bi bi-lock-fill">로그인</button>
             <div>&nbsp;</div>

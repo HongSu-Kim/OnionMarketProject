@@ -17,6 +17,10 @@
 <%--<span sec:authentication="name"></span> 님 반갑습니다.--%>
 <div sec:authentication="principal.authorities"></div>
 
+<sec:authorize access="isAuthenticated()">
+    <a sec:authorize access="isAuthenticated()" href="/member/modify">회원정보 수정</a>
+</sec:authorize>
+
 <a href="/member/home">홈으로 가기</a>
 </body>
 </html>

@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface AnswerService {
 
-    AnswerDTO findAnswerDTO(Long id);
+    AnswerDTO findAnswerDTO(Long answerId);
     Long saveAnswer(AnswerFormDTO answerFormDTO);
-    void updateAnswer(Long id, AnswerFormDTO form);
+    void updateAnswer(Long answerId, AnswerFormDTO form);
     void deleteAnswer(AnswerDTO answerDTO);
     List<AnswerDTO> findByInquiryId(Long inquiryId);
 }

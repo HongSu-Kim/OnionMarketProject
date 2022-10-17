@@ -28,19 +28,24 @@ public class ProductController {
     @GetMapping("add")//상픔 등록 주소
     public String add(Model model, @LoginUser SessionDTO userSession) {
 
-        List<TownFindDTO> townList = townService.townList(userSession.getId());
+        List<TownFindDTO> townList = townService.townLists(userSession.getId());
+        String townName = townList.get(0).getTownName();
 
-        System.out.println("townName = " + townList.get(0).getTownName());
-        
-        model.addAttribute("townList",townList);
+
+
+        model.addAttribute("townName", townName);
 
         return "product/addProduct";//상품등록 페이지
     }
     @PostMapping("add")//실제 상품 등록 주소
-    public String addProduct(Model model, @LoginUser SessionDTO userSession, Long townId, ProductAddDTO productAddDTO, List<MultipartFile> fileList) throws Exception{
+    public String addProduct(Model model, @LoginUser SessionDTO userSession, String townName, ProductAddDTO productAddDTO, List<MultipartFile> fileList) throws Exception{
 
         productAddDTO.setMemberId(userSession.getId());
-        productAddDTO.setTownId(townId);
+        productAddDTO.setTownId(productService.getTownId(townName));//동네 이름으로 동네번호 조회
+//        TownFindDTO findDTO = productService.findTownId(townName);
+//        productAddDTO.setTownId(findDTO.getId());
+//        productAddDTO.setAuctionId();/*경매 아이디 조회 서비스(경매현황으로)*/
+        //bindresult로 금지키워드 서비스호출
 
         Long productId = productService.addProduct(productAddDTO,fileList);
 

@@ -41,6 +41,15 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name = "category_id")
     private Category category; //카테고리번호 FK
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "auction_id")
+    private Auction auction; //경매번호 FK
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private Order order; //주문번호 FK
+
     private String subject; //제목
     private String content; //내용
     private int price; //상품가격
@@ -62,10 +71,6 @@ public class Product {
     @OneToMany(mappedBy = "product")//태그번호
     private List<ProductTag> productTagList = new ArrayList<>();
 
-    //주문내역 참조 양방향(OneToMany로 바꿀건가..?)
-    @OneToOne(mappedBy = "product")
-    private Order order;
-
     //찜 참조 양방향
     @OneToMany(mappedBy = "product")
     private  List<Wish> wishList = new ArrayList<>();
@@ -82,15 +87,14 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<Bidding> biddingList = new ArrayList<>();
 
-    //경매 참조 양방향
-    @OneToOne(mappedBy = "product")
-    private Auction auction;
 
-    public Product(Member member,Town town,Category category, String subject, String content, int price, LocalDateTime uploadDate) {
+    public Product(Member member,Town town,Category category,Auction auction,Order order,String subject,String content,int price,LocalDateTime uploadDate) {
 
         this.member = member;
         this.town = town;
         this.category = category;
+        this.auction = auction;
+        this.order = order;
         this.subject = subject;
         this.content = content;
         this.price = price;
