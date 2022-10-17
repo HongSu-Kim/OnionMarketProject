@@ -11,7 +11,7 @@ public interface ProhibitionKeywordService {
 
     void ProhibitionKeywordAdd(ProhibitionKeywordAddDTO prohibitionKeywordAddDTO, HttpServletResponse response)throws IOException;
 
-    void ProhibitionKeywordUpdate(ProhibitionKeywordUpdateDTO prohibitionKeywordUpdateDTO,String updatekeyword);
+    void ProhibitionKeywordUpdate(ProhibitionKeywordUpdateDTO prohibitionKeywordUpdateDTO,String updatekeyword,HttpServletResponse response)throws IOException;
 
 
     void  ProhibitionKeywordDelete(String prohibitionKeywordName);

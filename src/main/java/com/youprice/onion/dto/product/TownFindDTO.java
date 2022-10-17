@@ -27,6 +27,7 @@ public class TownFindDTO {
         memberId =town.getMember().getId();
         coordinateId = town.getCoordinate().getId();
         townName = town.getCoordinate().getTownName();
+
     }
 
 }
