@@ -32,6 +32,11 @@ public class ComplainController {
         return "board/complainMain";
     }
 
+    @GetMapping("/help")
+    public String help(){
+        return "board/help";
+    }
+
     // 테스트
     @GetMapping("created/{id}")
     public String complainForm(@PathVariable("id") Long productId, Model model,
@@ -56,7 +61,6 @@ public class ComplainController {
         return "redirect:/complain/";
     }
 
-    /* 목록
     @GetMapping("/list")
     public String lists(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(required = false, defaultValue = "") String field,
@@ -80,6 +84,6 @@ public class ComplainController {
         model.addAttribute("complainList", complainList);
 
         return "board/complainList";
-    }*/
+    }
 
 }
