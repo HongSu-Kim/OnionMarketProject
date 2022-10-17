@@ -43,21 +43,24 @@ public class ReviewServiceImpl implements ReviewService {
     public Long saveReview(ReviewFormDTO form, List<MultipartFile> reviewImageName) throws IOException {
         Order order = orderRepository.findById(form.getOrderId()).orElse(null);
         Member member = memberRepository.findById(form.getMemberId()).orElse(null);
-        Long sellerId = findSellerId(1L);
 
-        Review review = new Review(order,member, form.getReviewContent(), form.getGrade(),sellerId);
+        Review review = new Review(order, member, form.getReviewContent(), form.getGrade(), form.getSalesId());
         Review save = reviewRepository.save(review);
         Long reviewId = save.getId();
+
         List<ReviewImage> list = storeImages(reviewId, reviewImageName);
         for(ReviewImage reviewImage : list){
             reviewImageRepository.save(reviewImage);
         }
+        /*
+        if(save.getId() != null){
+            if(reviewImageName != null) {
+                member.addPoint(200); // 사진리뷰
+            } else {
+                member.addPoint(50); // 일반리뷰
+            }
+        }*/
         return reviewId;
-    }
-    public Long findSellerId(Long buyerId){
-        Order order = orderRepository.findById(buyerId).orElse(null);
-        Product product = productRepository.findById(order.getProduct().getId()).orElse(null);
-        return product.getMember().getId();
     }
 
     public ReviewDTO findByUserId(String userId){
@@ -66,11 +69,12 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewDTO;
     }
 
-    public ReviewDTO findReviewDTO(Long id){
-        return reviewRepository.findById(id).map(ReviewDTO::new).orElse(null);
+    public ReviewDTO findReviewDTO(Long reviewId){
+        return reviewRepository.findById(reviewId).map(ReviewDTO::new).orElse(null);
     }
 
-    /* 특정 회원의 목록
+    /*
+     특정 회원의 목록
     public List<ReviewDTO> userReviewList(Long buyerId, Long reviewId){
 
     }*/
@@ -82,10 +86,10 @@ public class ReviewServiceImpl implements ReviewService {
 
     // 수정
     @Transactional
-    public void updateReview(Long id, ReviewUpdateDTO form) throws IOException {
-        Review review = reviewRepository.findById(id).orElseThrow(() -> new NoSuchElementException());
-        Long reviewId = review.getId();
-        review.updateReview(reviewId, form);
+    public void updateReview(Long reviewId, ReviewUpdateDTO form) throws IOException {
+        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new NoSuchElementException());
+        Long id = review.getId();
+        review.updateReview(id, form);
 
         List<ReviewImage> list = storeImages(reviewId, form.getReviewImageName());
         for(ReviewImage reviewImage : list){
@@ -94,6 +98,7 @@ public class ReviewServiceImpl implements ReviewService {
         reviewRepository.save(review);
     }
     // 삭제
+    @Transactional
     public void deleteReview(ReviewDTO reviewDTO){
         Review review = reviewRepository.findById(reviewDTO.getReviewId()).orElse(null);
         reviewRepository.delete(review);

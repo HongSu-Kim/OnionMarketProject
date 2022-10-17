@@ -24,9 +24,7 @@ DROP TABLE wish PURGE;
 DROP TABLE chat PURGE;
 DROP TABLE chatroom PURGE;
 
-DROP TABLE product_category PURGE;
 DROP TABLE member_category PURGE;
-DROP TABLE category PURGE;
 
 DROP TABLE product_tag PURGE;
 DROP TABLE tag PURGE;
@@ -35,6 +33,7 @@ DROP TABLE product_image PURGE;
 DROP TABLE product PURGE;
 DROP TABLE auction PURGE;
 
+DROP TABLE category PURGE;
 DROP TABLE orders PURGE;
 
 DROP TABLE town PURGE;
@@ -131,23 +130,31 @@ CREATE TABLE town (
 );
 
 CREATE TABLE orders (
-                        order_id	    	NUMBER	        NOT NULL,
-                        member_id	    	NUMBER          NOT NULL,
-                        order_num           CHAR(15)        NOT NULL,
-                        imp_uid             VARCHAR2(20)    NOT NULL,
-                        order_payment       NUMBER          NOT NULL,
-                        order_state     	VARCHAR2(10)    DEFAULT 'ORDER',
-                        order_date      	DATE            DEFAULT SYSDATE,
-                        modified_date   	DATE            DEFAULT NULL,
-                        CONSTRAINT PK_ORDERS PRIMARY KEY (order_id),
-                        CONSTRAINT FK_ORDERS_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id)
+    order_id	    	NUMBER	        NOT NULL,
+    member_id	    	NUMBER          NOT NULL,
+    order_num           CHAR(15)        NOT NULL,
+    imp_uid             VARCHAR2(20)    NOT NULL,
+    order_payment       NUMBER          NOT NULL,
+    order_state     	VARCHAR2(10)    DEFAULT 'ORDER',
+    order_date      	DATE            DEFAULT SYSDATE,
+    modified_date   	DATE            DEFAULT NULL,
+    CONSTRAINT PK_ORDERS PRIMARY KEY (order_id),
+    CONSTRAINT FK_ORDERS_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id)
+);
+
+CREATE TABLE category (
+    category_id     	NUMBER          NOT NULL,
+    category_name  	    VARCHAR2(255)   NOT NULL,
+    parent_id       	NUMBER          NULL,
+    CONSTRAINT PK_CATEGORY PRIMARY KEY (category_id),
+    CONSTRAINT FK_CATEGORY_PARENT_ID FOREIGN KEY (parent_id) REFERENCES category(category_id)
 );
 
 CREATE TABLE auction (
-                         auction_id          NUMBER          NOT NULL,
-                         auction_deadline    DATE            NULL,
-                         auction_status      VARCHAR2(20)    NULL,
-                         CONSTRAINT PK_AUCTION PRIMARY KEY (auction_id)
+    auction_id          NUMBER          NOT NULL,
+    auction_dead_line    DATE            NULL,
+    auction_status      VARCHAR2(20)    NULL,
+    CONSTRAINT PK_AUCTION PRIMARY KEY (auction_id)
 );
 
 CREATE TABLE product (
@@ -163,13 +170,14 @@ CREATE TABLE product (
 	upload_date         DATE            DEFAULT SYSDATE,
 	update_date         DATE            DEFAULT NULL,
 	view_count          NUMBER          DEFAULT 0,
-	product_progress    VARCHAR2(20)   NULL,
-	pay_status          VARCHAR2(20)   NULL,
-	blind_status        VARCHAR2(20)   NULL,
+	product_progress    VARCHAR2(20)    NULL,
+	pay_status          VARCHAR2(20)    NULL,
+	blind_status        VARCHAR2(20)    NULL,
 	CONSTRAINT PK_PRODUCT PRIMARY KEY (product_id),
 	CONSTRAINT FK_PRODUCT_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id),
 	CONSTRAINT FK_PRODUCT_TOWN_ID FOREIGN KEY (town_id) REFERENCES town(town_id),
-	CONSTRAINT FK_PRODUCT_AUCTION_ID FOREIGN KEY (auction_id) REFERENCES  auction(auction_id),
+    CONSTRAINT FK_PRODUCT_CATEGORY_ID FOREIGN KEY (category_id) REFERENCES  category(category_id),
+    CONSTRAINT FK_PRODUCT_AUCTION_ID FOREIGN KEY (auction_id) REFERENCES  auction(auction_id),
 	CONSTRAINT FK_PRODUCT_ORDER_ID FOREIGN KEY (order_id) REFERENCES orders(order_id)
 );
 
@@ -208,14 +216,6 @@ CREATE TABLE product_tag (
 	CONSTRAINT FK_PRODUCT_TAG_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id)
 );
 
-CREATE TABLE category (
-	category_id     	NUMBER          NOT NULL,
-    category_name  	    VARCHAR2(255)   NOT NULL,
-	parent_id       	NUMBER          NULL,
-	CONSTRAINT PK_CATEGORY PRIMARY KEY (category_id),
-	CONSTRAINT FK_CATEGORY_PARENT_ID FOREIGN KEY (parent_id) REFERENCES category(category_id)
-);
-
 CREATE TABLE member_category (
 	member_category_id  NUMBER  		NOT NULL,
 	member_id           NUMBER  		NOT NULL,
@@ -223,15 +223,6 @@ CREATE TABLE member_category (
 	CONSTRAINT PK_MEMBER_CATEGORY PRIMARY KEY (member_category_id),
 	CONSTRAINT FK_MC_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id),
 	CONSTRAINT FK_MC_CATEGORY_ID FOREIGN KEY (category_id) REFERENCES category(category_id)
-);
-
-CREATE TABLE product_category (
-	product_category_id NUMBER  		NOT NULL,
-	category_id         NUMBER  		NOT NULL,
-	product_id          NUMBER  		NOT NULL,
-	CONSTRAINT PK_PRODUCT_CATEGORY PRIMARY KEY (product_category_id),
-	CONSTRAINT FK_PC_CATEGORY_ID FOREIGN KEY (category_id) REFERENCES category(category_id),
-	CONSTRAINT FK_PC_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id)
 );
 
 CREATE TABLE chatroom (
@@ -306,10 +297,10 @@ CREATE TABLE review (
     CONSTRAINT FK_REVIEW_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id)
 );
 CREATE TABLE review_image(
-    review_image_id     NUMBER          Not NULL,
+    review_image_id     NUMBER          NOT NULL,
     review_id           NUMBER          NOT NULL,
     original_file_name  VARCHAR2(30)    NOT NULL,
-    store_image_name     varchar2(100)   NOT NULL,
+    store_image_name    VARCHAR2(100)   NOT NULL,
     CONSTRAINT PK_REVIEW_IMAGE PRIMARY KEY (review_image_id),
     CONSTRAINT FK_REVIEW_IMAGE_REVIEW_ID FOREIGN KEY (review_id) REFERENCES review(review_id)
 );
@@ -323,7 +314,7 @@ CREATE TABLE inquiry (
 	inquiry_content     VARCHAR2(255)	NOT NULL,
 	inquiry_date    	DATE            DEFAULT SYSDATE,
 	status          	VARCHAR2(10)	DEFAULT 'wait',
-	secret              char(1)         CONSTRAINT review_image_secret_CK check ( secret = '0' or secret = '1'),
+	secret              CHAR(1)         CONSTRAINT review_image_secret_CK check ( secret = '0' or secret = '1'),
 	CONSTRAINT PK_INQUIRY PRIMARY KEY (inquiry_id),
 	CONSTRAINT FK_INQUIRY_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id)
 );

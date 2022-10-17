@@ -6,10 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface InquiryService {
-    InquiryDTO findInquiryDTO(Long id);
+    InquiryDTO findInquiryDTO(Long inquiryId);
     Long saveInquiry(InquiryFormDTO inquiryFormDTO);
-    void updateInquiry(Long id, InquiryFormDTO form);
-    void modifyStatus(Long inquiryId);
+    void updateInquiry(Long inquiryId, InquiryFormDTO form);
     void deleteInquiry(InquiryDTO inquiryDTO);
 
     Page<InquiryDTO> findAll(Pageable pageable);

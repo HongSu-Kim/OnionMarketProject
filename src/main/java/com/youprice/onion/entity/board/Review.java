@@ -1,6 +1,5 @@
 package com.youprice.onion.entity.board;
 
-import com.youprice.onion.dto.board.ReviewFormDTO;
 import com.youprice.onion.dto.board.ReviewUpdateDTO;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.order.Order;
@@ -9,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -37,8 +37,8 @@ public class Review {
     /*@OneToMany(mappedBy = "review")
     private List<ReviewComment> reviewComment;*/
 
-    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL) // 이미지
-    private List<ReviewImage> reviewImageName;
+    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
+    private List<ReviewImage> reviewImageName = new ArrayList<>();
 
     public Review(Order order, Member member, String reviewContent, Integer grade, Long salesId) {
         this.order = order;

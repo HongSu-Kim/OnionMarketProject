@@ -28,7 +28,7 @@
 
 <nav class="navbar navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="keyword"><br/> <br/></a>
+        <a class="navbar-brand" href="keyword"> ${userId} 어서오세요<br/> <br/></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar"
                 aria-controls="offcanvasDarkNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -91,51 +91,21 @@
     </div>
 </nav>
 <br/><br/><br/><br/>
+<form action="/keywordAlarm" method="post">
+<input type="hidden" name="userId" value="${userId}">
 
-<strong><h3>키워드 알림 설정</h3><br/></strong>
+    내키워드보기<br/><br/>
 
-<form:form action="" method="post">
+    <c:forEach var="MykeywordList" items="${MykeywordList}">
 
+        <strong>#${MykeywordList.keywordName}</strong>
 
-        <input type="hidden" name="memberId" value="${memberDTO.id}">
-
-
-
-<input type="text" name="keywordName"  placeholder="키워드를 입력해주세요 (예: 유니폼)" size="33" />
-
- <input type="submit" value="키워드등록" />
-
-</form:form>
-
-<form:form action="kewordDelete" method="post">
-
-      <br/><br/>
-
-        <c:forEach var="MykeywordList" items="${MykeywordList}">
-            <strong>${MykeywordList.keywordName} </strong>
-
-            <button type="submit"  class="btn btnEvent" name="id" value="${MykeywordList.id} ">
-                <img src="https://cdn.pixabay.com/photo/2017/11/10/05/24/delete-2935433_960_720.png" alt="btnImages" class="btnImages"
-                     height="23" width="23" border="0" align="left">
-            </button>
-
-
-
-        </c:forEach>
+    </c:forEach>
 
 
 
 
-    </form:form>
-
-
-
-<%--<form:form action="mykeyword" method="get">--%>
-
-<%--&lt;%&ndash;    <input type="hidden" name="userId" value="asd">&ndash;%&gt;--%>
-
-<%--    <input type="submit" value="MY키워드확인" />--%>
-<%--</form:form>--%>
+</form>
 
 
 <br/><br/>

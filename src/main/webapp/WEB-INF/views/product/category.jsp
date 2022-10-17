@@ -29,8 +29,8 @@
     <br/>
 
     -------------------------------------------------------------------------<br/>
-<%--    상위카테고리 이름: <input type="text" name="topcategoryName"/>--%>
-     <input type="text" name="categoryName"/>
+    상위카테고리 이름: <input type="text" name="topcategoryName"/>
+     <input type="hidden" name="categoryName" value=""/>
     <form:errors path="categoryName"/>
     <input type="submit" value="상위카테고리 추가"/>
     <br/><br/>

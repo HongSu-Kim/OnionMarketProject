@@ -21,7 +21,7 @@ public class Complain {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member member; // 회원번호 FK
+    private Member member; // 신고자
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")

@@ -36,7 +36,7 @@
                 <th>신고유형</th>
                 <th>신고내용</th>
                 <th>등록일</th>
-                <th>신고자</th>
+<%--                <th>신고자</th>--%>
                 <th>처리상태</th>
             </tr>
             </thead>
@@ -48,8 +48,8 @@
                     <td></td>
                     <td>${dto.complainType}</td>
                     <td>${dto.complainContent}</td>
-                    <td>${dto.inquiryDate}</td>
                     <td>${dto.complainDate}</td>
+<%--                    <td>${dto.}</td>--%>
                     <td>${dto.status}</td>
                 </tr>
             </c:forEach>

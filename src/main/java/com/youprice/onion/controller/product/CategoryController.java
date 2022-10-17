@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Path;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -35,42 +36,44 @@ public class CategoryController {
 
         return "product/category";
     }
-    @PostMapping("category") //카테고리생성
-    public String CategoryAdd(Category category, Model model
-    , @Valid @ModelAttribute CategoryAddDTO categoryAddDTO, BindingResult bindingResult) {
-
-
-        if(bindingResult.hasErrors()){
-           model.addAttribute("category",categoryService.findTopCategory());
-            return "product/category";
-        }
-
-    else
-
-
-
-        return "redirect:/category/category";
-    }
 //    @PostMapping("category") //카테고리생성
-//    public String CategoryAdd(CategoryAddDTO categoryCreatedto, Category category, Model model, @RequestParam("topcategoryName")
-//                         String topcategoryName, @RequestParam("categoryName")String categoryName,HttpServletResponse response)throws IOException {
+//    public String CategoryAdd(Category category, Model model
+//    , @Valid @ModelAttribute CategoryAddDTO categoryAddDTO, BindingResult bindingResult) {
 //
 //
-//        if(categoryName =="") { //상위카테고리생성
-//
-//            categoryService.TopCategoryAdd(categoryCreatedto,topcategoryName,response);
-//
-//
+//        if(bindingResult.hasErrors()){
+//           model.addAttribute("category",categoryService.findTopCategory());
+//            return "product/category";
 //        }
 //
-//        else //하위카테고리생성
-//            categoryService.SubCategoryAdd(categoryCreatedto, topcategoryName,response);
-//
+//    else
 //
 //
 //
 //        return "redirect:/category/category";
 //    }
+    @PostMapping("category") //카테고리생성
+    public String CategoryAdd(CategoryAddDTO categoryCreatedto, Category category, Model model, @RequestParam("topcategoryName")
+                         String topcategoryName, @RequestParam("categoryName")String categoryName,HttpServletResponse response)throws IOException {
+
+
+        if(categoryName =="") { //상위카테고리생성
+
+            categoryService.TopCategoryAdd(categoryCreatedto,topcategoryName,response);
+
+
+
+        }
+
+        else  //하위카테고리생성
+
+            categoryService.SubCategoryAdd(categoryCreatedto, topcategoryName,response);
+
+
+
+
+        return "redirect:/category/category";
+    }
 
     @GetMapping("categoryupdate") //카테고리 수정
     public String create(Model model) {

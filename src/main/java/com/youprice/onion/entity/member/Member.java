@@ -108,4 +108,13 @@ public class Member {
         this.complaintCount = complaintCount;
     }
 
+    //회원정보 수정
+    public void modify(String pwd, String nickname, String tel, String postcode, String address, String detailAddress, String extraAddress, String email, String memberImageName) {
+        this.pwd = pwd;
+        this.nickname = nickname;
+        this.tel = tel;
+        this.address = new Address(postcode, address, detailAddress, extraAddress);
+        this.email = email;
+        this.memberImageName = memberImageName;
+    }
 }

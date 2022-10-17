@@ -11,5 +11,6 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
 
     @Override
     Optional<Auction> findById(Long auctionId);
-
+    //경매현황으로 경매번호 조회
+    Optional<Auction> findByAuctionStatus(String auctionStatus);
 }
