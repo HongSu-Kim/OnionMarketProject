@@ -9,6 +9,7 @@ import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -37,7 +38,7 @@ public class Inquiry {
     private boolean secret; // 비밀글 여부
 
     @OneToMany(mappedBy = "inquiry", cascade = CascadeType.ALL)
-    private List<Answer> answer;
+    private List<Answer> answer = new ArrayList<>();
 
     public Inquiry(Member member, InquiryFormDTO inquiryFormDTO) {
         this.member = member;

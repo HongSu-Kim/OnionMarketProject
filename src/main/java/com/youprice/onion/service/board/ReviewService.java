@@ -15,12 +15,12 @@ import java.util.List;
 public interface ReviewService {
     ReviewDTO getReviewDTO(Long reviewId);
     Long saveReview(ReviewFormDTO form, List<MultipartFile> reviewImageName) throws IOException;
-    Long findSellerId(Long id);
     ReviewDTO findByUserId(String userId);
-    public ReviewDTO findReviewDTO(Long id);
+    public ReviewDTO findReviewDTO(Long reviewId);
+    //Long findSellerId(Long salesId);
     //List<ReviewDTO> userReviewList(Long buyerId, Long reviewId);
     Page<ReviewDTO> findAll(Pageable pageable);
-    void updateReview(Long id, ReviewUpdateDTO form) throws IOException;
+    void updateReview(Long reviewId, ReviewUpdateDTO form) throws IOException;
     void deleteReview(ReviewDTO reviewDTO); // 삭제
 
     // 사진
