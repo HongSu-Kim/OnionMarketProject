@@ -17,14 +17,13 @@ import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-
+    //상품번호로 상품 하나 조회
     @Override
     Optional<Product> findById(Long productId);
-
+    //상품번호로 조회 후 상품의 조회수 증가
     @Modifying
     @Query("update Product p set p.viewCount = p.viewCount + 1 where p.id = ?1")
-    
     int updateView(@RequestParam("productId") Long productId);
-    
+
 	  Page<Product> findByMemberId(Long memberId, Pageable pageable);
 }
