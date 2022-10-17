@@ -3,8 +3,10 @@ package com.youprice.onion.config;
 import com.youprice.onion.service.member.impl.CustomUserDetailsService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @RequiredArgsConstructor
@@ -22,10 +25,18 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomUserDetailsService customUserDetailsService;
+    private final AuthenticationFailureHandler customFailureHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    //MemberApiController에서 사용할 AuthenticationManager Bean 등록
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @Override
@@ -37,6 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable(); //csrf 비활성화(나중에 활성화?)
+//        http.csrf().ignoringAntMatchers("/api/**"); //REST API 사용 예외처리
+
         //페이지 권한 설정
         http.authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
@@ -49,6 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("userId") //parameter명을 userId로 변경
                 .passwordParameter("pwd") //parameter명을 pwd로 변경
                 .loginProcessingUrl("/member/loginProc") //Security에서 해당 주소로 오는 요청을 낚아채서 수행
+                .failureHandler(customFailureHandler) //로그인 실패 핸들러
                 .defaultSuccessUrl("/member/home") //로그인 성공 시 이동 페이지
                 .permitAll();
 

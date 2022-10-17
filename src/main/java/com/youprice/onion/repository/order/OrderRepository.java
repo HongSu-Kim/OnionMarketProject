@@ -25,13 +25,15 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
 
 	// buyList
-	@Query(value = "select o from Order o join fetch o.product p join fetch p.member m " +
-			"left join fetch o.delivery left join fetch p.auction where o.member.id = :memberId order by o.id")
-	List<Order> findAllByMemberId(@Param("memberId") Long memberId, Pageable pageable);
-	Long countByMemberId(Long memberId);
+//	@Query(value = "select o from Order o join fetch o.product p join fetch p.member m " +
+//			"left join fetch o.delivery left join fetch p.auction where o.member.id = :memberId order by o.id")
+//	List<Order> findAllByMemberId(@Param("memberId") Long memberId, Pageable pageable);
+//	Long countByMemberId(Long memberId);
+//	@EntityGraph(attributePaths = "product")
+	Page<Order> findAllByMemberId(Long memberId, Pageable pageable);
 
 	// sellList
-	@EntityGraph(attributePaths = "product")
-	Page<Order> findAllByProductMemberId(Long memberId, Pageable pageable);
+//	@EntityGraph(attributePaths = "product")
+//	Page<Order> findAllByProductMemberId(Long memberId, Pageable pageable);
 
 }

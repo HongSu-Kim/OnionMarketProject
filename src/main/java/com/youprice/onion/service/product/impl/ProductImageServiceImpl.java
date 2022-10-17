@@ -10,16 +10,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ProductImageServiceImpl implements ProductImageService {
-    private final ProductImageRepository.ProductImageManager productImageManager;
+
+    private final ProductImageRepository productImageRepository;
 
     @Override
-    public List<ProductImage> findByProduct_ProductId(Long id){
-        return productImageManager.findByProduct_ProductId(id);
+    public List<ProductImageDTO> getProductImageList(){
+        return productImageRepository.findAll()
+                .stream().map(productImage -> new ProductImageDTO(productImage))
+                .collect(Collectors.toList());
     }
-
+    @Override
+    public List<ProductImageDTO> getProductImage(Long productId) {
+        return productImageRepository.findAllByProductId(productId)
+                .stream().map(ProductImageDTO::new)
+                .collect(Collectors.toList());
+    }
 }

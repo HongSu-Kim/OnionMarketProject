@@ -22,10 +22,9 @@ import javax.servlet.http.HttpSession;
 public class WishController {
 
     private final WishService wishService;
-	private final HttpSession session;
 
     // 찜 목록 페이지
-    @GetMapping("wishList")
+    @GetMapping("list")
     public String wishList(@LoginUser SessionDTO sessionDTO, Model model, @PageableDefault Pageable pageable) {
 		if (sessionDTO == null) return "redirect:/member/login";
 

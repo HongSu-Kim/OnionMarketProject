@@ -11,41 +11,33 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ProductDTO {
+public class ProductSellListDTO {
 
     private Long productId;
-    private Long memberId; //Member FK
-    private Long townId; //Town FK
-    private Long categoryId; //Category FK
-    private Long auctionId; //Auction FK
-    private Long orderId; //Order FK
     private String subject; //제목
     private String content; //내용
     private int price; //상품가격
-    private LocalDateTime uploadDate; //등록시간
-    private LocalDateTime updateDate; //수정일
-    private int viewCount; //조회수
+    private LocalDateTime date; //등록시간
     private ProductProgress productProgress; //판매상태 Reserved,tradings,soldout 예약중,거래중,판매완료
     private String payStatus; //페이현황
     private String blindStatus; //블라인드현황
 
-    public ProductDTO(Product product) {
+	private String townName;
+	private String categoryName;
 
+    public ProductSellListDTO(Product product) {
+
+		// product
         productId = product.getId();
-        memberId = product.getMember().getId();
-        townId = product.getTown().getId();
-        categoryId = product.getCategory().getId();
-        auctionId = product.getAuction().getId();
-        orderId = product.getOrder().getId();
         subject = product.getSubject();
         content = product.getContent();
+		date = product.getUpdateDate() != null ? product.getUpdateDate() : product.getUploadDate();
         price = product.getPrice();
-        uploadDate = product.getUploadDate();
-        updateDate = product.getUpdateDate();
-        viewCount = product.getViewCount();
         productProgress = product.getProductProgress();
         payStatus = product.getPayStatus();
         blindStatus = product.getBlindStatus();
 
+		townName = product.getTown().getCoordinate().getTownName();
+//		categoryName = product.getProductCategoryList().getCategoryName();
     }
 }
