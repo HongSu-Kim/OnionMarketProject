@@ -38,7 +38,6 @@
 
             <tr>
                 <td>No</td>
-                <th>공지유형</th>
                 <th>글제목</th>
                 <th>작성자</th>
                 <th>등록일</th>
@@ -48,7 +47,6 @@
             <c:forEach var="dto" items="${noticelist.content }">
             <tr>
                 <td>${noticelist.totalElements - (noticelist.number * noticelist.size) - noticelist.content.indexOf(dto)}</td>
-                <td>${dto.noticeType}</td>
                 <td><a href="/notice/article/${dto.noticeId}">${dto.noticeSubject}</a></td>
                 <td>운영자</td>
                 <td>${dto.noticeDate}</td>
@@ -61,15 +59,8 @@
 
     <!-- 검색 -->
     <form action="/notice/list" method="GET">
-        <select name="field" id="field">
-            <option selected="selected">전체</option>
-            <option value="NOTICE">공지사항</option>
-            <option value="QNA">QnA</option>
-            <option value="EVENT">이벤트</option>
-        </select>
-
         <input type="text" id="searchBox" name="word"/>
-        <button type="submit">검색</button>
+        <input type="submit" value="검색">
     </form>
 
     <!-- 등록버튼 -->

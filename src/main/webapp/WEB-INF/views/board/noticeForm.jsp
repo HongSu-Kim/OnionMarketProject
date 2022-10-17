@@ -27,7 +27,6 @@
         <select id="noticeType" name="noticeType">
             <option selected="selected">선택해주세요</option>
             <option value="NOTICE">공지사항</option>
-            <option value="QNA">QnA</option>
             <option value="EVENT">이벤트</option>
         </select>
     </div>

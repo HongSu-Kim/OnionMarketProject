@@ -1,6 +1,7 @@
 package com.youprice.onion.service.board.impl;
 
 import com.youprice.onion.dto.board.NoticeDTO;
+import com.youprice.onion.dto.board.NoticeUpdateDTO;
 import com.youprice.onion.entity.board.Notice;
 import com.youprice.onion.entity.board.NoticeImage;
 import com.youprice.onion.entity.member.Member;
@@ -18,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -30,6 +32,7 @@ public class NoticeServiceImpl implements NoticeService {
     private final NoticeImageRepository noticeImageRepository;
 
     public Long saveNotice(NoticeDTO noticeDTO, List<MultipartFile> noticeImageName) throws IOException {
+
         Member member = memberRepository.findById(noticeDTO.getMemberId()).orElse(null);
         Notice notice = new Notice(member, noticeDTO.getNoticeType(), noticeDTO.getNoticeSubject(), noticeDTO.getNoticeContent());
 
@@ -47,11 +50,15 @@ public class NoticeServiceImpl implements NoticeService {
         return noticeRepository.findById(id).map(NoticeDTO::new).orElse(null);
     }
 
+    public Page<NoticeDTO> searchNotice( String word, Pageable pageable){
+        return noticeRepository.findAllByNoticeSubjectContaining(word, pageable).map(NoticeDTO::new);
+    }
+
     @Override
-    public void update(Long id, NoticeDTO noticeDTO) {
+    public void update(Long id, NoticeUpdateDTO updateDTO) {
         Notice notice = noticeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("수정이 불가합니다"));
         Long noticeId = notice.getId();
-        notice.updateNotice(id, noticeDTO);
+        notice.updateNotice(noticeId, updateDTO.getNoticeSubject(), updateDTO.getNoticeContent());
 
         noticeRepository.save(notice);
     }
@@ -108,12 +115,8 @@ public class NoticeServiceImpl implements NoticeService {
         return noticeRepository.updateView(id);
     } //조회수 상승
 
-    /*
-    public Page<NoticeDTO> searchNotice(String filed, String word, Pageable pageable){
-        Page<NoticeDTO> noticeList = noticeRepository.searchSubject(filed, word, pageable);
-        return noticeList;
+    public void imageDelete(Long imageId){
+        NoticeImage noticeImage = noticeImageRepository.findById(imageId).orElse(null);
+        noticeImageRepository.delete(noticeImage);
     }
-    */
-
-
 }
