@@ -1,5 +1,6 @@
 package com.youprice.onion.dto.order;
 
+import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.entity.order.Delivery;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,7 @@ public class DeliveryDTO {
 
 	// order
 	private OrderDTO orderDTO;
+	private MemberDTO memberDTO;
 
 	public DeliveryDTO(Delivery delivery) {
 
@@ -33,6 +35,7 @@ public class DeliveryDTO {
 		deliveryCost = delivery.getDeliveryCost();
 
 		orderDTO = new OrderDTO(delivery.getOrder());
+		memberDTO = new MemberDTO(delivery.getOrder().getMember());
 	}
 
 }

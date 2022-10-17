@@ -5,6 +5,7 @@ import com.youprice.onion.dto.order.OrderDTO;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.order.Delivery;
 import com.youprice.onion.entity.order.Order;
+import com.youprice.onion.entity.order.OrderState;
 import com.youprice.onion.entity.product.Product;
 import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.repository.order.DeliveryRepository;
@@ -23,12 +24,13 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @Slf4j
 public class OrderServiceImpl implements OrderService {
 
@@ -38,14 +40,14 @@ public class OrderServiceImpl implements OrderService {
     private final ProductRepository productRepository;
 
 	@Override
+	@Transactional(readOnly = true)
 	public OrderDTO getOrderDTO(Long orderId) {
 		return orderRepository.findById(orderId).map(OrderDTO::new).orElse(null);
 	}
 
 	// 주문 완료
 	@Override
-	@Transactional
-	public Long addOrder(OrderAddDTO orderAddDTO) throws IOException {
+	public Long addOrder(OrderAddDTO orderAddDTO) {
 
 		Member member = memberRepository.findById(orderAddDTO.getMemberId()).orElse(null);
 		Product product = productRepository.findById(orderAddDTO.getProductId()).orElse(null);
@@ -59,14 +61,15 @@ public class OrderServiceImpl implements OrderService {
 				orderAddDTO.getExtraAddress(), orderAddDTO.getRequest(), orderAddDTO.getDeliveryCost());
 		deliveryRepository.save(delivery);
 
-//		product.order(order);
-//		productRepository.save(product);
+		product.order(order);
+		productRepository.save(product);
 
 		return orderId;
 	}
 
 	// orderNum 생성
 	@Override
+	@Transactional(readOnly = true)
 	public String getOrderNum() {
 
 		LocalDateTime now = LocalDateTime.now();
@@ -101,19 +104,14 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Page<OrderDTO> getBuyList(Long memberId, Pageable pageable) {
-
-//		List<Order> allByMemberId = orderRepository.findAllByMemberId(memberId, pageable);
-//		List<OrderDTO> list = allByMemberId.stream().map(OrderDTO::new).collect(Collectors.toList());
-//		Long listSize = orderRepository.countByMemberId(memberId);
-//		return new PageImpl<>(list, pageable, list.size());
-
 		return orderRepository.findAllByMemberId(memberId, pageable).map(OrderDTO::new);
 	}
 
-//	@Override
-//	public Page<OrderDTO> getSellList(Long memberId, Pageable pageable) {
-//		return orderRepository.findAllByProductMemberId(memberId, pageable).map(OrderDTO::new);
-//	}
+	@Override
+	public void cancel(Long orderId) {
+		orderRepository.findById(orderId).map(order -> order.update(OrderState.CANCEL)).orElse(null);
+	}
 
 }

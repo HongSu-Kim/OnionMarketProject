@@ -11,13 +11,8 @@ import java.util.List;
 public interface OrderService {
 
 	OrderDTO getOrderDTO(Long orderId);
-
 	Long addOrder(OrderAddDTO orderAddDTO) throws IOException;
-
     String getOrderNum();
-
 	Page<OrderDTO> getBuyList(Long memberId, Pageable pageable);
-
-//	Page<OrderDTO> getSellList(Long memberId, Pageable pageable);
-
+	void cancel(Long orderId);
 }
