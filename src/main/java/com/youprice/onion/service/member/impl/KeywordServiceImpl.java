@@ -27,7 +27,6 @@ public class KeywordServiceImpl implements KeywordService {
 
  private final KeywordRepositoy keywordRepositoy;
  private  final  KeywordRepositoy.Keywordrepositoy keywordrepositoy;
- private  final  MemberRepository.Memberrepositoy memberrepositoy;
  private  final  MemberRepository memberRepositoy;
 
  @Override
@@ -61,7 +60,7 @@ public class KeywordServiceImpl implements KeywordService {
 
   if(keywordRepositoy.findByKeywordNameAndMember(keywordCreateDto.getKeywordName(),member) ==null){
    keywordRepositoy.save(keyword);
-   out.println("<script>alert('등록완료!');history.go(-1); </script>");
+   out.println("<script>alert('등록완료!!');history.go(-1); </script>");
    out.flush();
   }
   else  return;
