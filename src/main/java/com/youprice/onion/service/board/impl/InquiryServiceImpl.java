@@ -17,6 +17,7 @@ import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class InquiryServiceImpl implements InquiryService {
 
     private final InquiryRepository inquiryRepository;
@@ -24,11 +25,12 @@ public class InquiryServiceImpl implements InquiryService {
 
 
     @Override
-    public InquiryDTO findInquiryDTO(Long id) {
-        return inquiryRepository.findById(id).map(InquiryDTO::new).orElse(null);
+    public InquiryDTO findInquiryDTO(Long inquiryId) {
+        return inquiryRepository.findById(inquiryId).map(InquiryDTO::new).orElse(null);
     }
     // 저장
     @Override
+    @Transactional
     public Long saveInquiry(InquiryFormDTO inquiryFormDTO) {
         Member member = memberRepository.findById(inquiryFormDTO.getMemberId()).orElse(null);
         Inquiry inquiry = new Inquiry(member, inquiryFormDTO);
@@ -37,20 +39,15 @@ public class InquiryServiceImpl implements InquiryService {
     }
     // 수정
     @Transactional
-    public void updateInquiry(Long id, InquiryFormDTO form){
-        Inquiry inquiry = inquiryRepository.findById(id).orElseThrow(()-> new NoSuchElementException());
-        Long inquiryId = inquiry.getId();
-        inquiry.updateInquiry(inquiryId, form);
+    public void updateInquiry(Long inquiryId, InquiryFormDTO form){
+        Inquiry inquiry = inquiryRepository.findById(inquiryId).orElseThrow(()-> new NoSuchElementException());
+        Long id = inquiry.getId();
+        inquiry.updateInquiry(id, form);
 
         inquiryRepository.save(inquiry);
     }
-    // 답변상태 수정
-    public void modifyStatus(Long inquiryId){
-        Inquiry inquiry = inquiryRepository.findById(inquiryId).orElse(null);
-        inquiry.modifyStatus("답변완료");
-        inquiryRepository.save(inquiry);
-    }
     // 삭제
+    @Transactional
     public void deleteInquiry(InquiryDTO inquiryDTO){
         Inquiry inquiry = inquiryRepository.findById(inquiryDTO.getInquiryId()).orElse(null);
         inquiryRepository.delete(inquiry);

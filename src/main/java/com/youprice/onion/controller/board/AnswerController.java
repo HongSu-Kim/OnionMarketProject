@@ -44,7 +44,6 @@ public class AnswerController {
             return "board/answerForm";
         }
         answerService.saveAnswer(answerFormDTO);
-        inquiryService.modifyStatus(inquiryId);
         return "redirect:/inquiry/article/" + inquiryId;
     }
 
