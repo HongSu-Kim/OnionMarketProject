@@ -16,6 +16,7 @@ public interface KeywordService {
 
    // void KeywordAlram(String subject, String productName, Model model);
 
+    void KewordDelete(Long keywordId);
 
 
 
