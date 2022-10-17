@@ -45,6 +45,10 @@ public class KeywordController {
 
         model.addAttribute("memberDTO",memberDTO);
 
+        List<KeywordListDTO> MykeywordList = keywordService.KeywordList(memberDTO.getId());
+
+        model.addAttribute("MykeywordList",MykeywordList);
+
         return "product/keyword";
     }
 
@@ -62,14 +66,24 @@ public class KeywordController {
     }
 
 
-    @GetMapping("mykeyword")
-    public String MyKeword(Model model,@LoginUser SessionDTO sessionDTO) {
+//    @GetMapping("mykeyword")
+//    public String MyKeword(Model model,@LoginUser SessionDTO sessionDTO) {
+//
+//        MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
+//       List<KeywordListDTO> MykeywordList = keywordService.KeywordList(memberDTO.getId());
+//
+//       model.addAttribute("MykeywordList",MykeywordList);
+//        return "product/mykeyword";
+//    }
 
-        MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
-       List<KeywordListDTO> MykeywordList = keywordService.KeywordList(memberDTO.getId());
+    @PostMapping("kewordDelete")
+    public String MyKewordDelete(Model model,@RequestParam("id") Long keywordId) {
 
-       model.addAttribute("MykeywordList",MykeywordList);
-        return "product/mykeyword";
+        keywordService.KewordDelete(keywordId);
+
+
+
+        return "redirect:/keyword/keyword";
     }
 
 

@@ -4,17 +4,20 @@ import com.youprice.onion.dto.member.KeywordCreateDTO;
 import com.youprice.onion.dto.member.KeywordListDTO;
 import com.youprice.onion.entity.member.Keyword;
 import com.youprice.onion.entity.member.Member;
+import com.youprice.onion.entity.member.ProhibitionKeyword;
 import com.youprice.onion.repository.member.KeywordRepositoy;
 import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.service.member.KeywordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -32,6 +35,15 @@ public class KeywordServiceImpl implements KeywordService {
   Keyword keyword = new Keyword();
   response.setContentType("text/html;charset=UTF-8");
   PrintWriter out =response.getWriter();
+
+  Optional<Keyword> DuplicatecheckProhibitionKeywordName =
+        keywordRepositoy.findByKeywordName(keywordCreateDto.getKeywordName());
+  if (DuplicatecheckProhibitionKeywordName.isPresent()) {
+   out.println("<script>alert('이미 존재하는 금지키워드입니다 다시입력하세요!');history.go(-1); </script>");
+   out.flush();
+   return;
+  }
+
 
   if(keywordCreateDto.getKeywordName() == ""){
 
@@ -56,6 +68,11 @@ public class KeywordServiceImpl implements KeywordService {
 
  }
 
+ @Override
+ @Transactional
+ public void KewordDelete(Long keywordId) {
+   keywordRepositoy.deleteById(keywordId);
+ }
 
  @Override
  public List<KeywordListDTO> KeywordList(Long memberDTO) {
@@ -68,23 +85,7 @@ return keywordRepositoy.findAllByMemberId(memberDTO)
 
  }
 
-// @Override
-// public void KeywordAlram(String subject, String productName, Model model) {
-//  Keyword keyword = new Keyword();
-//
-//
-//
-//  if(keywordrepositoy.keywordalram(subject,productName) !=null){
-//
-//  // keywordrepositoy.updatecount(subject,productName);
-//   return;
-//  }
-//
-//
-//  else
-//
-//   return;
-// }
+
 
 
 
