@@ -23,7 +23,6 @@ public class OrderDTO {
     private LocalDateTime orderDate;//주문시간
     private LocalDateTime modifiedDate;//수정시간
 
-	private MemberDTO memberDTO;
 	private ProductDTO productDTO;
 
 	public OrderDTO(Order order) {
@@ -40,7 +39,7 @@ public class OrderDTO {
 		modifiedDate = order.getModifiedDate();
 
 //		memberDTO = new MemberDTO(order.getMember());
-//		productDTO = new ProductDTO(order.getProduct());
+		productDTO = new ProductDTO(order.getProduct());
 	}
 
 }

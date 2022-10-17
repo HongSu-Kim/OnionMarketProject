@@ -11,7 +11,6 @@ import com.youprice.onion.repository.order.DeliveryRepository;
 import com.youprice.onion.repository.order.OrderRepository;
 import com.youprice.onion.repository.product.ProductRepository;
 import com.youprice.onion.service.order.OrderService;
-import com.youprice.onion.util.PaymentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -52,13 +51,16 @@ public class OrderServiceImpl implements OrderService {
 		Product product = productRepository.findById(orderAddDTO.getProductId()).orElse(null);
 
 		// 주문내역 생성
-		Order order = new Order(member, product, orderAddDTO.getOrderNum(), orderAddDTO.getImp_uid(), orderAddDTO.getOrderPayment());
+		Order order = new Order(member, orderAddDTO.getOrderNum(), orderAddDTO.getImp_uid(), orderAddDTO.getOrderPayment());
 		Long orderId = orderRepository.save(order).getId();
 
 		// 배송정보 생성
 		Delivery delivery = new Delivery(order, orderAddDTO.getPostcode(), orderAddDTO.getAddress(), orderAddDTO.getDetailAddress(),
 				orderAddDTO.getExtraAddress(), orderAddDTO.getRequest(), orderAddDTO.getDeliveryCost());
 		deliveryRepository.save(delivery);
+
+//		product.order(order);
+//		productRepository.save(product);
 
 		return orderId;
 	}
@@ -101,23 +103,17 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public Page<OrderDTO> getBuyList(Long memberId, Pageable pageable) {
 
-		List<Order> allByMemberId = orderRepository.findAllByMemberId(memberId, pageable);
-		List<OrderDTO> list = allByMemberId.stream().map(OrderDTO::new).collect(Collectors.toList());
-		Long listSize = orderRepository.countByMemberId(memberId);
+//		List<Order> allByMemberId = orderRepository.findAllByMemberId(memberId, pageable);
+//		List<OrderDTO> list = allByMemberId.stream().map(OrderDTO::new).collect(Collectors.toList());
+//		Long listSize = orderRepository.countByMemberId(memberId);
+//		return new PageImpl<>(list, pageable, list.size());
 
-		log.error(String.valueOf(allByMemberId.size()));
-		log.error(String.valueOf(list.size()));
-		log.error(listSize.toString());
-
-//		int start = (int) pageable.getOffset();
-//		int end = (start + pageable.getPageSize()) > list.size() ? list.size() : (start + pageable.getPageSize());
-//		return new PageImpl<>(list.subList(start, end), pageable, list.size());
-		return new PageImpl<>(list, pageable, list.size());
+		return orderRepository.findAllByMemberId(memberId, pageable).map(OrderDTO::new);
 	}
 
-	@Override
-	public Page<OrderDTO> getSellList(Long memberId, Pageable pageable) {
-		return orderRepository.findAllByProductMemberId(memberId, pageable).map(OrderDTO::new);
-	}
+//	@Override
+//	public Page<OrderDTO> getSellList(Long memberId, Pageable pageable) {
+//		return orderRepository.findAllByProductMemberId(memberId, pageable).map(OrderDTO::new);
+//	}
 
 }

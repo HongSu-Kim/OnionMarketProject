@@ -13,10 +13,13 @@ import java.net.URL;
 @Slf4j
 public class PaymentService {
 
+	// 결제취소
 	public void paymentCancel(OrderAddDTO orderAddDTO) throws IOException {
 
+		// 토큰생성
 		String access_token = getToken();
 
+		// url 설정
 		HttpURLConnection conn = null;
 		URL url = new URL("https://api.iamport.kr/payments/cancel");
 		conn = (HttpURLConnection) url.openConnection();
@@ -28,7 +31,7 @@ public class PaymentService {
 		conn.setRequestProperty("Accept", "application/json");
 		conn.setDoOutput(true);
 
-		// key 설정
+		// request 설정
 		JSONObject obj = new JSONObject();
 		obj.put("imp_uid", orderAddDTO.getImp_uid());
 		obj.put("merchant_uid ", orderAddDTO.getOrderNum());
@@ -59,9 +62,10 @@ public class PaymentService {
 		}
 	}
 
+	// 토큰생성
 	private String getToken() throws IOException {
 
-		// 토큰 발급
+		// url 설정
 		HttpURLConnection conn = null;
 		URL url = new URL("https://api.iamport.kr/users/getToken");
 		conn = (HttpURLConnection) url.openConnection();
