@@ -1,5 +1,6 @@
 package com.youprice.onion.controller.member;
 
+import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.dto.member.MemberJoinDTO;
 import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.entity.member.Member;
@@ -10,11 +11,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -57,7 +62,7 @@ public class MemberController {
     }
 /*
 
-    //회원가입
+    //회원가입(프로필사진)
     @PostMapping("/joinProc")
     public String joinProc(@Valid MemberJoinDTO memberJoinDTO, @RequestParam("profileImage") MultipartFile profileImage, Errors errors, Model model) throws IOException {
 
@@ -116,26 +121,46 @@ public class MemberController {
         return "member/logout";
     }
 
+
     //회원정보 수정 - 수정할 회원 정보를 받아 model에 담음
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify")
     public String modify(@LoginUser SessionDTO sessionDTO, Model model) {
         if (sessionDTO != null) {
-            model.addAttribute("member", sessionDTO);
+            MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
+            model.addAttribute("member", memberDTO.getId());
+            model.addAttribute("memberDTO", memberDTO);
         }
-        
         return "member/modify";
     }
 
     //관심 카테고리
-    @RequestMapping(value = "/selcategory", method = RequestMethod.POST)
-    @ResponseBody
-    public void selCategory(@RequestParam(value = "categoryArrTest[]")List<String>categoryArr) {
-
+    @GetMapping("/category")
+    public String categoryView() {
+        return "member/category";
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    public ModelAndView handledRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String[] categoryList = request.getParameterValues("category");
+        return new ModelAndView("category", "category", categoryList);
+    }
+/*
+    @RequestMapping(value = "welcomeWeb4.do")
+    public String categoryList(HttpServletRequest request, ModelMap model) throws Exception {
+        String[] category = request.getParameterValues("category");
+        model.addAttribute("category", category);
+        return "member/category";
+    }
+*/
+
+    //마이페이지
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/info")
-    public String infoView() {
+    public String infoView(@LoginUser SessionDTO sessionDTO, Model model) {
+        if (sessionDTO != null) {
+            model.addAttribute("session", sessionDTO.getId());
+            model.addAttribute("sessionDTO", sessionDTO);
+        }
         return "member/info";
     }
 
