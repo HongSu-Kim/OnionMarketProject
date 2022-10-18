@@ -39,27 +39,29 @@ public class OrderController {
 	private final PaymentService paymentService;
 
 	// 주문 페이지
-	@GetMapping("order")
+	@GetMapping("payment")
 	public String order(@LoginUser SessionDTO sessionDTO, Model model, OrderAddDTO orderAddDTO, Long productId) {
 		if (sessionDTO == null) return "redirect:/member/login";
+//		if (productId == null) return "redirect:/product/main";
 
 		MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
-		ProductDTO productDTO = productService.getProductDTO(productId);
+//		ProductDTO productDTO = productService.getProductDTO(productId);
+		ProductDTO productDTO = null;
         orderAddDTO.setOrderNum(orderService.getOrderNum());
 		orderAddDTO.setDeliveryCost(100);//--
 
-		if (productDTO == null) {
-			return  "redirect:/";//
-		}
+//		if (productDTO == null) {
+//			return  "redirect:/product/main";
+//		}
 
 		model.addAttribute("memberDTO", memberDTO);
 		model.addAttribute("productDTO", productDTO);
 		model.addAttribute("orderAddDTO", orderAddDTO);
-		return "order/order";
+		return "order/payment";
 	}
 
 	// 주문
-	@PostMapping("order")
+	@PostMapping("payment")
 	@ResponseBody
 	public ResponseEntity<?> order(@RequestBody OrderAddDTO orderAddDTO) throws IOException {
 		try{
@@ -100,15 +102,17 @@ public class OrderController {
 
 	// 구매 내역 상세 페이지
 	@GetMapping("detail")
-	public String buyDetail(@LoginUser SessionDTO sessionDTO, Model model, Long orderId) {
+	public String buyDetail(@LoginUser SessionDTO sessionDTO, Model model, Long orderId, String mode) {
 
-		DeliveryDTO deliveryDTO = deliveryService.getDeliveryDTO(orderId);
-
-		if (deliveryDTO.getOrderDTO().getMemberId() != sessionDTO.getId()) {
-			return "redirect:/product/main";
-		}
+		DeliveryDTO deliveryDTO = null;
+//		DeliveryDTO deliveryDTO = deliveryService.getDeliveryDTO(orderId);
+//
+//		if (deliveryDTO == null || deliveryDTO.getOrderDTO().getMemberId() != sessionDTO.getId()) {
+//			return "redirect:/order/buyList";
+//		}
 
 		model.addAttribute("deliveryDTO", deliveryDTO);
+		model.addAttribute("mode", mode);
 		return "order/detail";
 	}
 
@@ -123,15 +127,24 @@ public class OrderController {
 		return "order/sellList";
 	}
 
-	// 상품 상세 페이지
-//	// 판매 내역 상세 페이지
-//	@GetMapping("sellDetail")
-//	public String sellDetail(Model model, Long orderId) {
-//
-//		DeliveryDTO deliveryDTO = deliveryService.getDeliveryDTO(orderId);
-//
-//		model.addAttribute("deliveryDTO", deliveryDTO);
-//		return "order/sellDetail";
-//	}
+	// 주문 취소
+	@GetMapping("cancel")
+	public String cancel(Long orderId) {
+		orderService.cancel(orderId);
+		return "redirect:/order/buyList";
+	}
+
+	// 배송지 변경
+	@PostMapping("update")
+	@ResponseBody
+	public ResponseEntity<?> update(@RequestBody DeliveryDTO deliveryDTO) {
+		try {
+			deliveryService.update(deliveryDTO);
+			return new ResponseEntity<>(deliveryDTO, HttpStatus.OK);
+
+		} catch (Exception e) {
+			return new ResponseEntity<>(e, HttpStatus.SERVICE_UNAVAILABLE);
+		}
+	}
 
 }

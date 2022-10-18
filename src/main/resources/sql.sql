@@ -31,7 +31,6 @@ DROP TABLE tag PURGE;
 DROP TABLE bidding PURGE;
 DROP TABLE product_image PURGE;
 DROP TABLE product PURGE;
-DROP TABLE auction PURGE;
 
 DROP TABLE category PURGE;
 DROP TABLE orders PURGE;
@@ -150,25 +149,18 @@ CREATE TABLE category (
     CONSTRAINT FK_CATEGORY_PARENT_ID FOREIGN KEY (parent_id) REFERENCES category(category_id)
 );
 
-CREATE TABLE auction (
-    auction_id          NUMBER          NOT NULL,
-    auction_dead_line    DATE            NULL,
-    auction_status      VARCHAR2(20)    NULL,
-    CONSTRAINT PK_AUCTION PRIMARY KEY (auction_id)
-);
-
 CREATE TABLE product (
 	product_id          NUMBER          NOT NULL,
 	member_id           NUMBER          NOT NULL,
 	town_id             NUMBER          NOT NULL,
 	category_id         NUMBER          NOT NULL,
-	auction_id          NUMBER          NULL,
 	order_id            NUMBER          NULL,
 	subject             VARCHAR2(255)   NULL,
 	content             VARCHAR2(255)   NULL,
 	price               VARCHAR2(255)   NULL,
 	upload_date         DATE            DEFAULT SYSDATE,
 	update_date         DATE            DEFAULT NULL,
+	auction_deadline    DATE            NULL,
 	view_count          NUMBER          DEFAULT 0,
 	product_progress    VARCHAR2(20)    NULL,
 	pay_status          VARCHAR2(20)    NULL,
@@ -177,7 +169,6 @@ CREATE TABLE product (
 	CONSTRAINT FK_PRODUCT_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id),
 	CONSTRAINT FK_PRODUCT_TOWN_ID FOREIGN KEY (town_id) REFERENCES town(town_id),
     CONSTRAINT FK_PRODUCT_CATEGORY_ID FOREIGN KEY (category_id) REFERENCES  category(category_id),
-    CONSTRAINT FK_PRODUCT_AUCTION_ID FOREIGN KEY (auction_id) REFERENCES  auction(auction_id),
 	CONSTRAINT FK_PRODUCT_ORDER_ID FOREIGN KEY (order_id) REFERENCES orders(order_id)
 );
 
@@ -416,3 +407,23 @@ INSERT INTO Coordinate VALUES( 62,' 서울특별시 강동구 성내1동','37.53
 INSERT INTO Coordinate VALUES( 63,' 서울특별시 강동구 성내2동','37.532425',  '127.129563');
 INSERT INTO Coordinate VALUES( 64,' 서울특별시 강동구 둔촌1동','37.5333656','  127.1419851');
 INSERT INTO Coordinate VALUES( 65 ,'서울특별시 강동구 둔촌2동','37.5332885',' 127.1419221');
+
+INSERT INTO CATEGORY VALUES(1,'여성의류',null);
+INSERT INTO CATEGORY VALUES(2,'남성의류',null);
+INSERT INTO CATEGORY VALUES(3,'신발',null);
+INSERT INTO CATEGORY VALUES(4,'가방',null);
+INSERT INTO CATEGORY VALUES(5,'시계/쥬얼리',null);
+INSERT INTO CATEGORY VALUES(6,'패션 액세서리',null);
+INSERT INTO CATEGORY VALUES(7,'디지털/가전',null);
+INSERT INTO CATEGORY VALUES(8,'스포츠/레저',null);
+INSERT INTO CATEGORY VALUES(9,'차량/오토바이',null);
+INSERT INTO CATEGORY VALUES(10,'가구/인테리어',null);
+INSERT INTO CATEGORY VALUES(11,'음반/악기',null);
+INSERT INTO CATEGORY VALUES(12,'도서/티켓/문구',null);
+INSERT INTO CATEGORY VALUES(13,'생활/가공식품',null);
+INSERT INTO CATEGORY VALUES(14,'패딩/점퍼',1);
+INSERT INTO CATEGORY VALUES(15,'코트',1);
+INSERT INTO CATEGORY VALUES(16,'맨투맨',1);
+INSERT INTO CATEGORY VALUES(17,'패딩/점퍼',2);
+INSERT INTO CATEGORY VALUES(18,'코트',2);
+INSERT INTO CATEGORY VALUES(19,'맨투맨',2);
