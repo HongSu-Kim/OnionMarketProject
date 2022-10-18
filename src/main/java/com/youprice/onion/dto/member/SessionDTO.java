@@ -1,6 +1,5 @@
 package com.youprice.onion.dto.member;
 
-import com.youprice.onion.entity.member.Address;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.member.Role;
 import lombok.Getter;

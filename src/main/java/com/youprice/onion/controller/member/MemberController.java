@@ -1,10 +1,8 @@
 package com.youprice.onion.controller.member;
 
-import com.youprice.onion.dto.member.KeywordListDTO;
 import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.dto.member.MemberJoinDTO;
 import com.youprice.onion.dto.member.SessionDTO;
-import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.security.validator.CustomValidators;
 import com.youprice.onion.service.member.MemberService;
@@ -13,20 +11,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 @Controller

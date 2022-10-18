@@ -12,18 +12,14 @@
 </head>
 <body>
 <h1>내 정보</h1>
-<hr>
-<span sec:authentication="name"></span> 님 반갑습니다.
-<%--<span sec:authentication="name"></span> 님 반갑습니다.--%>
-<div sec:authentication="principal.authorities"></div>
-
-<sec:authorize access="isAuthenticated()">
-    <a sec:authorize access="isAuthenticated()" href="/member/modify">회원정보 수정</a>
-</sec:authorize>
 <br/>
     <div>
-        양파마켓 ${sessionDTO.role} ${sessionDTO.nickname}
+        [${sessionDTO.role}] ${sessionDTO.nickname}님 반갑습니다.
     </div>
+<hr/>
+    <sec:authorize access="isAuthenticated()">
+        <a sec:authorize access="isAuthenticated()" href="/member/modify">회원정보 수정</a>
+    </sec:authorize>
 <hr/>
 <a href="/member/home">홈으로 가기</a>
 </body>

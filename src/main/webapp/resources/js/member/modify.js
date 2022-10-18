@@ -26,9 +26,9 @@ const main = {
         if(!data.pwd || data.pwd.trim() === "" || !data.nickname || data.nickname.trim() === "" || !data.tel || data.tel.trim() === "" || !data.postcode || data.postcode.trim() === "" || !data.address || data.address.trim() === "" || !data.detailAddress || data.detailAddress.trim() === "" || !data.email || data.email.trim() === "") {
             alert("공백 또는 입력하지 않은 부분이 있습니다.");
             return false;
-        } else if(!/(?=.*[a-z])(?=.*[0-9]).{4,20}/.test(data.password)) {
+        } else if(!/(?=.*[a-z])(?=.*[0-9]).{4,20}/.test(data.pwd)) {
             alert("비밀번호는 4~20자리 영문 소문자, 숫자를 사용해 주세요.");
-            $('#password').focus();
+            $('#pwd').focus();
             return false;
         } else if(!/^[ㄱ-ㅎ가-힣a-z0-9-_]{2,10}$/.test(data.nickname)) {
             alert("닉네임은 특수문자를 제외한 2~10자리여야 합니다.");
@@ -65,7 +65,7 @@ const main = {
 
             }).done(function () {
                 alert("회원정보 수정이 완료되었습니다.");
-                window.location.href = "/";
+                window.location.href = "/member/mypage";
 
             }).fail(function (error) {
                 if (error.status === 500) {
