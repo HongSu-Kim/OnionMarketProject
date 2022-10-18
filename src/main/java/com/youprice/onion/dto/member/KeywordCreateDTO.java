@@ -20,7 +20,7 @@ public class KeywordCreateDTO {
 
     private Long memberId;//회원번호 FK
 
-
+    @NotEmpty(message = "금지어입니다")
     private String keywordName;//키워드명
 
 
