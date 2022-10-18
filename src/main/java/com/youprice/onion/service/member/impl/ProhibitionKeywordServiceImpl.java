@@ -110,8 +110,6 @@ public class ProhibitionKeywordServiceImpl implements ProhibitionKeywordService 
     @Override
     public boolean ProhibitionKeywordFind(String ProhibitionKeywordName) { //금지어 체크 메소드
 
-
-
         return prohibitionKeywordRepositoy.existsByProhibitionKeywordName(ProhibitionKeywordName);
         //금지키워드가 존재하면 true / 존재하지않으면 false
     }

@@ -149,6 +149,8 @@
 								<sec:authorize access="isAnonymous()">
 									<li><a href="/member/login">Login</a></li>
 									<li><a href="/member/join">Join</a></li>
+									<li><a href="/member/info">Info</a></li>
+									<li><a href="/town/town">동네 설정</a></li>
 								</sec:authorize>
 								<sec:authorize access="isAuthenticated()">
 									<li><a href="/member/info">Info</a></li>
