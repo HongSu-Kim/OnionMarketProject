@@ -18,7 +18,7 @@ public interface NoticeService {
     NoticeDTO findNoticeDTO(Long id);
 
     @Transactional
-    void update(Long id, NoticeUpdateDTO noticeUpdateDTO);
+    void update(Long noticeId, NoticeUpdateDTO noticeUpdateDTO) throws IOException;
 
     void delete(Long id);
 

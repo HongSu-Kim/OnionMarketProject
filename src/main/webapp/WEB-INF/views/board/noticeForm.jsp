@@ -16,7 +16,7 @@
 <form:errors path="noticeDTO"/>
 <form:form method="post" action="/notice/created" enctype="multipart/form-data" id="myform" modelAttribute="noticeDTO">
 
-    <input type="hidden" name="memberId" value="${memberDTO.id}">
+    <input type="hidden" name="memberId" value="${sessionDTO.id}">
 
     <div>
         <h1>공지사항 작성</h1>
