@@ -152,8 +152,14 @@ public class MemberController {
         return "member/category";
     }
 
+    @PostMapping("category.do")
     public ModelAndView handledRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String[] categoryList = request.getParameterValues("category");
+
+        System.out.println(categoryList[0]);
+        System.out.println(categoryList[1]);
+        System.out.println(categoryList[2]);
+
         return new ModelAndView("category", "category", categoryList);
     }
 /*

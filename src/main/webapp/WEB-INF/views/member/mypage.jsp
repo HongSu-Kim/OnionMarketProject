@@ -22,7 +22,7 @@
 </sec:authorize>
 <br/>
     <div>
-        권한 : ${sessionDTO.role}
+        양파마켓 ${sessionDTO.role} ${sessionDTO.nickname}
     </div>
 <hr/>
 <a href="/member/home">홈으로 가기</a>
