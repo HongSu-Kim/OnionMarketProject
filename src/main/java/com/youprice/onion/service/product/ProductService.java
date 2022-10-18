@@ -1,5 +1,6 @@
 package com.youprice.onion.service.product;
 
+import com.youprice.onion.dto.order.ProductSellListDTO;
 import com.youprice.onion.dto.product.*;
 import com.youprice.onion.entity.product.ProductImage;
 import org.springframework.data.domain.Page;
@@ -30,6 +31,6 @@ public interface ProductService {
     //카테고리번호 조회
     CategoryFindDTO findCategoryId(Long categoryId);
 
-	  Page<ProductSellListDTO> getProductSellListDTO(Long memberId, Pageable pageable);
+	Page<ProductSellListDTO> getProductSellListDTO(Long memberId, Pageable pageable);
 
 }
