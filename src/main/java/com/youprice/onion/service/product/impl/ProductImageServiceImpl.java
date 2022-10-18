@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,5 +32,23 @@ public class ProductImageServiceImpl implements ProductImageService {
         return productImageRepository.findAllByProductId(productId)
                 .stream().map(ProductImageDTO::new)
                 .collect(Collectors.toList());
+    }
+
+    // imageName 생성
+    @Override
+    @Transactional(readOnly = true)
+    public String getImageName() {
+
+        LocalDateTime now = LocalDateTime.now();
+        String imageName;
+
+        do {
+            imageName = now.format(DateTimeFormatter.BASIC_ISO_DATE).substring(2)
+                    + now.format(DateTimeFormatter.ISO_LOCAL_TIME).replaceAll(":","").substring(0,6)
+//                    + //고유값
+            ;
+        } while (productImageRepository.findByProductImageName(imageName).isPresent());
+
+        return imageName;
     }
 }

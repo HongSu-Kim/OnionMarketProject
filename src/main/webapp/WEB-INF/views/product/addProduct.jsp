@@ -19,17 +19,7 @@
 			window.history.back();
 		}
 
-		$('#checkbox-value').text($('#checkbox1').val());
 
-		$("#checkbox1").on('change', function() {
-			if ($(this).is(':checked')) {
-				$(this).attr('value', 'true');
-			} else {
-				$(this).attr('value', 'false');
-			}
-
-			$('#checkbox-value').text($('#checkbox1').val());
-		});
 	</script>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -70,12 +60,23 @@
 		<label for="town1">${townName}</label><input type="radio" id="town1" name="townName" value="${townName}"/>
 		<br/>
 		경매 등록<%--true/false로 변경--%>
-		<input type="checkbox" name="auctionStatus" id="checkbox1" value="false"/>
+		<input type="checkbox" name="auctionStatus" value="true" id="input_check"/>
+		<input type="hidden" name="auctionStatus" value="false" id="input_check_hidden"/>
 
 		<br/>
 
 		카테고리 선택<br/>
-
+		<select>
+			<c:forEach var="topCategory" items="${topCategory}">
+			<option>${topCategory.categoryName}</option>
+			</c:forEach>
+		</select>
+		<select name="categoryId">
+			<c:forEach var="subCategory" items="${subCategory}">
+			<option value="${subCategory.id}">${subCategory.categoryName}</option>
+			</c:forEach>
+		</select>
+		<br/><br/><br/><br/>
 		상품가격: <input type="text" name="price"/><br/>
 		설명: <br/><textarea rows="10" cols="50" name="content">상품설명</textarea><br/>
 		<hr/>
