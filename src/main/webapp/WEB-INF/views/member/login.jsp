@@ -19,7 +19,7 @@
 <div id="posts_list">
     <div class="container col-md-6">
         <form action="/member/loginProc" method="post" name="myForm">
-            <%--<input type="hidden" name="_csrf" value="{{_csrf.token}}"/>--%>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
             <div class="form-group">
                 <label>아이디</label>
                 <input type="text" class="form-control" name="userId" placeholder="아이디를 입력해주세요">
