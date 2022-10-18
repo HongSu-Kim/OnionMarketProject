@@ -35,13 +35,13 @@ public class ProhibitionKeywordServiceImpl implements ProhibitionKeywordService 
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
-        Optional<ProhibitionKeyword> DuplicatecheckProhibitionKeywordName =
-                prohibitionKeywordRepositoy.findByProhibitionKeywordName(prohibitionKeywordAddDTO.getProhibitionKeywordName());
-        if (DuplicatecheckProhibitionKeywordName.isPresent()) {
-            out.println("<script>alert('이미 존재하는 금지키워드입니다 다시입력하세요!');history.go(-1); </script>");
-            out.flush();
-            return;
-        }
+//        Optional<ProhibitionKeyword> DuplicatecheckProhibitionKeywordName =
+//                prohibitionKeywordRepositoy.findByProhibitionKeywordName(prohibitionKeywordAddDTO.getProhibitionKeywordName());
+//        if (DuplicatecheckProhibitionKeywordName.isPresent()) {
+//            out.println("<script>alert('이미 존재하는 금지키워드입니다 다시입력하세요!');history.go(-1); </script>");
+//            out.flush();
+//            return;
+//        }
 
         if (prohibitionKeywordAddDTO.getProhibitionKeywordName() == "") {
 
@@ -60,28 +60,26 @@ public class ProhibitionKeywordServiceImpl implements ProhibitionKeywordService 
 
     @Override
     @Transactional
-    public void ProhibitionKeywordUpdate(ProhibitionKeywordUpdateDTO prohibitionKeywordUpdateDTO, String updatekeyword,HttpServletResponse response)throws  IOException {
+    public void ProhibitionKeywordUpdate(ProhibitionKeywordUpdateDTO prohibitionKeywordUpdateDTO, String updatekeyword, HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         ProhibitionKeyword prohibitionKeyword = new ProhibitionKeyword();
 
-        Optional<ProhibitionKeyword> DuplicatecheckProhibitionKeywordName =
-                prohibitionKeywordRepositoy.findByProhibitionKeywordName(prohibitionKeywordUpdateDTO.getProhibitionKeywordName());
-        if (DuplicatecheckProhibitionKeywordName.isPresent()) {
-            out.println("<script>alert('이미 존재하는 금지키워드입니다. 금지키워드를 다시입력하세요');history.go(-1); </script>");
-            out.flush();
-            return;
-        }
+//        Optional<ProhibitionKeyword> DuplicatecheckProhibitionKeywordName =
+//                prohibitionKeywordRepositoy.findByProhibitionKeywordName(prohibitionKeywordUpdateDTO.getProhibitionKeywordName());
+//        if (DuplicatecheckProhibitionKeywordName.isPresent()) {
+//            out.println("<script>alert('이미 존재하는 금지키워드입니다. 금지키워드를 다시입력하세요');history.go(-1); </script>");
+//            out.flush();
+//            return;
+//        }
 
-        if(prohibitionKeywordUpdateDTO.getProhibitionKeywordName()==""){
+        if (prohibitionKeywordUpdateDTO.getProhibitionKeywordName() == "") {
             out.println("<script>alert('공백입니다 금지키워드를 다시입력하세요');history.go(-1); </script>");
             out.flush();
 
             return;
 
-        }
-
-        else
+        } else
 
             prohibitionKeywordRepositoy.deleteByProhibitionKeywordName(updatekeyword);
 
@@ -111,9 +109,9 @@ public class ProhibitionKeywordServiceImpl implements ProhibitionKeywordService 
 
     @Override
     public boolean ProhibitionKeywordFind(String ProhibitionKeywordName) { //금지어 체크 메소드
-        prohibitionKeywordRepositoy.findAllByProhibitionKeywordName(ProhibitionKeywordName);
-        System.out.println("금지어입니다");
-        return false;
-    }
-}
 
+        return prohibitionKeywordRepositoy.existsByProhibitionKeywordName(ProhibitionKeywordName);
+        //금지키워드가 존재하면 true / 존재하지않으면 false
+    }
+
+}
