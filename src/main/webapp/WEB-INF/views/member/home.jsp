@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<h1>메인 페이지</h1>
+<h1>Member Home</h1>
 <hr>
 
     <sec:authorize access="isAnonymous()">
