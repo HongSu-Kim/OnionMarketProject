@@ -1,6 +1,7 @@
 package com.youprice.onion.entity.board;
 
 import com.youprice.onion.dto.board.NoticeDTO;
+import com.youprice.onion.dto.board.NoticeUpdateDTO;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.order.OrderState;
 import com.youprice.onion.entity.product.Product;
@@ -38,7 +39,7 @@ public class Notice{
     private int hitCount; //조회수
 
 
-    @OneToMany(mappedBy = "notice")
+    @OneToMany(mappedBy = "notice", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<NoticeImage> noticeImageList;
 
     public Notice(Member member, String noticeType, String noticeSubject, String noticeContent) {
@@ -55,10 +56,10 @@ public class Notice{
         this.hitCount = 0;
     }
 
-    public void updateNotice(Long id, NoticeDTO noticeDTO){
-       this.id = id;
-       this.noticeSubject = noticeDTO.getNoticeSubject();
-       this.noticeContent = noticeDTO.getNoticeContent();
+    public void updateNotice(Long id, NoticeUpdateDTO noticeUpdateDTO){
+        this.id = id;
+        this.noticeSubject = noticeUpdateDTO.getNoticeSubject();
+        this.noticeContent = noticeUpdateDTO.getNoticeContent();
 
     }
 

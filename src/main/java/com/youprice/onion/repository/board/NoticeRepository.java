@@ -17,8 +17,6 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> { //JpaRep
     @Query("update Notice n set n.hitCount = n.hitCount + 1 where n.id =:id")
     int updateView(@Param("id")Long id);
 
-    /*
-    @Query("select n from Notice n where n.noticeType like :type and n.noticeSubject like %:subject%")
-    Page<Notice> searchSubject(String type, String subject, Pageable pageable);
-    */
+    Page<Notice> findAllByNoticeSubjectContaining(String word, Pageable pageable);
+
 }

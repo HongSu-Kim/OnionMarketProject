@@ -11,6 +11,8 @@ import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.repository.product.ProductRepository;
 import com.youprice.onion.service.board.ComplainService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,8 +44,8 @@ public class ComplainServiceImpl implements ComplainService {
         complainRepository.save(complain);
     }
 
-//    @Override
-//    public Page<ComplainDTO> findAll(Pageable pageable) {
-//        return complainRepository.findAll(pageable).map(ComplainDTO::new);
-//    }
+    @Override
+    public Page<ComplainDTO> findAll(Pageable pageable) {
+        return complainRepository.findAll(pageable).map(ComplainDTO::new);
+    }
 }

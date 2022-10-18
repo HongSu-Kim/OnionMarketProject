@@ -6,8 +6,8 @@ import com.youprice.onion.entity.order.Order;
 import com.youprice.onion.entity.product.*;
 import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.repository.member.ProhibitionKeywordRepositoy;
-import com.youprice.onion.repository.order.OrderRepository;
 import com.youprice.onion.repository.product.*;
+import com.youprice.onion.service.product.ProductImageService;
 import com.youprice.onion.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,8 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,11 +34,9 @@ public class ProductServiceImpl implements ProductService {
     private final MemberRepository memberRepository;
     private final TownRepositoy townRepositoy;
     private final CategoryRepositoy categoryRepository;
-    private final AuctionRepository auctionRepository;
-    private final OrderRepository orderRepository;
-
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
+    private final ProductImageService productImageService;
 
     private final ProhibitionKeywordRepositoy prohibitionKeywordRepositoy;
 
@@ -49,19 +50,19 @@ public class ProductServiceImpl implements ProductService {
         Member member = memberRepository.findById(productAddDTO.getMemberId()).orElse(null);
         Town town = townRepositoy.findById(productAddDTO.getTownId()).orElse(null);
         Category category = categoryRepository.findById(productAddDTO.getCategoryId()).orElse(null);
-
-        Auction auction = new Auction();
-
-        if(productAddDTO.getAuctionId()!=null) {
-            auction = auctionRepository.findById(productAddDTO.getAuctionId()).orElse(null);
-        }else {
-            auction = null;
-        }
-
         Order order = null;
 
+        System.out.println("status = " + productAddDTO.getAuctionStatus());
+
+        //경매 현황=null -> 경매 기한=null
+        if(productAddDTO.getAuctionStatus()!=true) {
+            productAddDTO.setAuctionDeadline(null);
+        }else{
+            productAddDTO.setAuctionDeadline(LocalDateTime.now().plusDays(3));
+        }
+
         // 상품 등록
-        Product product = new Product(member,town,category,auction,order,productAddDTO.getSubject(),productAddDTO.getContent(),productAddDTO.getPrice(),productAddDTO.getUploadDate());
+        Product product = new Product(member,town,category,order,productAddDTO.getSubject(),productAddDTO.getContent(),productAddDTO.getPrice(),productAddDTO.getAuctionDeadline());
 
         Long productId = productRepository.save(product).getId();
 
@@ -126,13 +127,14 @@ public class ProductServiceImpl implements ProductService {
         for(MultipartFile file: fileList) {
 
             if(!file.isEmpty()) {
-                String productImageName = file.getOriginalFilename();
+                String productImageName = filePath(file);
                 ProductImage saveFile = new ProductImage(product, productImageName);
                 productImageList.add(saveFile);
             }
         }
         return productImageList;
     }
+
 
     //이미지파일 경로,저장
     public String filePath(MultipartFile multipartFile)throws  Exception{
@@ -142,7 +144,7 @@ public class ProductServiceImpl implements ProductService {
             return null;
         }
 
-        String fileName = multipartFile.getOriginalFilename();
+        String fileName = productImageService.getImageName()+multipartFile.getOriginalFilename();
 
         multipartFile.transferTo(new File(filePath, fileName));
 
@@ -156,11 +158,17 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.updateView(productId);
     }
 
-    //동네 번호 조회
+    //동네번호 조회
+    @Override
     public TownFindDTO findTownId(String townName) {
         return townRepositoy.findByCoordinateTownName(townName).map(TownFindDTO::new).orElse(null);
     }
 
+    //카테고리번호 조회
+    @Override
+    public CategoryFindDTO findCategoryId(Long categoryId) {
+        return categoryRepository.findById(categoryId).map(CategoryFindDTO::new).orElse(null);
+    }
 
     @Override
     public Page<ProductSellListDTO> getProductSellListDTO(Long memberId, Pageable pageable) {

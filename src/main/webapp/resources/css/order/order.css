@@ -5,3 +5,22 @@
 td a.primary-btn,td a.primary-btn.cart-btn {
     padding: 3px 10px 3px;
 }
+
+.primary-btn {
+    cursor: pointer;
+}
+
+a:not([href]) {
+    color: #fff;
+}
+
+a:not([href]):hover {
+    color: #fff;
+}
+
+span.comment {
+    color: #808080 !important;
+    font-size: 12px;
+}
+
+

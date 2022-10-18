@@ -2,6 +2,7 @@ package com.youprice.onion.entity.product;
 
 
 import com.youprice.onion.dto.member.SessionDTO;
+import com.youprice.onion.dto.product.ProductAddDTO;
 import com.youprice.onion.dto.product.ProductDTO;
 import com.youprice.onion.dto.product.ProductUpdateDTO;
 import com.youprice.onion.entity.chat.Chatroom;
@@ -43,10 +44,6 @@ public class Product {
     private Category category; //카테고리번호 FK
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "auction_id")
-    private Auction auction; //경매번호 FK
-
-    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order; //주문번호 FK
 
@@ -56,6 +53,8 @@ public class Product {
     private LocalDateTime uploadDate; //등록일
     private LocalDateTime updateDate; //수정일
 
+    private LocalDateTime auctionDeadline; //경매기한
+
     @Column(columnDefinition = "integer default 0",nullable = false)
     private int viewCount; //조회수
 
@@ -64,6 +63,7 @@ public class Product {
 
     private String payStatus; //페이현황
     private String blindStatus; //블라인드현황
+
 
     @OneToMany(mappedBy = "product")//이미지번호
     private List<ProductImage> productImageList = new ArrayList<>();
@@ -88,12 +88,11 @@ public class Product {
     private List<Bidding> biddingList = new ArrayList<>();
 
 
-    public Product(Member member,Town town,Category category,Auction auction,Order order,String subject,String content,int price,LocalDateTime uploadDate) {
+    public Product(Member member,Town town,Category category,Order order,String subject,String content,int price,LocalDateTime auctionDeadline) {
 
         this.member = member;
         this.town = town;
         this.category = category;
-        this.auction = auction;
         this.order = order;
         this.subject = subject;
         this.content = content;
@@ -104,6 +103,8 @@ public class Product {
         if(uploadDate!=null) {
             this.updateDate = LocalDateTime.now();
         }
+
+        this.auctionDeadline = auctionDeadline;
         this.productProgress = ProductProgress.TRADINGS;
         this.payStatus = "yes";
         this.blindStatus = "no";
