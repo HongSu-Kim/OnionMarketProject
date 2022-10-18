@@ -1,5 +1,6 @@
 package com.youprice.onion.controller.member;
 
+import com.youprice.onion.dto.member.KeywordListDTO;
 import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.dto.member.MemberJoinDTO;
 import com.youprice.onion.dto.member.SessionDTO;
@@ -7,12 +8,15 @@ import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.security.validator.CustomValidators;
 import com.youprice.onion.service.member.MemberService;
+import com.youprice.onion.service.member.ProhibitionKeywordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,6 +39,7 @@ public class MemberController {
     private final CustomValidators.UserIdValidator userIdValidator;
     private final CustomValidators.NicknameValidator nicknameValidator;
     private final CustomValidators.EmailValidator emailValidator;
+    private final ProhibitionKeywordService prohibitionKeywordService;
 
     //회원가입 시 유효성 검증에 필요
     @InitBinder
@@ -87,7 +92,15 @@ public class MemberController {
 
     //회원가입
     @PostMapping("/joinProc")
-    public String joinProc(@Valid MemberJoinDTO memberJoinDTO, Errors errors, Model model) throws IOException {
+    public String joinProc(@Valid MemberJoinDTO memberJoinDTO, Errors errors, Model model, BindingResult bindingResult) throws IOException {
+
+        if (prohibitionKeywordService.ProhibitionKeywordFind(memberJoinDTO.getNickname())) { //금지키워가있으면 true
+            bindingResult.addError(new FieldError("memberJoinDTO", "nickname", "적합하지 않은 단어가 포함되어 있습니다."));
+
+            if (bindingResult.hasErrors()) {
+                return "member/join";
+            }
+        }
 
         if (errors.hasErrors()) {
             //회원가입 실패 시 입력 데이터 값을 유지
@@ -123,7 +136,6 @@ public class MemberController {
 
 
     //회원정보 수정 - 수정할 회원 정보를 받아 model에 담음
-    @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify")
     public String modify(@LoginUser SessionDTO sessionDTO, Model model) {
         if (sessionDTO != null) {
@@ -155,13 +167,13 @@ public class MemberController {
 
     //마이페이지
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/info")
-    public String infoView(@LoginUser SessionDTO sessionDTO, Model model) {
+    @GetMapping("/mypage")
+    public String mypageView(@LoginUser SessionDTO sessionDTO, Model model) {
         if (sessionDTO != null) {
             model.addAttribute("session", sessionDTO.getId());
             model.addAttribute("sessionDTO", sessionDTO);
         }
-        return "member/info";
+        return "member/mypage";
     }
 
     //접근 거부 페이지

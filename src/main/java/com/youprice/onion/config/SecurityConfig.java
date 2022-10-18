@@ -47,13 +47,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http.csrf().disable(); //csrf 비활성화(나중에 활성화?)
-        http.csrf().ignoringAntMatchers("/api/**"); //REST API 사용 예외처리
+//        http.csrf().disable(); //csrf 비활성화 코드
+        http.csrf().ignoringAntMatchers("/api/**"); //REST API 사용 예외처리(csrf 활성화 중이므로 jsp폼에서 POST로 데이터 넘겨주는 곳에서 hidden으로 csrf토큰 넘겨줘야 함)
 
         //페이지 권한 설정
         http.authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/member/myinfo").authenticated()
+                .antMatchers("/member/mypage").authenticated()
                 .antMatchers("/**").permitAll();
 
         //로그인 설정
