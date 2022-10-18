@@ -3,6 +3,8 @@ package com.youprice.onion.controller.board;
 import com.youprice.onion.dto.board.NoticeDTO;
 import com.youprice.onion.dto.board.NoticeUpdateDTO;
 import com.youprice.onion.dto.member.MemberDTO;
+import com.youprice.onion.dto.member.SessionDTO;
+import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.service.board.NoticeService;
 import com.youprice.onion.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -34,9 +36,12 @@ public class NoticeController {
     private final MemberService memberService;
 
     @GetMapping("/created")
-    public String createdForm(@ModelAttribute NoticeDTO noticeDTO, Model model){
-        MemberDTO memberDTO = memberService.getMemberDTO(19L);
-        model.addAttribute(memberDTO);
+    public String createdForm(@ModelAttribute NoticeDTO noticeDTO, Model model, @LoginUser SessionDTO sessionDTO){
+        if (sessionDTO != null) {
+            model.addAttribute("sessionDTO", sessionDTO);
+        }
+
+
         return "board/noticeForm";
     }
 
@@ -52,10 +57,13 @@ public class NoticeController {
     //공지 리스트
     @GetMapping("/list")
     public String lists(@PageableDefault(size=10, sort="id", direction = Sort.Direction.DESC) Pageable pageable
+                        ,@LoginUser SessionDTO sessionDTO
                         ,@RequestParam(required = false, defaultValue = "") String word
                         ,Model model) {
 
-        MemberDTO memberDTO = memberService.getMemberDTO(19l);
+        if (sessionDTO != null) {
+            model.addAttribute("sessionDTO", sessionDTO);
+        }
 
         Page<NoticeDTO> noticelist = noticeService.findAllNotice(pageable);
 
@@ -73,7 +81,6 @@ public class NoticeController {
         model.addAttribute("startBlockPage", startBlockPage);
         model.addAttribute("endBlockPage", endBlockPage);
         model.addAttribute("noticelist", noticelist);
-        model.addAttribute("memberDTO", memberDTO);
 
         return "board/noticeList";
     }
@@ -102,7 +109,13 @@ public class NoticeController {
 
     //수정 화면으로 이동
     @GetMapping("/update/{id}")
-    public String noticeUpdateForm(@PathVariable Long id, Model model){
+    public String noticeUpdateForm(@PathVariable Long id, Model model
+                                  ,@LoginUser SessionDTO sessionDTO){
+
+        if (sessionDTO != null) {
+            model.addAttribute("sessionDTO", sessionDTO);
+        }
+
         NoticeDTO noticeDTO = noticeService.findNoticeDTO(id);
 
         model.addAttribute("noticeDTO", noticeDTO);
@@ -113,8 +126,8 @@ public class NoticeController {
     //수정 실행
     @PostMapping ("/update/{id}")
     public String noticeUpdate(@PathVariable Long id,
-                              @ModelAttribute NoticeUpdateDTO noticeUpdateDTO
-    ){
+                              @Valid @ModelAttribute NoticeUpdateDTO noticeUpdateDTO) throws IOException {
+
         noticeService.update(id, noticeUpdateDTO);
 
         return"redirect:/notice/list";
@@ -126,10 +139,6 @@ public class NoticeController {
         noticeService.imageDelete(imageId);
         return "redirect:/notice/update/{noticeId}";
     }
-
-    //수정~>내부 이미지 등록
-    @PostMapping("/image/")
-
 
     //삭제 실행
     @GetMapping ("/delete/{id}")

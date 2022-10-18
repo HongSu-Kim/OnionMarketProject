@@ -47,8 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable(); //csrf 비활성화(나중에 활성화?)
-//        http.csrf().ignoringAntMatchers("/api/**"); //REST API 사용 예외처리
+//        http.csrf().disable(); //csrf 비활성화(나중에 활성화?)
+        http.csrf().ignoringAntMatchers("/api/**"); //REST API 사용 예외처리
 
         //페이지 권한 설정
         http.authorizeRequests()

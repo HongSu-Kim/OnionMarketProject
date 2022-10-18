@@ -1,5 +1,6 @@
 package com.youprice.onion.entity.order;
 
+import com.youprice.onion.dto.order.DeliveryDTO;
 import com.youprice.onion.entity.member.Address;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,4 +31,9 @@ public class Delivery {
         this.request = request;
         this.deliveryCost = deliveryCost;
     }
+
+	public void update(DeliveryDTO deliveryDTO) {
+		address = new Address(deliveryDTO.getPostcode(), deliveryDTO.getAddress(), deliveryDTO.getDetailAddress(), deliveryDTO.getExtraAddress());
+		request = deliveryDTO.getRequest();
+	}
 }
