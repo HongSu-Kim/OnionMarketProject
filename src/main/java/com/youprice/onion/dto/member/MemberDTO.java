@@ -1,18 +1,10 @@
 package com.youprice.onion.dto.member;
 
-import com.youprice.onion.entity.member.Address;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.member.Role;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter

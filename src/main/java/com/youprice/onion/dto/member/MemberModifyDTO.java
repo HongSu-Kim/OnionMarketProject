@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MemberJoinDTO { //회원가입 할 때 필요한 DTO (MemberDTO)에 유효성 검증 어노테이션 설정할 경우,
+public class MemberModifyDTO { //회원가입 할 때 필요한 DTO (MemberDTO)에 유효성 검증 어노테이션 설정할 경우,
                             //회원가입이 아닌 다른 곳에서 불러다 쓸 때 문제 생길 수 있어서 따로 클래스 생성
 
     private Long id;
