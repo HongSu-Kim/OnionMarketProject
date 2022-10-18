@@ -131,7 +131,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberDTO getMemberDTO(Long memberId) {
-        return modelMapper.map(memberRepository.findById(memberId).orElse(null), MemberDTO.class);
+        return memberRepository.findById(memberId).map(MemberDTO::new).orElse(null);
     }
 
 /*    @Override

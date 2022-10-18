@@ -13,11 +13,13 @@ import java.util.Optional;
 
 public interface ProhibitionKeywordRepositoy extends JpaRepository<ProhibitionKeyword,Long> {
 
- Optional<ProhibitionKeyword> findByProhibitionKeywordName(String ProhibitionKeywordName);
+ //Optional<ProhibitionKeyword> findByProhibitionKeywordName(String ProhibitionKeywordName);
 
  ProhibitionKeyword findAllByProhibitionKeywordName(String ProhibitionKeywordName);
 
+ ProhibitionKeyword findByProhibitionKeywordName(String ProhibitionKeywordName);
 
+ boolean existsByProhibitionKeywordName(String ProhibitionKeywordName );
  Long deleteByProhibitionKeywordName(String ProhibitionKeywordName);
 
 
