@@ -5,8 +5,8 @@ import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.order.DeliveryDTO;
 import com.youprice.onion.dto.order.OrderAddDTO;
 import com.youprice.onion.dto.order.OrderDTO;
+import com.youprice.onion.dto.order.ProductSellListDTO;
 import com.youprice.onion.dto.product.ProductDTO;
-import com.youprice.onion.dto.product.ProductSellListDTO;
 import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.service.member.MemberService;
 import com.youprice.onion.service.order.DeliveryService;
@@ -140,7 +140,7 @@ public class OrderController {
 	public ResponseEntity<?> update(@RequestBody DeliveryDTO deliveryDTO) {
 		try {
 			deliveryService.update(deliveryDTO);
-			return new ResponseEntity<>(deliveryDTO, HttpStatus.OK);
+			return new ResponseEntity<>("배송지가 수정되었습니다.", HttpStatus.OK);
 
 		} catch (Exception e) {
 			return new ResponseEntity<>(e, HttpStatus.SERVICE_UNAVAILABLE);

@@ -50,9 +50,9 @@ public class Product {
     private String subject; //제목
     private String content; //내용
     private int price; //상품가격
+    private String representativeImage; //대표이미지
     private LocalDateTime uploadDate; //등록일
     private LocalDateTime updateDate; //수정일
-
     private LocalDateTime auctionDeadline; //경매기한
 
     @Column(columnDefinition = "integer default 0",nullable = false)
@@ -88,7 +88,8 @@ public class Product {
     private List<Bidding> biddingList = new ArrayList<>();
 
 
-    public Product(Member member,Town town,Category category,Order order,String subject,String content,int price,LocalDateTime auctionDeadline) {
+    public Product(Member member,Town town,Category category,Order order,String subject,String content,int price,
+                   String representativeImage,LocalDateTime auctionDeadline) {
 
         this.member = member;
         this.town = town;
@@ -97,6 +98,7 @@ public class Product {
         this.subject = subject;
         this.content = content;
         this.price = price;
+        this.representativeImage = representativeImage;
         if(uploadDate==null) {
             this.uploadDate = LocalDateTime.now();
         }
@@ -111,17 +113,27 @@ public class Product {
 
     }
 
-    public void updateProduct(Long id, ProductUpdateDTO updateDTO) {
+    public void updateProduct(Long id, Town town, Category category, ProductUpdateDTO updateDTO,
+                               LocalDateTime auctionDeadline) {
+
         this.id = id;
-        this.category = updateDTO.getCategory();
+        this.town = town;
+        this.category = category;
         this.subject = updateDTO.getSubject();
         this.content = updateDTO.getContent();
         this.price = updateDTO.getPrice();
+//        this.representativeImage = updateDTO.representativeImage;
         this.updateDate = LocalDateTime.now();
-        this.productProgress = updateDTO.getProductProgress();
+        this.auctionDeadline = auctionDeadline;
         this.payStatus = updateDTO.getPayStatus();
-        this.blindStatus = updateDTO.getBlindStatus();
     }
+
+	// 주문시 상품상태 판매완료로 변경
+	public Product order(Order order) {
+		this.order = order;
+		this.productProgress = ProductProgress.SOLDOUT;
+		return this;
+	}
 }
 
 
