@@ -60,30 +60,6 @@ public class MemberController {
     public String joinView() {
         return "member/join";
     }
-/*
-
-    //회원가입(프로필사진)
-    @PostMapping("/joinProc")
-    public String joinProc(@Valid MemberJoinDTO memberJoinDTO, @RequestParam("profileImage") MultipartFile profileImage, Errors errors, Model model) throws IOException {
-
-        if (errors.hasErrors()) {
-            //회원가입 실패 시 입력 데이터 값을 유지
-            model.addAttribute("memberJoinDTO", memberJoinDTO);
-            model.addAttribute("profileImage", profileImage);
-
-            //유효성 통과 못한 필드와 메시지를 핸들링
-            Map<String, String> validatorResult = memberService.validateHandling(errors);
-            for (String key : validatorResult.keySet()) {
-                model.addAttribute(key, validatorResult.get(key));
-            }
-
-            //회원가입 페이지로 다시 리턴
-            return "member/join";
-        }
-        memberService.saveMember(memberJoinDTO, profileImage);
-        return "redirect:login";
-    }
-*/
 
     //회원가입
     @PostMapping("/joinProc")
@@ -96,7 +72,6 @@ public class MemberController {
                 return "member/join";
             }
         }
-
         if (errors.hasErrors()) {
             //회원가입 실패 시 입력 데이터 값을 유지
             model.addAttribute("memberJoinDTO", memberJoinDTO);
@@ -157,14 +132,6 @@ public class MemberController {
 
         return new ModelAndView("category", "category", categoryList);
     }
-/*
-    @RequestMapping(value = "welcomeWeb4.do")
-    public String categoryList(HttpServletRequest request, ModelMap model) throws Exception {
-        String[] category = request.getParameterValues("category");
-        model.addAttribute("category", category);
-        return "member/category";
-    }
-*/
 
     //마이페이지
     @PreAuthorize("isAuthenticated()")

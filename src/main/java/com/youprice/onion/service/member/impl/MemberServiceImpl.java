@@ -56,33 +56,6 @@ public class MemberServiceImpl implements MemberService {
         return validatorResult;
     }
 
-    @Transactional
-    @Override
-    public void checkUserIdDuplication(MemberDTO memberDTO) {
-        boolean userIdDuplicate = memberRepository.existsByUserId(memberDTO.toEntity().getUserId());
-        if (userIdDuplicate) {
-            throw new IllegalStateException("이미 존재하는 아이디 입니다.");
-        }
-    }
-
-    @Transactional
-    @Override
-    public void checkNicknameDuplication(MemberDTO memberDTO) {
-        boolean nicknameDuplicate = memberRepository.existsByNickname(memberDTO.toEntity().getNickname());
-        if (nicknameDuplicate) {
-            throw new IllegalStateException("이미 존재하는 닉네임 입니다.");
-        }
-    }
-
-    @Transactional
-    @Override
-    public void checkEmailDuplication(MemberDTO memberDTO) {
-        boolean emailDuplicate = memberRepository.existsByEmail(memberDTO.toEntity().getEmail());
-        if (emailDuplicate) {
-            throw new IllegalStateException("이미 존재하는 이메일 입니다.");
-        }
-    }
-
     //회원정보 수정
     @Transactional
     @Override
