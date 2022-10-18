@@ -12,7 +12,10 @@ import java.util.List;
 @Repository
 public interface WishRepository extends JpaRepository<Wish, Long> {
 
-	@EntityGraph(attributePaths = "product")
-	Page<Wish> findAllByMemberId(Long memberId, Pageable pageable);
+	// 각 상품의 찜 개수
+	int countByProductId(Long productId);
 
+	// 찜 리스트
+	@EntityGraph(attributePaths = {"product.member", "product.town.coordinate"})
+	Page<Wish> findAllByMemberId(Long memberId, Pageable pageable);
 }
