@@ -50,10 +50,31 @@
 
 <form action="/product/update" method="post" enctype="multipart/form-data">
 	<div class="update">
-		상품명: <input type="text" name="productName" value="${dto.productName}"/><br/>
 		제목: <input type="text" name="subject" value="${dto.subject}"/><br/>
-		내용: <br/><textarea rows="10" cols="50" name="content" value="${dto.content}">상품설명</textarea><br/>
+		동네 선택<br/>
+		<%--townList foreach로 설정--%>
+		<label for="town1">${townName}</label><input type="radio" id="town1" name="townName" value="${townName}"/>
+		<br/>
+		경매 등록<%--true/false로 변경--%>
+		<input type="checkbox" name="auctionStatus" value="true" id="input_check"/>
+		<input type="hidden" name="auctionStatus" value="false" id="input_check_hidden"/>
+
+		<br/>
+
+		카테고리 선택<br/>
+		<select>
+			<c:forEach var="topCategory" items="${topCategory}">
+				<option>${topCategory.categoryName}</option>
+			</c:forEach>
+		</select>
+		<select name="categoryId">
+			<c:forEach var="subCategory" items="${subCategory}">
+				<option value="${subCategory.id}">${subCategory.categoryName}</option>
+			</c:forEach>
+		</select>
+		<br/><br/><br/><br/>
 		상품가격: <input type="text" name="price" value="${dto.price}"/><br/>
+		설명: <br/><textarea rows="10" cols="50" name="content" value="${dto.content}">상품설명</textarea><br/>
 		<hr/>
 		<div class='addInput'>
 

@@ -34,21 +34,4 @@ public class ProductImageServiceImpl implements ProductImageService {
                 .collect(Collectors.toList());
     }
 
-    // imageName 생성
-    @Override
-    @Transactional(readOnly = true)
-    public String getImageName() {
-
-        LocalDateTime now = LocalDateTime.now();
-        String imageName;
-
-        do {
-            imageName = now.format(DateTimeFormatter.BASIC_ISO_DATE).substring(2)
-                    + now.format(DateTimeFormatter.ISO_LOCAL_TIME).replaceAll(":","").substring(0,6)
-//                    + //고유값
-            ;
-        } while (productImageRepository.findByProductImageName(imageName).isPresent());
-
-        return imageName;
-    }
 }
