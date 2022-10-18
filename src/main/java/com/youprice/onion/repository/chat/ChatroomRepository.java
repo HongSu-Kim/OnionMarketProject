@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ChatroomRepository extends JpaRepository<Chatroom, Long> {
+	
+	// 각 상품의 채팅방 개수
+	int countByProductId(Long productId);
 }

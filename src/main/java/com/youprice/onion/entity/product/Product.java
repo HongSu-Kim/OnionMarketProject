@@ -127,6 +127,13 @@ public class Product {
         this.auctionDeadline = auctionDeadline;
         this.payStatus = updateDTO.getPayStatus();
     }
+
+	// 주문시 상품상태 판매완료로 변경
+	public Product order(Order order) {
+		this.order = order;
+		this.productProgress = ProductProgress.SOLDOUT;
+		return this;
+	}
 }
 
 
