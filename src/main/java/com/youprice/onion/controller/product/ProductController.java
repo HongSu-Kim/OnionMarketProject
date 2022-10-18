@@ -2,6 +2,7 @@ package com.youprice.onion.controller.product;
 
 import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.product.*;
+import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.service.product.*;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import java.util.List;
 public class ProductController {
     private final ProductService productService;
     private final TownService townService;
+    private final CategoryService categoryService;
     private final ProductImageService productImageService;
 
     @GetMapping("add")//상픔 등록 주소
@@ -29,24 +31,26 @@ public class ProductController {
         List<TownFindDTO> townList = townService.townLists(userSession.getId());
         String townName = townList.get(0).getTownName();
 
+        List<Category> topCategory = categoryService.findTopCategory();
+        List<Category> subCategory = categoryService.findSubCategory();
+
         model.addAttribute("townName", townName);
+        model.addAttribute("topCategory", topCategory);
+        model.addAttribute("subCategory", subCategory);
 
         return "product/addProduct";//상품등록 페이지
     }
     @PostMapping("add")//실제 상품 등록 주소
     public String addProduct(Model model, @LoginUser SessionDTO userSession, @RequestParam("townName") String townName,
-                             ProductAddDTO productAddDTO, List<MultipartFile> fileList) throws Exception{
-
+                             @RequestParam("categoryId") Long categoryId,ProductAddDTO productAddDTO,
+                             List<MultipartFile> fileList) throws Exception{
+        /*세션아이디로 멤버아이디 set*/
         productAddDTO.setMemberId(userSession.getId());
-
         /*동네 이름으로 동네번호 조회 및 set*/
         TownFindDTO townFindDTO = productService.findTownId(townName);
         productAddDTO.setTownId(townFindDTO.getId());
-
-        /*카테고리 이름으로 카테고리번호 등록*/
-        productAddDTO.setCategoryId(2L);
-
-        /*경매 boolean으로 deadline체크*/
+        /*카테고리번호 set*/
+        productAddDTO.setCategoryId(categoryId);
 
         //bindresult로 금지키워드 서비스호출
 

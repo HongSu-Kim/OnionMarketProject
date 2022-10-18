@@ -23,6 +23,7 @@ public interface ProductService {
 
     //이미지 등록
     List<ProductImage> productImages(Long productId, List<MultipartFile> fileList)throws  Exception;
+
     //파일 저장
     String filePath(MultipartFile multipartFile) throws Exception;
 
@@ -31,6 +32,9 @@ public interface ProductService {
 
     //동네번호 조회
     TownFindDTO findTownId(String townName);
+
+    //카테고리번호 조회
+    CategoryFindDTO findCategoryId(Long categoryId);
 
 	  Page<ProductSellListDTO> getProductSellListDTO(Long memberId, Pageable pageable);
 

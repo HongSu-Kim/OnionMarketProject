@@ -2,6 +2,7 @@ package com.youprice.onion.entity.product;
 
 
 import com.youprice.onion.dto.member.SessionDTO;
+import com.youprice.onion.dto.product.ProductAddDTO;
 import com.youprice.onion.dto.product.ProductDTO;
 import com.youprice.onion.dto.product.ProductUpdateDTO;
 import com.youprice.onion.entity.chat.Chatroom;
@@ -87,7 +88,7 @@ public class Product {
     private List<Bidding> biddingList = new ArrayList<>();
 
 
-    public Product(Member member,Town town,Category category,Order order,String subject,String content,int price) {
+    public Product(Member member,Town town,Category category,Order order,String subject,String content,int price,LocalDateTime auctionDeadline) {
 
         this.member = member;
         this.town = town;
@@ -103,8 +104,7 @@ public class Product {
             this.updateDate = LocalDateTime.now();
         }
 
-        this.auctionDeadline = LocalDateTime.now().plusDays(3);
-
+        this.auctionDeadline = auctionDeadline;
         this.productProgress = ProductProgress.TRADINGS;
         this.payStatus = "yes";
         this.blindStatus = "no";
