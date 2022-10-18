@@ -43,14 +43,14 @@ public class KeywordServiceImpl implements KeywordService {
    return;
   }
 
-//
-//  if(keywordCreateDto.getKeywordName() == ""){
-//
-//
-//   out.println("<script>alert('공백입니다 키워드를 다시입력하세요');history.go(-1); </script>");
-//   out.flush();
-//   return ;
-//  }
+
+  if(keywordCreateDto.getKeywordName() == ""){
+
+
+   out.println("<script>alert('공백입니다 키워드를 다시입력하세요');history.go(-1); </script>");
+   out.flush();
+   return ;
+  }
 
 
 

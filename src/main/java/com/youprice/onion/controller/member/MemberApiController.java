@@ -24,7 +24,7 @@ public class MemberApiController {
 
     @PutMapping("/member")
     public ResponseEntity<String> modify(@RequestBody MemberDTO memberDTO, @RequestParam("modifyProfileImage") MultipartFile modifyProfileImage) throws IOException {
-     //  memberService.modify(memberDTO, modifyProfileImage);
+        memberService.modify(memberDTO, modifyProfileImage);
 
         //변경된 세션 등록
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(memberDTO.getUserId(), memberDTO.getPwd()));
