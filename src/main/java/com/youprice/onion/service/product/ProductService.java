@@ -12,7 +12,7 @@ public interface ProductService {
     //상품등록
     Long addProduct(ProductAddDTO productAddDTO, List<MultipartFile> fileList) throws  Exception;
     //상품수정
-    Long updateProduct(Long productId, ProductUpdateDTO updateDTO) throws Exception;
+    Long updateProduct(Long productId, ProductUpdateDTO updateDTO, List<MultipartFile> fileList) throws Exception;
     //상품 삭제
     void deleteProduct(Long productId) throws Exception;
 
@@ -20,12 +20,6 @@ public interface ProductService {
     List<ProductListDTO> getProductList();
     //상품 하나 조회
     ProductDTO getProductDTO(Long productId);
-
-    //이미지 등록
-    List<ProductImage> productImages(Long productId, List<MultipartFile> fileList)throws  Exception;
-
-    //파일 저장
-    String filePath(MultipartFile multipartFile) throws Exception;
 
     //조회수 증가
     int updateView(Long productId);

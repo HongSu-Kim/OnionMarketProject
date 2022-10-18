@@ -89,22 +89,37 @@ public class ProductController {
     }
 
     @GetMapping(value = "update")//상품 업데이트 주소
-    public String update(Model model, Long productId) {
+    public String update(Model model, Long productId, @LoginUser SessionDTO userSession) {
 
         ProductDTO productDTO = productService.getProductDTO(productId);
-        List<ProductImageDTO> productImageList = productImageService.getProductImage(productId);
 
+        List<TownFindDTO> townList = townService.townLists(userSession.getId());
+        String townName = townList.get(0).getTownName();
+
+        List<Category> topCategory = categoryService.findTopCategory();
+        List<Category> subCategory = categoryService.findSubCategory();
+
+        model.addAttribute("townName", townName);
+        model.addAttribute("topCategory", topCategory);
+        model.addAttribute("subCategory", subCategory);
         model.addAttribute("dto",productDTO);
-        model.addAttribute("imageList", productImageList);
         model.addAttribute("productId",productId);
 
         return "product/updateProduct";
     }
 
     @PostMapping(value = "update")//실제 상품 업데이트 주소
-    public String updateProduct(Model model,Long productId, ProductUpdateDTO updateDTO, List<MultipartFile> fileList) throws Exception{
+    public String updateProduct(Model model,Long productId, @RequestParam("townName") String townName,
+                                @RequestParam("categoryId") Long categoryId, ProductUpdateDTO updateDTO,
+                                List<MultipartFile> fileList) throws Exception{
 
-        Long updateId = productService.updateProduct(productId, updateDTO);
+        /*동네 이름으로 동네번호 조회 및 set*/
+        TownFindDTO townFindDTO = productService.findTownId(townName);
+        updateDTO.setTownId(townFindDTO.getId());
+        /*카테고리번호 set*/
+        updateDTO.setCategoryId(categoryId);
+
+        Long updateId = productService.updateProduct(productId, updateDTO, fileList);
 
         model.addAttribute("productId",updateId);
 
