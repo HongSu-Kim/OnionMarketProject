@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!-- Page Preloder -->
 <div id="preloder">
@@ -145,10 +146,15 @@
 						</li>
 						<li><a href="#">마이페이지</a>
 							<ul class="header__menu__dropdown">
-								<li><a href="/member/login">Login</a></li>
-								<li><a href="/member/join">Join</a></li>
-								<li><a href="/member/info">Info</a></li>
-								<li><a href="/town/town">동네 설정</a></li>
+								<sec:authorize access="isAnonymous()">
+									<li><a href="/member/login">Login</a></li>
+									<li><a href="/member/join">Join</a></li>
+								</sec:authorize>
+								<sec:authorize access="isAuthenticated()">
+									<li><a href="/member/info">Info</a></li>
+									<li><a href="/town/town">동네 설정</a></li>
+									<li><a href="/member/logout">Logout</a></li>
+								</sec:authorize>
 							</ul>
 						</li>
 					</ul>
