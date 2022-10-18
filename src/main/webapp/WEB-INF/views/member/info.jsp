@@ -20,7 +20,11 @@
 <sec:authorize access="isAuthenticated()">
     <a sec:authorize access="isAuthenticated()" href="/member/modify">회원정보 수정</a>
 </sec:authorize>
-
+<br/>
+    <div>
+        권한 : ${sessionDTO.role}
+    </div>
+<hr/>
 <a href="/member/home">홈으로 가기</a>
 </body>
 </html>

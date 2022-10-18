@@ -40,6 +40,26 @@ public class MemberDTO {
     private int userGrade;
     private int complaintCount;
 
+    public MemberDTO(Member member) {
+        this.id = member.getId();
+        this.role = member.getRole();
+        this.userId = member.getUserId();
+        this.name = member.getName();
+        this.nickname = member.getNickname();
+        this.birth = member.getBirth();
+        this.tel = member.getTel();
+        this.postcode = member.getAddress().getPostcode();
+        this.address = member.getAddress().getAddress();
+        this.detailAddress = member.getAddress().getDetailAddress();
+        this.extraAddress = member.getAddress().getExtraAddress();
+        this.email = member.getEmail();
+        this.memberImageName = member.getMemberImageName();
+        this.cash = member.getCash();
+        this.point = member.getPoint();
+        this.userGrade = member.getUserGrade();
+        this.complaintCount = member.getComplaintCount();
+    }
+
     public Member toEntity() { //DTO -> Entity
         return Member.builder()
                 .id(id)
@@ -62,4 +82,5 @@ public class MemberDTO {
                 .complaintCount(complaintCount)
                 .build();
     }
+
 }
