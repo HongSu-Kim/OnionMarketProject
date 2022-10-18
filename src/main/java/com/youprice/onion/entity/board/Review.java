@@ -37,7 +37,7 @@ public class Review {
     /*@OneToMany(mappedBy = "review")
     private List<ReviewComment> reviewComment;*/
 
-    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
     private List<ReviewImage> reviewImageName = new ArrayList<>();
 
     public Review(Order order, Member member, String reviewContent, Integer grade, Long salesId) {

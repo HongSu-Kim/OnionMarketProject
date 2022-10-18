@@ -1,6 +1,7 @@
 package com.youprice.onion.service.board.impl;
 
 import com.youprice.onion.dto.board.NoticeDTO;
+import com.youprice.onion.dto.board.NoticeUpdateDTO;
 import com.youprice.onion.entity.board.Notice;
 import com.youprice.onion.entity.board.NoticeImage;
 import com.youprice.onion.entity.member.Member;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -30,6 +32,7 @@ public class NoticeServiceImpl implements NoticeService {
     private final NoticeImageRepository noticeImageRepository;
 
     public Long saveNotice(NoticeDTO noticeDTO, List<MultipartFile> noticeImageName) throws IOException {
+
         Member member = memberRepository.findById(noticeDTO.getMemberId()).orElse(null);
         Notice notice = new Notice(member, noticeDTO.getNoticeType(), noticeDTO.getNoticeSubject(), noticeDTO.getNoticeContent());
 
@@ -47,11 +50,20 @@ public class NoticeServiceImpl implements NoticeService {
         return noticeRepository.findById(id).map(NoticeDTO::new).orElse(null);
     }
 
-    @Override
-    public void update(Long id, NoticeDTO noticeDTO) {
-        Notice notice = noticeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("수정이 불가합니다"));
-        Long noticeId = notice.getId();
-        notice.updateNotice(id, noticeDTO);
+    public Page<NoticeDTO> searchNotice( String word, Pageable pageable){
+        return noticeRepository.findAllByNoticeSubjectContaining(word, pageable).map(NoticeDTO::new);
+    }
+
+    @Transactional
+    public void update(Long noticeId, NoticeUpdateDTO noticeUpdateDTO) throws IOException {
+        Notice notice = noticeRepository.findById(noticeId).orElseThrow(() -> new IllegalArgumentException("수정이 불가합니다"));
+        Long id = notice.getId();
+        notice.updateNotice(id, noticeUpdateDTO);
+
+        List<NoticeImage> list = storeImages(noticeId, noticeUpdateDTO.getNoticeImageName());
+        for(NoticeImage noticeImage : list){
+            noticeImageRepository.save(noticeImage);
+        }
 
         noticeRepository.save(notice);
     }
@@ -108,12 +120,8 @@ public class NoticeServiceImpl implements NoticeService {
         return noticeRepository.updateView(id);
     } //조회수 상승
 
-    /*
-    public Page<NoticeDTO> searchNotice(String filed, String word, Pageable pageable){
-        Page<NoticeDTO> noticeList = noticeRepository.searchSubject(filed, word, pageable);
-        return noticeList;
+    public void imageDelete(Long imageId){
+        NoticeImage noticeImage = noticeImageRepository.findById(imageId).orElse(null);
+        noticeImageRepository.delete(noticeImage);
     }
-    */
-
-
 }

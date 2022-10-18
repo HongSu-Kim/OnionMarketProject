@@ -9,6 +9,5 @@ public interface ComplainService {
 
     ComplainDTO findComplainDTO(Long id);
     void saveComplain(ComplainFormDTO complainFormDTO);
-
-    //Page<ComplainDTO> findAll(Pageable pageable);
+    Page<ComplainDTO> findAll(Pageable pageable);
 }

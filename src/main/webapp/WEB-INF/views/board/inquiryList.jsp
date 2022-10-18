@@ -24,7 +24,7 @@
             <option value="기타서비스">[문의유형]기타서비스</option>
         </select>
 
-        <input type="text" id="searchBox" name="word" class="form-control me-2" placeholder="검색어를 입력하세요">
+        <input type="text" id="searchBox" name="word" class="col-xl-4" placeholder="검색어를 입력하세요">
         <button class="btn btn-outline-success" type="submit">Search</button>
     </form><br/>
     <!-- 검색 끝 -->

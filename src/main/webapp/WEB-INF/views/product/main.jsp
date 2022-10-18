@@ -20,6 +20,9 @@
 		제목: ${list.subject}<br/>
 		</a>
 		<img src="/img/product/${list.productImageName}"/><br/>
+		<c:if test="${list.auctionDeadline ne null}">
+			<p style="font-style: italic"><경매 진행 중인 상품></p>
+		</c:if>
 		상품가격: ${list.price}
 		등록일: ${list.uploadDate}<br/>
 	</c:forEach>
