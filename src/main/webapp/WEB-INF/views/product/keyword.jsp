@@ -94,15 +94,15 @@
 
 <strong><h3>키워드 알림 설정</h3><br/></strong>
 
-<form:form action="" method="post" modelAttribute="keywordCreateDto">
+<form:form action="" method="post">
 
 
         <input type="hidden" name="memberId" value="${memberDTO.id}">
 
 
 
-<input type="text" id="keywordName" name="keywordName"  placeholder="키워드를 입력해주세요 (예: 유니폼)" size="33" />
-    <form:errors path="keywordName"/>
+<input type="text" name="keywordName"  placeholder="키워드를 입력해주세요 (예: 유니폼)" size="33" />
+
  <input type="submit" value="키워드등록" />
 
 </form:form>
