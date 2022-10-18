@@ -13,13 +13,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 
@@ -54,11 +54,16 @@ public class NoticeServiceImpl implements NoticeService {
         return noticeRepository.findAllByNoticeSubjectContaining(word, pageable).map(NoticeDTO::new);
     }
 
-    @Override
-    public void update(Long id, NoticeUpdateDTO updateDTO) {
-        Notice notice = noticeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("수정이 불가합니다"));
-        Long noticeId = notice.getId();
-        notice.updateNotice(noticeId, updateDTO.getNoticeSubject(), updateDTO.getNoticeContent());
+    @Transactional
+    public void update(Long noticeId, NoticeUpdateDTO noticeUpdateDTO) throws IOException {
+        Notice notice = noticeRepository.findById(noticeId).orElseThrow(() -> new IllegalArgumentException("수정이 불가합니다"));
+        Long id = notice.getId();
+        notice.updateNotice(id, noticeUpdateDTO);
+
+        List<NoticeImage> list = storeImages(noticeId, noticeUpdateDTO.getNoticeImageName());
+        for(NoticeImage noticeImage : list){
+            noticeImageRepository.save(noticeImage);
+        }
 
         noticeRepository.save(notice);
     }

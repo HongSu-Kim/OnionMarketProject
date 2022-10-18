@@ -56,10 +56,10 @@ public class Notice{
         this.hitCount = 0;
     }
 
-    public void updateNotice(Long id, String noticeSubject, String noticeContent){
+    public void updateNotice(Long id, NoticeUpdateDTO noticeUpdateDTO){
         this.id = id;
-        this.noticeSubject = noticeSubject;
-        this.noticeContent = noticeContent;
+        this.noticeSubject = noticeUpdateDTO.getNoticeSubject();
+        this.noticeContent = noticeUpdateDTO.getNoticeContent();
 
     }
 
