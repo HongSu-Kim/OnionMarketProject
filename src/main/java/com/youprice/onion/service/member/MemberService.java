@@ -14,11 +14,6 @@ public interface MemberService {
 
     public Map<String, String> validateHandling(Errors errors);
 
-    //userId, nickname, email 중복 여부 확인
-    public void checkUserIdDuplication(MemberDTO memberDTO);
-    public void checkNicknameDuplication(MemberDTO memberDTO);
-    public void checkEmailDuplication(MemberDTO memberDTO);
-
     //회원정보 수정
     public void modify(MemberModifyDTO memberModifyDTO);
 
