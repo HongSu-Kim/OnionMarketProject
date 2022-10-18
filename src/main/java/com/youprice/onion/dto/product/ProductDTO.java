@@ -24,6 +24,7 @@ public class ProductDTO {
     private int price; //상품가격
     private LocalDateTime uploadDate; //등록시간
     private LocalDateTime updateDate; //수정일
+    private LocalDateTime auctionDeadline; //경매기한
     private int viewCount; //조회수
     private ProductProgress productProgress; //판매상태 Reserved,tradings,soldout 예약중,거래중,판매완료
     private String payStatus; //페이현황
@@ -35,13 +36,13 @@ public class ProductDTO {
         memberId = product.getMember().getId();
         townId = product.getTown().getId();
         categoryId = product.getCategory().getId();
-        auctionId = product.getAuction().getId();
 //        orderId = product.getOrder().getId();
         subject = product.getSubject();
         content = product.getContent();
         price = product.getPrice();
         uploadDate = product.getUploadDate();
         updateDate = product.getUpdateDate();
+        auctionDeadline = product.getAuctionDeadline();
         viewCount = product.getViewCount();
         productProgress = product.getProductProgress();
         payStatus = product.getPayStatus();

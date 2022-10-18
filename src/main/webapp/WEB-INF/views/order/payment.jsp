@@ -3,6 +3,15 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%--<meta name="_csrf" content="${_csrf.token}">--%>
 <%--<meta name="_csrf_header" content="${_csrf.headerName}">--%>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+
+	<title>buyList</title>
+
+</head>
+<body>
 <section class="spad">
 	<div class="container">
 		<div class="checkout__form">
@@ -31,15 +40,13 @@
 							<tbody>
 							<!-- 상품 정보 -->
 								<tr>
-									<td class="productName">
-										<c:if test="${empty productDTO.productImageList}">
+									<td>
+										<c:if test="${!empty productDTO.productImageList}">
 											<img src="/files/${productDTO.productImageList.get(0).productImageName}" alt="${productDTO.productName}">
 										</c:if>
-										<h5>${productDTO.productName}</h5>
+										<span>${productDTO.productName}</span>
 									</td>
-									<td class="productPrice">
-										${productDTO.productPrice}
-									</td>
+									<td>${productDTO.productPrice}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -67,8 +74,22 @@
 							</div>
 						</div>--%>
 						<div class="checkout__input">
-							<p>주문자명<span>*</span></p>
-							<input type="text" id="name" name="name" value="${memberDTO.name}" placeholder="주문자명"/>
+							<p>주문자명<span class="comment">(변경불가)</span></p>
+							<input type="text" id="name" name="name" value="${memberDTO.name}" readonly/>
+						</div>
+						<div class="row">
+							<div class="col-lg-6">
+								<div class="checkout__input">
+									<p>연락처<span class="comment">(변경불가)</span></p>
+									<input type="text" id="tel" name="tel" value="${memberDTO.tel}" readonly/>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="checkout__input">
+									<p>이메일<span class="comment">(변경불가)</span></p>
+									<input type="text" id="email" name="email" value="${memberDTO.email}" readonly/>
+								</div>
+							</div>
 						</div>
 						<div class="checkout__input">
 							<p>
@@ -82,20 +103,6 @@
 							<input type="text" class="checkout__input__add" id="detailAddress" name="detailAddress" value="${memberDTO.detailAddress}" placeholder="상세주소">
 							<input type="text" id="extraAddress" name="extraAddress" value="${memberDTO.extraAddress}" placeholder="참고항목">
 							<form:errors path="extraAddress"/>
-						</div>
-						<div class="row">
-							<div class="col-lg-6">
-								<div class="checkout__input">
-									<p>주문자 연락처<span>*</span></p>
-									<input type="text" id="tel" name="tel" value="${memberDTO.tel}"/>
-								</div>
-							</div>
-							<div class="col-lg-6">
-								<div class="checkout__input">
-									<p>주문자 이메일<span>*</span></p>
-									<input type="text" id="email" name="email" value="${memberDTO.email}"/>
-								</div>
-							</div>
 						</div>
 						<div class="checkout__input">
 							<p>요청사항</p>
@@ -128,8 +135,10 @@
 						</div>
 					</div>
 
-						</div>
+				</div>
 			</form:form>
 		</div>
 	</div>
 </section>
+</body>
+</html>

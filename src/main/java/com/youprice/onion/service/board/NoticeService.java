@@ -1,6 +1,7 @@
 package com.youprice.onion.service.board;
 
 import com.youprice.onion.dto.board.NoticeDTO;
+import com.youprice.onion.dto.board.NoticeUpdateDTO;
 import com.youprice.onion.entity.board.NoticeImage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +18,7 @@ public interface NoticeService {
     NoticeDTO findNoticeDTO(Long id);
 
     @Transactional
-    void update(Long id, NoticeDTO noticeDTO);
+    void update(Long noticeId, NoticeUpdateDTO noticeUpdateDTO) throws IOException;
 
     void delete(Long id);
 
@@ -31,6 +32,8 @@ public interface NoticeService {
     @Transactional
     public int updateView(Long id);
 
-    //<NoticeDTO> searchSubject(String filed, String word, Pageable pageable);
+    Page<NoticeDTO> searchNotice(String word, Pageable pageable);
+
+    void imageDelete(Long imageId);
 
 }

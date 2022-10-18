@@ -21,8 +21,16 @@ public class ComplainDTO {
     public ComplainDTO(Complain complain){
         this.complainId = complain.getId();
         this.memberId = complain.getMember().getId();
-        this.productId = complain.getProduct().getId();
-        this.chatroomId = complain.getChatroom().getId();
+        if(complain.getProduct() == null){
+            this.productId = 0L;
+        } else {
+            this.productId = complain.getProduct().getId();
+        }
+        if(complain.getChatroom() == null){
+            this.chatroomId = 0L;
+        } else {
+            this.chatroomId = complain.getChatroom().getId();
+        }
         this.complainType = complain.getComplainType();
         this.complainDate = complain.getComplainDate();
         this.complainContent = complain.getComplainContent();

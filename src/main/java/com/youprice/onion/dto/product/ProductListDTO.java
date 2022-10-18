@@ -17,7 +17,7 @@ public class ProductListDTO {
     private int price; //상품가격
     private LocalDateTime uploadDate; //등록시간
     private LocalDateTime updateDate; //수정일
-
+    private LocalDateTime auctionDeadline; //경매기한
     private String productImageName; //상품 이미지
 
     public ProductListDTO(Product product) {
@@ -26,11 +26,12 @@ public class ProductListDTO {
         this.subject = product.getSubject();
         this.price = product.getPrice();
         if(uploadDate==null) {
-            this.uploadDate = LocalDateTime.now();
+            this.uploadDate = product.getUploadDate();
         }
         if(uploadDate!=null) {
-            this.updateDate = LocalDateTime.now();
+            this.updateDate = product.getUpdateDate();
         }
+        this.auctionDeadline = product.getAuctionDeadline();
         this.productImageName = product.getProductImageList().get(0).getProductImageName();
     }
 
