@@ -20,10 +20,10 @@
 			<div class="col-lg-6 col-md-6">
 				<div class="product__details__pic">
 					<div class="product__details__pic__item">
-<%--						<div>--%>
-<%--							<img class="product__details__pic__item--large"--%>
-<%--								 src="img/product/${dto.representativeImage}" alt=""/>--%>
-<%--						</div>--%>
+						<div>
+							<img class="product__details__pic__item--large"
+								 src="img/product/${dto.representativeImage}" alt=""/>
+						</div>
 						<c:forEach var="imageList" items="${imageList}">
 						<img src="/img/product/${imageList.productImageName}" alt=""/>
 						</c:forEach>

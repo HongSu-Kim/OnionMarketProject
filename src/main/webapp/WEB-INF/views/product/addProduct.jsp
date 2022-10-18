@@ -77,7 +77,7 @@
 		</select>
 		<br/><br/><br/><br/>
 		상품가격: <input type="text" name="price"/><br/>
-		설명: <br/><textarea rows="10" cols="50" name="content">상품설명</textarea><br/>
+		설명: <br/><textarea rows="10" cols="50" name="content" placeholder="상품설명"></textarea><br/>
 		<hr/>
 		<div class='addInput'>
 

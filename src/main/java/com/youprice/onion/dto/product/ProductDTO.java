@@ -22,6 +22,7 @@ public class ProductDTO {
     private String subject; //제목
     private String content; //내용
     private int price; //상품가격
+    private String representativeImage; //대표이미지
     private LocalDateTime uploadDate; //등록시간
     private LocalDateTime updateDate; //수정일
     private LocalDateTime auctionDeadline; //경매기한
@@ -40,6 +41,7 @@ public class ProductDTO {
         subject = product.getSubject();
         content = product.getContent();
         price = product.getPrice();
+        representativeImage = product.getRepresentativeImage();
         uploadDate = product.getUploadDate();
         updateDate = product.getUpdateDate();
         auctionDeadline = product.getAuctionDeadline();
