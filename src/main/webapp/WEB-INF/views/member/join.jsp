@@ -16,8 +16,8 @@
 <hr>
 <div id="posts_list">
     <div class="container col-md-4">
-        <form action="/member/joinProc" method="post" name="myForm">
-            <%--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">--%>
+        <form action="/member/joinProc" method="post" name="myForm" <%--enctype="multipart/form-data"--%>>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
             <div class="form-group">
                 <label>아이디</label>
                 <input type="text" name="userId" value="${memberJoinDTO.userId}" class="form-control" placeholder="아이디를 입력해주세요"/>
