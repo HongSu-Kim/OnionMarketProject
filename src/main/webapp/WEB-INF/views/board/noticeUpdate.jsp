@@ -18,7 +18,7 @@
     </div>
     <br/>
     <br/>
-    <form:form method="get" action="/notice/list" enctype="multipart/form-data" modelAttribute="noticeUpdateDTO">
+    <form:form method="post" action="/notice/update/${noticeDTO.noticeId}" enctype="multipart/form-data" modelAttribute="noticeUpdateDTO">
     <div>
         <table border="1" align="center">
             <tr>
