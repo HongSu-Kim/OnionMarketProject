@@ -81,7 +81,7 @@
             </div>
 
         </form>
-        <button id="btn-member-modify" class="btn btn-primary bi bi-check-lg">완료</button>
+        <button id="btn-member-modify" class="btn btn-primary bi bi-check-lg"oninput="memberModify()">완료</button>
         <a href="/member/" role="button" class="btn btn-info bi bi-arrow-return-left"> 목록</a>
     </div>
 </div>
