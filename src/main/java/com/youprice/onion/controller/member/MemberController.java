@@ -1,10 +1,8 @@
 package com.youprice.onion.controller.member;
 
-import com.youprice.onion.dto.member.KeywordListDTO;
 import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.dto.member.MemberJoinDTO;
 import com.youprice.onion.dto.member.SessionDTO;
-import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.security.validator.CustomValidators;
 import com.youprice.onion.service.member.MemberService;
@@ -13,20 +11,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -65,30 +60,6 @@ public class MemberController {
     public String joinView() {
         return "member/join";
     }
-/*
-
-    //회원가입(프로필사진)
-    @PostMapping("/joinProc")
-    public String joinProc(@Valid MemberJoinDTO memberJoinDTO, @RequestParam("profileImage") MultipartFile profileImage, Errors errors, Model model) throws IOException {
-
-        if (errors.hasErrors()) {
-            //회원가입 실패 시 입력 데이터 값을 유지
-            model.addAttribute("memberJoinDTO", memberJoinDTO);
-            model.addAttribute("profileImage", profileImage);
-
-            //유효성 통과 못한 필드와 메시지를 핸들링
-            Map<String, String> validatorResult = memberService.validateHandling(errors);
-            for (String key : validatorResult.keySet()) {
-                model.addAttribute(key, validatorResult.get(key));
-            }
-
-            //회원가입 페이지로 다시 리턴
-            return "member/join";
-        }
-        memberService.saveMember(memberJoinDTO, profileImage);
-        return "redirect:login";
-    }
-*/
 
     //회원가입
     @PostMapping("/joinProc")
@@ -101,7 +72,6 @@ public class MemberController {
                 return "member/join";
             }
         }
-
         if (errors.hasErrors()) {
             //회원가입 실패 시 입력 데이터 값을 유지
             model.addAttribute("memberJoinDTO", memberJoinDTO);
@@ -152,18 +122,16 @@ public class MemberController {
         return "member/category";
     }
 
+    @PostMapping("category.do")
     public ModelAndView handledRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String[] categoryList = request.getParameterValues("category");
+
+        System.out.println(categoryList[0]);
+        System.out.println(categoryList[1]);
+        System.out.println(categoryList[2]);
+
         return new ModelAndView("category", "category", categoryList);
     }
-/*
-    @RequestMapping(value = "welcomeWeb4.do")
-    public String categoryList(HttpServletRequest request, ModelMap model) throws Exception {
-        String[] category = request.getParameterValues("category");
-        model.addAttribute("category", category);
-        return "member/category";
-    }
-*/
 
     //마이페이지
     @PreAuthorize("isAuthenticated()")
