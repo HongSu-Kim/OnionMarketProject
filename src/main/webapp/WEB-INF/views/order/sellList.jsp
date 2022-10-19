@@ -32,54 +32,54 @@
 							<tbody>
 
 								<!-- view test -->
-									<tr>
-										<td onclick="location.href='/product/Detail?productId=1'" style="cursor: pointer">
-											<img src="/img/product/edd75ee44b39477ef71df02dbc46e873c802479d.png" height="100">
-											<span>제목1</span>
-										</td>
-										<td><fmt:formatNumber type="number" maxFractionDigits="3" value="10000"/>원</td>
-										<td>2022/10/17</td>
-										<td>
-											<p>거래중</p>
-											<p>
-												<a onclick="confirm('상태를 예약중으로 변경하시겠습니까?') ? location.href='/product/progressUpdate?productId=1&productProgress=RESERVED' : false"
-													 class="primary-btn">예약중</a>
-												<a onclick="confirm('상태를 판매완료로 변경하시겠습니까?') ? location.href='/product/progressUpdate?productId=1&productProgress=SOLDOUT' : false"
-													 class="primary-btn">판매완료</a>
-											</p>
-										</td>
-									</tr>
-									<tr>
-										<td onclick="location.href='/product/Detail?productId=2'" style="cursor: pointer">
-											<img src="/img/product/edd75ee44b39477ef71df02dbc46e873c802479d.png" height="100">
-											<span>제목2</span>
-										</td>
-										<td><fmt:formatNumber type="number" maxFractionDigits="3" value="20000"/>원</td>
-										<td>2022/10/16</td>
-										<td>
-											<p>예약중</p>
-											<p>
-												<a onclick="confirm('상태를 거래중으로 변경하시겠습니까?') ? location.href='/product/progressUpdate?productId=2&productProgress=TRADINGS' : false"
-													 class="primary-btn">거래중</a>
-												<a onclick="confirm('상태를 판매완료로 변경하시겠습니까?') ? location.href='/product/progressUpdate?productId=2&productProgress=SOLDOUT' : false"
-													 class="primary-btn">판매완료</a>
-											</p>
-										</td>
-									</tr>
-									<tr>
-										<td onclick="location.href='/product/Detail?productId=3'" style="cursor: pointer">
-											<img src="/img/product/edd75ee44b39477ef71df02dbc46e873c802479d.png" height="100">
-											<span>제목3</span>
-										</td>
-										<td><fmt:formatNumber type="number" maxFractionDigits="3" value="30000"/>원</td>
-										<td>2022/10/15</td>
-										<td>
-											<p>판매완료</p>
-											<p>
-												<a href="/review/created/1" class="primary-btn">판매후기등록</a>
-											</p>
-										</td>
-									</tr>
+								<tr>
+									<td class="pointer" onclick="location.href='/product/Detail?productId=1'">
+										<img src="/img/product/edd75ee44b39477ef71df02dbc46e873c802479d.png" height="100">
+										<span>제목1</span>
+									</td>
+									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="10000"/>원</td>
+									<td>2022/10/17</td>
+									<td>
+										<p>거래중</p>
+										<p>
+											<a onclick="confirm('상태를 예약중으로 변경하시겠습니까?') ? location.href='/product/progressUpdate?productId=1&productProgress=RESERVED' : false"
+												 class="primary-btn">예약중</a>
+											<a onclick="confirm('상태를 판매완료로 변경하시겠습니까?') ? location.href='/product/progressUpdate?productId=1&productProgress=SOLDOUT' : false"
+												 class="primary-btn">판매완료</a>
+										</p>
+									</td>
+								</tr>
+								<tr>
+									<td class="pointer" onclick="location.href='/product/Detail?productId=2'">
+										<img src="/img/product/edd75ee44b39477ef71df02dbc46e873c802479d.png" height="100">
+										<span>제목2</span>
+									</td>
+									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="20000"/>원</td>
+									<td>2022/10/16</td>
+									<td>
+										<p>예약중</p>
+										<p>
+											<a onclick="confirm('상태를 거래중으로 변경하시겠습니까?') ? location.href='/product/progressUpdate?productId=2&productProgress=TRADINGS' : false"
+												 class="primary-btn">거래중</a>
+											<a onclick="confirm('상태를 판매완료로 변경하시겠습니까?') ? location.href='/product/progressUpdate?productId=2&productProgress=SOLDOUT' : false"
+												 class="primary-btn">판매완료</a>
+										</p>
+									</td>
+								</tr>
+								<tr>
+									<td class="pointer" onclick="location.href='/product/Detail?productId=3'">
+										<img src="/img/product/edd75ee44b39477ef71df02dbc46e873c802479d.png" height="100">
+										<span>제목3</span>
+									</td>
+									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="30000"/>원</td>
+									<td>2022/10/15</td>
+									<td>
+										<p>판매완료</p>
+										<p>
+											<a href="/review/created/1" class="primary-btn">판매후기등록</a>
+										</p>
+									</td>
+								</tr>
 								<!-- view test end -->
 
 								<!-- 주문 없음 -->
@@ -92,7 +92,7 @@
 								<!-- 주문 정보 -->
 								<c:forEach var="productDTO" items="${page.content}">
 									<tr>
-										<td onclick="location.href='/product/Detail?productId=${productDTO.productId}'" style="cursor: pointer">
+										<td class="pointer" onclick="location.href='/product/Detail?productId=${productDTO.productId}';">
 											<img src="/img/product/${productDTO.productImageName}" height="100">
 											<span>${productDTO.subject}</span>
 										</td>
