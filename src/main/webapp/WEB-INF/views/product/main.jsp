@@ -24,7 +24,7 @@
 			<p style="font-style: italic"><경매 진행 중인 상품></p>
 		</c:if>
 		상품가격: ${list.price}
-		등록일: ${list.uploadDate}<br/>
+		<p>등록일: ${list.uploadDate}</p><br/>
 	</c:forEach>
 </div>
 

@@ -19,9 +19,9 @@ public class ProductAddDTO {
     private String subject; //제목
     private String content; //내용
     private int price; //상품가격
-    private String payStatus; //페이현황
     private LocalDateTime auctionDeadline; //경매기한
     private Boolean auctionStatus; //경매현황
+    private Boolean payStatus; //페이현황
 
     private String productImageName;//이미지 이름
 }
