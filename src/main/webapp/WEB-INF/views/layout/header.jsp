@@ -149,12 +149,24 @@
 								<sec:authorize access="isAnonymous()">
 									<li><a href="/member/login">Login</a></li>
 									<li><a href="/member/join">Join</a></li>
-									<li><a href="/member/info">Info</a></li>
+									<li><a href="/member/mypage">My Page</a></li>
 									<li><a href="/town/town">동네 설정</a></li>
 								</sec:authorize>
 								<sec:authorize access="isAuthenticated()">
-									<li><a href="/member/info">Info</a></li>
+									<li><a href="/member/mypage">My Page</a></li>
 									<li><a href="/town/town">동네 설정</a></li>
+									<li><a href="/member/logout">Logout</a></li>
+								</sec:authorize>
+							</ul>
+						</li>
+						<li><a href="#">관리자</a>
+							<ul class="header__menu__dropdown">
+								<sec:authorize access="hasRole('ROLE_ADMIN')">
+									<li><a href="/member/admin"> 어드민 </a></li>
+									<li><a href="/category/category"> 카테고리 </a></li>
+									<li><a href="/coordinate/coordinate">지역 등록</a></li>
+									<li><a href="/tag/tag">태그 등록</a></li>
+									<li><a href="/prohibitionKeyword/prohibitionKeyword">금지어 관리</a></li>
 									<li><a href="/member/logout">Logout</a></li>
 								</sec:authorize>
 							</ul>
@@ -214,11 +226,13 @@
 						</form>
 					</div>
 					<div class="hero__search__phone">
-						<div class="hero__search__phone__icon">
-							<i class="fa fa-phone"></i>
-						</div>
+						<sec:authorize access="isAnonymous()">
+							<div class="hero__search__phone__icon">
+								<i class="fa fa-phone"></i>
+							</div>
+						</sec:authorize>
 						<div class="hero__search__phone__text">
-							<h5>+65 11.188.888</h5>
+							<h5>${sessionDTO.nickname}님</h5>
 							<span>support 24/7 time</span>
 						</div>
 					</div>

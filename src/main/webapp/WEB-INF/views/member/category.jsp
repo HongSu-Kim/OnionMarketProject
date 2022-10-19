@@ -35,7 +35,8 @@
         <input type="hidden" id="category" name="category" value="${category[0]}"/>
         <button class="btn btn-primary btn-fill btn-wd" id="primaryBtId">Submit</button>
         <hr/>--%>
-    <form action="category.do">
+    <form action="category.do" method="post">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
         <input type="checkbox" name="category" value="디지털기기"/>디지털기기
         <br/>
         <input type="checkbox" name="category" value="가구/인테리어"/>가구/인테리어

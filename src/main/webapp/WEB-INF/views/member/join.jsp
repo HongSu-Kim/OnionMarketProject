@@ -16,12 +16,12 @@
 <hr>
 <div id="posts_list">
     <div class="container col-md-4">
-        <form action="/member/joinProc" method="post" name="myForm" <%--enctype="multipart/form-data"--%>>
+        <form:form action="/member/joinProc" method="post" name="myForm" modelAttribute="memberJoinDTO">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
             <div class="form-group">
                 <label>아이디</label>
                 <input type="text" name="userId" value="${memberJoinDTO.userId}" class="form-control" placeholder="아이디를 입력해주세요"/>
-                <span id="valid_id">${valid_userId}</span>
+                <span id="valid_userId">${valid_userId}</span>
             </div>
 
             <div class="form-group">
@@ -85,7 +85,7 @@
 
             <button type="submit" class="btn btn-primary bi bi-person">가입</button>
             <a href="/member/home" role="button" class="btn btn-info bi bi-arrow-return-left">돌아가기</a>
-        </form>
+        </form:form>
     </div>
 </div>
 </body>

@@ -2,7 +2,8 @@ package com.youprice.onion.service.member.impl;
 
 import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.dto.member.MemberJoinDTO;
-import com.youprice.onion.entity.member.Block;
+import com.youprice.onion.dto.member.MemberModifyDTO;
+import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.repository.member.BlockRepository;
 import com.youprice.onion.repository.member.MemberRepository;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,8 +20,9 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 @Slf4j
@@ -28,46 +31,21 @@ import java.util.*;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
     private final BlockRepository blockRepository;
+
+    @Value("$(file.path}")
+    private String uploadFolder;
 
     @Autowired
     private final ModelMapper modelMapper;
-/*
-    //회원정보 수정
+
+    //회원가입
     @Transactional
     @Override
-    public Long saveMember(MemberJoinDTO memberJoinDTO, MultipartFile profileImage) throws IOException {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        memberJoinDTO.setPwd(passwordEncoder.encode(memberJoinDTO.getPwd())); //패스워드 암호화 저장
-        String profileImageStore = storePath(profileImage); // uuid 반환
-        memberJoinDTO.setMemberImageName(profileImageStore);
-        return memberRepository.save(memberJoinDTO.toEntity()).getId();
-    }
-*/
-
-    @Transactional
-    @Override
-    public Long saveMember(MemberJoinDTO memberJoinDTO) throws IOException {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    public Long saveMember(MemberJoinDTO memberJoinDTO) {
         memberJoinDTO.setPwd(passwordEncoder.encode(memberJoinDTO.getPwd())); //패스워드 암호화 저장
         return memberRepository.save(memberJoinDTO.toEntity()).getId();
-    }
-
-    public String storePath(MultipartFile multipartFile) throws IOException {
-        String filePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\Images\\profile";
-
-        if(multipartFile.isEmpty()){
-            return null;
-        }
-
-        String noticeImageName = multipartFile.getOriginalFilename();
-
-        String ext = noticeImageName.substring(noticeImageName.lastIndexOf(".")+1);
-        String uuid = UUID.randomUUID().toString();
-        noticeImageName = uuid + "." + ext;
-        multipartFile.transferTo(new File(filePath, noticeImageName));
-
-        return noticeImageName;
     }
 
     //회원가입 시 유효성 및 중복 체크
@@ -87,46 +65,21 @@ public class MemberServiceImpl implements MemberService {
         return validatorResult;
     }
 
-    @Transactional
-    @Override
-    public void checkUserIdDuplication(MemberDTO memberDTO) {
-        boolean userIdDuplicate = memberRepository.existsByUserId(memberDTO.toEntity().getUserId());
-        if (userIdDuplicate) {
-            throw new IllegalStateException("이미 존재하는 아이디 입니다.");
-        }
-    }
-
-    @Transactional
-    @Override
-    public void checkNicknameDuplication(MemberDTO memberDTO) {
-        boolean nicknameDuplicate = memberRepository.existsByNickname(memberDTO.toEntity().getNickname());
-        if (nicknameDuplicate) {
-            throw new IllegalStateException("이미 존재하는 닉네임 입니다.");
-        }
-    }
-
-    @Transactional
-    @Override
-    public void checkEmailDuplication(MemberDTO memberDTO) {
-        boolean emailDuplicate = memberRepository.existsByEmail(memberDTO.toEntity().getEmail());
-        if (emailDuplicate) {
-            throw new IllegalStateException("이미 존재하는 이메일 입니다.");
-        }
-    }
-
     //회원정보 수정
     @Transactional
     @Override
-    public void modify(MemberDTO memberDTO/*, MultipartFile modifyProfileImage*/) throws IOException {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        Member member = memberRepository.findByUserId(memberDTO.toEntity().getUserId()).orElseThrow(() ->
+    public boolean modify(MemberModifyDTO memberModifyDTO) {
+        Member member = memberRepository.findById(memberModifyDTO.getId()).orElseThrow(() ->
                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
-        String encPwd = passwordEncoder.encode(memberDTO.getPwd());
-/*        String profileImageStore = storePath(modifyProfileImage); // uuid 반환
-        memberDTO.setMemberImageName(profileImageStore);*/
-        member.modify(encPwd, memberDTO.getNickname(), memberDTO.getTel(), memberDTO.getPostcode(), memberDTO.getAddress(), memberDTO.getDetailAddress(), memberDTO.getExtraAddress(), memberDTO.getEmail(), memberDTO.getMemberImageName());
-
+        Member member1 = memberRepository.findByNickname(memberModifyDTO.getNickname()).orElse(null);
+        if (member1 == null || member1.getId() == memberModifyDTO.getId()) {
+            String encPwd = passwordEncoder.encode(memberModifyDTO.getPwd());
+            member.modify(encPwd, memberModifyDTO.getNickname(), memberModifyDTO.getTel(), memberModifyDTO.getPostcode(), memberModifyDTO.getAddress(), memberModifyDTO.getDetailAddress(), memberModifyDTO.getExtraAddress(), memberModifyDTO.getEmail(), memberModifyDTO.getMemberImageName());
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -134,7 +87,29 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findById(memberId).map(MemberDTO::new).orElse(null);
     }
 
-/*    @Override
+    //프로필사진 수정
+    @Transactional
+    @Override
+    public void profileImageUpdate(Long memberId, MemberModifyDTO memberModifyDTO, MultipartFile profileImageFile) {
+        UUID uuid = UUID.randomUUID();
+        String memberImageName = uuid + "_" + profileImageFile.getOriginalFilename();
+        Path imageFilePath = Paths.get(uploadFolder + memberImageName);
+
+        try {
+            Files.write(imageFilePath, profileImageFile.getBytes());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> {
+            return new IllegalArgumentException("프로필 사진 수정 실패 : 존재하지 않는 회원입니다.");
+        });
+
+
+    }
+
+/*  차단
+    @Override
     public MemberDTO getMemberDTO(Long memberId) {
 
         Long sender = 1L;
@@ -145,7 +120,7 @@ public class MemberServiceImpl implements MemberService {
         }
         // 채팅로직
         return null;
-    }*/
+    }
 
     //차단 추가
     public void makeBlock(Long memberId, Long targetId) {
@@ -160,6 +135,6 @@ public class MemberServiceImpl implements MemberService {
 
         blockRepository.save(block);
     }
-
+*/
 
 }

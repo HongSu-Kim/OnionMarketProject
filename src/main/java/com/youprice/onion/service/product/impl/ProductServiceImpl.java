@@ -1,5 +1,6 @@
 package com.youprice.onion.service.product.impl;
 
+import com.youprice.onion.dto.order.ProductSellListDTO;
 import com.youprice.onion.dto.product.*;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.order.Order;
@@ -52,7 +53,8 @@ public class ProductServiceImpl implements ProductService {
         Category category = categoryRepository.findById(productAddDTO.getCategoryId()).orElse(null);
         Order order = null;
 
-        System.out.println("status = " + productAddDTO.getAuctionStatus());
+        //대표이미지 설정
+        String representativeImage = getImageName()+fileList.get(0).getOriginalFilename();
 
         //경매 현황=null -> 경매 기한=null
         if(productAddDTO.getAuctionStatus()!=true) {
@@ -62,7 +64,8 @@ public class ProductServiceImpl implements ProductService {
         }
 
         // 상품 등록
-        Product product = new Product(member,town,category,order,productAddDTO.getSubject(),productAddDTO.getContent(),productAddDTO.getPrice(),productAddDTO.getAuctionDeadline());
+        Product product = new Product(member,town,category,order,productAddDTO.getSubject(),productAddDTO.getContent(),
+                productAddDTO.getPrice(),representativeImage,productAddDTO.getAuctionDeadline(),productAddDTO.getPayStatus());
 
         Long productId = productRepository.save(product).getId();
 
@@ -79,15 +82,37 @@ public class ProductServiceImpl implements ProductService {
     //상품 수정
     @Override
     @Transactional
-    public Long updateProduct(Long productId,ProductUpdateDTO updateDTO) throws Exception {
+    public Long updateProduct(Long productId, ProductUpdateDTO updateDTO) throws Exception {
+
+        //수정한 동네번호
+        Town town = townRepositoy.findById(updateDTO.getTownId()).orElse(null);
+
+        //수정한 카테고리번호
+        Category category = categoryRepository.findById(updateDTO.getCategoryId()).orElse(null);
+
+        //대표이미지 설정
+        updateDTO.setRepresentativeImage(getImageName()+updateDTO.getProductImageName().get(0).getOriginalFilename());
+
+        System.out.println("updateDTO = " + updateDTO.getRepresentativeImage());
+
+        //경매 현황=null -> 경매 기한=null
+        if(updateDTO.getAuctionStatus()!=true) {
+            updateDTO.setAuctionDeadline(null);
+        }else{
+            updateDTO.setAuctionDeadline(LocalDateTime.now().plusDays(3));
+        }
 
         Product product = productRepository.findById(productId).orElse(null);
-        product.updateProduct(productId,updateDTO);
+        product.updateProduct(productId, town, category, updateDTO, updateDTO.getAuctionDeadline());
 
+
+        // 상품 이미지 수정
+        //반복으로 지우고 저장
         List<ProductImage> productImageList = productImageRepository.findByProductId(productId);
         for (ProductImage productImage : productImageList){
             productImageRepository.delete(productImage);
         }
+
         List<ProductImage> imageList = productImages(productId, updateDTO.getProductImageName());
         for(ProductImage productImage : imageList){
             productImageRepository.save(productImage);
@@ -95,9 +120,18 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(product);
 
         return productRepository.save(product).getId();
+
+
     }
 
-    //상품 삭제
+	// 상품상태 수정
+	@Override
+	@Transactional
+	public void progressUpdate(Long productId, String productProgress) {
+		productRepository.findById(productId).map(product -> product.progressUpdate(productProgress)).orElse(null);
+	}
+
+	//상품 삭제(DB삭제가 아닌 조회불가상태로 변경)
     @Override
     @Transactional
     public void deleteProduct(Long productId) throws Exception {
@@ -121,9 +155,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     //이미지리스트
-    public List<ProductImage> productImages(Long productId, List<MultipartFile> fileList) throws Exception{
+    private List<ProductImage> productImages(Long productId, List<MultipartFile> fileList) throws Exception{
         List<ProductImage> productImageList = new ArrayList<>();
         Product product = productRepository.findById(productId).orElse(null);
+
+
         for(MultipartFile file: fileList) {
 
             if(!file.isEmpty()) {
@@ -135,16 +171,32 @@ public class ProductServiceImpl implements ProductService {
         return productImageList;
     }
 
+    // imageName 생성
+    @Transactional(readOnly = true)
+    public String getImageName() {
+
+        LocalDateTime now = LocalDateTime.now();
+        String imageName;
+
+        do {
+            imageName = now.format(DateTimeFormatter.BASIC_ISO_DATE).substring(2)
+                    + now.format(DateTimeFormatter.ISO_LOCAL_TIME).replaceAll(":","").substring(0,6)
+//                    + //고유값
+            ;
+        } while (productImageRepository.findByProductImageName(imageName).isPresent());
+
+        return imageName;
+    }
 
     //이미지파일 경로,저장
-    public String filePath(MultipartFile multipartFile)throws  Exception{
+    private String filePath(MultipartFile multipartFile)throws  Exception{
         String filePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\product";
 
         if(multipartFile.isEmpty()){
             return null;
         }
 
-        String fileName = productImageService.getImageName()+multipartFile.getOriginalFilename();
+        String fileName = getImageName()+multipartFile.getOriginalFilename();
 
         multipartFile.transferTo(new File(filePath, fileName));
 

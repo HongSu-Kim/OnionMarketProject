@@ -1,4 +1,7 @@
 
+let header = $("meta[name='_csrf_header']").attr("content");
+let token = $("meta[name='_csrf']").attr("content");
+
 $(function () {
     if ($('#mode').val() == 'update') {
         update();
@@ -34,7 +37,10 @@ function save() {
             extraAddress: $('#extraAddress').val(),
             request: $('#request').val()
         }),
-        success: function (deliveryDTO) {
+        beforeSend: function (jqXHR) {
+            jqXHR.setRequestHeader(header, token);
+        },
+        success: function (msg) {
             $('#postcode').attr("readonly", true)
             $('#address').attr("readonly", true)
             $('#detailAddress').attr("readonly", true)
@@ -45,9 +51,11 @@ function save() {
             $('#postcodeBtn').css("display", "none")
             $('#submitBtn').css("display", "none")
             $('#mode').val("")
+
+            alert(msg)
         },
         error: function (error) {
-            alert(error.responseText)
+            // alert(error.responseText)
             alert("수정 실패")
         }
     })

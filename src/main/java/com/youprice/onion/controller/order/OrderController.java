@@ -5,14 +5,15 @@ import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.order.DeliveryDTO;
 import com.youprice.onion.dto.order.OrderAddDTO;
 import com.youprice.onion.dto.order.OrderDTO;
+import com.youprice.onion.dto.order.ProductSellListDTO;
 import com.youprice.onion.dto.product.ProductDTO;
-import com.youprice.onion.dto.product.ProductSellListDTO;
 import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.service.member.MemberService;
 import com.youprice.onion.service.order.DeliveryService;
 import com.youprice.onion.service.order.OrderService;
 import com.youprice.onion.service.product.ProductService;
 import com.youprice.onion.util.PaymentService;
+import com.youprice.onion.util.AlertRedirect;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 
 @RequiredArgsConstructor
@@ -40,19 +42,23 @@ public class OrderController {
 
 	// 주문 페이지
 	@GetMapping("payment")
-	public String order(@LoginUser SessionDTO sessionDTO, Model model, OrderAddDTO orderAddDTO, Long productId) {
+	public String payment(@LoginUser SessionDTO sessionDTO, Model model, OrderAddDTO orderAddDTO, Long productId,
+						  HttpServletResponse response) throws IOException {
 		if (sessionDTO == null) return "redirect:/member/login";
-//		if (productId == null) return "redirect:/product/main";
+		if (productId == null) return "redirect:/product/main";
 
 		MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
-//		ProductDTO productDTO = productService.getProductDTO(productId);
-		ProductDTO productDTO = null;
+		ProductDTO productDTO = productService.getProductDTO(productId);
         orderAddDTO.setOrderNum(orderService.getOrderNum());
 		orderAddDTO.setDeliveryCost(100);//--
 
-//		if (productDTO == null) {
-//			return  "redirect:/product/main";
-//		}
+		if (productDTO == null) {
+			AlertRedirect.warningMessage(response, "/product/main", "상품정보가 존재하지 않습니다.");
+			return null;
+		} else if (productDTO.getOrderId() != null) {
+			AlertRedirect.warningMessage(response, "/product/main", "이미 판매된 상품입니다.");
+			return null;
+		}
 
 		model.addAttribute("memberDTO", memberDTO);
 		model.addAttribute("productDTO", productDTO);
@@ -63,10 +69,10 @@ public class OrderController {
 	// 주문
 	@PostMapping("payment")
 	@ResponseBody
-	public ResponseEntity<?> order(@RequestBody OrderAddDTO orderAddDTO) throws IOException {
+	public ResponseEntity<?> payment(@RequestBody OrderAddDTO orderAddDTO) {
 		try{
 			Long orderId = orderService.addOrder(orderAddDTO);
-			return new ResponseEntity<>("redirect:/order/complete?orderId=" + orderId, HttpStatus.OK);
+			return new ResponseEntity<>("/order/complete?orderId=" + orderId, HttpStatus.OK);
 
 			// DB 입력 오류시 결제취소
 		} catch (Exception e) {
@@ -140,7 +146,7 @@ public class OrderController {
 	public ResponseEntity<?> update(@RequestBody DeliveryDTO deliveryDTO) {
 		try {
 			deliveryService.update(deliveryDTO);
-			return new ResponseEntity<>(deliveryDTO, HttpStatus.OK);
+			return new ResponseEntity<>("배송지가 수정되었습니다.", HttpStatus.OK);
 
 		} catch (Exception e) {
 			return new ResponseEntity<>(e, HttpStatus.SERVICE_UNAVAILABLE);

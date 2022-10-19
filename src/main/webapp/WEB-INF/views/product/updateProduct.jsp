@@ -22,7 +22,7 @@
 		$(document).ready(function() {
 			$('.btnAdd').click(function () {
 				$('.addInput').append(
-						'<input type="file" name="fileList">\
+						'<input type="file" name="productImageName">\
                         <button type="button" class="btnRemove">삭제</button><br/>'
 				);//input file
 				$('.btnRemove').on('click',function(){//this='.btnRemove'
@@ -49,15 +49,47 @@
 <h1>상품 수정하기</h1>
 
 <form action="/product/update" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 	<div class="update">
-		상품명: <input type="text" name="productName" value="${dto.productName}"/><br/>
 		제목: <input type="text" name="subject" value="${dto.subject}"/><br/>
-		내용: <br/><textarea rows="10" cols="50" name="content" value="${dto.content}">상품설명</textarea><br/>
+		동네 선택<br/>
+		<%--townList foreach로 설정--%>
+		<label for="town1">${townName}</label><input type="radio" id="town1" name="townName" value="${townName}"/>
+		<br/>
+		경매 등록<%--true/false로 변경--%>
+		<input type="checkbox" name="auctionStatus" value="true"/>
+		<input type="hidden" name="auctionStatus" value="false"/>
+
+		<br/>
+
+		카테고리 선택<br/>
+		<select>
+			<c:forEach var="topCategory" items="${topCategory}">
+				<option>${topCategory.categoryName}</option>
+			</c:forEach>
+		</select>
+		<select name="categoryId">
+			<c:forEach var="subCategory" items="${subCategory}">
+				<option value="${subCategory.id}">${subCategory.categoryName}</option>
+			</c:forEach>
+		</select>
+		<br/><br/><br/><br/>
 		상품가격: <input type="text" name="price" value="${dto.price}"/><br/>
+		<div class="checkout__input">
+			<p>페이 결제<span>*</span></p><%--true/false로 변경--%>
+			<p style="color: #aaaaaa">
+				(페이 결제 시 혜택..?)
+				<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="payStatus" value="true"/>
+				<input type="hidden" name="payStatus" value="false"/>
+			</p>
+			<span class="checkmark"></span>
+		</div>
+		설명: <br/><textarea rows="10" cols="50" name="content" value="${dto.content}">상품설명</textarea><br/>
 		<hr/>
 		<div class='addInput'>
 
 		</div>
+		<input type="file" value="${imageList}"/>
 		<button type="button" class="btnAdd">이미지 추가</button><br/>
 	<div>
 		<input type="hidden" name="productId" value="${productId}">

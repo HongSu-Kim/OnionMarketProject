@@ -2,6 +2,8 @@
 <%@ page import="java.time.LocalDateTime" %>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -20,9 +22,12 @@
 			<div class="col-lg-6 col-md-6">
 				<div class="product__details__pic">
 					<div class="product__details__pic__item">
+						<div>
+							<img class="product__details__pic__item--large"
+								 src="img/product/${dto.representativeImage}" alt=""/>
+						</div>
 						<c:forEach var="imageList" items="${imageList}">
-						<img class="product__details__pic__item--large"
-							 src="/img/product/${imageList.productImageName}" alt=""/>
+						<img src="/img/product/${imageList.productImageName}" alt=""/>
 						</c:forEach>
 					</div>
 
@@ -49,18 +54,18 @@
 						<i class="fa fa-star-half-o"></i>
 						<span>(18 reviews)</span>
 					</div>
-					<div class="product__details__price">${dto.price}원</div>
+					<div class="product__details__price"><fmt:formatNumber maxFractionDigits="3" value="${dto.price}"/>원</div>
 					<div>
-					<c:choose>
-					<c:when test="${dto.updateDate ne dto.uploadDate}"><p>${dto.updateDate}</p></c:when>
-					<c:when test="${dto.auctionDeadline ne null}">
-						<p>
-							경매 입찰기간<br/>
-								${dto.uploadDate} ~ ${dto.auctionDeadline}
-						</p>
-					</c:when>
-					<c:otherwise><p>${dto.uploadDate}</p></c:otherwise>
-					</c:choose>
+						<c:choose>
+							<c:when test="${dto.updateDate ne dto.uploadDate}"><p><${dto.updateDate}</p></c:when>
+							<c:when test="${dto.auctionDeadline ne null}">
+								<p>
+									경매 입찰기간<br/>
+									${dto.uploadDate} ~ ${dto.auctionDeadline}
+								</p>
+							</c:when>
+							<c:otherwise><p>${dto.uploadDate}</p></c:otherwise>
+						</c:choose>
 					</div>
 <%--					<p>Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Vestibulum ac diam sit amet quam--%>
 <%--						vehicula elementum sed sit amet dui. Sed porttitor lectus nibh. Vestibulum ac diam sit amet--%>
@@ -188,20 +193,6 @@
 	</div>
 </section>
 <!-- Related Product Section End -->
-<div>
-	<h1>상품 정보</h1>
-		제목: ${dto.subject}<br/>
-		상품가격: ${dto.price}<br/>
-		등록일: <c:if test="${empty dto.updateDate}">${dto.uploadDate}</c:if>
-				${dto.updateDate}
-
-	<hr/>
-</div>
-<div>
-	<c:forEach var="imageList" items="${imageList}">
-		이미지: <img src="/img/product/${imageList.productImageName}"/>
-	</c:forEach>
-</div>
 <form action="/product/update" method="get">
 	<input type="hidden" name="productId" value="${productId}">
 	<input type="submit" value="상품 수정"/>
