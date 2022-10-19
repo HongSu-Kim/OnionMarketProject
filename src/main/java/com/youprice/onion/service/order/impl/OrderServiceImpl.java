@@ -61,7 +61,7 @@ public class OrderServiceImpl implements OrderService {
 				orderAddDTO.getExtraAddress(), orderAddDTO.getRequest(), orderAddDTO.getDeliveryCost());
 		deliveryRepository.save(delivery);
 
-		product.order(order);
+//		product.order(order);
 		productRepository.save(product);
 
 		return orderId;

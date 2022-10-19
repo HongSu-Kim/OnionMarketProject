@@ -32,7 +32,7 @@ public class ProductListDTO {
             this.updateDate = product.getUpdateDate();
         }
         this.auctionDeadline = product.getAuctionDeadline();
-        this.productImageName = product.getProductImageList().get(0).getProductImageName();
+        this.productImageName = product.getRepresentativeImage();
     }
 
 }

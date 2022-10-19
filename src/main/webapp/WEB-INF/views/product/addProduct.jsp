@@ -18,8 +18,6 @@
 		function goBack(){
 			window.history.back();
 		}
-
-
 	</script>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -53,6 +51,7 @@
 <h1>상품 등록하기</h1>
 
 <form action="/product/add" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 	<div class="add">
 		제목: <input type="text" name="subject"/><br/>
 		동네 선택<br/>
@@ -78,7 +77,7 @@
 		</select>
 		<br/><br/><br/><br/>
 		상품가격: <input type="text" name="price"/><br/>
-		설명: <br/><textarea rows="10" cols="50" name="content">상품설명</textarea><br/>
+		설명: <br/><textarea rows="10" cols="50" name="content" placeholder="상품설명"></textarea><br/>
 		<hr/>
 		<div class='addInput'>
 
@@ -94,9 +93,6 @@
 <div>
 	<input type="button" value="뒤로가기" onclick="goBack();"/>
 </div>
-
-
-
 
 </body>
 </html>
