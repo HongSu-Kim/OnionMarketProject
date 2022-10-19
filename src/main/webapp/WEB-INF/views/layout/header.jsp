@@ -226,11 +226,13 @@
 						</form>
 					</div>
 					<div class="hero__search__phone">
-						<div class="hero__search__phone__icon">
-							<i class="fa fa-phone"></i>
-						</div>
+						<sec:authorize access="isAnonymous()">
+							<div class="hero__search__phone__icon">
+								<i class="fa fa-phone"></i>
+							</div>
+						</sec:authorize>
 						<div class="hero__search__phone__text">
-							<h5>+65 11.188.888</h5>
+							<h5>${sessionDTO.nickname}님</h5>
 							<span>support 24/7 time</span>
 						</div>
 					</div>

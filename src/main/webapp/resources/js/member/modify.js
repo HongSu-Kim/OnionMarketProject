@@ -33,25 +33,7 @@ const main = {
         } else if(!/^[ㄱ-ㅎ가-힣a-z0-9-_]{2,10}$/.test(data.nickname)) {
             alert("닉네임은 특수문자를 제외한 2~10자리여야 합니다.");
             $('#nickname').focus();
-            return false;
-        } else if(!/(01[016789])(\d{3,4})(\d{4})/.test(data.tel)) {
-            alert("휴대폰 번호 형식이 올바르지 않습니다.");
-            $('#tel').focus();
-            return false;
-        } else if(!/^.{5}$/.test(data.postcode)) {
-            alert("우편번호 5자리를 입력해 주세요.");
-            $('#postcode').focus();
-            return false;
-        } else if(!/.+/.test(data.address)) {
-            alert("주소는 필수 입력값입니다.");
-            $('#address').focus();
-            return false;
-        } else if(!/.+/.test(data.detailAddress)) {
-            alert("상세주소는 필수 입력값입니다.");
-            $('#detailAddress').focus();
-            return false;
-        } else if(!/^(?:\w+\.?)*\w+@(?:\w+\.)+\w+$/.test(data.email)) {
-            alert("이메일 형식이 올바르지 않습니다.");
+
             $('#email').focus();
             return false;
         }
@@ -61,19 +43,21 @@ const main = {
                 type: "PUT",
                 url: "/api/member",
                 contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify(data)
+                data: JSON.stringify(data),
+                success: function (res) {
+                    alert("회원정보 수정이 완료되었습니다.");
+                    window.location.href = "/member/mypage";
+                },
+                error: function (e) {
+                    alert("이미 사용중인 닉네임입니다. 다시 입력해 주세요.");
+                }
 
             }).done(function () {
-                alert("회원정보 수정이 완료되었습니다.");
-                window.location.href = "/member/mypage";
+                // alert("회원정보 수정이 완료되었습니다.");
+                // window.location.href = "/member/mypage";
 
             }).fail(function (error) {
-                if (error.status === 500) {
-                    alert("이미 사용중인 닉네임 입니다.");
-                    $('#nickname').focus();
-                } else {
-                    alert(JSON.stringify(error));
-                }
+                // alert(JSON.stringify(error));
             });
         } else {
             return false;
