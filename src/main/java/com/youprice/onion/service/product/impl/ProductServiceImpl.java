@@ -53,7 +53,9 @@ public class ProductServiceImpl implements ProductService {
         Category category = categoryRepository.findById(productAddDTO.getCategoryId()).orElse(null);
         Order order = null;
 
+        //대표이미지 설정
         String representativeImage = getImageName()+fileList.get(0).getOriginalFilename();
+
         //경매 현황=null -> 경매 기한=null
         if(productAddDTO.getAuctionStatus()!=true) {
             productAddDTO.setAuctionDeadline(null);
@@ -63,7 +65,7 @@ public class ProductServiceImpl implements ProductService {
 
         // 상품 등록
         Product product = new Product(member,town,category,order,productAddDTO.getSubject(),productAddDTO.getContent(),
-                productAddDTO.getPrice(),representativeImage,productAddDTO.getAuctionDeadline());
+                productAddDTO.getPrice(),representativeImage,productAddDTO.getAuctionDeadline(),productAddDTO.getPayStatus());
 
         Long productId = productRepository.save(product).getId();
 
@@ -80,13 +82,18 @@ public class ProductServiceImpl implements ProductService {
     //상품 수정
     @Override
     @Transactional
-    public Long updateProduct(Long productId, ProductUpdateDTO updateDTO, List<MultipartFile> fileList) throws Exception {
+    public Long updateProduct(Long productId, ProductUpdateDTO updateDTO) throws Exception {
 
         //수정한 동네번호
         Town town = townRepositoy.findById(updateDTO.getTownId()).orElse(null);
 
         //수정한 카테고리번호
         Category category = categoryRepository.findById(updateDTO.getCategoryId()).orElse(null);
+
+        //대표이미지 설정
+        updateDTO.setRepresentativeImage(getImageName()+updateDTO.getProductImageName().get(0).getOriginalFilename());
+
+        System.out.println("updateDTO = " + updateDTO.getRepresentativeImage());
 
         //경매 현황=null -> 경매 기한=null
         if(updateDTO.getAuctionStatus()!=true) {

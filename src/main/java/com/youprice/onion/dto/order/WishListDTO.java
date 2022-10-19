@@ -18,7 +18,7 @@ public class WishListDTO {
 	private String subject; //제목
 	private int price; //상품가격
 	private int viewCount; //조회수
-	private String payStatus; //페이현황
+	private Boolean payStatus; //페이현황
 	private String productImageName; //이미지파일이름
 	private int chatroomListSize;
 	private int wishListSize;
