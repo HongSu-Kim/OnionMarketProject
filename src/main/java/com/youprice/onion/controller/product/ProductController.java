@@ -110,6 +110,13 @@ public class ProductController {
         return "product/updateProduct";
     }
 
+	// 상품상태 수정
+	@GetMapping("progressUpdate")
+	public String progressUpdate(Long productId, String productProgress) {
+		productService.progressUpdate(productId, productProgress);
+		return "redirect:/order/sellList";
+	}
+
     @PostMapping(value = "update")//실제 상품 업데이트 주소
     public String updateProduct(Model model,Long productId, @RequestParam("townName") String townName,
                                 @RequestParam("categoryId") Long categoryId, ProductUpdateDTO updateDTO) throws Exception{

@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<meta name="_csrf" content="${_csrf.token}">
+<meta name="_csrf_header" content="${_csrf.headerName}">
 <section class="spad">
 	<div class="container">
 		<div class="row">
@@ -16,8 +18,10 @@
 						<h5><fmt:formatNumber type="number" maxFractionDigits="3" value="20000"/>원</h5>
 						<h6 class="grey">hiro / 강남구 역삼동</h6>
 						<ul class="product__wish__item">
+							<input type="hidden" id="wishId" value="1"/>
+							<input type="hidden" id="producyId" value="1"/>
 							<li><a href="#"><i class="fa fa-weixin"></i></a></li>3<li></li>
-							<li id="wishBtn" class="true"><a href="#"><i class="fa fa-heart"></i></a></li><span id="size">1</span><li></li>
+							<li id="wishBtn" class="true"><a href="#"><i class="fa fa-heart"></i></a></li>1<li></li>
 						</ul>
 					</div>
 				</div>
@@ -57,7 +61,4 @@
 </section>
 
 <script>
-	$('#wishBtn').click(function () {
-
-	})
 </script>

@@ -135,6 +135,16 @@ public class Product {
 		this.productProgress = ProductProgress.SOLDOUT;
 		return this;
 	}
+
+	// 상품상태 수정
+	public Product progressUpdate(String productProgress) {
+		for (ProductProgress pp : ProductProgress.class.getEnumConstants()) {
+			if (pp.name().equals(productProgress)) {
+				this.productProgress = pp;
+			}
+		}
+		return this;
+	}
 }
 
 

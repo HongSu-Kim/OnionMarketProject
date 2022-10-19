@@ -1,8 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%--<meta name="_csrf" content="${_csrf.token}">--%>
-<%--<meta name="_csrf_header" content="${_csrf.headerName}">--%>
+<meta name="_csrf" content="${_csrf.token}">
+<meta name="_csrf_header" content="${_csrf.headerName}">
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,41 +16,29 @@
 	<div class="container">
 		<div class="checkout__form">
 			<form:form action="" method="post" modelAttribute="orderAddDTO">
-				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+<%--				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">--%>
 				<input type="hidden" id="orderNum" name="orderNum" value="${orderAddDTO.orderNum}"/>
 				<input type="hidden" id="memberId" name="memberId" value="${memberDTO.id}"/>
 				<input type="hidden" id="productId" name="productId" value="${productDTO.productId}"/>
-<%--				<input type="hidden" id="productName" name="productName" value="${productDTO.productName}">--%>
-				<input type="text" id="productName" name="productName" value="${productDTO.productName}" placeholder="productName">
+				<input type="hidden" id="subject" name="subject" value="${productDTO.subject}">
+
 				<!-- product -->
-				<div class="row">
+				<div class="row mb-6">
 					<div class="col-lg-12">
-						<div class="shoping__cart__table">
 						<h4>상품 정보</h4>
-						<table>
-							<%--<thead>
-								<tr>
-									<th class="shoping__product">Products</th>
-									<th>Price</th>
-									<th>Quantity</th>
-									<th>Total</th>
-									<th></th>
-								</tr>
-							</thead>--%>
-							<tbody>
-							<!-- 상품 정보 -->
-								<tr>
-									<td>
-										<c:if test="${!empty productDTO.productImageList}">
-											<img src="/files/${productDTO.productImageList.get(0).productImageName}" alt="${productDTO.productName}">
-										</c:if>
-										<span>${productDTO.productName}</span>
-									</td>
-									<td>${productDTO.productPrice}</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
+						<div class="owl-item cloned" style="width: 360px;">
+							<div class="latest-prdouct__slider__item">
+								<a href="/product/detail?productId=${productDTO.productId}" class="latest-product__item">
+									<div class="latest-product__item__pic">
+										<img src="/img/product/${productDTO.representativeImage}" alt="${productDTO.subject}">
+									</div>
+									<div class="latest-product__item__text">
+										<h6>${productDTO.subject}</h6>
+										<span>${productDTO.price}원</span>
+									</div>
+								</a>
+							</div>
+						</div>
 					</div>
 				</div>
 
@@ -114,16 +102,15 @@
 					<div class="col-4 col-md-6">
 						<div class="checkout__order">
 							<h4>결제 정보</h4>
-							<input type="hidden" id="productPrice" name="productPrice" value="${productDTO.productPrice}">
+							<input type="hidden" id="productPrice" name="productPrice" value="${productDTO.price}">
 							<input type="hidden" id="deliveryCost" name="deliveryCost" value="${orderAddDTO.deliveryCost}">
-<%--									<input type="hidden" id="orderPayment" name="orderPayment" value="${productDTO.productPrice + orderAddDTO.deliveryCost}">--%>
-							<input type="text" id="orderPayment" name="orderPayment" value="${productDTO.productPrice + orderAddDTO.deliveryCost}" placeholder="orderPayment">
+							<input type="hidden" id="orderPayment" name="orderPayment" value="${productDTO.price + orderAddDTO.deliveryCost}">
 							<div class="checkout__order__products">Products <span>Total</span></div>
 							<ul>
-								<li>${productDTO.productName} <span>${productDTO.productPrice}</span></li>
+								<li>${productDTO.subject} <span>${productDTO.price}</span></li>
 								<li>배송비 <span>${orderAddDTO.deliveryCost}</span></li>
 							</ul>
-							<div class="checkout__order__total">결제금액 <span>${productDTO.productPrice + orderAddDTO.deliveryCost}</span></div>
+							<div class="checkout__order__total">결제금액 <span>${productDTO.price + orderAddDTO.deliveryCost}</span></div>
 							<%--<div class="checkout__input__checkbox">
 								<label for="acc-or">
 									Create an account?
