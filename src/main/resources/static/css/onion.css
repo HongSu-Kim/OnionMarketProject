@@ -28,3 +28,7 @@
 td img {
     display: inline-block;
 }
+
+.mb-6 {
+    margin-bottom: 5rem !important;
+}

@@ -3,10 +3,11 @@ package com.youprice.onion.service.board.impl;
 import com.youprice.onion.dto.board.ComplainDTO;
 import com.youprice.onion.dto.board.ComplainFormDTO;
 import com.youprice.onion.entity.board.Complain;
+import com.youprice.onion.entity.chat.Chatroom;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.product.Product;
 import com.youprice.onion.repository.board.ComplainRepository;
-import com.youprice.onion.repository.chat.ChatRepository;
+import com.youprice.onion.repository.chat.ChatroomRepository;
 import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.repository.product.ProductRepository;
 import com.youprice.onion.service.board.ComplainService;
@@ -23,7 +24,7 @@ public class ComplainServiceImpl implements ComplainService {
     private final ComplainRepository complainRepository;
     private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
-    //private final ChatRepository chatRepository;
+    private final ChatroomRepository chatroomRepository;
 
     @Override
     public ComplainDTO findComplainDTO(Long complainId) {
@@ -34,14 +35,31 @@ public class ComplainServiceImpl implements ComplainService {
     @Transactional
     public void saveComplain(ComplainFormDTO form) {
         Member member = memberRepository.findById(form.getMemberId()).orElse(null);
-        Product product = productRepository.findById(form.getProductId()).orElse(null);
-        Long targetId = product.getMember().getId();
+        Product product = null;
+        Chatroom chatroom = null;
 
-        //memberRepository.
-        //chatRepository.findById(form.getChatroomId()).orElse(null);
-
-        Complain complain = new Complain(member,product,null, form.getComplainType(), form.getComplainContent(),"대기");
+        if(form.getProductId() == null){
+            product = null;
+        } else{
+            product = productRepository.findById(form.getProductId()).orElse(null);
+        }
+        if(form.getChatroomId() == null){
+            chatroom = null;
+        } else {
+           chatroom = chatroomRepository.findById(form.getChatroomId()).orElse(null);
+        }
+        Complain complain = new Complain(member,product,chatroom,form.getComplainType(), form.getComplainContent(),"처리대기");
         complainRepository.save(complain);
+    }
+
+    public void modifyStatus(Long complainId, int select){
+        Complain complain = complainRepository.findById(complainId).orElse(null);
+
+        if(select==0) {
+            complain.updateStatus("처리완료");
+        } else{
+            complain.updateStatus("접수취소");
+        }
     }
 
     @Override

@@ -2,8 +2,8 @@
 const IMP = window.IMP;
 IMP.init("imp88641673");
 
-// var header = $("meta[name='_csrf_header']").attr("content");
-// var token = $("meta[name='_csrf']").attr("content");
+let header = $("meta[name='_csrf_header']").attr("content");
+let token = $("meta[name='_csrf']").attr("content");
 
 // 결제
 $('#payment').click(function() {
@@ -12,7 +12,7 @@ $('#payment').click(function() {
         pg: "html5_inicis", // (html5_inicis - 이니시스웹표준)
         pay_method: "card", // 결제방식
         merchant_uid: $('#orderNum').val(), // 주문번호
-        name: $('#productName').val(), // 상품명
+        name: $('#subject').val(), // 상품명
         amount: parseInt($('#orderPayment').val()), // 결제 금액 : 주문가격 + 배송비
         buyer_name: $('#name').val(), // 주문자명
         buyer_tel: $('#tel').val(), // 주문자 연락처
@@ -40,15 +40,15 @@ $('#payment').click(function() {
                     extraAddress: $('#extraAddress').val(), // 참고사항
                     request: $('#request').val(), // 요구사항
                 }),
-                // beforeSend: function (jqXHR) {
-                //     jqXHR.setRequestHeader(header, token);
-                // },
+                beforeSend: function (jqXHR) {
+                    jqXHR.setRequestHeader(header, token);
+                },
                 success: function (url) { // DB 입력 성공
                     location.href = url
                 },
                 error: function (error) { // DB 입력중 오류
                     alert(error.responseText)
-                    location.href = "redirect:/product/productMain"
+                    location.href = "/product/productMain"
                 }
             }).done(function (data) {
                 // 가맹점 서버 결제 API 성공시 로직

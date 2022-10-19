@@ -93,7 +93,7 @@
 								<c:forEach var="orderDTO" items="${page.content}">
 									<tr>
 										<td onclick="location.href='/product/detail?productId=${orderDTO.productDTO.productId}'" style="cursor: pointer">
-<%--											<img src="/img/product/${orderDTO.productDTO.}">--%>
+											<img src="/img/product/${orderDTO.productDTO.representativeImage}">
 											<span>${orderDTO.productDTO.subject}</span>
 										</td>
 										<td onclick="location.href='/order/detail?orderId=${orderDTO.orderId}'" style="cursor: pointer">

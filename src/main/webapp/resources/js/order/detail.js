@@ -1,4 +1,7 @@
 
+let header = $("meta[name='_csrf_header']").attr("content");
+let token = $("meta[name='_csrf']").attr("content");
+
 $(function () {
     if ($('#mode').val() == 'update') {
         update();
@@ -34,6 +37,9 @@ function save() {
             extraAddress: $('#extraAddress').val(),
             request: $('#request').val()
         }),
+        beforeSend: function (jqXHR) {
+            jqXHR.setRequestHeader(header, token);
+        },
         success: function (msg) {
             $('#postcode').attr("readonly", true)
             $('#address').attr("readonly", true)

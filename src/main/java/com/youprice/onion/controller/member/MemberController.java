@@ -110,7 +110,6 @@ public class MemberController {
     public String modify(@LoginUser SessionDTO sessionDTO, Model model) {
         if (sessionDTO != null) {
             MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
-            model.addAttribute("member", memberDTO.getId());
             model.addAttribute("memberDTO", memberDTO);
         }
         return "member/modify";
