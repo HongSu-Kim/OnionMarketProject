@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ProductUpdateDTO {
 
+    private String townName; //동네이름
     private Long townId; //동네번호
     private Long categoryId; //카테고리번호
 

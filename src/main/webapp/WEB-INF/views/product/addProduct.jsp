@@ -1,6 +1,8 @@
 <%@ page import="javax.validation.constraints.NotEmpty" %>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -66,6 +68,7 @@
 						<div class="checkout__input">
 							<p>거래 지역<span>*</span></p><%--townList foreach로 설정--%>
 							<label for="town1">${townName}</label><input type="radio" style="width: 15px;height: 15px;" id="town1" name="townName" value="${townName}"/>
+							<p><button type="button" onclick="location.href='/town/town'">내 동네 설정하러 가기</button></p><br/>
 						</div>
 						<div class="checkout__input">
 							<p>경매 등록<span>*</span></p><%--true/false로 변경--%>
@@ -110,7 +113,7 @@
 							<div class="col-lg-6">
 								<div class="checkout__input">
 									<div class='addInput'>
-
+									상품 이미지는 한장부터
 									</div>
 									<button type="button" class="btnAdd">이미지 추가</button><br/>
 								</div>
