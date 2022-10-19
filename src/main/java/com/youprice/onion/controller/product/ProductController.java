@@ -8,12 +8,11 @@ import com.youprice.onion.service.product.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -24,9 +23,14 @@ public class ProductController {
     private final TownService townService;
     private final CategoryService categoryService;
     private final ProductImageService productImageService;
+//    private final ProductValidator productValidator;
 
     @GetMapping("add")//상픔 등록 주소
     public String add(Model model, @LoginUser SessionDTO userSession) {
+
+        if(userSession == null) {
+            return "redirect:/member/login";
+        }
 
         List<TownFindDTO> townList = townService.townLists(userSession.getId());
         String townName = townList.get(0).getTownName();
@@ -41,19 +45,23 @@ public class ProductController {
         return "product/addProduct";//상품등록 페이지
     }
     @PostMapping("add")//실제 상품 등록 주소
-    public String addProduct(Model model, @LoginUser SessionDTO userSession, @RequestParam("townName") String townName,
-                             @RequestParam("categoryId") Long categoryId,ProductAddDTO productAddDTO,
-                             List<MultipartFile> fileList) throws Exception{
+    public String addProduct(@LoginUser SessionDTO userSession, @Valid @ModelAttribute ProductAddDTO productAddDTO,
+                             BindingResult bindingResult,List<MultipartFile> fileList, Model model) throws Exception{
+        //재혁이형,
+
+
+
+        if (bindingResult.hasErrors()) {
+            return "product/addProduct";
+        }
+
         /*세션아이디로 멤버아이디 set*/
         productAddDTO.setMemberId(userSession.getId());
         /*동네 이름으로 동네번호 조회 및 set*/
-        TownFindDTO townFindDTO = productService.findTownId(townName);
+        TownFindDTO townFindDTO = productService.findTownId(productAddDTO.getTownName());
         productAddDTO.setTownId(townFindDTO.getId());
         /*카테고리번호 set*/
-        productAddDTO.setCategoryId(categoryId);
-
-        //bindresult로 금지키워드 서비스호출
-
+        productAddDTO.setCategoryId(productAddDTO.getCategoryId());
 
         Long productId = productService.addProduct(productAddDTO,fileList);
 
@@ -111,14 +119,13 @@ public class ProductController {
     }
 
     @PostMapping(value = "update")//실제 상품 업데이트 주소
-    public String updateProduct(Model model,Long productId, @RequestParam("townName") String townName,
-                                @RequestParam("categoryId") Long categoryId, ProductUpdateDTO updateDTO) throws Exception{
+    public String updateProduct(Model model,Long productId, ProductUpdateDTO updateDTO) throws Exception{
 
         /*동네 이름으로 동네번호 조회 및 set*/
-        TownFindDTO townFindDTO = productService.findTownId(townName);
+        TownFindDTO townFindDTO = productService.findTownId(updateDTO.getTownName());
         updateDTO.setTownId(townFindDTO.getId());
         /*카테고리번호 set*/
-        updateDTO.setCategoryId(categoryId);
+        updateDTO.setCategoryId(updateDTO.getCategoryId());
 
         Long updateId = productService.updateProduct(productId, updateDTO);
 
