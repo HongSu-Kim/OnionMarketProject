@@ -16,7 +16,7 @@
 <hr>
 <div id="posts_list">
     <div class="container col-md-4">
-        <form:form action="/member/joinProc" method="post" name="myForm" modelAttribute="memberJoinDTO"><%--enctype="multipart/form-data"--%>
+        <form:form action="/member/joinProc" method="post" name="myForm" modelAttribute="memberJoinDTO">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
             <div class="form-group">
                 <label>아이디</label>

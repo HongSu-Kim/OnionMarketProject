@@ -3,7 +3,6 @@ package com.youprice.onion.entity.member;
 import com.youprice.onion.entity.board.Complain;
 import com.youprice.onion.entity.board.Inquiry;
 import com.youprice.onion.entity.board.Notice;
-import com.youprice.onion.entity.board.Review;
 import com.youprice.onion.entity.chat.Chatroom;
 import com.youprice.onion.entity.order.Order;
 import com.youprice.onion.entity.order.Wish;
