@@ -61,7 +61,7 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductProgress productProgress; //판매상태 Reserved,tradings,soldout 예약중,거래중,판매완료
 
-    private String payStatus; //페이현황
+    private Boolean payStatus; //페이현황
     private String blindStatus; //블라인드현황
 
 
@@ -87,9 +87,9 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<Bidding> biddingList = new ArrayList<>();
 
-
+    //상품 등록 시 정보 생성
     public Product(Member member,Town town,Category category,Order order,String subject,String content,int price,
-                   String representativeImage,LocalDateTime auctionDeadline) {
+                   String representativeImage,LocalDateTime auctionDeadline,Boolean payStatus) {
 
         this.member = member;
         this.town = town;
@@ -108,11 +108,12 @@ public class Product {
 
         this.auctionDeadline = auctionDeadline;
         this.productProgress = ProductProgress.TRADINGS;
-        this.payStatus = "yes";
+        this.payStatus = payStatus;
         this.blindStatus = "no";
 
     }
-
+    
+    //상품 수정 시 정보 변경
     public void updateProduct(Long id, Town town, Category category, ProductUpdateDTO updateDTO,
                                LocalDateTime auctionDeadline) {
 
@@ -122,7 +123,7 @@ public class Product {
         this.subject = updateDTO.getSubject();
         this.content = updateDTO.getContent();
         this.price = updateDTO.getPrice();
-//        this.representativeImage = updateDTO.representativeImage;
+        this.representativeImage = updateDTO.getRepresentativeImage();
         this.updateDate = LocalDateTime.now();
         this.auctionDeadline = auctionDeadline;
         this.payStatus = updateDTO.getPayStatus();
