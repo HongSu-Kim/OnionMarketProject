@@ -21,10 +21,17 @@ public interface ProductService {
     //상품 삭제
     void deleteProduct(Long productId) throws Exception;
 
-    //상품목록 전체
+    // 카테고리별 상품 조회
+    List<ProductListDTO> getProductCategoryList(Long start, Long end);
+
+    //상품 전체 조회
     List<ProductListDTO> getProductList();
+
     //상품 하나 조회
     ProductDTO getProductDTO(Long productId);
+
+    //검색
+    List<ProductListDTO> getSearchList(String subject,String content);
 
     //조회수 증가
     int updateView(Long productId);
