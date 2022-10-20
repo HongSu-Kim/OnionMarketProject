@@ -4,8 +4,7 @@ import com.youprice.onion.dto.board.*;
 import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.order.OrderDTO;
-import com.youprice.onion.dto.product.ProductImageDTO;
-import com.youprice.onion.entity.product.ProductImage;
+import com.youprice.onion.dto.product.ProductDTO;
 import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.service.board.ReviewImageService;
 import com.youprice.onion.service.board.ReviewService;
@@ -14,8 +13,6 @@ import com.youprice.onion.service.order.OrderService;
 import com.youprice.onion.service.product.ProductImageService;
 import com.youprice.onion.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.List;
 
 @Controller
@@ -50,27 +46,36 @@ public class ReviewController {
         if(sessionDTO != null){
             model.addAttribute("sessionDTO", sessionDTO);
         }
-        //ProductDTO productDTO = productService.findById(orderDTO.getProductId()).orElse(null);
-        //ProductImageDTO productImageDTO = productImageService.findByProduct_ProductId(orderDTO.getProductId()).get(0);
+        ProductDTO productDTO = productService.getProductDTO(orderDTO.getProductId());
+        Long salesId = productDTO.getMemberId();
+        MemberDTO salesDTO = reviewService.getSalesUserName(orderDTO);
+//      List<ProductImageDTO> productImage = productImageService.getProductImage(productDTO.getProductId());
 
         model.addAttribute("orderDTO", orderDTO);
-        model.addAttribute("sessionDTO", sessionDTO);
-        //model.addAttribute("productImageDTO", productImageDTO);
-        //model.addAttribute("productDTO", productDTO);
+        model.addAttribute("salesDTO", salesDTO);
+//      model.addAttribute("productImage", productImage.get(0));
+        model.addAttribute("productDTO", productDTO);
         return "board/reviewForm";
-    }
-    // 상품이미지 1개 보이기
-    @ResponseBody
-    @GetMapping("/productImage/{productImageName}")
-    public Resource reviewFormProduct(@PathVariable String productImageName) throws MalformedURLException {
-        return new UrlResource("file:" + reviewService.filePath() + productImageName);
     }
 
     @PostMapping("/created/{orderId}")
-    public String created(@Valid @ModelAttribute ReviewFormDTO form, @PathVariable("orderId") Long orderId, Model model,
-                          @RequestParam("reviewImageName") List<MultipartFile> reviewImageName) throws IOException {
+    public String created(@Valid @ModelAttribute("form") ReviewFormDTO form, BindingResult bindingResult,
+                          Model model, @LoginUser SessionDTO sessionDTO, @RequestParam("reviewImageName") List<MultipartFile> reviewImageName) throws IOException {
+        MemberDTO salesDTO = memberService.getMemberDTO(form.getSalesId());
+        if(bindingResult.hasErrors()){
+            model.addAttribute("sessionDTO",sessionDTO);
+            model.addAttribute("salesDTO",salesDTO);
+            return "board/reviewForm";
+        }
+        /*int point = reviewService.saveReview(form, reviewImageName);
+        return "redirect:/review/complete?point=" + point;*/
         reviewService.saveReview(form, reviewImageName);
-        return "redirect:/review/list";
+        return "redirect:/review/complete";
+    }
+    @GetMapping("/complete")
+    public String complete(){
+        //model.addAttribute("point", point);
+        return "board/reviewComplete";
     }
 
     @GetMapping("/list")
@@ -94,10 +99,32 @@ public class ReviewController {
         return "board/reviewList";
     }
     // 이미지출력
-    @ResponseBody
-    @GetMapping("/images/{filename}")
-    public Resource image(@PathVariable String filename) throws MalformedURLException {
-        return new UrlResource("file:" + reviewService.filePath()+filename);
+//    @ResponseBody
+//    @GetMapping("/images/{filename}")
+//    public Resource image(@PathVariable String filename) throws MalformedURLException {
+//        return new UrlResource("file:" + reviewService.filePath()+filename);
+//    }
+    // 특정회원이 받은 후기 목록
+    @GetMapping("/list/{salesId}")
+    public String userReviewList(@PathVariable Long salesId, Model model, @LoginUser SessionDTO sessionDTO,
+                                 @PageableDefault(size = 7) Pageable pageable){
+        Page<ReviewDTO> userReviewList = reviewService.userReviewList(salesId, pageable);
+
+        if(sessionDTO != null){
+            model.addAttribute("sessionDTO", sessionDTO);
+        }
+        int pageNumber = userReviewList.getPageable().getPageNumber();
+        int totalPages = userReviewList.getTotalPages();
+        int pageBlock = 5;
+        int startBlockPage = ((pageNumber)/pageBlock)*pageBlock + 1;
+        int endBlockPage = startBlockPage + pageBlock - 1;
+        endBlockPage = totalPages < endBlockPage ? totalPages : endBlockPage;
+
+        model.addAttribute("startBlockPage", startBlockPage);
+        model.addAttribute("endBlockPage", endBlockPage);
+        model.addAttribute("userReviewList",userReviewList);
+
+        return "board/userReview";
     }
 
     // 수정 화면
@@ -111,7 +138,6 @@ public class ReviewController {
         }
         model.addAttribute("reviewDTO",reviewDTO);
         model.addAttribute("imageList",imageList);
-        model.addAttribute("sessionDTO",sessionDTO);
         return "board/reviewUpdate";
     }
     // 첨부사진 개별 삭제
@@ -122,9 +148,11 @@ public class ReviewController {
     }
     // 수정
     @PostMapping("/update/{id}")
-    public String update(@PathVariable("id") Long id,
-                         @Valid @ModelAttribute ReviewUpdateDTO form, BindingResult bindingResult) throws IOException {
+    public String update(@PathVariable("id") Long id, @Valid @ModelAttribute("form") ReviewUpdateDTO form,
+                                                BindingResult bindingResult, Model model) throws IOException {
+        List<ReviewImageDTO> imageList = reviewImageService.findByReviewId(id);
         if(bindingResult.hasErrors()){
+            model.addAttribute("imageList",imageList);
             return "board/reviewUpdate";
         }
         reviewService.updateReview(id, form);

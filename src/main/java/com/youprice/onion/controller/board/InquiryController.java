@@ -9,6 +9,7 @@ import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.service.board.AnswerService;
 import com.youprice.onion.service.board.InquiryService;
 import com.youprice.onion.service.member.MemberService;
+import com.youprice.onion.service.member.ProhibitionKeywordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,22 +31,32 @@ public class InquiryController {
 
     private final InquiryService inquiryService;
     private final AnswerService answerService;
-    private final MemberService memberService;
+    private final ProhibitionKeywordService prohibitionKeywordService;
 
     // 저장
     @GetMapping("/created")
-    public String inquiryForm(@ModelAttribute InquiryFormDTO inquiryFormDTO, Model model,
-                              @LoginUser SessionDTO sessionDTO){
+    public String inquiryForm(Model model, @LoginUser SessionDTO sessionDTO){
         if(sessionDTO != null){
             model.addAttribute("sessionDTO", sessionDTO);
+        } else {
+            return "member/login";
         }
         return "board/inquiryForm";
     }
     @PostMapping("/created")
-    public String createInquiry(@Valid @ModelAttribute InquiryFormDTO form, BindingResult bindingResult){
+    public String createInquiry(@Valid @ModelAttribute("form") InquiryFormDTO form, BindingResult bindingResult,
+                                @LoginUser SessionDTO sessionDTO, Model model){
+
         if (bindingResult.hasErrors()) {
+            if(sessionDTO != null){
+                model.addAttribute("sessionDTO", sessionDTO);
+            }
             return "board/inquiryForm";
         }
+        if(prohibitionKeywordService.ProhibitionKeywordFind(form.getInquirySubject()) ) { //금지키워가있으면 true
+            bindingResult.addError(new FieldError("form", "inquirySubject", "금지어입니다 다시입력!"));
+        }
+
         inquiryService.saveInquiry(form);
         return "redirect:/inquiry/list";
     }
@@ -82,7 +94,11 @@ public class InquiryController {
     @GetMapping("/article/{id}")
     public String article(@PathVariable long id, Model model,
                           @RequestParam(required = false, defaultValue = "") String field,
-                          @RequestParam(required = false, defaultValue = "") String word){
+                          @RequestParam(required = false, defaultValue = "") String word,
+                          @LoginUser SessionDTO sessionDTO){
+        if(sessionDTO != null){
+            model.addAttribute("sessionDTO", sessionDTO);
+        }
 
         InquiryDTO inquiryDTO = inquiryService.findInquiryDTO(id);
         List<AnswerDTO> answerList = answerService.findByInquiryId(id);
@@ -99,6 +115,8 @@ public class InquiryController {
     public String updateForm(@PathVariable Long id, @LoginUser SessionDTO sessionDTO, Model model){
         if(sessionDTO != null){
             model.addAttribute("sessionDTO", sessionDTO);
+        } else {
+            return "member/login";
         }
         InquiryDTO inquiryDTO = inquiryService.findInquiryDTO(id);
 
@@ -108,9 +126,14 @@ public class InquiryController {
     }
     // 수정
     @PostMapping("/update/{id}")
-    public String update(@PathVariable("id") Long id,
-                                @Valid @ModelAttribute InquiryFormDTO form, BindingResult bindingResult){
+    public String update(@PathVariable("id") Long id,@Valid @ModelAttribute("form") InquiryFormDTO form,
+                         BindingResult bindingResult, @LoginUser SessionDTO sessionDTO, Model model){
+        InquiryDTO inquiryDTO = inquiryService.findInquiryDTO(id);
         if(bindingResult.hasErrors()){
+            if(sessionDTO != null){
+                model.addAttribute("sessionDTO", sessionDTO);
+            }
+            model.addAttribute("inquiryDTO", inquiryDTO);
             return "board/inquiryUpdate";
         }
         inquiryService.updateInquiry(id, form);

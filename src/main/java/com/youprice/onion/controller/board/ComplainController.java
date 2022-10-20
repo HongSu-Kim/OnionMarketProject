@@ -41,7 +41,6 @@ public class ComplainController {
     @GetMapping("created/{id}")
     public String complainForm(@PathVariable("id") Long productId, Model model,
                                @LoginUser SessionDTO sessionDTO){
-        //ProductDTO productDTO = productService.findById(productId);
         if(sessionDTO != null){
             model.addAttribute("sessionDTO", sessionDTO);
         }
@@ -53,8 +52,6 @@ public class ComplainController {
     @PostMapping("/created")
     public String createdComplain(@ModelAttribute ComplainFormDTO complainFormDTO){
         Long productId = complainFormDTO.getProductId();
-        System.out.println("complainFormDTO = " + complainFormDTO.getComplainType());
-        System.out.println("complainFormDTO = " + complainFormDTO.getComplainContent());
 
         complainService.saveComplain(complainFormDTO);
         //return "redirect:/product/productdetail/" + productId;
