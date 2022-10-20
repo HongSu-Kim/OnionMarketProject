@@ -176,7 +176,7 @@ CREATE TABLE product (
 CREATE TABLE product_image (
 	product_image_id   	NUMBER       	NOT NULL,
 	product_id         	NUMBER       	NOT NULL,
-	product_image_name 	VARCHAR2(50) 	NOT NULL,
+	product_image_name 	VARCHAR2(255) 	NOT NULL,
 	CONSTRAINT PK_PRODUCT_IMAGE PRIMARY KEY (product_image_id),
 	CONSTRAINT FK_PRODUCT_IMAGE_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id)
 );
@@ -415,7 +415,7 @@ INSERT INTO Coordinate VALUES( 65 ,'서울특별시 강동구 둔촌2동','37.53
 INSERT INTO category VALUES(1,'디지털/가전','');
 
 INSERT INTO category VALUES(2,'모바일',1);
-INSERT INTO category VALUES(3,'가전제품',1);
+INSERT INTO category VALUES(3,' 가전제품',1);
 INSERT INTO category VALUES(4,'오디오/영상/관련기기',1);
 INSERT INTO category VALUES(5,'PC/노트북',1);
 INSERT INTO category VALUES(6,'게임/타이틀',1);
