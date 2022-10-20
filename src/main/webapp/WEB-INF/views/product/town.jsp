@@ -15,14 +15,6 @@
 </head>
 <body>
 
-<%--예시 참고바람--%>
-<c:forEach var="townList" items="${townList}">
-    타운번호: ${townList.id}<br/>
-    회원번호:${townList.memberId}<br/>
-    동네이름: ${townList.townName}<br/>
-    <br/>
-
-</c:forEach>
 
 
 <form:form action="townresult" method="post">

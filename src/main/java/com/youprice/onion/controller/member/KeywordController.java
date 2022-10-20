@@ -59,23 +59,25 @@ public class KeywordController {
 
     @PostMapping("keyword")
     public String KeywordCreate(Model model, HttpServletResponse response
-    , @Valid @ModelAttribute KeywordCreateDTO keywordCreateDto, BindingResult bindingResult,@LoginUser SessionDTO sessionDTO)throws IOException{
+    , @Valid KeywordCreateDTO keywordCreateDto, BindingResult bindingResult,@LoginUser SessionDTO sessionDTO)throws IOException{
 
 
         if(prohibitionKeywordService.ProhibitionKeywordFind(keywordCreateDto.getKeywordName()) ) { //금지키워가있으면 true
 
-            bindingResult.addError(new FieldError("keywordCreateDto","keywordName","금지어입니다 다시입력!"));
-
+            bindingResult.addError(new FieldError("keywordCreateDto","keywordName","금지어입니다 다시입력!!"));
+            System.out.println(keywordCreateDto.getKeywordName());
 
 
             if (bindingResult.hasErrors()) {
 
+                if (sessionDTO == null) return "redirect:/member/login";
                 MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
 
-                model.addAttribute("memberDTO", memberDTO);
-                List<KeywordListDTO> MykeywordList = keywordService.KeywordList(memberDTO.getId());
+                model.addAttribute("memberDTO",memberDTO);
 
-                model.addAttribute("MykeywordList", MykeywordList);
+                List<KeywordListDTO> MykeywordList = keywordService.KeywordList(sessionDTO.getId());
+
+                model.addAttribute("MykeywordList",MykeywordList);
 
                 return "product/keyword";
 
