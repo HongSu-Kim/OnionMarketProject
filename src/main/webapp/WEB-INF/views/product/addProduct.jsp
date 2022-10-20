@@ -1,6 +1,8 @@
 <%@ page import="javax.validation.constraints.NotEmpty" %>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -23,11 +25,11 @@
 		$(document).ready(function() {
 			$('.btnAdd').click(function () {
 				$('.addInput').append(
-						'<input type="file" name="fileList"><button type="button" class="btnRemove">삭제</button><br/>'
+						'<input type="file" name="fileList"><button type="button" class="btnRemove">삭제</button><br>'
 				);//input file
 				$('.btnRemove').on('click',function(){//this='.btnRemove'
 					$(this).prev().remove();// .prev()=input file을 가리키고 remove()실행
-					$(this).next().remove();//<br/> 삭제
+					$(this).next().remove();//<br> 삭제
 					$(this).remove();//버튼 삭제
 				});
 			});
@@ -50,7 +52,7 @@
 <section class="checkout spad">
 	<div class="container">
 		<div class="checkout__form">
-			<h4>기본 정보</h4>
+			<h4>기본 정보<span style="font-size: small;color:#FF5058;margin: 0px 0px 0px 32px">*필수항목</span></h4>
 			<form action="/product/add" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 				<div class="row">
@@ -59,20 +61,26 @@
 							<div class="col-lg-7">
 								<div class="checkout__input">
 									<p> 제 목 <span>*</span></p>
-									<input type="text" name="subject"/>
+									<input type="text" name="subject" placeholder="제목을 입력해주세요." value="${productAddDTO.subject}">
 								</div>
 							</div>
 						</div>
 						<div class="checkout__input">
 							<p>거래 지역<span>*</span></p><%--townList foreach로 설정--%>
-							<label for="town1">${townName}</label><input type="radio" style="width: 15px;height: 15px;" id="town1" name="townName" value="${townName}"/>
+							<label for="town">
+								<c:forEach var="townList" items="${townList}">
+									<p>${townList.townName}<input type="radio" style="width: 15px;height: 15px; margin-left:6px" id="town" name="townName" value="${townList.townName}"></p>
+								</c:forEach>
+							</label>
+
+							<p><button type="button" onclick="location.href='/town/town'">내 동네 설정하러 가기</button></p><br>
 						</div>
 						<div class="checkout__input">
-							<p>경매 등록<span>*</span></p><%--true/false로 변경--%>
+							<p>경매 등록</p><%--true/false로 변경--%>
 							<p style="color: #aaaaaa">
 								경매 기간은 3일입니다.
-								<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="auctionStatus" value="true"/>
-								<input type="hidden" name="auctionStatus" value="false"/>
+								<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="auctionStatus" value="true">
+								<input type="hidden" name="auctionStatus" value="false">
 							</p>
 							<span class="checkmark"></span>
 						</div>
@@ -87,40 +95,40 @@
 								<c:forEach var="subCategory" items="${subCategory}">
 									<option value="${subCategory.id}">${subCategory.categoryName}</option>
 								</c:forEach>
-							</select><br/><br/><br/><br/>
+							</select><br><br><br><br>
 						</div>
 						<div class="checkout__input">
 							<p>상품 가격<span>*</span></p>
-							<input type="text" name="price"/>
+							<input type="text" name="price" value="${productAddDTO.price}">
 						</div>
 						<div class="checkout__input">
-							<p>페이 결제<span>*</span></p><%--true/false로 변경--%>
+							<p>페이 결제</p><%--true/false로 변경--%>
 							<p style="color: #aaaaaa">
 								(페이 결제 시 혜택..?)
-								<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="payStatus" value="true"/>
-								<input type="hidden" name="payStatus" value="false"/>
+								<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="payStatus" value="true">
+								<input type="hidden" name="payStatus" value="false">
 							</p>
 							<span class="checkmark"></span>
 						</div>
 						<div class="checkout__input">
-							<p>설 명<span>*</span></p><br/>
-							<textarea rows="10" cols="100" name="content" placeholder="상품설명"></textarea>
+							<p>설 명<span>*</span></p><br>
+							<textarea rows="10" cols="100" name="content" placeholder="상품설명">${productAddDTO.content}</textarea>
 						</div>
 						<div class="row">
 							<div class="col-lg-6">
 								<div class="checkout__input">
 									<div class='addInput'>
-
+										<p>상품 이미지<span>*</span></p>
 									</div>
-									<button type="button" class="btnAdd">이미지 추가</button><br/>
+									<button type="button" class="btnAdd">이미지 추가</button><br>
 								</div>
 							</div>
 						</div>
 						<div>
-							<input type="submit" value="상품 등록"/>
+							<input type="submit" value="상품 등록">
 						</div>
 						<div>
-							<input type="button" value="뒤로가기" onclick="goBack();"/>
+							<input type="button" value="뒤로가기" onclick="goBack();">
 						</div>
 					</div>
 					<div class="col-lg-4 col-md-6">

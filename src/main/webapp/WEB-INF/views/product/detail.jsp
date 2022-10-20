@@ -2,6 +2,8 @@
 <%@ page import="java.time.LocalDateTime" %>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -52,18 +54,18 @@
 						<i class="fa fa-star-half-o"></i>
 						<span>(18 reviews)</span>
 					</div>
-					<div class="product__details__price">${dto.price}원</div>
+					<div class="product__details__price"><fmt:formatNumber maxFractionDigits="3" value="${dto.price}"/>원</div>
 					<div>
-					<c:choose>
-					<c:when test="${dto.updateDate ne dto.uploadDate}"><p>${dto.updateDate}</p></c:when>
-					<c:when test="${dto.auctionDeadline ne null}">
-						<p>
-							경매 입찰기간<br/>
-								${dto.uploadDate} ~ ${dto.auctionDeadline}
-						</p>
-					</c:when>
-					<c:otherwise><p>${dto.uploadDate}</p></c:otherwise>
-					</c:choose>
+						<c:choose>
+							<c:when test="${dto.updateDate ne dto.uploadDate}"><p><${dto.updateDate}</p></c:when>
+							<c:when test="${dto.auctionDeadline ne null}">
+								<p>
+									경매 입찰기간<br/>
+									${dto.uploadDate} ~ ${dto.auctionDeadline}
+								</p>
+							</c:when>
+							<c:otherwise><p>${dto.uploadDate}</p></c:otherwise>
+						</c:choose>
 					</div>
 <%--					<p>Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Vestibulum ac diam sit amet quam--%>
 <%--						vehicula elementum sed sit amet dui. Sed porttitor lectus nibh. Vestibulum ac diam sit amet--%>
