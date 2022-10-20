@@ -22,8 +22,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 //	@Query(value = "select o from Order o join fetch o.product p join fetch p.member m " +
 //			"left join fetch o.delivery left join fetch p.auction where o.member.id = :memberId order by o.id")
 //	List<Order> findAllByMemberId(@Param("memberId") Long memberId, Pageable pageable);
-//	Long countByMemberId(Long memberId);
-	@EntityGraph(attributePaths = "product")
+	Long countByMemberId(Long memberId);
+	@EntityGraph(attributePaths = { "product", "delivery" })
 	Page<Order> findAllByMemberId(Long memberId, Pageable pageable);
 
 }
