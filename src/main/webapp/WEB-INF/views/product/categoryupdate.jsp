@@ -24,9 +24,6 @@
 <br/>
 
 
-<nav class="navbar navbar-dark bg-dark fixed-top">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/category/category">카테고리 설정 하세요<br/> <br/></a>
 
 
 <form:form action=""  method="post">
