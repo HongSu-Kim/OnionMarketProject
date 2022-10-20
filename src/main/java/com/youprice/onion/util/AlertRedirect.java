@@ -11,10 +11,10 @@ public class AlertRedirect {
 		PrintWriter out = response.getWriter();
 		out.println(
 				"<script>" +
-						"	alert('" + message + "');" +
-						"	history.back();" +
-						"</script>"
-		);
+				"	alert('" + message + "');" +
+				"	history.back();" +
+				"</script>"
+);
 		out.flush();
 	}
 
@@ -23,10 +23,10 @@ public class AlertRedirect {
 		PrintWriter out = response.getWriter();
 		out.println(
 				"<script>" +
-						"	alert('" + message + "');" +
-						"	history.go(" + num + ");" +
-						"</script>"
-		);
+				"	alert('" + message + "');" +
+				"	history.go(" + num + ");" +
+				"</script>"
+);
 		out.flush();
 	}
 	public static void warningMessage(HttpServletResponse response, String url, String message) throws IOException {
@@ -34,9 +34,9 @@ public class AlertRedirect {
 		PrintWriter out = response.getWriter();
 		out.println(
 				"<script>" +
-						"	alert('" + message + "');" +
-						"	location.href='" + url + "';" +
-						"</script>"
+				"	alert('" + message + "');" +
+				"	location.href='" + url + "';" +
+				"</script>"
 		);
 		out.flush();
 	}

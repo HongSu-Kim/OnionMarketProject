@@ -7,6 +7,10 @@
     color: grey;
 }
 
+.text-center {
+    text-align: center
+}
+
 .checkout__input input {
     color: black;
 }

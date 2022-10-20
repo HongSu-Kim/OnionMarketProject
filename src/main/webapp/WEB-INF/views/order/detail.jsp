@@ -33,35 +33,36 @@
 							<tbody>
 
 								<!-- view test -->
-								<tr>
-									<td onclick="location.href='/product/detail?productId=1';" style="cursor: pointer">
+								<%--<tr>
+									<td class="pointer" onclick="location.href='/product/detail?productId=1';">
 										<img src="/img/product/edd75ee44b39477ef71df02dbc46e873c802479d.png" height="100">
 										<span>상품명1</span>
 									</td>
-									<td onclick="location.href='/order/detail?orderId=1';" style="cursor: pointer">imp2024654216</td>
+									<td class="pointer" onclick="location.href='/order/detail?orderId=1';">imp2024654216</td>
 									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="20000"/>원</td>
 									<td>2022/10/16</td>
 									<td>
 										주문완료
 									</td>
-								</tr>
+								</tr>--%>
 								<!-- view test end -->
 
 								<!-- 상품 정보 -->
-								<c:set var="productDTO" value="${deliveryDTO.orderDTO.productDTO}"/>
+								<c:set var="orderDTO" value="${deliveryDTO.orderDTO}"/>
+								<c:set var="productDTO" value="${orderDTO.productDTO}"/>
 								<tr>
-									<td onclick="location.href='/product/detail?productId=${productDTO.productId}'" style="cursor: pointer">
-										<img src="/img/product/${productDTO.productImageList.get(0).productImageName}">
+									<td class="pointer" onclick="location.href='/product/detail?productId=${productDTO.productId}'">
+										<img src="/img/product/${productDTO.representativeImage}" height="100">
 										<span>${productDTO.subject}</span>
 									</td>
-									<td>${deliveryDTO.orderDTO.imp_uid}</td>
-									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${deliveryDTO.orderDTO.orderPayment}"/></td>
-									<td>${deliveryDTO.orderDTO.orderDate}</td>
+									<td>${orderDTO.imp_uid}</td>
+									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${orderDTO.orderPayment}"/></td>
+									<td>${orderDTO.orderDate}</td>
 									<td>
-										<p>${deliveryDTOorderDTO.orderState.kor}</p>
+										<p>${orderDTO.orderState.kor}</p>
 										<p>
 											<c:if test="${orderDTO.orderState eq 'ORDER'}">
-												<a href="/delivery/update?orderId=${orderDTO.orderId}" class="primary-btn">배송지변경</a>
+												<a onclick="update()" class="primary-btn">배송지변경</a>
 												<a onclick="confirm('정말 삭제하시겠습니까?') ? location.href='/order/cancel?orderId=${orderDTO.orderId}' : false"
 													 class="primary-btn cart-btn">주문취소</a>
 											</c:if>
@@ -86,21 +87,22 @@
 
 				<!-- 배송 정보 -->
 				<div class="col-8 col-md-6">
+					<c:set var="memberDTO" value="${deliveryDTO.memberDTO}"/>
 					<div class="checkout__input">
 						<p>주문자명</p>
-						<input type="text" id="name" name="name" value="${deliveryDTO.memberDTO.name}" readonly/>
+						<input type="text" id="name" name="name" value="${memberDTO.name}" readonly/>
 					</div>
 					<div class="row">
 						<div class="col-lg-6">
 							<div class="checkout__input">
 								<p>연락처</p>
-								<input type="text" id="tel" name="tel" value="${deliveryDTO.memberDTO.tel}" readonly/>
+								<input type="text" id="tel" name="tel" value="${memberDTO.tel}" readonly/>
 							</div>
 						</div>
 						<div class="col-lg-6">
 							<div class="checkout__input">
 								<p>이메일</p>
-								<input type="text" id="email" name="email" value="${deliveryDTO.memberDTO.email}" readonly/>
+								<input type="text" id="email" name="email" value="${memberDTO.email}" readonly/>
 							</div>
 						</div>
 					</div>
@@ -131,12 +133,12 @@
 				<div class="col-4 col-md-6">
 					<div class="checkout__order">
 						<h4>결제 정보</h4>
-						<div class="checkout__order__products">Products <span>Total</span></div>
+						<div class="checkout__order__products">상품 <span>금액</span></div>
 						<ul>
-							<li>${productDTO.subject} <span>${productDTO.productPrice}</span></li>
-							<li>배송비 <span>${deliveryDTO.deliveryCost}</span></li>
+							<li>${productDTO.subject} <span>${productDTO.price}원</span></li>
+							<li>배송비 <span>${deliveryDTO.deliveryCost}원</span></li>
 						</ul>
-						<div class="checkout__order__total">결제금액 <span>${productDTO.productPrice + deliveryDTO.deliveryCost}</span></div>
+						<div class="checkout__order__total">결제금액 <span>${productDTO.price + deliveryDTO.deliveryCost}원</span></div>
 <%--						<button type="button" class="site-btn" id="payment">결제하기</button>--%>
 					</div>
 				</div>

@@ -30,7 +30,6 @@ public class OrderDTO {
 		// order
 		orderId = order.getId();
 		memberId = order.getMember().getId();
-		productId = order.getProduct().getId();
 		orderNum = order.getOrderNum();
 		imp_uid = order.getImp_uid();
 		orderPayment = order.getOrderPayment();
@@ -38,8 +37,10 @@ public class OrderDTO {
 		orderDate = order.getOrderDate();
 		modifiedDate = order.getModifiedDate();
 
-//		memberDTO = new MemberDTO(order.getMember());
-		productDTO = new ProductDTO(order.getProduct());
+		if (order.getProduct() != null){
+			productId = order.getProduct().getId();
+			productDTO = new ProductDTO(order.getProduct());
+		}
 	}
 
 }

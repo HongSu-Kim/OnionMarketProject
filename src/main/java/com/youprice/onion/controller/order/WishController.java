@@ -40,17 +40,13 @@ public class WishController {
     public ResponseEntity<?> addWish(@LoginUser SessionDTO sessionDTO, @RequestParam Long productId) {
 		if (sessionDTO == null) return new ResponseEntity<>("/member/login", HttpStatus.UNAUTHORIZED);
 
-		try {
-			wishService.addWish(sessionDTO.getId(), productId);
-		} catch (Exception e) {
-
-		}
+		wishService.addWish(sessionDTO.getId(), productId);
 
         return new ResponseEntity<>("찜 목록에 추가헀습니다.", HttpStatus.OK);
     }
 
     // 찜 삭제
-    @PostMapping("removeWish")
+    @DeleteMapping("removeWish")
 	@ResponseBody
     public ResponseEntity<?> removeWish(Long wishId) {
 
