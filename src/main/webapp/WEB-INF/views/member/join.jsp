@@ -21,7 +21,7 @@
             <div class="form-group">
                 <label>아이디</label>
                 <input type="text" name="userId" value="${memberJoinDTO.userId}" class="form-control" placeholder="아이디를 입력해주세요"/>
-                <span id="valid_id">${valid_userId}</span>
+                <span id="valid_userId">${valid_userId}</span>
             </div>
 
             <div class="form-group">
@@ -40,7 +40,6 @@
                 <label>닉네임</label>
                 <input type="text" name="nickname" value="${memberJoinDTO.nickname}" class="form-control" placeholder="닉네임을 입력해주세요"/>
                 <span id="valid_nickname">${valid_nickname}</span>
-                <form:errors path="nickname"/>
             </div>
 
             <div class="form-group">

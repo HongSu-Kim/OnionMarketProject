@@ -1,6 +1,8 @@
 package com.youprice.onion.service.board.impl;
 
 import com.youprice.onion.dto.board.*;
+import com.youprice.onion.dto.member.MemberDTO;
+import com.youprice.onion.dto.order.OrderDTO;
 import com.youprice.onion.entity.board.Review;
 import com.youprice.onion.entity.board.ReviewImage;
 import com.youprice.onion.entity.member.Member;
@@ -40,7 +42,7 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewRepository.findById(reviewId).map(ReviewDTO::new).orElse(null);
     }
     @Transactional
-    public Long saveReview(ReviewFormDTO form, List<MultipartFile> reviewImageName) throws IOException {
+    public void saveReview(ReviewFormDTO form, List<MultipartFile> reviewImageName) throws IOException {
         Order order = orderRepository.findById(form.getOrderId()).orElse(null);
         Member member = memberRepository.findById(form.getMemberId()).orElse(null);
 
@@ -53,14 +55,16 @@ public class ReviewServiceImpl implements ReviewService {
             reviewImageRepository.save(reviewImage);
         }
         /*
+        int point = 0;
+
         if(save.getId() != null){
-            if(reviewImageName != null) {
-                member.addPoint(200); // 사진리뷰
+            if(list.size() != 0) {
+                point = member.addPoint(150);// 사진리뷰
             } else {
-                member.addPoint(50); // 일반리뷰
+                point = member.addPoint(50); // 일반리뷰
             }
-        }*/
-        return reviewId;
+        }
+        return point;*/
     }
 
     public ReviewDTO findByUserId(String userId){
@@ -72,12 +76,19 @@ public class ReviewServiceImpl implements ReviewService {
     public ReviewDTO findReviewDTO(Long reviewId){
         return reviewRepository.findById(reviewId).map(ReviewDTO::new).orElse(null);
     }
+    // 판매자 DTO 찾아오기
+    public MemberDTO getSalesUserName(OrderDTO orderDTO){
+        Product product = productRepository.findById(orderDTO.getProductId()).orElse(null);
+        MemberDTO memberDTO = memberRepository.findById(product.getMember().getId())
+                                .map(MemberDTO::new).orElse(null);
+        return memberDTO;
+    }
 
-    /*
-     특정 회원의 목록
-    public List<ReviewDTO> userReviewList(Long buyerId, Long reviewId){
+    // 특정 회원의 목록
+    public Page<ReviewDTO> userReviewList(Long salesId, Pageable pageable){
+        return reviewRepository.findAllBySalesIdOrderById(salesId, pageable).map(ReviewDTO::new);
+    }
 
-    }*/
     @Override
     public Page<ReviewDTO> findAll(Pageable pageable) {
         Page<ReviewDTO> list = reviewRepository.findAll(pageable).map(ReviewDTO::new);
@@ -120,10 +131,10 @@ public class ReviewServiceImpl implements ReviewService {
         return storeFileList;
     }
     public String filePath(){
-        return System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images";
+        return System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\review";
     }
     public String storePath(MultipartFile multipartFile) throws IOException {
-        String filePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images";
+        String filePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\review";
 
         if(multipartFile.isEmpty()){
             return null;

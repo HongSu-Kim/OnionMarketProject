@@ -3,6 +3,7 @@ package com.youprice.onion.service.member.impl;
 import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.dto.member.MemberJoinDTO;
 import com.youprice.onion.dto.member.MemberModifyDTO;
+import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.repository.member.BlockRepository;
 import com.youprice.onion.repository.member.MemberRepository;
@@ -11,12 +12,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 @Slf4j
@@ -27,6 +33,9 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final BlockRepository blockRepository;
+
+    @Value("$(file.path}")
+    private String uploadFolder;
 
     @Autowired
     private final ModelMapper modelMapper;
@@ -59,18 +68,44 @@ public class MemberServiceImpl implements MemberService {
     //회원정보 수정
     @Transactional
     @Override
-    public void modify(MemberModifyDTO memberModifyDTO) {
-        Member member = memberRepository.findById(memberModifyDTO.toEntity().getId()).orElseThrow(() ->
+    public boolean modify(MemberModifyDTO memberModifyDTO) {
+        Member member = memberRepository.findById(memberModifyDTO.getId()).orElseThrow(() ->
                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
-        String encPwd = passwordEncoder.encode(memberModifyDTO.getPwd());
-        member.modify(encPwd, memberModifyDTO.getNickname(), memberModifyDTO.getTel(), memberModifyDTO.getPostcode(), memberModifyDTO.getAddress(), memberModifyDTO.getDetailAddress(), memberModifyDTO.getExtraAddress(), memberModifyDTO.getEmail(), memberModifyDTO.getMemberImageName());
-
+        Member member1 = memberRepository.findByNickname(memberModifyDTO.getNickname()).orElse(null);
+        if (member1 == null || member1.getId() == memberModifyDTO.getId()) {
+            String encPwd = passwordEncoder.encode(memberModifyDTO.getPwd());
+            member.modify(encPwd, memberModifyDTO.getNickname(), memberModifyDTO.getTel(), memberModifyDTO.getPostcode(), memberModifyDTO.getAddress(), memberModifyDTO.getDetailAddress(), memberModifyDTO.getExtraAddress(), memberModifyDTO.getEmail(), memberModifyDTO.getMemberImageName());
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     public MemberDTO getMemberDTO(Long memberId) {
         return memberRepository.findById(memberId).map(MemberDTO::new).orElse(null);
+    }
+
+    //프로필사진 수정
+    @Transactional
+    @Override
+    public void profileImageUpdate(Long memberId, MemberModifyDTO memberModifyDTO, MultipartFile profileImageFile) {
+        UUID uuid = UUID.randomUUID();
+        String memberImageName = uuid + "_" + profileImageFile.getOriginalFilename();
+        Path imageFilePath = Paths.get(uploadFolder + memberImageName);
+
+        try {
+            Files.write(imageFilePath, profileImageFile.getBytes());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> {
+            return new IllegalArgumentException("프로필 사진 수정 실패 : 존재하지 않는 회원입니다.");
+        });
+
+
     }
 
 /*  차단
