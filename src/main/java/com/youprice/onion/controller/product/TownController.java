@@ -47,13 +47,6 @@ public class TownController {
         model.addAttribute("memberDTO",memberDTO);
 
 
-        List<TownFindDTO> townList = townService.townLists(memberDTO.getId()); //참고
-
-        model.addAttribute("townList",townList);
-
-
-
-
 
         return "product/town";
     }

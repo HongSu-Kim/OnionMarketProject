@@ -39,9 +39,7 @@
         <input type="submit" value="다시입력"/>
         </a>
 
-    <a href="/town/town">
-        <input type="submit" value="My주소설정"/>
-    </a>
+
 
 </div>
 <div id="map" style="width:1000px;height:500px;"></div>
