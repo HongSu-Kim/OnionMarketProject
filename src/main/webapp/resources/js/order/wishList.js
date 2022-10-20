@@ -3,24 +3,47 @@ let header = $("meta[name='_csrf_header']").attr("content");
 let token = $("meta[name='_csrf']").attr("content");
 
 $('#wishBtn').click(function () {
-    if ($(this).attr("class") == "true") {
+    let wishBtn = $(this)
+
+    if (wishBtn.attr("class") != "true") {
         $.ajax({
             url: "/wish/addWish",
             method: "POST",
             data: ({
-                productId: $(this).siblings('#wishId').val()
+                productId: wishBtn.siblings('#productId').val()
             }),
             beforeSend: function (jqXHR) {
                 jqXHR.setRequestHeader(header, token);
             },
-            success: function (data) {
-                alert("success" + data)
+            success: function (msg) {
+                wishBtn.addClass("true")
+                alert(msg)
             },
             error: function (e) {
-                alert("error" + e)
+                wishBtn.addClass("true")
+                alert("error")
             }
         })
     } else {
-        alert("결제에 실패하였습니다. 에러 내용: " +  rsp.error_msg);
+        if (confirm('찜 목록에서 삭제하시겠습니까?')) {
+            $.ajax({
+                url: "/wish/removeWish",
+                method: "DELETE",
+                data: ({
+                    wishId: wishBtn.siblings('#wishId').val()
+                }),
+                beforeSend: function (jqXHR) {
+                    jqXHR.setRequestHeader(header, token);
+                },
+                success: function (msg) {
+                    wishBtn.removeClass("true")
+                    alert(msg)
+                },
+                error: function (e) {
+                    wishBtn.removeClass("true")
+                    alert("error")
+                }
+            })
+        }
     }
 })

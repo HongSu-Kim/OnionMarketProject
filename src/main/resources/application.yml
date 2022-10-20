@@ -19,6 +19,7 @@ spring:
         dialect: org.hibernate.dialect.Oracle10gDialect
         format_sql: true
         show_sql: true
+        default_batch_fetch_size: 100
 
 mybatis:
   mapper-locations: mybatis/mapper/*/*.xml

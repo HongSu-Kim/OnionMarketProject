@@ -34,11 +34,11 @@
 
 								<!-- view test -->
 									<tr>
-										<td onclick="location.href='/product/detail?productId=1';" style="cursor: pointer">
+										<td class="pointer" onclick="location.href='/product/detail?productId=1';">
 											<img src="/img/product/edd75ee44b39477ef71df02dbc46e873c802479d.png" height="100">
 											<span>상품명1</span>
 										</td>
-										<td onclick="location.href='/order/detail?orderId=1';" style="cursor: pointer">imp2024654216</td>
+										<td class="pointer" onclick="location.href='/order/detail?orderId=1';">imp2024654216</td>
 										<td><fmt:formatNumber type="number" maxFractionDigits="3" value="20000"/>원</td>
 										<td>2022/10/16</td>
 										<td>
@@ -51,11 +51,11 @@
 										</td>
 									</tr>
 									<tr>
-										<td onclick="location.href='/product/detail?productId=1';" style="cursor: pointer">
+										<td class="pointer" onclick="location.href='/product/detail?productId=1';">
 											<img src="/img/product/edd75ee44b39477ef71df02dbc46e873c802479d.png" height="100">
 											<span>상품명2</span>
 										</td>
-										<td onclick="location.href='/order/detail?orderId=1';" style="cursor: pointer">imp2024684568</td>
+										<td class="pointer" onclick="location.href='/order/detail?orderId=1';">imp2024684568</td>
 										<td>10,000원</td>
 										<td>2022/10/15</td>
 										<td>
@@ -66,11 +66,11 @@
 										</td>
 									</tr>
 									<tr>
-										<td onclick="location.href='/product/detail?productId=1';" style="cursor: pointer">
+										<td class="pointer" onclick="location.href='/product/detail?productId=1';">
 											<img src="/img/product/edd75ee44b39477ef71df02dbc46e873c802479d.png" height="100">
 											<span>상품명3</span>
 										</td>
-										<td onclick="location.href='/order/detail?orderId=1';" style="cursor: pointer">imp2020556126</td>
+										<td class="pointer" onclick="location.href='/order/detail?orderId=1';">imp2020556126</td>
 										<td>35,000원</td>
 										<td>2022/10/13</td>
 										<td>
@@ -85,18 +85,18 @@
 								<!-- 주문 없음 -->
 								<c:if test="${empty page.content}">
 									<tr>
-										<td colspan="5" style="text-align: center">주문한 상품이 존재하지 않습니다.</td>
+										<td colspan="5"class="text-center">주문한 상품이 존재하지 않습니다.</td>
 									</tr>
 								</c:if>
 
 								<!-- 주문 정보 -->
 								<c:forEach var="orderDTO" items="${page.content}">
 									<tr>
-										<td onclick="location.href='/product/detail?productId=${orderDTO.productDTO.productId}'" style="cursor: pointer">
+										<td class="pointer" onclick="location.href='/product/detail?productId=${orderDTO.productDTO.productId}'">
 											<img src="/img/product/${orderDTO.productDTO.representativeImage}">
 											<span>${orderDTO.productDTO.subject}</span>
 										</td>
-										<td onclick="location.href='/order/detail?orderId=${orderDTO.orderId}'" style="cursor: pointer">
+										<td class="pointer" onclick="location.href='/order/detail?orderId=${orderDTO.orderId}'">
 												${orderDTO.imp_uid}
 										</td>
 										<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${orderDTO.orderPayment}"/></td>
@@ -105,7 +105,7 @@
 											<p>${orderDTO.orderState.kor}</p>
 											<p>
 												<c:if test="${orderDTO.orderState eq 'ORDER'}">
-													<a href="/delivery/update?orderId=${orderDTO.orderId}" class="primary-btn">배송지변경</a>
+													<a href="/order/detail?orderId=${orderDTO.orderId}&mode=update" class="primary-btn">배송지변경</a>
 													<a onclick="confirm('정말 삭제하시겠습니까?') ? location.href='/order/cancel?orderId=${orderDTO.orderId}' : false"
 														 class="primary-btn cart-btn">주문취소</a>
 												</c:if>
@@ -156,21 +156,23 @@
 					</div>--%>
 
 					<!-- view test -->
-					<div class="product__pagination" style="text-align: center">
-						<a href="#">1</a>
-						<a href="#">2</a>
-						<a href="#">3</a>
-						<a href="#">></a>
-					</div>
+					<c:if test="${empty page.content}">
+						<div class="product__pagination text-center">
+							<a href="#">1</a>
+							<a href="#">2</a>
+							<a href="#">3</a>
+							<a href="#">></a>
+						</div>
+					</c:if>
 					<!-- view test end -->
 
 					<!-- 페이징 -->
 					<c:if test="${!empty page.content}">
-						<div class="product__pagination" style="text-align: center">
+						<div class="product__pagination text-center">
 							<a href="#">1</a>
 							<a href="#">2</a>
 							<a href="#">3</a>
-							<a href="#"><i class="fa fa-long-arrow-right"></i></a>
+							<a href="#">></a>
 						</div>
 					</c:if>
 
