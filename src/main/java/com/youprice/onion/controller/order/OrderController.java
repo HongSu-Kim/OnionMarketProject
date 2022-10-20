@@ -55,6 +55,9 @@ public class OrderController {
 		if (productDTO == null) {
 			AlertRedirect.warningMessage(response, "/product/main", "상품정보가 존재하지 않습니다.");
 			return null;
+		} else if (productDTO.getMemberId() == sessionDTO.getId()) {
+			AlertRedirect.warningMessage(response, "/product/main", "자신의 상품은 구매할수 없습니다.");
+			return null;
 		} else if (productDTO.getOrderId() != null) {
 			AlertRedirect.warningMessage(response, "/product/main", "이미 판매된 상품입니다.");
 			return null;
@@ -109,13 +112,13 @@ public class OrderController {
 	// 구매 내역 상세 페이지
 	@GetMapping("detail")
 	public String buyDetail(@LoginUser SessionDTO sessionDTO, Model model, Long orderId, String mode) {
+		if (sessionDTO == null) return "redirect:/member/login";
 
-		DeliveryDTO deliveryDTO = null;
-//		DeliveryDTO deliveryDTO = deliveryService.getDeliveryDTO(orderId);
-//
-//		if (deliveryDTO == null || deliveryDTO.getOrderDTO().getMemberId() != sessionDTO.getId()) {
-//			return "redirect:/order/buyList";
-//		}
+		DeliveryDTO deliveryDTO = deliveryService.getDeliveryDTO(orderId);
+
+		if (deliveryDTO == null || deliveryDTO.getOrderDTO().getMemberId() != sessionDTO.getId()) {
+			return "redirect:/order/buyList";
+		}
 
 		model.addAttribute("deliveryDTO", deliveryDTO);
 		model.addAttribute("mode", mode);
