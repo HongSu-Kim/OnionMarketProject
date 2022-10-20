@@ -37,7 +37,6 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepositoy categoryRepository;
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
-    private final ProductImageService productImageService;
 
     private final ProhibitionKeywordRepositoy prohibitionKeywordRepositoy;
 
@@ -158,8 +157,25 @@ public class ProductServiceImpl implements ProductService {
 
     //전체 상품 조회
     @Override
+    public List<ProductListDTO> getProductCategoryList(Long start, Long end) {
+        return productRepository.findByCategoryIdBetween(start,end).stream().
+                map(product -> new ProductListDTO(product))
+                .collect(Collectors.toList());
+    }
+
+    //
+    @Override
     public List<ProductListDTO> getProductList() {
         return productRepository.findAll().stream()
+                .map(product -> new ProductListDTO(product))
+                .collect(Collectors.toList());
+    }
+
+
+    //검색에 따른 조회(제목,카테고리,내용)
+    @Override
+    public List<ProductListDTO> getSearchList(String subject,String content) {
+        return productRepository.findBySubjectContainingOrContentContaining(subject,content).stream()
                 .map(product -> new ProductListDTO(product))
                 .collect(Collectors.toList());
     }
