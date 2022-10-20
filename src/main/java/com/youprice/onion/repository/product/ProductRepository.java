@@ -17,6 +17,7 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     //상품번호로 상품 하나 조회
     @Override
+    @EntityGraph(attributePaths = {"productImageList"})
     Optional<Product> findById(Long productId);
 
     //상품번호로 조회 후 상품의 조회수 증가
