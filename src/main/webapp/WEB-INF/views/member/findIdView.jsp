@@ -28,7 +28,8 @@
     <form action="/member/findId" method="post">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
         <div class="form-group">
-            <input type="email" class="form-control" name="email" placeholder="이메일을 입력해주세요">
+            <label>이메일</label>
+            <input type="email" name="email" class="form-control" placeholder="이메일을 입력해주세요"/>
         </div>
         <button type="submit" class="btn btn-primary bi bi-lock-fill">확인</button>
         <a href="/member/login" class="btn btn-primary bi bi-lock-fill">로그인</a>

@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @RequiredArgsConstructor
@@ -24,6 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomUserDetailsService customUserDetailsService;
     private final AuthenticationFailureHandler customFailureHandler;
+    private final AuthenticationSuccessHandler customSuccessHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -67,6 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/member/loginProc") //Security에서 해당 주소로 오는 요청을 낚아채서 수행
                 .failureHandler(customFailureHandler) //로그인 실패 핸들러
                 .defaultSuccessUrl("/member/home") //로그인 성공 시 이동 페이지
+                .successHandler(customSuccessHandler) //로그인 성공 핸들러
                 .permitAll();
 
         //로그아웃 설정
