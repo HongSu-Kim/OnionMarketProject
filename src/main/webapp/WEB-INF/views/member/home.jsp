@@ -18,17 +18,11 @@
 
     <sec:authorize access="isAnonymous()">
         <a href="/member/login">로그인</a>
-    </sec:authorize>
-    <sec:authorize access="isAnonymous()">
         <a href="/member/join">회원가입</a>
-    </sec:authorize>
-    <sec:authorize access="isAuthenticated()">
-        <a href="/member/logout">로그아웃</a>
-    </sec:authorize>
-    <sec:authorize access="isAnonymous()">
         <a sec:authorize access="isAuthenticated()" href="/member/mypage">내정보</a>
     </sec:authorize>
     <sec:authorize access="isAuthenticated()">
+        <a href="/member/logout">로그아웃</a>
         <a sec:authorize access="isAuthenticated()" href="/member/mypage">내정보</a>
     </sec:authorize>
     <sec:authorize access="hasRole('ROLE_ADMIN')">

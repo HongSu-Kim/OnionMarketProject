@@ -15,6 +15,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("wish")
@@ -37,24 +40,25 @@ public class WishController {
     // 찜 추가
     @PostMapping("addWish")
 	@ResponseBody
-    public ResponseEntity<?> addWish(@LoginUser SessionDTO sessionDTO, @RequestParam Long productId) {
+    public ResponseEntity<?> addWish(@LoginUser SessionDTO sessionDTO, Long productId, HttpServletResponse response) throws IOException {
 		if (sessionDTO == null) return new ResponseEntity<>("/member/login", HttpStatus.UNAUTHORIZED);
 
 		try {
 			wishService.addWish(sessionDTO.getId(), productId);
 		} catch (Exception e) {
-
+			return new ResponseEntity<>("상품이 존재하지 않습니다.", HttpStatus.FORBIDDEN);
 		}
 
         return new ResponseEntity<>("찜 목록에 추가헀습니다.", HttpStatus.OK);
     }
 
     // 찜 삭제
-    @PostMapping("removeWish")
+    @DeleteMapping("removeWish")
 	@ResponseBody
-    public ResponseEntity<?> removeWish(Long wishId) {
+    public ResponseEntity<?> removeWish(@LoginUser SessionDTO sessionDTO, Long productId) {
+		if (sessionDTO == null) return new ResponseEntity<>("/member/login", HttpStatus.UNAUTHORIZED);
 
-		wishService.removeWish(wishId);
+		wishService.removeWish(sessionDTO.getId(), productId);
 
 		return new ResponseEntity<>("찜 목록에서 삭제헀습니다.", HttpStatus.OK);
     }

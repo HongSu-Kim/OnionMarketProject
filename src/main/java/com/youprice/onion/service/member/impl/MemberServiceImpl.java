@@ -3,7 +3,6 @@ package com.youprice.onion.service.member.impl;
 import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.dto.member.MemberJoinDTO;
 import com.youprice.onion.dto.member.MemberModifyDTO;
-import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.repository.member.BlockRepository;
 import com.youprice.onion.repository.member.MemberRepository;
@@ -82,11 +81,22 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    //아이디 찾기
+    @Override
+    public List<Member> findId(String email) {
+        return memberRepository.findByEmail(email);
+    }
+
+    @Override
+    public int countId(String email) {
+        return memberRepository.countByEmail(email);
+    }
+
     @Override
     public MemberDTO getMemberDTO(Long memberId) {
         return memberRepository.findById(memberId).map(MemberDTO::new).orElse(null);
     }
-
+/*
     //프로필사진 수정
     @Transactional
     @Override
@@ -104,9 +114,8 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> {
             return new IllegalArgumentException("프로필 사진 수정 실패 : 존재하지 않는 회원입니다.");
         });
-
-
     }
+*/
 
 /*  차단
     @Override

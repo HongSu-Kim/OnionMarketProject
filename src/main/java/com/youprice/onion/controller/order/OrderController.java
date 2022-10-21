@@ -25,6 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 
@@ -50,14 +51,13 @@ public class OrderController {
 		MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
 		ProductDTO productDTO = productService.getProductDTO(productId);
         orderAddDTO.setOrderNum(orderService.getOrderNum());
-		orderAddDTO.setDeliveryCost(100);//--
 
 		if (productDTO == null) {
-			AlertRedirect.warningMessage(response, "/product/main", "상품정보가 존재하지 않습니다.");
-			return null;
+			return AlertRedirect.warningMessage(response, "/product/main", "상품정보가 존재하지 않습니다.");
+		} else if (productDTO.getMemberId() == sessionDTO.getId()) {
+			return AlertRedirect.warningMessage(response, "/product/main", "자신의 상품은 구매할수 없습니다.");
 		} else if (productDTO.getOrderId() != null) {
-			AlertRedirect.warningMessage(response, "/product/main", "이미 판매된 상품입니다.");
-			return null;
+			return AlertRedirect.warningMessage(response, "/product/main", "이미 판매된 상품입니다.");
 		}
 
 		model.addAttribute("memberDTO", memberDTO);
@@ -66,10 +66,18 @@ public class OrderController {
 		return "order/payment";
 	}
 
-	// 주문
+	// 주문 - 양파페이 결제
 	@PostMapping("payment")
+	public String payment(OrderAddDTO orderAddDTO) throws IOException {
+		orderAddDTO.setImp_uid(orderAddDTO.getOrderNum());
+		Long orderId = orderService.addOrder(orderAddDTO);
+		return "redirect:/order/complete?orderId=" + orderId;
+	}
+
+	// 주문 - imp 결제
+	@PostMapping("imp-payment")
 	@ResponseBody
-	public ResponseEntity<?> payment(@RequestBody OrderAddDTO orderAddDTO) {
+	public ResponseEntity<?> impPayment(@RequestBody OrderAddDTO orderAddDTO) {
 		try{
 			Long orderId = orderService.addOrder(orderAddDTO);
 			return new ResponseEntity<>("/order/complete?orderId=" + orderId, HttpStatus.OK);
@@ -78,9 +86,9 @@ public class OrderController {
 		} catch (Exception e) {
 			try {
 				log.error("데이터베이스 입력오류입니다 : " + e.toString());
-				paymentService.paymentCancel(orderAddDTO);
-			} catch (Exception e2) {
-				log.error("결제 취소중 오류입니다 : " + e.toString());
+				paymentService.paymentCancel(orderAddDTO.getImp_uid(), orderAddDTO.getOrderNum(), orderAddDTO.getOrderPayment());
+			} catch (IOException ioe) {
+				log.error("결제 취소중 오류입니다 : " + ioe.toString());
 				return new ResponseEntity<>("결제 취소중 오류입니다\n고객센터에 문의하세요", HttpStatus.SERVICE_UNAVAILABLE);
 			}
 			return new ResponseEntity<>("오류가 발생해 결제가 취소되었습니다.", HttpStatus.SERVICE_UNAVAILABLE);
@@ -90,8 +98,8 @@ public class OrderController {
 	// 완료 페이지
 	@GetMapping("complete")
 	public String completion(Model model, Long orderId) {
-		DeliveryDTO deliveryDTO = deliveryService.getDeliveryDTO(orderId);
-		model.addAttribute("deliveryDTO", deliveryDTO);
+		OrderDTO orderDTO = orderService.getOrderDTO(orderId);
+		model.addAttribute("orderDTO", orderDTO);
 		return "order/complete";
 	}
 
@@ -108,16 +116,18 @@ public class OrderController {
 
 	// 구매 내역 상세 페이지
 	@GetMapping("detail")
-	public String buyDetail(@LoginUser SessionDTO sessionDTO, Model model, Long orderId, String mode) {
+	public String buyDetail(@LoginUser SessionDTO sessionDTO, Model model, Long orderId, String mode, HttpServletResponse response) throws IOException {
+		if (sessionDTO == null) return "redirect:/member/login";
 
-		DeliveryDTO deliveryDTO = null;
-//		DeliveryDTO deliveryDTO = deliveryService.getDeliveryDTO(orderId);
-//
-//		if (deliveryDTO == null || deliveryDTO.getOrderDTO().getMemberId() != sessionDTO.getId()) {
-//			return "redirect:/order/buyList";
-//		}
+		OrderDTO orderDTO = orderService.getOrderDTO(orderId);
 
-		model.addAttribute("deliveryDTO", deliveryDTO);
+		if(orderDTO == null) {
+			return AlertRedirect.warningMessage(response, "/order/buyList", "주문번호가 존재하지 않습니다.");
+		} else if (!orderDTO.getMemberId().equals(sessionDTO.getId())) {
+			return AlertRedirect.warningMessage(response, "/order/buyList", "자신의 구매 내역만 확인가능합니다.");
+		}
+
+		model.addAttribute("orderDTO", orderDTO);
 		model.addAttribute("mode", mode);
 		return "order/detail";
 	}
@@ -135,9 +145,17 @@ public class OrderController {
 
 	// 주문 취소
 	@GetMapping("cancel")
-	public String cancel(Long orderId) {
-		orderService.cancel(orderId);
-		return "redirect:/order/buyList";
+	public String cancel(Long orderId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		try {
+			
+			// 주문취소
+			orderService.cancel(orderId);
+			
+			// 결제 취소 오류
+		} catch (RuntimeException e) {
+			return AlertRedirect.warningMessage(response, "결제 취소중 오류입니다\n고객센터에 문의하세요");
+		}
+		return "redirect:" + request.getHeader("Referer");
 	}
 
 	// 배송지 변경
@@ -145,9 +163,12 @@ public class OrderController {
 	@ResponseBody
 	public ResponseEntity<?> update(@RequestBody DeliveryDTO deliveryDTO) {
 		try {
+
+			// 배송지 변경
 			deliveryService.update(deliveryDTO);
 			return new ResponseEntity<>("배송지가 수정되었습니다.", HttpStatus.OK);
 
+			// 오류
 		} catch (Exception e) {
 			return new ResponseEntity<>(e, HttpStatus.SERVICE_UNAVAILABLE);
 		}

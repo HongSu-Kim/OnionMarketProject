@@ -66,6 +66,8 @@
 	<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
 	<!-- 주소 api -->
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<!-- validation -->
+	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.0/jquery.validate.min.js" ></script>
 
 	<script src="${cp}<tiles:getAsString name = 'js1'/>"></script>
 	<script src="${cp}<tiles:getAsString name = 'js2'/>"></script>

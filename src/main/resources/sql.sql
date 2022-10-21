@@ -176,7 +176,7 @@ CREATE TABLE product (
 CREATE TABLE product_image (
 	product_image_id   	NUMBER       	NOT NULL,
 	product_id         	NUMBER       	NOT NULL,
-	product_image_name 	VARCHAR2(50) 	NOT NULL,
+	product_image_name 	VARCHAR2(255) 	NOT NULL,
 	CONSTRAINT PK_PRODUCT_IMAGE PRIMARY KEY (product_image_id),
 	CONSTRAINT FK_PRODUCT_IMAGE_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id)
 );
@@ -251,6 +251,8 @@ CREATE TABLE wish (
 
 CREATE TABLE delivery (
 	order_id	    	NUMBER          NOT NULL,
+    recipient           VARCHAR2(30)    NOT NULL,
+    deliveryTel         CHAR(11)        NOT NULL,
 	postcode	    	CHAR(5)	        NOT NULL,
 	address         	VARCHAR2(255)   NOT NULL,
 	detail_address  	VARCHAR2(255)   NOT NULL,
@@ -409,22 +411,180 @@ INSERT INTO Coordinate VALUES( 63,' 서울특별시 강동구 성내2동','37.53
 INSERT INTO Coordinate VALUES( 64,' 서울특별시 강동구 둔촌1동','37.5333656','  127.1419851');
 INSERT INTO Coordinate VALUES( 65 ,'서울특별시 강동구 둔촌2동','37.5332885',' 127.1419221');
 
-INSERT INTO CATEGORY VALUES(1,'여성의류',null);
-INSERT INTO CATEGORY VALUES(2,'남성의류',null);
-INSERT INTO CATEGORY VALUES(3,'신발',null);
-INSERT INTO CATEGORY VALUES(4,'가방',null);
-INSERT INTO CATEGORY VALUES(5,'시계/쥬얼리',null);
-INSERT INTO CATEGORY VALUES(6,'패션 액세서리',null);
-INSERT INTO CATEGORY VALUES(7,'디지털/가전',null);
-INSERT INTO CATEGORY VALUES(8,'스포츠/레저',null);
-INSERT INTO CATEGORY VALUES(9,'차량/오토바이',null);
-INSERT INTO CATEGORY VALUES(10,'가구/인테리어',null);
-INSERT INTO CATEGORY VALUES(11,'음반/악기',null);
-INSERT INTO CATEGORY VALUES(12,'도서/티켓/문구',null);
-INSERT INTO CATEGORY VALUES(13,'생활/가공식품',null);
-INSERT INTO CATEGORY VALUES(14,'패딩/점퍼',1);
-INSERT INTO CATEGORY VALUES(15,'코트',1);
-INSERT INTO CATEGORY VALUES(16,'맨투맨',1);
-INSERT INTO CATEGORY VALUES(17,'패딩/점퍼',2);
-INSERT INTO CATEGORY VALUES(18,'코트',2);
-INSERT INTO CATEGORY VALUES(19,'맨투맨',2);
+
+
+
+INSERT INTO category VALUES(1,'디지털/가전','');
+
+INSERT INTO category VALUES(2,'모바일',1);
+INSERT INTO category VALUES(3,' 가전제품',1);
+INSERT INTO category VALUES(4,'오디오/영상/관련기기',1);
+INSERT INTO category VALUES(5,'PC/노트북',1);
+INSERT INTO category VALUES(6,'게임/타이틀',1);
+INSERT INTO category VALUES(7,'카메라/DSLR',1);
+INSERT INTO category VALUES(8,'PC부품/저장장치',1);
+
+
+select * from product where CATEGORY_ID  BETWEEN   15 AND 21;
+
+select * from product where CATEGORY_ID =15;
+
+--------------------------------------------------------------
+
+INSERT INTO category VALUES(9,'가구/인테리어','');
+
+INSERT INTO category VALUES(10,'가구',9);
+INSERT INTO category VALUES(11,'인테리어',9);
+
+
+--------------------------------------------------------------
+
+INSERT INTO category VALUES(12,'생활/가공식품','');
+
+INSERT INTO category VALUES(13,'주방용품',12);
+INSERT INTO category VALUES(14,'생활용품',12);
+INSERT INTO category VALUES(15,'식품',12);
+INSERT INTO category VALUES(16,'산업용품',12);
+--------------------------------------------------------------
+INSERT INTO category VALUES(17,'유아동','');
+
+INSERT INTO category VALUES(18,'베이비의류(0~2세)',17);
+INSERT INTO category VALUES(19,'여아의류(3~6세)',17);
+
+INSERT INTO category VALUES(20,'여주니어의류(7세~)',17);
+
+INSERT INTO category VALUES(21,'남아의류(3~6세)',17);
+
+INSERT INTO category VALUES(22,'남주니어의류(7세~)',17);
+
+INSERT INTO category VALUES(23,'유아동신발/잡화',17);
+
+INSERT INTO category VALUES(24,'교육/완구/인형',17);
+
+INSERT INTO category VALUES(25,'유아동용품',17);
+
+
+INSERT INTO category VALUES(26,'이유용품/유아식기',17);
+
+
+
+--------------------------------------------------------------
+INSERT INTO category VALUES(27,'남성의류','');
+
+INSERT INTO category VALUES(28,'패딩/점퍼',27);
+INSERT INTO category VALUES(29,'코트',27);
+INSERT INTO category VALUES(30,'맨투맨',27);
+INSERT INTO category VALUES(31,'후드티/후드집업',27);
+INSERT INTO category VALUES(32,'티셔츠',27);
+INSERT INTO category VALUES(33,'셔츠',27);
+INSERT INTO category VALUES(34,'가디건',27);
+INSERT INTO category VALUES(35,'니트/스웨터',27);
+INSERT INTO category VALUES(36,'바지',27);
+INSERT INTO category VALUES(37,'청바지',27);
+INSERT INTO category VALUES(38,'반바지',27);
+INSERT INTO category VALUES(39,'자켓',27);
+INSERT INTO category VALUES(40,'정장',27);
+INSERT INTO category VALUES(41,'조끼/트레이닝',27);
+
+
+--------------------------------------------------------------
+INSERT INTO category VALUES(42,'여성의류','');
+
+INSERT INTO category VALUES(43,'패딩/점퍼',42);
+INSERT INTO category VALUES(44,'코트',42);
+INSERT INTO category VALUES(45,'맨투맨',42);
+INSERT INTO category VALUES(46,'후드티/후드집업',42);
+INSERT INTO category VALUES(47,'티셔츠',42);
+INSERT INTO category VALUES(48,'셔츠',42);
+INSERT INTO category VALUES(49,'가디건',42);
+INSERT INTO category VALUES(50,'니트/스웨터',42);
+INSERT INTO category VALUES(51,'바지',42);
+INSERT INTO category VALUES(52,'청바지',42);
+INSERT INTO category VALUES(53,'반바지',42);
+INSERT INTO category VALUES(54,'자켓',42);
+INSERT INTO category VALUES(55,'정장',42);
+INSERT INTO category VALUES(56,'조끼/트레이닝',42);
+--------------------------------------------------------------
+INSERT INTO category VALUES(57,'가방/잡화','');
+
+INSERT INTO category VALUES(58,'남성가방',57);
+INSERT INTO category VALUES(59,'여성가방',57);
+INSERT INTO category VALUES(60,'여행용',57);
+--------------------------------------------------------------
+INSERT INTO category VALUES(61,'뷰티/미용','');
+
+INSERT INTO category VALUES(62,'스킨케어',61);
+INSERT INTO category VALUES(63,'색조메이크업',61);
+INSERT INTO category VALUES(64,'바디/헤어케어',61);
+INSERT INTO category VALUES(65,'향수/아로마',61);
+INSERT INTO category VALUES(66,'네일아트/케어',61);
+INSERT INTO category VALUES(67,'미용소품/기기',61);
+INSERT INTO category VALUES(68,'다이어트/이너뷰티',61);
+INSERT INTO category VALUES(69,'남성 화장품',61);
+INSERT INTO category VALUES(70,'여성 화장품',61);
+
+
+--------------------------------------------------------------
+INSERT INTO category VALUES(71,'스포츠/레저','');
+
+INSERT INTO category VALUES(72,'골프',71);
+INSERT INTO category VALUES(73,'캠핑',71);
+INSERT INTO category VALUES(74,'낚시',71);
+INSERT INTO category VALUES(75,'축구',71);
+INSERT INTO category VALUES(76,'야구',71);
+INSERT INTO category VALUES(77,'농구',71);
+INSERT INTO category VALUES(78,'탁구',71);
+INSERT INTO category VALUES(79,'당구',71);
+INSERT INTO category VALUES(80,'볼링',71);
+INSERT INTO category VALUES(81,'테니스',71);
+INSERT INTO category VALUES(82,'자전거',71);
+INSERT INTO category VALUES(83,'등산/클라이밍',71);
+INSERT INTO category VALUES(84,'헬스/요가/필라테스',71);
+INSERT INTO category VALUES(85,'배드민턴',71);
+
+
+--------------------------------------------------------------
+INSERT INTO category VALUES(86,'게임/음반','');
+
+INSERT INTO category VALUES(87,'CD/DVD/LP',86);
+INSERT INTO category VALUES(88,'악기',86);
+INSERT INTO category VALUES(89,'게임CD',86);
+
+
+--------------------------------------------------------------
+INSERT INTO category VALUES(90,'도서/티켓','');
+
+INSERT INTO category VALUES(91,'도서',90);
+INSERT INTO category VALUES(92,'문구',90);
+INSERT INTO category VALUES(93,'기프티콘/쿠폰',90);
+INSERT INTO category VALUES(94,'상품권',90);
+INSERT INTO category VALUES(95,'티켓',90);
+
+--------------------------------------------------------------
+INSERT INTO category VALUES(96,'반려동물용품','');
+
+INSERT INTO category VALUES(97,'강아지 용품',96);
+INSERT INTO category VALUES(98,'강아지 사료/간식',96);
+INSERT INTO category VALUES(99,'기타(강아지)',96);
+INSERT INTO category VALUES(100,'고양이 용품',96);
+INSERT INTO category VALUES(101,'고양이 사료/간식',96);
+INSERT INTO category VALUES(102,'기타(고양이)',96);
+INSERT INTO category VALUES(103,'기타(반려동물 용품)',96);
+INSERT INTO category VALUES(104,'기타(반려동물 사료/간식)',96);
+
+--------------------------------------------------------------
+INSERT INTO category VALUES(105,'식물','');
+
+INSERT INTO category VALUES(106,'꽃',105);
+INSERT INTO category VALUES(107,'다육이/선인장',105);
+INSERT INTO category VALUES(108,'관상수/나무',105);
+INSERT INTO category VALUES(109,'허브',105);
+INSERT INTO category VALUES(110,'난초',105);
+INSERT INTO category VALUES(111,'채소/과일',105);
+INSERT INTO category VALUES(112,'수경식물',105);
+INSERT INTO category VALUES(113,'에어플랜트',105);
+
+
+--------------------------------------------------------------
+INSERT INTO category VALUES(114,'기타','');
+INSERT INTO category VALUES(115,'기타',114);

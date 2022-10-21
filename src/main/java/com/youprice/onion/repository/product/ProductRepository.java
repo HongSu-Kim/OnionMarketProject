@@ -10,13 +10,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     //상품번호로 상품 하나 조회
     @Override
+    @EntityGraph(attributePaths = {"productImageList"})
     Optional<Product> findById(Long productId);
+
     //상품번호로 조회 후 상품의 조회수 증가
     @Modifying
     @Query("update Product p set p.viewCount = p.viewCount + 1 where p.id = ?1")
@@ -24,5 +27,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 	// 판매 상품 리스트
 	Page<Product> findByMemberId(Long memberId, Pageable pageable);
+
+    //
+    List<Product> findByCategoryIdBetween(Long start, Long end);
+    //
+    List<Product> findBySubjectContainingOrContentContaining(String subject,String content);
+
 
 }

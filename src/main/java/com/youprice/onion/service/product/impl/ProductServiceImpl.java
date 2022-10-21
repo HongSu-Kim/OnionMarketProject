@@ -21,9 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,7 +35,6 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepositoy categoryRepository;
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
-    private final ProductImageService productImageService;
 
     private final ProhibitionKeywordRepositoy prohibitionKeywordRepositoy;
 
@@ -54,8 +51,7 @@ public class ProductServiceImpl implements ProductService {
         Order order = null;
 
         //대표이미지 설정
-        String representativeImage = getImageName()+fileList.get(0).getOriginalFilename();
-
+        productAddDTO.setRepresentativeImage(getImageName()+fileList.get(0).getOriginalFilename());
         //경매 현황=null -> 경매 기한=null
         if(productAddDTO.getAuctionStatus()!=true) {
             productAddDTO.setAuctionDeadline(null);
@@ -65,7 +61,7 @@ public class ProductServiceImpl implements ProductService {
 
         // 상품 등록
         Product product = new Product(member,town,category,order,productAddDTO.getSubject(),productAddDTO.getContent(),
-                productAddDTO.getPrice(),representativeImage,productAddDTO.getAuctionDeadline(),productAddDTO.getPayStatus());
+                productAddDTO.getPrice(),productAddDTO.getRepresentativeImage(),productAddDTO.getAuctionDeadline(),productAddDTO.getPayStatus());
 
         Long productId = productRepository.save(product).getId();
 
@@ -140,6 +136,14 @@ public class ProductServiceImpl implements ProductService {
         productRepository.deleteById(productId);
     }
 
+    //카테고리 전체 상품 조회
+    @Override
+    public List<ProductListDTO> getProductCategoryList(Long start, Long end) {
+        return productRepository.findByCategoryIdBetween(start,end).stream().
+                map(product -> new ProductListDTO(product))
+                .collect(Collectors.toList());
+    }
+
     //전체 상품 조회
     @Override
     public List<ProductListDTO> getProductList() {
@@ -148,10 +152,24 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toList());
     }
 
+    //검색에 따른 조회(제목,카테고리,내용)
+    @Override
+    public List<ProductListDTO> getSearchList(String subject,String content) {
+        return productRepository.findBySubjectContainingOrContentContaining(subject,content).stream()
+                .map(product -> new ProductListDTO(product))
+                .collect(Collectors.toList());
+    }
+
     //상품 하나에 대한 데이터
     @Override
     public ProductDTO getProductDTO(Long productId) {
         return productRepository.findById(productId).map(ProductDTO::new).orElse(null);
+    }
+
+    //상품 하나에 대한 데이터
+    @Override
+    public ProductFindDTO getProductFindDTO(Long productId) {
+        return productRepository.findById(productId).map(ProductFindDTO::new).orElse(null);
     }
 
     //이미지리스트

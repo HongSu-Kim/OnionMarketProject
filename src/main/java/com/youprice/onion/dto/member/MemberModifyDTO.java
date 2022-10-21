@@ -63,22 +63,4 @@ public class MemberModifyDTO { //회원가입 할 때 필요한 DTO (MemberDTO)�
 
     private String memberImageName;
 
-    public Member toEntity() { //DTO -> Entity
-        return Member.builder()
-                .id(id)
-                .role(role.USER)
-                .userId(userId)
-                .pwd(pwd)
-                .name(name)
-                .nickname(nickname)
-                .birth(birth)
-                .tel(tel)
-                .postcode(postcode)
-                .address(address)
-                .detailAddress(detailAddress)
-                .extraAddress(extraAddress)
-                .email(email)
-                .memberImageName(memberImageName)
-                .build();
-    }
 }
