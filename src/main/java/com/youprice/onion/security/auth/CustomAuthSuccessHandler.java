@@ -22,7 +22,14 @@ public class CustomAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        setDefaultTargetUrl(request.getHeader("Referer"));
+
+        String url;
+        if (request.getHeader("Referer").indexOf("/member") > 0) {
+            url = "/product/main";
+        } else {
+            url = request.getHeader("Referer");
+        }
+        setDefaultTargetUrl(url);
         SavedRequest savedRequest = requestCache.getRequest(request, response);
         if (savedRequest != null) {
             //로그인 전 이동하려던 url로 이동
