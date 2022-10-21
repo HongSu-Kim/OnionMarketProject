@@ -12,10 +12,10 @@ import com.youprice.onion.repository.order.DeliveryRepository;
 import com.youprice.onion.repository.order.OrderRepository;
 import com.youprice.onion.repository.product.ProductRepository;
 import com.youprice.onion.service.order.OrderService;
+import com.youprice.onion.util.PaymentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,10 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Optional;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -38,6 +35,7 @@ public class OrderServiceImpl implements OrderService {
 	private final DeliveryRepository deliveryRepository;
 	private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
+	private final PaymentService paymentService;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -57,9 +55,10 @@ public class OrderServiceImpl implements OrderService {
 		Long orderId = orderRepository.save(order).getId();
 
 		// 배송정보 생성
-		Delivery delivery = new Delivery(order, orderAddDTO.getPostcode(), orderAddDTO.getAddress(), orderAddDTO.getDetailAddress(),
-				orderAddDTO.getExtraAddress(), orderAddDTO.getRequest(), orderAddDTO.getDeliveryCost());
-		deliveryRepository.save(delivery);
+		if (orderAddDTO.isDelivery()) {
+			Delivery delivery = new Delivery(order, orderAddDTO);
+			deliveryRepository.save(delivery);
+		}
 
 		product.order(order);
 		productRepository.save(product);
@@ -111,7 +110,18 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public void cancel(Long orderId) {
-		orderRepository.findById(orderId).map(order -> order.update(OrderState.CANCEL)).orElse(null);
+		orderRepository.findById(orderId).map(order -> {
+			order.update(OrderState.CANCEL);
+			if (order.getOrderNum() != order.getImp_uid()){
+				try {
+					paymentService.paymentCancel(order.getImp_uid(), order.getOrderNum(), order.getOrderPayment());
+				} catch (IOException ioe) {
+					log.error("결제 취소중 오류입니다 : " + ioe.toString());
+					throw new RuntimeException();
+				}
+			}
+			return order;
+		}).orElse(null);
 	}
 
 }

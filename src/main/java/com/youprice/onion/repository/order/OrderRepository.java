@@ -15,15 +15,16 @@ import java.util.Optional;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
+	// 주문 내역 조회 - detail
+	@EntityGraph(attributePaths = { "delivery", "product" })
+	Optional<Order> findById(Long orderId);
+
 	// orderNum 중복확인
     Optional<Order> findByOrderNum(String orderNum);
 
-	// buyList
-//	@Query(value = "select o from Order o join fetch o.product p join fetch p.member m " +
-//			"left join fetch o.delivery left join fetch p.auction where o.member.id = :memberId order by o.id")
-//	List<Order> findAllByMemberId(@Param("memberId") Long memberId, Pageable pageable);
-	Long countByMemberId(Long memberId);
-	@EntityGraph(attributePaths = { "product", "delivery" })
+	
+	// 구매 내역 조회 - list
+	@EntityGraph(attributePaths = { "delivery", "product" })
 	Page<Order> findAllByMemberId(Long memberId, Pageable pageable);
 
 }

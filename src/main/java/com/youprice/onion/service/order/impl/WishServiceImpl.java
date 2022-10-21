@@ -30,8 +30,8 @@ public class WishServiceImpl implements WishService {
 	@Override
 	public Page<WishListDTO> getWishList(Long memberId, Pageable pageable) {
 		return wishRepository.findAllByMemberId(memberId, pageable).map(wish -> {
-			int chatroomListSize = chatroomRepository.countByProductId(wish.getId());
-			int wishListSize = wishRepository.countByProductId(wish.getId());
+			int chatroomListSize = chatroomRepository.countByProductId(wish.getProduct().getId());
+			int wishListSize = wishRepository.countByProductId(wish.getProduct().getId());
 			return new WishListDTO(wish, chatroomListSize, wishListSize);
 		});
 	}
@@ -39,6 +39,7 @@ public class WishServiceImpl implements WishService {
 	// 찜 등록
 	@Override
 	public void addWish(Long memberId, Long productId) {
+		wishRepository.deleteByMemberIdAndProductId(memberId, productId);
 
 		Member member = memberRepository.findById(memberId).orElse(null);
 		Product product = productRepository.findById(productId).orElse(null);
@@ -48,8 +49,8 @@ public class WishServiceImpl implements WishService {
 
 	// 찜 삭제
 	@Override
-	public void removeWish(Long wishId) {
-		wishRepository.deleteById(wishId);
+	public void removeWish(Long memberId, Long productId) {
+		wishRepository.deleteByMemberIdAndProductId(memberId, productId);
 	}
 
 }
