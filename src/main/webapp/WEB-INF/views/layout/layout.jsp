@@ -61,14 +61,18 @@
 	<script src="/template/js/mixitup.min.js"></script>
 	<script src="/template/js/owl.carousel.min.js"></script>
 	<script src="/template/js/main.js"></script>
+<%--	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>--%>
 
 	<!-- iamport.payment.js -->
 	<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
 	<!-- 주소 api -->
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<!-- 검증 -->
+	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.0/jquery.validate.min.js" ></script>
 
 	<script src="${cp}<tiles:getAsString name = 'js1'/>"></script>
 	<script src="${cp}<tiles:getAsString name = 'js2'/>"></script>
+
 
 </body>
 </html>
