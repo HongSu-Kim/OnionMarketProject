@@ -19,7 +19,7 @@ public class WishListDTO {
 	private int price; //상품가격
 	private int viewCount; //조회수
 	private Boolean payStatus; //페이현황
-	private String productImageName; //이미지파일이름
+	private String representativeImage; //이미지파일이름
 	private int chatroomListSize;
 	private int wishListSize;
 
@@ -33,7 +33,7 @@ public class WishListDTO {
 		price = product.getPrice();
 		viewCount = product.getViewCount();
 		payStatus = product.getPayStatus();
-//		productImageName = product.getProductImageName();
+		representativeImage = product.getRepresentativeImage();
 		this.chatroomListSize = chatroomListSize;
 		this.wishListSize = wishListSize;
 	}

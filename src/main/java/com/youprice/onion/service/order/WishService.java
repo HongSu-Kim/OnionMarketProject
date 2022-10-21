@@ -8,5 +8,5 @@ public interface WishService {
 
 	Page<WishListDTO> getWishList(Long memberId, Pageable pageable);
 	void addWish(Long memberId, Long productId);
-	void removeWish(Long wishId);
+	void removeWish(Long memberId, Long productId);
 }
