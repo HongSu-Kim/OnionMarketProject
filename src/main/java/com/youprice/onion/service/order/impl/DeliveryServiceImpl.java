@@ -18,13 +18,6 @@ public class DeliveryServiceImpl implements DeliveryService {
 
 	private final DeliveryRepository deliveryRepository;
 
-	// 배달 정보
-	@Override
-	@Transactional(readOnly = true)
-	public DeliveryDTO getDeliveryDTO(Long orderId) {
-		return deliveryRepository.findById(orderId).map(DeliveryDTO::new).orElse(null);
-	}
-
 	// 배송지 수정
 	@Override
 	public void update(DeliveryDTO deliveryDTO) {

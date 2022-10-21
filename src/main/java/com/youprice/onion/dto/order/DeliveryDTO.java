@@ -12,6 +12,8 @@ import lombok.Setter;
 public class DeliveryDTO {
 
 	private Long orderId;//주문번호 PK FK
+	private String recipient;//받는사람
+	private String deliveryTel;//연락처
 	private String postcode;//우편번호
 	private String address;//주소
 	private String detailAddress;//상세주소
@@ -19,23 +21,15 @@ public class DeliveryDTO {
 	private String request;//요청사항
 	private int deliveryCost;//배송비
 
-	// order
-	private OrderDTO orderDTO;
-	private MemberDTO memberDTO;
-
 	public DeliveryDTO(Delivery delivery) {
-
-		// delivery
 		orderId = delivery.getId();
+
 		postcode = delivery.getAddress().getPostcode();
 		address = delivery.getAddress().getAddress();
 		detailAddress = delivery.getAddress().getDetailAddress();
 		extraAddress = delivery.getAddress().getExtraAddress();
 		request = delivery.getRequest();
 		deliveryCost = delivery.getDeliveryCost();
-
-		orderDTO = new OrderDTO(delivery.getOrder());
-		memberDTO = new MemberDTO(delivery.getOrder().getMember());
 	}
 
 }
