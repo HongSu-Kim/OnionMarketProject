@@ -14,7 +14,7 @@ import java.net.URL;
 public class PaymentService {
 
 	// 결제취소
-	public void paymentCancel(OrderAddDTO orderAddDTO) throws IOException {
+	public void paymentCancel(String imp_uid, String orderNum, int orderPayment) throws IOException {
 
 		// 토큰생성
 		String access_token = getToken();
@@ -33,9 +33,9 @@ public class PaymentService {
 
 		// request 설정
 		JSONObject obj = new JSONObject();
-		obj.put("imp_uid", orderAddDTO.getImp_uid());
-		obj.put("merchant_uid ", orderAddDTO.getOrderNum());
-		obj.put("amount", orderAddDTO.getOrderPayment());
+		obj.put("imp_uid", imp_uid);
+		obj.put("merchant_uid ", orderNum);
+		obj.put("amount", orderPayment);
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
 		bw.write(obj.toString());
 		bw.flush();

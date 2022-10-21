@@ -34,7 +34,7 @@
 
 								<!-- view test -->
 									<tr>
-										<td class="pointer" onclick="location.href='/product/detail?productId=1';">
+										<td class="text-align-left pointer" onclick="location.href='/product/detail?productId=1';">
 											<img src="/img/product/edd75ee44b39477ef71df02dbc46e873c802479d.png" height="100">
 											<span>상품명1</span>
 										</td>
@@ -51,7 +51,7 @@
 										</td>
 									</tr>
 									<tr>
-										<td class="pointer" onclick="location.href='/product/detail?productId=1';">
+										<td class="text-align-left pointer" onclick="location.href='/product/detail?productId=1';">
 											<img src="/img/product/edd75ee44b39477ef71df02dbc46e873c802479d.png" height="100">
 											<span>상품명2</span>
 										</td>
@@ -66,7 +66,7 @@
 										</td>
 									</tr>
 									<tr>
-										<td class="pointer" onclick="location.href='/product/detail?productId=1';">
+										<td class="text-align-left pointer" onclick="location.href='/product/detail?productId=1';">
 											<img src="/img/product/edd75ee44b39477ef71df02dbc46e873c802479d.png" height="100">
 											<span>상품명3</span>
 										</td>
@@ -92,21 +92,24 @@
 								<!-- 주문 정보 -->
 								<c:forEach var="orderDTO" items="${page.content}">
 									<tr>
-										<td class="pointer" onclick="location.href='/product/detail?productId=${orderDTO.productDTO.productId}'">
-											<img src="/img/product/${orderDTO.productDTO.representativeImage}">
+										<td class="text-align-left pointer" onclick="location.href='/product/detail?productId=${orderDTO.productDTO.productId}'">
+											<img src="/img/product/${orderDTO.productDTO.representativeImage}" class="list-img">
 											<span>${orderDTO.productDTO.subject}</span>
 										</td>
 										<td class="pointer" onclick="location.href='/order/detail?orderId=${orderDTO.orderId}'">
-												${orderDTO.imp_uid}
+											${orderDTO.imp_uid}
 										</td>
 										<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${orderDTO.orderPayment}"/></td>
-										<td>${orderDTO.orderDate}</td>
+										<td>
+											<fmt:parseDate var="orderDate" value="${orderDTO.orderDate}" pattern="yyyy-MM-dd'T'HH:mm:ss"/>
+											<fmt:formatDate value="${orderDate}" pattern="yyyy/MM/dd"/>
+										</td>
 										<td>
 											<p>${orderDTO.orderState.kor}</p>
 											<p>
 												<c:if test="${orderDTO.orderState eq 'ORDER'}">
 													<a href="/order/detail?orderId=${orderDTO.orderId}&mode=update" class="primary-btn">배송지변경</a>
-													<a onclick="confirm('정말 삭제하시겠습니까?') ? location.href='/order/cancel?orderId=${orderDTO.orderId}' : false"
+													<a onclick="confirm('정말 취소하시겠습니까?') ? location.href='/order/cancel?orderId=${orderDTO.orderId}' : false"
 														 class="primary-btn cart-btn">주문취소</a>
 												</c:if>
 												<c:if test="${orderDTO.orderState eq 'CANCEL'}">

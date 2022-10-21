@@ -251,6 +251,8 @@ CREATE TABLE wish (
 
 CREATE TABLE delivery (
 	order_id	    	NUMBER          NOT NULL,
+    recipient           VARCHAR2(30)    NOT NULL,
+    deliveryTel         CHAR(11)        NOT NULL,
 	postcode	    	CHAR(5)	        NOT NULL,
 	address         	VARCHAR2(255)   NOT NULL,
 	detail_address  	VARCHAR2(255)   NOT NULL,

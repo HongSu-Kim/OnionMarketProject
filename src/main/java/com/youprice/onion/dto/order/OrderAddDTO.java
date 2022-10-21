@@ -17,13 +17,14 @@ public class OrderAddDTO {
     private String orderNum;//주문번호
     private String imp_uid;//결제번호
 
+	// delivery
+	private boolean delivery;
+	private String recipient;//받는사람
+	private String deliveryTel;//연락처
     // address
-    @Size(min = 5, max = 5, message = "우편번호를 정확히 입력해주세요")
     private String postcode;//우편번호
-    @NotEmpty(message = "주소를 입력해주세요")
     private String address;//주소
     private String detailAddress;//상세주소
-    @NotEmpty(message = "참고사항을 입력해주세요")
     private String extraAddress;//참고사항
 
     private String request;//요청사항

@@ -33,8 +33,8 @@
 
 								<!-- view test -->
 								<tr>
-									<td class="pointer" onclick="location.href='/product/Detail?productId=1'">
-										<img src="/img/product/edd75ee44b39477ef71df02dbc46e873c802479d.png" height="100">
+									<td class="text-align-left pointer" onclick="location.href='/product/Detail?productId=1'">
+										<img src="/img/product/edd75ee44b39477ef71df02dbc46e873c802479d.png" class="list-img">
 										<span>제목1</span>
 									</td>
 									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="10000"/>원</td>
@@ -50,7 +50,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td class="pointer" onclick="location.href='/product/Detail?productId=2'">
+									<td class="text-align-left pointer" onclick="location.href='/product/Detail?productId=2'">
 										<img src="/img/product/edd75ee44b39477ef71df02dbc46e873c802479d.png" height="100">
 										<span>제목2</span>
 									</td>
@@ -67,7 +67,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td class="pointer" onclick="location.href='/product/Detail?productId=3'">
+									<td class="text-align-left pointer" onclick="location.href='/product/Detail?productId=3'">
 										<img src="/img/product/edd75ee44b39477ef71df02dbc46e873c802479d.png" height="100">
 										<span>제목3</span>
 									</td>
@@ -92,12 +92,15 @@
 								<!-- 주문 정보 -->
 								<c:forEach var="productDTO" items="${page.content}">
 									<tr>
-										<td class="pointer" onclick="location.href='/product/Detail?productId=${productDTO.productId}';">
+										<td class="text-align-left pointer" onclick="location.href='/product/Detail?productId=${productDTO.productId}';">
 											<img src="/img/product/${productDTO.productImageName}" height="100">
 											<span>${productDTO.subject}</span>
 										</td>
 										<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${productDTO.price}"/>원</td>
-										<td>${productDTO.date}</td>
+										<td>
+											<fmt:parseDate var="orderDate" value="${orderDTO.orderDate}" pattern="yyyy-MM-dd'T'HH:mm:ss"/>
+											<fmt:formatDate value="${orderDate}" pattern="yyyy/MM/dd"/>
+										</td>
 										<td>
 											<p>${productDTO.productProgress.kor}</p>
 											<p>
