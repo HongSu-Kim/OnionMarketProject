@@ -3,48 +3,62 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <c:set var = "cp" value = "<%=request.getContextPath()%>"/>
-    <style>
-        .field-error{
-            border-color: #f07682;
-            color: #dc3545;
-            font-weight: bold;
-        }
-        .detailSelect{
-            display: none;
-        }
+<style>
+    .field-error{
+        border-color: #f07682;
+        color: #dc3545;
+        font-weight: bold;
+    }
+    .detailSelect{
+        display: none;
+    }
+    #secretBox{
+        zoom: 1;
+        width: 20px;
+        height: 20px;
+    }
+</style>
 
-    </style>
-<section class="hero hero-normal">
-    <div class="container" style="width: 1200px;">
+<!-- Contact Form Begin -->
+<div class="contact-form spad" style="background-color: oldlace">
+    <div class="container">
         <div class="row">
             <div class="col-lg-12">
-            <div class="container" style="width: 1200px">
-                <div class="py-5 text-center">
-                    <h1>1:1 문의하기</h1>
-                </div><hr/>
+                <div class="contact__form__title">
+                    <h2>Leave Question</h2>
+                </div>
+            </div>
+        </div>
 
-                <div>
+        <form:form method="post" action="/inquiry/created" modelAttribute="form">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+            <input type="hidden" name="memberId" value="${memberDTO.id}">
 
-                <form:errors path="inquiryDTO" cssClass="field-error"/>
+            <div class="row">
+                <div class="col-lg-4">
+                    ID <input type="text" readonly="readonly" value="${memberDTO.userId}" placeholder="${memberDTO.userId}">
+                </div>
+                <div class="col-lg-4">
+                    NAME <input type="text" readonly="readonly" value="${memberDTO.name}" placeholder="${memberDTO.name}">
+                </div>
+                <div class="col-lg-4">
+                    EMAIL <input type="text" readonly="readonly" value="${memberDTO.email}" placeholder="${memberDTO.email}">
+                </div>
+            </div><hr/>
 
-                <form:form method="post" action="/inquiry/created" modelAttribute="form">
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-                    <div>
-                        <h4 class="mb-3">* 회원 정보</h4>
-                        아이디 : ${sessionDTO.userId} <br/>
-                        닉네임 : ${sessionDTO.nickname}
-                    </div><hr/>
+            <div class="row">
+                <h4>* 문의 정보</h4><br/><br/>
 
-                    <input type="hidden" name="memberId" value="${sessionDTO.id}">
-
-                    <h4>* 문의 정보</h4>
+                <div class="col-lg-12">
                     <!-- 비밀글 체크 -->
-                    <div class="form-check form-check-inline mt-3">
-                        <input class="form-check-input" type="checkbox" name="secret" id="secret" placeholder="${form.secret}">
-                        <label class="form-check-label">비밀글 설정</label>
-                    </div><br/><br/>
+                    <div class="form-check" style="display: flex">
+                        <input class="form-check-input" type="checkbox" name="secret" id="secretBox" placeholder="${form.secret == true ? '<input class="form-check-input" type="checkbox" checked="checked" name="secret" id="secret"/>' : ' '}">
+                        <div style="margin-left: 5px; margin-top: 3px">비밀글 설정</div>
+                    </div><br/>
+                </div>
 
-                    <div>
+                <div class="col-lg-12">
+                    <div><!-- 문의유형 선택 -->
                         <label for="inquiryType">문의 유형</label><br/>
                         <select id="inquiryType" name="inquiryType" onchange="selectType();" style="width: 300px;">
                             <c:choose>
@@ -89,50 +103,53 @@
                         <input type="hidden" id="detail" name="detailType">
                         <form:errors path="detailType" cssClass="field-error"/>
                     </div><br/><br/>
-
-
-                    <div>
-                        <label for="inquirySubject">제목</label>
-                        <input type="text" id="inquirySubject" name="inquirySubject" class="form-control"
-                               value="${form.inquirySubject}" placeholder="제목을 입력하세요">
-                        <form:errors path="inquirySubject" cssClass="field-error"/>
-                    </div>
-                    <div>
-                        <label for="inquiryContent">내용</label>
-                        <input type="text" id="inquiryContent" name="inquiryContent" class="form-control"
-                               value="${form.inquiryContent}" placeholder="내용을 입력하세요">
-                        <form:errors path="inquiryContent" cssClass="field-error"/>
-                    </div>
-                    <hr class="my-4">
-                    <div class="row">
-                        <div class="col">
-                            <button class="w-100 btn btn-success btn-lg" type="submit">등록하기</button>
-                            <button class="w-100 btn btn-secondary btn-lg"
-                                    onclick="location.href='/inquiry/list'" type="button">취소</button>
-                        </div>
-                    </div>
-                </form:form>
                 </div>
-            </div> <!-- /container -->
 
-            <script>
-                function selectType(){
-                    let inquiryType = $("#inquiryType").val();
 
-                    $("#type_회원정보").hide();
-                    $("#type_거래").hide();
-                    $("#type_기타서비스").hide();
-                    // $("#type_기타서비스").css("visibility", "hidden");
-                    $("#type_" + inquiryType).show();
-                }
 
-                function selectDetail(e){
-                    let val = e.value;
-                    document.getElementById('detail').value = val;
-                }
-            </script>
+                    <div class="col-lg-12">
+                        <div>문의제목</div>
+                        <input type="text" name="inquirySubject" value="${form.inquirySubject}"
+                               placeholder="문의제목을 입력해주세요">
+                        <form:errors path="inquirySubject" cssClass="field-error"/><br/><br/>
+                    </div>
+
+                    <div class="col-lg-12 text-center">
+                        <div class="text-left">문의내용</div>
+                        <div>
+                            <textarea name="inquiryContent" placeholder="문의내용을 입력하세요"></textarea>
+                            <form:errors path="inquiryContent" cssClass="field-error"/>
+                        </div><br/>
+
+                        <button type="submit" class="site-btn">SEND MESSAGE</button>
+                        <button class="site-btn" style="background-color: #5a6268" onclick="location.href='/inquiry/list'" type="button">CANCEL</button>
+                    </div>
+
             </div>
-        </div>
+        </form:form>
     </div>
-</section>
+</div>
+<!-- Contact Form End -->
 
+
+
+
+
+
+
+<script>
+    function selectType(){
+        let inquiryType = $("#inquiryType").val();
+
+        $("#type_회원정보").hide();
+        $("#type_거래").hide();
+        $("#type_기타서비스").hide();
+        // $("#type_기타서비스").css("visibility", "hidden");
+        $("#type_" + inquiryType).show();
+    }
+
+    function selectDetail(e){
+        let val = e.value;
+        document.getElementById('detail').value = val;
+    }
+</script>
