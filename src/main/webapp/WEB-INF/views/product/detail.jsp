@@ -3,7 +3,8 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+<meta name="_csrf" content="${_csrf.token}">
+<meta name="_csrf_header" content="${_csrf.headerName}">
 
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -24,9 +25,9 @@
 					<div class="product__details__pic__item">
 						<div>
 							<img class="product__details__pic__item--large"
-								 src="img/product/${dto.representativeImage}" alt=""/>
+								 src="img/product/${productFindDTO.representativeImage}" alt=""/>
 						</div>
-						<c:forEach var="imageList" items="${imageList}">
+						<c:forEach var="imageList" items="${productFindDTO.productImageDTOList}">
 						<img src="/img/product/${imageList.productImageName}" alt=""/>
 						</c:forEach>
 					</div>
@@ -45,7 +46,7 @@
 			</div>
 			<div class="col-lg-6 col-md-6">
 				<div class="product__details__text">
-					<h3>${dto.subject}</h3>
+					<h3>${productFindDTO.subject}</h3>
 					<div class="product__details__rating">
 						<i class="fa fa-star"></i>
 						<i class="fa fa-star"></i>
@@ -54,33 +55,35 @@
 						<i class="fa fa-star-half-o"></i>
 						<span>(18 reviews)</span>
 					</div>
-					<div class="product__details__price"><fmt:formatNumber maxFractionDigits="3" value="${dto.price}"/>원</div>
+					<div class="product__details__price"><fmt:formatNumber maxFractionDigits="3" value="${productFindDTO.price}"/>원</div>
 					<div>
 						<c:choose>
-							<c:when test="${dto.updateDate ne dto.uploadDate}"><p><${dto.updateDate}</p></c:when>
-							<c:when test="${dto.auctionDeadline ne null}">
+							<c:when test="${productFindDTO.updateDate ne productFindDTO.uploadDate}"><p><${productFindDTO.updateDate}</p></c:when>
+							<c:when test="${productFindDTO.auctionDeadline ne null}">
 								<p>
 									경매 입찰기간<br/>
-									${dto.uploadDate} ~ ${dto.auctionDeadline}
+									${productFindDTO.uploadDate} ~ ${productFindDTO.auctionDeadline}
 								</p>
 							</c:when>
-							<c:otherwise><p>${dto.uploadDate}</p></c:otherwise>
+							<c:otherwise><p>${productFindDTO.uploadDate}</p></c:otherwise>
 						</c:choose>
 					</div>
 <%--					<p>Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Vestibulum ac diam sit amet quam--%>
 <%--						vehicula elementum sed sit amet dui. Sed porttitor lectus nibh. Vestibulum ac diam sit amet--%>
 <%--						quam vehicula elementum sed sit amet dui. Proin eget tortor risus.</p>--%>
-					<div class="product__details__quantity">
-						<div class="quantity">
-							<div class="pro-qty">
-								<input type="text" value="1">
-							</div>
+					<div class="product__item">
+						<div class="product__item__text">
+							<ul class="product__wish__item">
+								<input type="hidden" id="wishId" value="1"/>
+								<input type="hidden" id="productId" value="${productId}"/>
+								<li><a href="#" class="primary-btn">바로 구매</a></li><li></li>
+								<li><a href="#" class="primary-btn">어니언 톡</a></li><li></li>
+								<li id="wishBtn" class="true"><a href="#"><i class="fa fa-heart"></i></a>찜 1</li><li></li>
+							</ul>
 						</div>
 					</div>
-					<a href="#" class="primary-btn">ADD TO CART</a>
-					<a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
 					<ul>
-						<li><b>Availability</b> <span>${dto.productProgress}</span></li>
+						<li><b>Availability</b> <span>${productFindDTO.productProgress}</span></li>
 						<li><b>Shipping</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li>
 						<li><b>Share on</b>
 							<div class="share">
@@ -106,7 +109,7 @@
 							<div class="product__details__tab__desc">
 								<h6>Products Infomation</h6>
 								<p>
-									${dto.content}
+									${productFindDTO.content}
 								</p>
 							</div>
 						</div>

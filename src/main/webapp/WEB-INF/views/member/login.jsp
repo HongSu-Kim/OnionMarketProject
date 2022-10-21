@@ -34,10 +34,11 @@
                 <p id="valid" class="alert alert-danger">${exception}</p>
             </c:if>
 
-            <button class="form-control btn btn-primary bi bi-lock-fill">로그인</button>
-            <div>&nbsp;</div>
-            <a href="/member/join" role="button" class="form-control btn btn-primary bi bi-lock-fill">회원가입</a>
+            <button class="btn btn-primary bi bi-lock-fill">로그인</button>
+            <a href="/member/join" role="button" class="btn btn-primary bi bi-lock-fill">회원가입</a>
+            <a href="/member/findIdView" role="button" class="btn btn-primary bi bi-lock-fill">아이디 찾기</a>
         </form>
+            <div>&nbsp;</div>
     </div>
 </div>
 

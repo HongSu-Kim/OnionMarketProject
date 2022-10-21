@@ -7,11 +7,9 @@ import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.service.product.*;
 import com.youprice.onion.util.AlertRedirect;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -29,7 +26,6 @@ public class ProductController {
     private final TownService townService;
     private final CategoryService categoryService;
     private final ProductImageService productImageService;
-//    private final ProductValidator productValidator;
 
     @GetMapping("add")//상픔 등록 주소
     public String add(Model model, @LoginUser SessionDTO userSession, HttpServletResponse response) throws IOException {
@@ -56,39 +52,11 @@ public class ProductController {
         return "product/addProduct";//상품등록 페이지
     }
     @PostMapping("add")//실제 상품 등록 주소
-    public String addProduct(@LoginUser SessionDTO userSession, @Valid @ModelAttribute ProductAddDTO productAddDTO,
-                             BindingResult bindingResult, Errors errors, List<MultipartFile> fileList,
-                             Model model,HttpServletResponse response) throws Exception{
-        if(userSession == null){
-            AlertRedirect.warningMessage(response,"/member/login", "로그인이 필요합니다.");
-            return "redirect:/member/login";
-        }
-//        if (errors.hasErrors()) {
-//            //상품등록 실패 시 입력 데이터 값을 유지
-//            model.addAttribute("productAddDTO", productAddDTO);
-//
-//            //유효성 통과 못한 필드와 메시지 핸들링
-//            Map<String, String> validatorResult = productService.validatorHandling(errors);
-//            for (String key : validatorResult.keySet()) {
-//                model.addAttribute(key, validatorResult.get(key));
-//            }
-//
-//            //상품등록 페이지로 다시 리턴
-//            return "product/add";
-//        }
+    public String addProduct(@LoginUser SessionDTO userSession, @Valid ProductAddDTO productAddDTO,
+                             List<MultipartFile> fileList, Model model) throws Exception {
 
-
-//        if (bindingResult.hasErrors()) {
-//            return "redirect:/product/add";
-//        }
         /*세션아이디로 멤버아이디 set*/
         productAddDTO.setMemberId(userSession.getId());
-        System.out.println("productAddDTO = " + productAddDTO.getTownName());
-        /*동네 이름으로 동네번호 조회 및 set*/
-        TownFindDTO townFindDTO = productService.findTownId(productAddDTO.getTownName());
-        productAddDTO.setTownId(townFindDTO.getId());
-        /*카테고리번호 set*/
-        productAddDTO.setCategoryId(productAddDTO.getCategoryId());
 
         Long productId = productService.addProduct(productAddDTO,fileList);
 
@@ -102,13 +70,10 @@ public class ProductController {
 
         productService.updateView(productId);//조회수 증가
 
-        ProductDTO productDTO = productService.getProductDTO(productId);
-
-        List<ProductImageDTO> productImageList = productImageService.getProductImage(productId);
+        ProductFindDTO productFindDTO = productService.getProductFindDTO(productId);
 
         model.addAttribute("productId",productId);
-        model.addAttribute("dto",productDTO);
-        model.addAttribute("imageList",productImageList);
+        model.addAttribute("productFindDTO",productFindDTO);
 
         return "product/detail";
     }
@@ -244,7 +209,6 @@ public class ProductController {
             AlertRedirect.warningMessage(response,"/member/login", "로그인이 필요합니다.");
             return "redirect:/member/login";
         }
-
 
         ProductDTO productDTO = productService.getProductDTO(productId);
         List<ProductImageDTO> imageList = productImageService.getProductImage(productId);
