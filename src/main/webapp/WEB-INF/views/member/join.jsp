@@ -79,12 +79,12 @@
 
             <div class="form-group">
                 <label>이메일</label>
-                <input type="email" name="email" value="${memberJoinDTO.email}" class="form-control" placeholder="이메일을 입력해주세요"/>
+                <input type="text" name="email" value="${memberJoinDTO.email}" class="form-control" placeholder="이메일을 입력해주세요"/>
                 <span id="valid_email">${valid_email}</span>
             </div>
 
             <button type="submit" class="btn btn-primary bi bi-person">가입</button>
-            <a href="/member/home" role="button" class="btn btn-info bi bi-arrow-return-left">돌아가기</a>
+            <a href="/member/login" role="button" class="btn btn-info bi bi-arrow-return-left">돌아가기</a>
         </form:form>
     </div>
 </div>
