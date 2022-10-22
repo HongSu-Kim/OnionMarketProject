@@ -1,5 +1,3 @@
-<%@ page import="javax.validation.constraints.NotEmpty" %>
-<%@ page import="java.time.LocalDateTime" %>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -28,7 +26,7 @@
 								 src="img/product/${productFindDTO.representativeImage}" alt=""/>
 						</div>
 						<c:forEach var="imageList" items="${productFindDTO.productImageDTOList}">
-						<img src="/img/product/${imageList.productImageName}" alt=""/>
+							<img src="/img/product/${imageList.productImageName}" alt=""/>
 						</c:forEach>
 					</div>
 
@@ -58,30 +56,63 @@
 					<div class="product__details__price"><fmt:formatNumber maxFractionDigits="3" value="${productFindDTO.price}"/>원</div>
 					<div>
 						<c:choose>
-							<c:when test="${productFindDTO.updateDate ne productFindDTO.uploadDate}"><p><${productFindDTO.updateDate}</p></c:when>
+							<c:when test="${productFindDTO.updateDate ne productFindDTO.uploadDate}">
+								<fmt:parseDate var="updateDate" value="${productFindDTO.updateDate}" pattern="yyyy-MM-dd'T'HH:mm"/>
+								<p><fmt:formatDate value="${updateDate}" pattern="yyyy-MM-dd"/></p>
+							</c:when>
 							<c:when test="${productFindDTO.auctionDeadline ne null}">
+								<fmt:parseDate var="uploadDate" value="${productFindDTO.uploadDate}" pattern="yyyy-MM-dd'T'HH:mm"/>
+								<fmt:parseDate var="deadline" value="${productFindDTO.auctionDeadline}" pattern="yyyy-MM-dd'T'HH:mm"/>
+								<p class="time-title">경매 마감까지 남은 시간</p>
+								<div class="time" >
+<%--									<span id="d-day"></span>--%>
+<%--									<span class="col">:</span>--%>
+									<span id="d-day-hour"></span>
+									<span class="col">:</span>
+									<span id="d-day-min"></span>
+									<span class="col">:</span>
+									<span id="d-day-sec"></span>
+								</div>
 								<p>
 									경매 입찰기간<br/>
-									${productFindDTO.uploadDate} ~ ${productFindDTO.auctionDeadline}
+									<fmt:formatDate value="${uploadDate}" pattern="yyyy-MM-dd"/>
+									~ <fmt:formatDate value="${deadline}" pattern="yyyy-MM-dd"/>
 								</p>
+								<input type="hidden" id="upload" value="${uploadDate}">
+								<input type="hidden" id="auctionDeadline" value="${deadline}">
 							</c:when>
-							<c:otherwise><p>${productFindDTO.uploadDate}</p></c:otherwise>
+							<c:otherwise><p><fmt:formatDate value="${uploadDate}" pattern="yyyy-MM-dd"/></p></c:otherwise>
 						</c:choose>
 					</div>
 <%--					<p>Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Vestibulum ac diam sit amet quam--%>
 <%--						vehicula elementum sed sit amet dui. Sed porttitor lectus nibh. Vestibulum ac diam sit amet--%>
 <%--						quam vehicula elementum sed sit amet dui. Proin eget tortor risus.</p>--%>
-					<div class="product__item">
-						<div class="product__item__text">
-							<ul class="product__wish__item">
-								<input type="hidden" id="wishId" value="1"/>
-								<input type="hidden" id="productId" value="${productId}"/>
-								<li><a href="#" class="primary-btn">바로 구매</a></li><li></li>
-								<li><a href="#" class="primary-btn">어니언 톡</a></li><li></li>
-								<li id="wishBtn" class="true"><a href="#"><i class="fa fa-heart"></i></a>찜 1</li><li></li>
-							</ul>
-						</div>
-					</div>
+					<c:choose>
+						<c:when test="${productFindDTO.memberId eq userSession.id}">
+							<div class="product__item">
+								<div class="product__item__text">
+									<input type="hidden" name="productId" value="${productId}">
+									<a href="/product/update/${productId}" class="primary-btn">상품 수정</a>
+									<a href="/product/delete/${productId}" class="primary-btn">삭 제</a>
+									<a href="#" class="primary-btn">채팅 목록</a>
+								</div>
+							</div>
+						</c:when>
+						<c:otherwise>
+							<div class="product__item">
+								<div class="product__item__text">
+									<input type="hidden" id="wishId" value="1"/>
+									<input type="hidden" id="productId" value="${productId}"/>
+									<a href="/order/payment/${productId}" hr class="primary-btn">바로 구매</a>
+									<a href="/complain/created/${productId}" class="primary-btn">신고하기</a>
+									<a href="#" class="primary-btn">채팅하기</a>
+									<form action="/wish/addWish/${productId}" method="get">
+										<i class="fa fa-heart wishBtn" type="submit"></i></a>찜 1
+									</form>
+								</div>
+							</div>
+						</c:otherwise>
+					</c:choose>
 					<ul>
 						<li><b>Availability</b> <span>${productFindDTO.productProgress}</span></li>
 						<li><b>Shipping</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li>
@@ -196,15 +227,7 @@
 	</div>
 </section>
 <!-- Related Product Section End -->
-<form action="/product/update" method="get">
-	<input type="hidden" name="productId" value="${productId}">
-	<input type="submit" value="상품 수정"/>
-</form>
 
-<form action="/product/delete" method="get">
-	<input type="hidden" name="productId" value="${productId}">
-	<input type="submit" value="상품 삭제"/>
-</form>
 
 <form action="/product/main" method="get">
 	<input type="submit" value="목록 보기"/>

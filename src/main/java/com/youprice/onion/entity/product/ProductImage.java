@@ -1,6 +1,4 @@
 package com.youprice.onion.entity.product;
-import com.sun.xml.bind.v2.schemagen.xmlschema.TypeHost;
-import com.youprice.onion.dto.product.ProductImageDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,6 +21,12 @@ public class ProductImage {
         private String productImageName; //이미지파일이름
 
         public ProductImage(Product product,String productImageName) {
+                this.product = product;
+                this.productImageName = productImageName;
+        }
+
+        public void updateImage(Long id, Product product, String productImageName) {
+                this.id = id;
                 this.product = product;
                 this.productImageName = productImageName;
         }
