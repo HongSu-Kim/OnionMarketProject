@@ -18,4 +18,8 @@ public interface WishRepository extends JpaRepository<Wish, Long> {
 	// 찜 리스트
 	@EntityGraph(attributePaths = {"product.member", "product.town.coordinate"})
 	Page<Wish> findAllByMemberId(Long memberId, Pageable pageable);
+
+	void deleteByMemberIdAndProductId(Long memberId, Long productId);
+
+	boolean existsByMemberIdAndProductId(Long memberId, Long productId);
 }

@@ -60,7 +60,7 @@ CREATE TABLE member (
 	detail_address		VARCHAR2(100)   NOT NULL,
 	extra_address		VARCHAR2(100)   NULL,
 	email				VARCHAR2(50)	NOT NULL,
-	member_image_name	VARCHAR2(50)    NULL,
+	member_image_name	VARCHAR2(255)   NULL,
 	cash	            NUMBER			DEFAULT 0,
 	point	            NUMBER	        DEFAULT 0,
 	user_grade          NUMBER          DEFAULT 0,
@@ -132,7 +132,7 @@ CREATE TABLE orders (
     order_id	    	NUMBER	        NOT NULL,
     member_id	    	NUMBER          NOT NULL,
     order_num           CHAR(15)        NOT NULL,
-    imp_uid             VARCHAR2(20)    NOT NULL,
+    imp_uid             VARCHAR2(20)    NULL,
     order_payment       NUMBER          NOT NULL,
     order_state     	VARCHAR2(10)    DEFAULT 'ORDER',
     order_date      	DATE            DEFAULT SYSDATE,
@@ -158,7 +158,7 @@ CREATE TABLE product (
 	subject             VARCHAR2(255)   NULL,
 	content             VARCHAR2(255)   NULL,
 	price               NUMBER          NULL,
-    representative_image VARCHAR2(100)   NULL,
+    representative_image VARCHAR2(255)  NULL,
 	upload_date         DATE            DEFAULT SYSDATE,
 	update_date         DATE            DEFAULT NULL,
 	auction_deadline    DATE            NULL,
@@ -176,7 +176,7 @@ CREATE TABLE product (
 CREATE TABLE product_image (
 	product_image_id   	NUMBER       	NOT NULL,
 	product_id         	NUMBER       	NOT NULL,
-	product_image_name 	VARCHAR2(50) 	NOT NULL,
+	product_image_name 	VARCHAR2(255) 	NOT NULL,
 	CONSTRAINT PK_PRODUCT_IMAGE PRIMARY KEY (product_image_id),
 	CONSTRAINT FK_PRODUCT_IMAGE_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id)
 );
@@ -251,6 +251,8 @@ CREATE TABLE wish (
 
 CREATE TABLE delivery (
 	order_id	    	NUMBER          NOT NULL,
+    recipient           VARCHAR2(30)    NOT NULL,
+    delivery_tel        CHAR(11)        NOT NULL,
 	postcode	    	CHAR(5)	        NOT NULL,
 	address         	VARCHAR2(255)   NOT NULL,
 	detail_address  	VARCHAR2(255)   NOT NULL,
@@ -291,8 +293,8 @@ CREATE TABLE review (
 CREATE TABLE review_image(
     review_image_id     NUMBER          NOT NULL,
     review_id           NUMBER          NOT NULL,
-    original_file_name  VARCHAR2(30)    NOT NULL,
-    store_image_name    VARCHAR2(100)   NOT NULL,
+    original_file_name  VARCHAR2(255)   NOT NULL,
+    store_image_name    VARCHAR2(255)   NOT NULL,
     CONSTRAINT PK_REVIEW_IMAGE PRIMARY KEY (review_image_id),
     CONSTRAINT FK_REVIEW_IMAGE_REVIEW_ID FOREIGN KEY (review_id) REFERENCES review(review_id)
 );
@@ -415,7 +417,7 @@ INSERT INTO Coordinate VALUES( 65 ,'서울특별시 강동구 둔촌2동','37.53
 INSERT INTO category VALUES(1,'디지털/가전','');
 
 INSERT INTO category VALUES(2,'모바일',1);
-INSERT INTO category VALUES(3,'가전제품',1);
+INSERT INTO category VALUES(3,' 가전제품',1);
 INSERT INTO category VALUES(4,'오디오/영상/관련기기',1);
 INSERT INTO category VALUES(5,'PC/노트북',1);
 INSERT INTO category VALUES(6,'게임/타이틀',1);

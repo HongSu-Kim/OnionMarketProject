@@ -1,121 +1,94 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<c:set var = "cp" value = "<%=request.getContextPath()%>"/>
-<section class="hero hero-normal">
-    <div class="container" style="width: 1200px;">
-        <div class="row">
-            <div class="col-lg-12">
-            <div class="container">
+<c:set var="cp" value="<%=request.getContextPath()%>"/>
+<style>
+    .review-btn {
+        font-size: 14px;
+        color: #ffffff;
+        font-weight: 800;
+        text-transform: uppercase;
+        display: inline-block;
+        padding: 10px 10px 1px;
+        background: #7fad39;
+        border: none;
+    }
+</style>
+<section class="spad">
+    <div class="row">
+        <div class="container">
+            <div class="section-title related-blog-title">
+                <h2>${memberDTO.nickname}님의 거래 후기 목록</h2>
+            </div>
 
-                <div class="blog__details__text">
-                    <img src="img/blog/details/details-pic.jpg" alt="">
-                    <h3>받은 거래 후기</h3>
-                </div>
-
-
-                <c:if test="${sessionDTO != null}">
-                    <p>${sessionDTO.nickname}. 접속중입니다</p>
+            <div>
+                <c:if test="${memberDTO.nickname != null}">
+                    <form action="/member/logout" method="post">
+                        <button class="btn btn-danger float-end" type="submit" name="${_csrf.parameterName}"
+                                value="${_csrf.token}">로그아웃
+                        </button>
+                    </form>
                 </c:if>
 
+                <c:if test="${memberDTO.nickname == null}">
+                    <button class="btn btn-primary float-end" onclick="location.href='/member/login'" type="button">
+                        로그인
+                    </button>
+                </c:if>
+            </div>
+            <br/>
 
-                <div>
-                    <c:if test="${sessionDTO.nickname != null}">
-                        <form action="/member/logout" method="post">
-                            <button class="btn btn-danger float-end" type="submit" name="${_csrf.parameterName}" value="${_csrf.token}">로그아웃</button>
-                        </form></c:if>
-
-                    <c:if test="${sessionDTO.nickname == null}">
-                        <button class="btn btn-primary float-end" onclick="location.href='/member/login'" type="button">로그인</button>
-                    </c:if>
-                </div><br/>
-
-                <div>
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>No</th>
-                            <%-- <th>주문번호</th> --%>
-                            <th>리뷰 내용</th>
-                            <th>별점</th>
-                            <th>등록일</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        <c:forEach var="dto" items="${reviewList.content }">
-                            <tr>
-                                <td>${reviewList.totalElements - (reviewList.number * reviewList.size) - reviewList.content.indexOf(dto)}</td>
-                                <%-- <td>${dto.orderId} --%>
-                                <td>
-                                    <div>
-                                        <c:forEach items="${dto.reviewImageList}" var="reviewImageDTO">
-                                            <img src="/img/review/${reviewImageDTO.storeImageName}" width="300" height="300"/>
-                                        </c:forEach>
-                                    </div>
-                                    ${dto.reviewContent}
-                                </td>
-                                <td>
-                                    <c:forEach var="i" begin="1" end="${dto.grade}">★</c:forEach>
-                                </td>
-                                <td>${dto.reviewDate}</td>
-
-                                <td>
-                                    <c:if test="${sessionDTO.id == dto.memberId}">
-                                        <button onclick="location.href='/review/update/${dto.reviewId}'">수정</button>
-                                        <button onclick="location.href='/review/delete/${dto.reviewId}'">삭제</button>
-                                    </c:if>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                        <!-- 페이징 -->
-                        <div class="text-xs-center">
-                            <ul class="pagination justify-content-center">
-
-                                <!-- 이전 -->
-                                <c:choose>
-                                    <c:when test="${reviewList.first}"></c:when>
-                                    <c:otherwise>
-                                        <li class="page-item"><a class="page-link" href="/review/list/?page=0">처음으로</a></li>
-                                        <li class="page-item"><a class="page-link" href="/review/list/?page=${reviewList.number-1}">◀</a></li>
-                                    </c:otherwise>
-                                </c:choose>
-
-                                <!-- 페이지 그룹 -->
-                                <c:forEach begin="${startBlockPage}" end="${endBlockPage}" var="i">
-                                    <c:choose>
-                                        <c:when test="${reviewList.pageable.pageNumber+1 == i}">
-                                            <li class="page-item disabled"><a class="page-link" href="/review/list/?page=${i-1}">${i}</a></li>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <li class="page-item"><a class="page-link" href="/review/list/?page=${i-1}">${i}</a></li>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </c:forEach>
-
-                                <!-- 다음 -->
-                                <c:choose>
-                                    <c:when test="${reviewList.last}"></c:when>
-                                    <c:otherwise>
-                                        <li class="page-item "><a class="page-link" href="/review/list/?page=${reviewList.number+1}">▶</a></li>
-                                        <li class="page-item "><a class="page-link" href="/review/list/?page=${reviewList.totalPages-1}">끝으로</a></li>
-                                    </c:otherwise>
-                                </c:choose>
-                            </ul>
-                        </div>
-
+            <c:forEach var="dto" items="${reviewList.content }">
+            <hr/><div class="col-lg-12">
+                <div style="display: flex;">
+                    <%--<div>No.${reviewList.totalElements - (reviewList.number * reviewList.size) - reviewList.content.indexOf(dto)}</div> --%>
+                    <div class="col-lg-1">
+                        <img alt="프로필사진" style="border-radius: 50%"
+                             src="https://dnvefa72aowie.cloudfront.net/origin/profile/202205/95dcbfc5cb4cebccc474649f3d6f54aae095667e6e9255ea3b1e05f2fe69d4f0.webp?q=82&amp;s=80x80&amp;t=crop"/>
+                    </div>
+                    <div class="col-lg-1">
+                        <p style="height: 10px">${memberDTO.nickname}</p>
+                        <p style="height: 10px"><c:forEach var="i" begin="1" end="${dto.grade}"><span style="color: gold">★</span></c:forEach></p>
+                    </div>
+                    <div class="col-lg-3">
+                        ${memberDTO.address}구매자 주소 - 시,동
+                    </div>
+                    <div class="col-lg-6 text-right">
+                        <time class="review-time">
+                                ${dto.reviewDate}
+                        </time>
+                    </div>
+                    <div>
+                        <c:if test="${dto.memberId == memberDTO.id}">
+                            <button class="review-btn" onclick="location.href='/review/update/${dto.reviewId}'">수정</button>
+                            <button class="review-btn" onclick="location.href='/review/delete/${dto.reviewId}'" style="background-color: #e4606d">삭제</button>
+                        </c:if>
+                    </div>
                 </div>
 
+                <div style="display: flex">
+                    <div class="col-lg-6" style="margin-top: 20px; margin-left: 35px;">
+                        <p style="height: 10px; color: #003eff; font-weight: bold;">상품제목</p>
+                        <p>${dto.reviewContent} 고맙습니다 잘쓸게요</p>
+                    </div>
+                    <div class="col-lg-5 text-right">
+                        <c:forEach items="${dto.reviewImageList}" var="reviewImageDTO">
+                            <img src="/img/review/${reviewImageDTO.storeImageName}" width="100px;" height="110px;"/>
+                        </c:forEach>
+                    </div>
+                </div>
+            </div>
+            </c:forEach>
 
 
-
-
-            </div> <!-- /container -->
+            <div align="center">
+                <button type="button" id="btnResultMore">더보기</button>
             </div>
         </div>
     </div>
 </section>
+
+<script >
+
+</script>

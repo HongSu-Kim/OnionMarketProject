@@ -38,6 +38,7 @@ dependencies {
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security' //spring-security
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client' //oauth2
 	implementation 'org.springframework.security:spring-security-taglibs' //spring-security taglibs
+	implementation 'org.springframework.boot:spring-boot-starter-mail' // mail
 }
 
 tasks.named('test') {

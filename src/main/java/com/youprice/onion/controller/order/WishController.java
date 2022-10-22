@@ -4,6 +4,7 @@ import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.order.WishListDTO;
 import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.service.order.WishService;
+import com.youprice.onion.util.AlertRedirect;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @RequiredArgsConstructor
 @Controller
@@ -28,35 +32,61 @@ public class WishController {
     public String wishList(@LoginUser SessionDTO sessionDTO, Model model, @PageableDefault Pageable pageable) {
 		if (sessionDTO == null) return "redirect:/member/login";
 
-		Page<WishListDTO> list = wishService.getWishList(sessionDTO.getId(), pageable);
+		Page<WishListDTO> page = wishService.getWishList(sessionDTO.getId(), pageable);
 
-		model.addAttribute("list", list);
+		model.addAttribute("page", page);
         return "order/wishList";
     }
 
-    // 찜 추가
-    @PostMapping("addWish")
+	// 찜 추가 - post
+	@PostMapping("addWish")
 	@ResponseBody
-    public ResponseEntity<?> addWish(@LoginUser SessionDTO sessionDTO, @RequestParam Long productId) {
+	public ResponseEntity<?> addWishPost(@LoginUser SessionDTO sessionDTO, @RequestParam Long productId) {
 		if (sessionDTO == null) return new ResponseEntity<>("/member/login", HttpStatus.UNAUTHORIZED);
 
 		try {
 			wishService.addWish(sessionDTO.getId(), productId);
 		} catch (Exception e) {
-
+			return new ResponseEntity<>("상품이 존재하지 않습니다.", HttpStatus.FORBIDDEN);
 		}
 
-        return new ResponseEntity<>("찜 목록에 추가헀습니다.", HttpStatus.OK);
-    }
+		return new ResponseEntity<>("찜 목록에 추가헀습니다.", HttpStatus.OK);
+	}
 
-    // 찜 삭제
-    @PostMapping("removeWish")
+	// 찜 추가 - get
+	@GetMapping("addWish/{productId}")
+	public String addWishGet(@LoginUser SessionDTO sessionDTO, @PathVariable Long productId, HttpServletResponse response) throws IOException {
+		if (sessionDTO == null) return "redirect:/member/login";
+
+		try {
+			wishService.addWish(sessionDTO.getId(), productId);
+		} catch (Exception e) {
+			return AlertRedirect.warningMessage(response, "/product/main", "상품이 존재하지 않습니다.");
+		}
+
+		return AlertRedirect.warningMessage(response, "/product/detail/" + productId, "찜 목록에 추가헀습니다.");
+	}
+
+    // 찜 삭제 - delete
+    @DeleteMapping("removeWish")
 	@ResponseBody
-    public ResponseEntity<?> removeWish(Long wishId) {
+    public ResponseEntity<?> removeWishDelete(@LoginUser SessionDTO sessionDTO, @RequestParam Long productId) {
+		if (sessionDTO == null) return new ResponseEntity<>("/member/login", HttpStatus.UNAUTHORIZED);
 
-		wishService.removeWish(wishId);
+		wishService.removeWish(sessionDTO.getId(), productId);
 
 		return new ResponseEntity<>("찜 목록에서 삭제헀습니다.", HttpStatus.OK);
     }
+
+	// 찜 삭제 - get
+	@GetMapping("removeWish/{productId}")
+	@ResponseBody
+	public String removeWishGet(@LoginUser SessionDTO sessionDTO, @RequestParam Long productId, HttpServletResponse response) throws IOException {
+		if (sessionDTO == null) return "redirect:/member/login";
+
+		wishService.removeWish(sessionDTO.getId(), productId);
+
+		return AlertRedirect.warningMessage(response, "/product/detail/" + productId, "찜 목록에서 삭제헀습니다.");
+	}
 
 }

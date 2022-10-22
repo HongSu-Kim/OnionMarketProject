@@ -7,17 +7,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class ProductDTO {
+public class ProductFindDTO {
 
     private Long productId;
     private Long memberId; //Member FK
     private Long townId; //Town FK
     private Long categoryId; //Category FK
-    private Long auctionId; //Auction FK
     private Long orderId; //Order FK
     private String subject; //제목
     private String content; //내용
@@ -30,8 +31,9 @@ public class ProductDTO {
     private ProductProgress productProgress; //판매상태 Reserved,tradings,soldout 예약중,거래중,판매완료
     private Boolean payStatus; //페이현황
     private Boolean blindStatus; //블라인드현황
+    private List<ProductImageDTO> productImageDTOList; //이미지 리스트
 
-    public ProductDTO(Product product) {
+    public ProductFindDTO(Product product) {
 
         productId = product.getId();
         memberId = product.getMember().getId();
@@ -50,6 +52,9 @@ public class ProductDTO {
         productProgress = product.getProductProgress();
         payStatus = product.getPayStatus();
         blindStatus = product.getBlindStatus();
+        productImageDTOList = product.getProductImageList()
+                .stream().map(ProductImageDTO::new)
+                .collect(Collectors.toList());
 
     }
 }

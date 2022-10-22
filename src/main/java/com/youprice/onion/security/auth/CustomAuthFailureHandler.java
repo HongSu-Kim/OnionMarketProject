@@ -43,6 +43,7 @@ public class CustomAuthFailureHandler extends SimpleUrlAuthenticationFailureHand
         errorMessage = URLEncoder.encode(errorMessage, "UTF-8");
         setDefaultFailureUrl("/member/login?error=true&exception="+errorMessage);
         super.onAuthenticationFailure(request, response, exception);
-        session.invalidate(); // 세션 삭제
+
+        session.invalidate(); // 세션 삭제 , 아이디는 맞는데 비밀번호가 틀린 경우 session에 객체가 저장되는 문제
     }
 }

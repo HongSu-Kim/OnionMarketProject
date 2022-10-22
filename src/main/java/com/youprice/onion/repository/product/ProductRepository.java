@@ -17,6 +17,7 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     //상품번호로 상품 하나 조회
     @Override
+    @EntityGraph(attributePaths = {"productImageList"})
     Optional<Product> findById(Long productId);
 
     //상품번호로 조회 후 상품의 조회수 증가
@@ -24,12 +25,15 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("update Product p set p.viewCount = p.viewCount + 1 where p.id = ?1")
     int updateView(@RequestParam("productId") Long productId);
 
+    //블라인드 처리가 안된 상품만 조회
+    List<Product> findByBlindStatus(Boolean blindStatus);
+
 	// 판매 상품 리스트
 	Page<Product> findByMemberId(Long memberId, Pageable pageable);
 
     //
     List<Product> findByCategoryIdBetween(Long start, Long end);
-    //
+    //제목과 내용으로 검색한 리스트 조회
     List<Product> findBySubjectContainingOrContentContaining(String subject,String content);
 
 

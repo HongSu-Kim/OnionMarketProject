@@ -5,26 +5,70 @@ IMP.init("imp88641673");
 let header = $("meta[name='_csrf_header']").attr("content");
 let token = $("meta[name='_csrf']").attr("content");
 
-// 결제
-$('#payment').click(function() {
-    // IMP.request_pay(param, callback) 결제창 호출
-    IMP.request_pay({ // param
+// 배송 받기
+$('#delivery-true').click(function () {
+    $('#delivery').val("true")
+    $('#deliveryInfo').removeClass("d-none")
+    $('#deliveryCost-group').removeClass("d-none")
+    $('#delivery-true').addClass("d-none")
+    $('#totalPrice').html(parseInt($('#totalPrice').html()) + 3000)
+})
+
+// 직거래
+$('#delivery-false').click(function () {
+    $('#delivery').val("false")
+    $('#deliveryInfo').addClass("d-none")
+    $('#deliveryCost-group').addClass("d-none")
+    $('#delivery-true').removeClass("d-none")
+    $('#totalPrice').html(parseInt($('#totalPrice').html()) - 3000)
+})
+
+// 등록된 주소
+$('#memberAddr').click(function () {
+    $('#postcode').val($('#hiddenPostcode').val())
+    $('#address').val($('#hiddenAddress').val())
+    $('#detailAddress').val($('#hiddenDetailAddress').val())
+    $('#extraAddress').val($('#hiddenExtraAddress').val())
+})
+
+// 결제 - 양파페이
+$('#payment').click(function () {
+    if (validate())
+        return
+
+    $('#orderPayment').val($('#totalPrice').html())
+    $('#form').submit()
+})
+
+// imp 결제
+$('#imp-payment').click(function() {
+    if (validate())
+        return
+
+    $('#orderPayment').val($('#totalPrice').html())
+
+    let param = {
         pg: "html5_inicis", // (html5_inicis - 이니시스웹표준)
         pay_method: "card", // 결제방식
         merchant_uid: $('#orderNum').val(), // 주문번호
         name: $('#subject').val(), // 상품명
-        amount: parseInt($('#orderPayment').val()), // 결제 금액 : 주문가격 + 배송비
+        amount: parseInt($('#totalPrice').html()), // 결제 금액
         buyer_name: $('#name').val(), // 주문자명
         buyer_tel: $('#tel').val(), // 주문자 연락처
         buyer_email: $('#email').val(), // 주문자 이메일
-        buyer_addr: $('#address').val(), // 주문자 주소
-        buyer_postcode: $('#postcode').val() // 주문자 우편 번호
+    }
 
-    }, function(rsp) { // callback
+    if ($('#delivery').val() == "true") {
+        param.buyer_addr = $('#address').val() // 주문자 주소
+        param.buyer_postcode = $('#postcode').val() // 주문자 우편 번호
+    }
+
+    // IMP.request_pay(param, callback) 결제창 호출
+    IMP.request_pay(param, function(rsp) { // callback
         if (rsp.success) { // 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
             // jQuery로 HTTP 요청
             $.ajax({
-                url: "/order/payment",
+                url: "/order/imp-payment",
                 method: "POST",
                 contentType: 'application/json',
                 data: JSON.stringify ({
@@ -33,9 +77,12 @@ $('#payment').click(function() {
                     memberId: parseInt($('#memberId').val()), // 회원번호
                     productId: parseInt($('#productId').val()), // 상품번호
                     orderPayment: rsp.paid_amount, // 주문가격
+                    delivery: $('#delivery').val(), // 배송여부
                     deliveryCost: parseInt($('#deliveryCost').val()), // 배송비
-                    address: rsp.buyer_addr, // 주문자 주소
-                    postcode: rsp.buyer_postcode, // 주문자 우편번호
+                    recipient: $('#recipient').val(), // 받는사람
+                    deliveryTel: $('#deliveryTel').val(), // 연락처
+                    address: $('#address').val(), // 주문자 주소
+                    postcode: $('#postcode').val(), // 주문자 우편번호
                     detailAddress: $('#detailAddress').val(), // 주문자 상세주소
                     extraAddress: $('#extraAddress').val(), // 참고사항
                     request: $('#request').val(), // 요구사항
@@ -58,6 +105,50 @@ $('#payment').click(function() {
         }
     });
 })
+
+// 유효성 검사
+function validate() {
+    $('.err-msg').remove()
+
+    if ($('#delivery').val() == "true") {
+        let result = false
+
+        if (!$('#recipient').val()) {
+            $('#recipient').before('<span class="err-msg">받을 사람을 입력해주세요.</span>')
+            result = true;
+        }
+
+        if (!$('#deliveryTel').val()) {
+            $('#deliveryTel').before('<span class="err-msg">연락처를 입력해주세요.</span>')
+            result = true;
+        }
+
+        let postcodeRegex = /^[0-9]{5}$/
+        if (!$('#postcode').val()) {
+            $('#postcode').before('<span class="err-msg">우편번호를 입력해주세요.</span>')
+            result = true;
+        } else if (!postcodeRegex.test($('#postcode').val())) {
+            $('#postcode').before('<span class="err-msg">우편번호 형식이 맞지않습니다.</span>')
+            result = true;
+        }
+
+        if (!$('#address').val()) {
+            $('#address').before('<span class="err-msg">주소를 입력해주세요.</span>')
+            result = true;
+        }
+
+        if (!$('#detailAddress').val()) {
+            $('#detailAddress').before('<span class="err-msg">참고항목을 입력해주세요.</span>')
+            result = true;
+        }
+        if (result) return result
+    }
+
+    if (!$('#acc-or').is(':checked')) {
+        alert("결제정보를 확인해주세요")
+        return true
+    }
+}
 
 // 주소
 function sample6_execDaumPostcode() {

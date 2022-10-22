@@ -1,71 +1,22 @@
-
-let header = $("meta[name='_csrf_header']").attr("content");
-let token = $("meta[name='_csrf']").attr("content");
-
-$(function () {
-    if ($('#mode').val() == 'update') {
-        update();
-    }
-})
-
-// update mode
-function update() {
-    $('#recipient').attr("readonly", false)
-    $('#deliveryTel').attr("readonly", false)
-    $('#postcode').attr("readonly", false)
-    $('#address').attr("readonly", false)
-    $('#detailAddress').attr("readonly", false)
-    $('#extraAddress').attr("readonly", false)
-    $('#request').attr("readonly", false)
-
-    $('#updateBtn').css("display", "none")
-    $('#postcodeBtn').css("display", "inline-block")
-    $('#submitBtn').css("display", "inline-block")
-
-    $('#postcode').focus()
-}
-
-// update save
-function save() {
-    $.ajax({
-        url: "/order/update",
-        method: "POST",
-        contentType: "application/json",
-        data: JSON.stringify({
-            orderId: $('#orderId').val(),
-            recipient: $('#recipient').val(),
-            deliveryTel: $('#deliveryTel').val(),
-            postcode: $('#postcode').val(),
-            address: $('#address').val(),
-            detailAddress: $('#detailAddress').val(),
-            extraAddress: $('#extraAddress').val(),
-            request: $('#request').val()
-        }),
-        beforeSend: function (jqXHR) {
-            jqXHR.setRequestHeader(header, token);
-        },
-        success: function (msg) {
-            $('#recipient').attr("readonly", true)
-            $('#deliveryTel').attr("readonly", true)
-            $('#postcode').attr("readonly", true)
-            $('#address').attr("readonly", true)
-            $('#detailAddress').attr("readonly", true)
-            $('#extraAddress').attr("readonly", true)
-            $('#request').attr("readonly", true)
-
-            $('#updateBtn').css("display", "inline-block")
-            $('#postcodeBtn').css("display", "none")
-            $('#submitBtn').css("display", "none")
-            $('#mode').val("")
-
-            alert(msg)
-        },
-        error: function (error) {
-            // alert(error.responseText)
-            alert("수정 실패")
+$(function(){
+    $("#alert-success").hide();
+    $("#alert-danger").hide();
+    $("input").keyup(function(){
+        var pwd=$("#pwd").val();
+        var pwdCheck=$("#pwdCheck").val();
+        if(pwd != "" || pwdCheck != ""){
+            if(pwd == pwdCheck){
+                $("#alert-success").show();
+                $("#alert-danger").hide();
+                $("#submit").removeAttr("disabled");
+            }else{
+                $("#alert-success").hide();
+                $("#alert-danger").show();
+                $("#submit").attr("disabled", "disabled");
+            }
         }
-    })
-}
+    });
+});
 
 // 주소
 function sample6_execDaumPostcode() {

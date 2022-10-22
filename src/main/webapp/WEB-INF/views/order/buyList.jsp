@@ -32,85 +32,38 @@
 							</thead>
 							<tbody>
 
-								<!-- view test -->
-									<tr>
-										<td onclick="location.href='/product/detail?productId=1';" style="cursor: pointer">
-											<img src="/img/product/edd75ee44b39477ef71df02dbc46e873c802479d.png" height="100">
-											<span>상품명1</span>
-										</td>
-										<td onclick="location.href='/order/detail?orderId=1';" style="cursor: pointer">imp2024654216</td>
-										<td><fmt:formatNumber type="number" maxFractionDigits="3" value="20000"/>원</td>
-										<td>2022/10/16</td>
-										<td>
-											<p>주문완료</p>
-											<p>
-												<a href="/order/detail?orderId=1&mode=update" class="primary-btn">배송지변경</a>
-												<a onclick="confirm('정말 취소하시겠습니까?') ? location.href='/order/cancel?orderId=1' : false"
-													 class="primary-btn cart-btn">주문취소</a>
-											</p>
-										</td>
-									</tr>
-									<tr>
-										<td onclick="location.href='/product/detail?productId=1';" style="cursor: pointer">
-											<img src="/img/product/edd75ee44b39477ef71df02dbc46e873c802479d.png" height="100">
-											<span>상품명2</span>
-										</td>
-										<td onclick="location.href='/order/detail?orderId=1';" style="cursor: pointer">imp2024684568</td>
-										<td>10,000원</td>
-										<td>2022/10/15</td>
-										<td>
-											<p>주문취소</p>
-											<p>
-												<a href="/order/detail?orderId=1" class="primary-btn">주문확인</a>
-											</p>
-										</td>
-									</tr>
-									<tr>
-										<td onclick="location.href='/product/detail?productId=1';" style="cursor: pointer">
-											<img src="/img/product/edd75ee44b39477ef71df02dbc46e873c802479d.png" height="100">
-											<span>상품명3</span>
-										</td>
-										<td onclick="location.href='/order/detail?orderId=1';" style="cursor: pointer">imp2020556126</td>
-										<td>35,000원</td>
-										<td>2022/10/13</td>
-										<td>
-											<p>배송완료</p>
-											<p>
-												<a href="/review/created/1" class="primary-btn">구매후기등록</a>
-											</p>
-										</td>
-									</tr>
-								<!-- view test end -->
-
 								<!-- 주문 없음 -->
 								<c:if test="${empty page.content}">
 									<tr>
-										<td colspan="5" style="text-align: center">주문한 상품이 존재하지 않습니다.</td>
+										<td colspan="5"class="text-center">주문한 상품이 존재하지 않습니다.</td>
 									</tr>
 								</c:if>
 
 								<!-- 주문 정보 -->
 								<c:forEach var="orderDTO" items="${page.content}">
 									<tr>
-										<td onclick="location.href='/product/detail?productId=${orderDTO.productDTO.productId}'" style="cursor: pointer">
-											<img src="/img/product/${orderDTO.productDTO.representativeImage}">
+										<td class="text-align-left pointer" onclick="location.href='/product/detail/${orderDTO.productDTO.productId}'">
+											<img src="/img/product/${orderDTO.productDTO.representativeImage}" class="list-img">
 											<span>${orderDTO.productDTO.subject}</span>
 										</td>
-										<td onclick="location.href='/order/detail?orderId=${orderDTO.orderId}'" style="cursor: pointer">
-												${orderDTO.imp_uid}
+										<td class="pointer" onclick="location.href='/order/detail/${orderDTO.orderId}'">
+											${orderDTO.imp_uid}
 										</td>
 										<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${orderDTO.orderPayment}"/></td>
-										<td>${orderDTO.orderDate}</td>
+										<td>
+											<fmt:parseDate var="orderDate" value="${orderDTO.orderDate}" pattern="yyyy-MM-dd'T'HH:mm"/>
+											<fmt:formatDate value="${orderDate}" pattern="yyyy/MM/dd"/>
+										</td>
 										<td>
 											<p>${orderDTO.orderState.kor}</p>
 											<p>
 												<c:if test="${orderDTO.orderState eq 'ORDER'}">
-													<a href="/delivery/update?orderId=${orderDTO.orderId}" class="primary-btn">배송지변경</a>
-													<a onclick="confirm('정말 삭제하시겠습니까?') ? location.href='/order/cancel?orderId=${orderDTO.orderId}' : false"
+													<a href="/order/detail/${orderDTO.orderId}/update" class="primary-btn">배송지변경</a>
+													<a onclick="confirm('정말 취소하시겠습니까?') ? location.href='/order/cancel/${orderDTO.orderId}' : false"
 														 class="primary-btn cart-btn">주문취소</a>
 												</c:if>
 												<c:if test="${orderDTO.orderState eq 'CANCEL'}">
-													<a href="/order/detail?orderId=${orderDTO.orderId}" class="primary-btn">주문확인</a>
+													<a href="/order/detail/${orderDTO.orderId}" class="primary-btn">주문확인</a>
 												</c:if>
 												<c:if test="${orderDTO.orderState eq 'COMPLETE'}">
 													<a href="/review/created/${orderDTO.orderId}" class="primary-btn">구매후기등록</a>
@@ -156,21 +109,23 @@
 					</div>--%>
 
 					<!-- view test -->
-					<div class="product__pagination" style="text-align: center">
-						<a href="#">1</a>
-						<a href="#">2</a>
-						<a href="#">3</a>
-						<a href="#">></a>
-					</div>
+					<c:if test="${empty page.content}">
+						<div class="product__pagination text-center">
+							<a href="#">1</a>
+							<a href="#">2</a>
+							<a href="#">3</a>
+							<a href="#">></a>
+						</div>
+					</c:if>
 					<!-- view test end -->
 
 					<!-- 페이징 -->
 					<c:if test="${!empty page.content}">
-						<div class="product__pagination" style="text-align: center">
+						<div class="product__pagination text-center">
 							<a href="#">1</a>
 							<a href="#">2</a>
 							<a href="#">3</a>
-							<a href="#"><i class="fa fa-long-arrow-right"></i></a>
+							<a href="#">></a>
 						</div>
 					</c:if>
 

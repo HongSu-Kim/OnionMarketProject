@@ -6,39 +6,42 @@ import java.io.PrintWriter;
 
 public class AlertRedirect {
 
-	public static void warningMessage(HttpServletResponse response, String message) throws IOException {
+	public static String warningMessage(HttpServletResponse response, String message) throws IOException {
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		out.println(
 				"<script>" +
-						"	alert('" + message + "');" +
-						"	history.back();" +
-						"</script>"
+				"	alert('" + message + "');" +
+				"	history.back();" +
+				"</script>"
 		);
 		out.flush();
+		return null;
 	}
 
-	public static void warningMessage(HttpServletResponse response, int num, String message) throws IOException {
+	public static String warningMessage(HttpServletResponse response, int num, String message) throws IOException {
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		out.println(
 				"<script>" +
-						"	alert('" + message + "');" +
-						"	history.go(" + num + ");" +
-						"</script>"
+				"	alert('" + message + "');" +
+				"	history.go(" + num + ");" +
+				"</script>"
 		);
 		out.flush();
+		return null;
 	}
-	public static void warningMessage(HttpServletResponse response, String url, String message) throws IOException {
+	public static String warningMessage(HttpServletResponse response, String url, String message) throws IOException {
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		out.println(
 				"<script>" +
-						"	alert('" + message + "');" +
-						"	location.href='" + url + "';" +
-						"</script>"
+				"	alert('" + message + "');" +
+				"	location.href='" + url + "';" +
+				"</script>"
 		);
 		out.flush();
+		return null;
 	}
 }
 

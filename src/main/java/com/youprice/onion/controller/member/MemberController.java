@@ -1,8 +1,6 @@
 package com.youprice.onion.controller.member;
 
-import com.youprice.onion.dto.member.MemberDTO;
-import com.youprice.onion.dto.member.MemberJoinDTO;
-import com.youprice.onion.dto.member.SessionDTO;
+import com.youprice.onion.dto.member.*;
 import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.security.validator.CustomValidators;
 import com.youprice.onion.service.member.MemberService;
@@ -10,6 +8,7 @@ import com.youprice.onion.service.member.ProhibitionKeywordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
@@ -21,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.Map;
 
 @Controller
@@ -63,7 +61,7 @@ public class MemberController {
 
     //회원가입
     @PostMapping("/joinProc")
-    public String joinProc(@Valid MemberJoinDTO memberJoinDTO, Errors errors, Model model, BindingResult bindingResult) throws IOException {
+    public String joinProc(@Valid MemberJoinDTO memberJoinDTO, Errors errors, Model model, BindingResult bindingResult) {
 
         if (prohibitionKeywordService.ProhibitionKeywordFind(memberJoinDTO.getNickname())) { //금지키워가있으면 true
             bindingResult.addError(new FieldError("memberJoinDTO", "nickname", "적합하지 않은 단어가 포함되어 있습니다."));
@@ -88,7 +86,6 @@ public class MemberController {
         memberService.saveMember(memberJoinDTO);
         return "redirect:login";
     }
-
 
     //로그인 페이지
     @GetMapping("/login")
@@ -115,6 +112,41 @@ public class MemberController {
         return "member/modify";
     }
 
+    //마이페이지
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/mypage")
+    public String mypageView(@LoginUser SessionDTO sessionDTO, Model model) {
+        if (sessionDTO != null) {
+            model.addAttribute("session", sessionDTO.getId());
+            model.addAttribute("sessionDTO", sessionDTO);
+        }
+        return "member/mypage";
+    }
+
+    //아이디 찾기
+    @GetMapping("/findIdView")
+    public String findIdView() {
+        return "member/findIdView";
+    }
+
+    @PostMapping("findId")
+    public String findId(MemberFindDTO memberFindDTO, Model model) {
+        if (memberService.countId(memberFindDTO.getEmail()) == 0) {
+            model.addAttribute("msg", "존재하지 않는 사용자 입니다. 이메일을 다시 확인해 주세요.");
+            return "member/findIdView";
+        } else {
+            model.addAttribute("member", memberService.findId(memberFindDTO.getEmail()));
+            return "member/findId";
+        }
+    }
+
+/*    //임시 비밀번호 이메일 보내기
+    @Transactional
+    @PostMapping("/sendEmail")
+    public String sendEmail(@RequestParam("email") String email) {
+        MailDTO mailDTO = memberService.createMail
+    }*/
+
     //관심 카테고리
     @GetMapping("/category")
     public String categoryView() {
@@ -130,17 +162,6 @@ public class MemberController {
         System.out.println(categoryList[2]);
 
         return new ModelAndView("category", "category", categoryList);
-    }
-
-    //마이페이지
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/mypage")
-    public String mypageView(@LoginUser SessionDTO sessionDTO, Model model) {
-        if (sessionDTO != null) {
-            model.addAttribute("session", sessionDTO.getId());
-            model.addAttribute("sessionDTO", sessionDTO);
-        }
-        return "member/mypage";
     }
 
     //접근 거부 페이지
