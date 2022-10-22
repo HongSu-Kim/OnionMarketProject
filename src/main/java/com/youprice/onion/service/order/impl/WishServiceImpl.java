@@ -39,7 +39,8 @@ public class WishServiceImpl implements WishService {
 	// 찜 등록
 	@Override
 	public void addWish(Long memberId, Long productId) {
-		wishRepository.deleteByMemberIdAndProductId(memberId, productId);
+		// 이미 등록돼 있을때 리턴
+		if (wishRepository.existsByMemberIdAndProductId(memberId, productId)) return;
 
 		Member member = memberRepository.findById(memberId).orElse(null);
 		Product product = productRepository.findById(productId).orElse(null);

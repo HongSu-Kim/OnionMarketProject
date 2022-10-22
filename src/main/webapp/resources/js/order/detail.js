@@ -10,6 +10,8 @@ $(function () {
 
 // update mode
 function update() {
+    $('#recipient').attr("readonly", false)
+    $('#deliveryTel').attr("readonly", false)
     $('#postcode').attr("readonly", false)
     $('#address').attr("readonly", false)
     $('#detailAddress').attr("readonly", false)
@@ -31,6 +33,8 @@ function save() {
         contentType: "application/json",
         data: JSON.stringify({
             orderId: $('#orderId').val(),
+            recipient: $('#recipient').val(),
+            deliveryTel: $('#deliveryTel').val(),
             postcode: $('#postcode').val(),
             address: $('#address').val(),
             detailAddress: $('#detailAddress').val(),
@@ -41,6 +45,8 @@ function save() {
             jqXHR.setRequestHeader(header, token);
         },
         success: function (msg) {
+            $('#recipient').attr("readonly", true)
+            $('#deliveryTel').attr("readonly", true)
             $('#postcode').attr("readonly", true)
             $('#address').attr("readonly", true)
             $('#detailAddress').attr("readonly", true)

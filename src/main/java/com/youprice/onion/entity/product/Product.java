@@ -145,6 +145,10 @@ public class Product {
 		}
 		return this;
 	}
+	public Product progressUpdate(ProductProgress productProgress) {
+		this.productProgress = productProgress;
+		return this;
+	}
 }
 
 
