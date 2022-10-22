@@ -26,13 +26,13 @@
 
             <div class="form-group">
                 <label>비밀번호</label>
-                <input type="password" name="pwd" id="pwd" value="${memberJoinDTO.pwd}" class="form-control" placeholder="비밀번호를 입력해주세요"/>
+                <input type="password" name="pwd" id="pwd" class="form-control" placeholder="비밀번호를 입력해주세요"/>
                 <span id="valid_pwd">${valid_pwd}</span>
             </div>
 
             <div class="form-group">
                 <label>비밀번호 재확인</label>
-                <input type="password" name="pwd" id="pwdCheck" value="${memberJoinDTO.pwd}" class="form-control" placeholder="비밀번호를 입력해주세요"/>
+                <input type="password" name="pwdCheck" id="pwdCheck" class="form-control" placeholder="비밀번호를 입력해주세요"/>
             </div>
 
             <div class="alert alert-success" id="alert-success">비밀번호가 일치합니다.</div>
