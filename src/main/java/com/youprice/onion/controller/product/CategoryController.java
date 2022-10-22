@@ -32,7 +32,7 @@ public class CategoryController {
 
         model.addAttribute("category",category);
         model.addAttribute("categoryAddDTO",categoryAddDTO);
-        
+
 
         return "product/category";
     }
@@ -79,10 +79,10 @@ public class CategoryController {
     public String create(Model model) {
 
         List<Category> Topcategory =categoryService.findTopCategory();
-        List<Category> Subcategory = categoryService.findSubCategory();
+       // List<CategoryFindDTO> Subcategory = categoryService.findSubCategory();
 
         model.addAttribute("Topcategory",Topcategory);
-        model.addAttribute("Subcategory",Subcategory);
+       // model.addAttribute("Subcategory",Subcategory);
 
         return "product/categoryupdate";
     }
