@@ -152,6 +152,10 @@ public class Product {
         this.blindStatus = true;
         return this;
     }
+	public Product progressUpdate(ProductProgress productProgress) {
+		this.productProgress = productProgress;
+		return this;
+	}
 }
 
 

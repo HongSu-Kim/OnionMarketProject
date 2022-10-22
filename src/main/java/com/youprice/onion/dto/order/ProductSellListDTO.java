@@ -21,8 +21,9 @@ public class ProductSellListDTO {
 	private Boolean payStatus; //페이현황
 	private Boolean blindStatus; //블라인드현황
 
-	private String townName;
-	private String productImageName;
+	private String representativeImage;
+
+	private Long orderId;
 
 	public ProductSellListDTO(Product product) {
 
@@ -34,8 +35,9 @@ public class ProductSellListDTO {
 		productProgress = product.getProductProgress();
 		payStatus = product.getPayStatus();
 		blindStatus = product.getBlindStatus();
+		representativeImage = product.getRepresentativeImage();
 
-		townName = product.getTown().getCoordinate().getTownName();
-		productImageName = product.getProductImageList().get(0).getProductImageName();
+		if (product.getOrder() != null)
+			orderId = product.getOrder().getId();
 	}
 }

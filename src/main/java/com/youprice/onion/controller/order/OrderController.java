@@ -7,6 +7,7 @@ import com.youprice.onion.dto.order.OrderAddDTO;
 import com.youprice.onion.dto.order.OrderDTO;
 import com.youprice.onion.dto.order.ProductSellListDTO;
 import com.youprice.onion.dto.product.ProductDTO;
+import com.youprice.onion.entity.product.ProductProgress;
 import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.service.member.MemberService;
 import com.youprice.onion.service.order.DeliveryService;
@@ -42,8 +43,8 @@ public class OrderController {
 	private final PaymentService paymentService;
 
 	// 주문 페이지
-	@GetMapping("payment")
-	public String payment(@LoginUser SessionDTO sessionDTO, Model model, OrderAddDTO orderAddDTO, Long productId,
+	@GetMapping("payment/{productId}")
+	public String payment(@LoginUser SessionDTO sessionDTO, Model model, @ModelAttribute OrderAddDTO orderAddDTO, @PathVariable Long productId,
 						  HttpServletResponse response) throws IOException {
 		if (sessionDTO == null) return "redirect:/member/login";
 		if (productId == null) return "redirect:/product/main";
@@ -55,9 +56,9 @@ public class OrderController {
 		if (productDTO == null) {
 			return AlertRedirect.warningMessage(response, "/product/main", "상품정보가 존재하지 않습니다.");
 		} else if (productDTO.getMemberId() == sessionDTO.getId()) {
-			return AlertRedirect.warningMessage(response, "/product/main", "자신의 상품은 구매할수 없습니다.");
-		} else if (productDTO.getOrderId() != null) {
-			return AlertRedirect.warningMessage(response, "/product/main", "이미 판매된 상품입니다.");
+			return AlertRedirect.warningMessage(response, "/product/detail/" + productId, "자신의 상품은 구매할수 없습니다.");
+		} else if (productDTO.getProductProgress() != ProductProgress.TRADINGS) {
+			return AlertRedirect.warningMessage(response, "/product/main", "구매할 수 없는 상품입니다.");
 		}
 
 		model.addAttribute("memberDTO", memberDTO);
@@ -68,10 +69,9 @@ public class OrderController {
 
 	// 주문 - 양파페이 결제
 	@PostMapping("payment")
-	public String payment(OrderAddDTO orderAddDTO) throws IOException {
-		orderAddDTO.setImp_uid(orderAddDTO.getOrderNum());
+	public String payment(@ModelAttribute OrderAddDTO orderAddDTO) throws IOException {
 		Long orderId = orderService.addOrder(orderAddDTO);
-		return "redirect:/order/complete?orderId=" + orderId;
+		return "redirect:/order/complete/" + orderId;
 	}
 
 	// 주문 - imp 결제
@@ -80,7 +80,7 @@ public class OrderController {
 	public ResponseEntity<?> impPayment(@RequestBody OrderAddDTO orderAddDTO) {
 		try{
 			Long orderId = orderService.addOrder(orderAddDTO);
-			return new ResponseEntity<>("/order/complete?orderId=" + orderId, HttpStatus.OK);
+			return new ResponseEntity<>("/order/complete/" + orderId, HttpStatus.OK);
 
 			// DB 입력 오류시 결제취소
 		} catch (Exception e) {
@@ -96,8 +96,8 @@ public class OrderController {
 	}
 
 	// 완료 페이지
-	@GetMapping("complete")
-	public String completion(Model model, Long orderId) {
+	@GetMapping("complete/{orderId}")
+	public String completion(Model model, @PathVariable Long orderId) {
 		OrderDTO orderDTO = orderService.getOrderDTO(orderId);
 		model.addAttribute("orderDTO", orderDTO);
 		return "order/complete";
@@ -115,8 +115,9 @@ public class OrderController {
 	}
 
 	// 구매 내역 상세 페이지
-	@GetMapping("detail")
-	public String buyDetail(@LoginUser SessionDTO sessionDTO, Model model, Long orderId, String mode, HttpServletResponse response) throws IOException {
+	@GetMapping({ "detail/{orderId}", "detail/{orderId}/{mode}" })
+	public String buyDetail(@LoginUser SessionDTO sessionDTO, Model model, @PathVariable Long orderId,
+							@PathVariable(required = false) String mode, HttpServletResponse response) throws IOException {
 		if (sessionDTO == null) return "redirect:/member/login";
 
 		OrderDTO orderDTO = orderService.getOrderDTO(orderId);
@@ -144,8 +145,8 @@ public class OrderController {
 	}
 
 	// 주문 취소
-	@GetMapping("cancel")
-	public String cancel(Long orderId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+	@GetMapping("cancel/{orderId}")
+	public String cancel(@PathVariable Long orderId, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		try {
 			
 			// 주문취소
@@ -166,7 +167,7 @@ public class OrderController {
 
 			// 배송지 변경
 			deliveryService.update(deliveryDTO);
-			return new ResponseEntity<>("배송지가 수정되었습니다.", HttpStatus.OK);
+			return new ResponseEntity<>("배송 정보가 수정되었습니다.", HttpStatus.OK);
 
 			// 오류
 		} catch (Exception e) {

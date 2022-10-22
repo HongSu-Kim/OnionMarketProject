@@ -60,7 +60,7 @@ CREATE TABLE member (
 	detail_address		VARCHAR2(100)   NOT NULL,
 	extra_address		VARCHAR2(100)   NULL,
 	email				VARCHAR2(50)	NOT NULL,
-	member_image_name	VARCHAR2(50)    NULL,
+	member_image_name	VARCHAR2(255)   NULL,
 	cash	            NUMBER			DEFAULT 0,
 	point	            NUMBER	        DEFAULT 0,
 	user_grade          NUMBER          DEFAULT 0,
@@ -132,7 +132,7 @@ CREATE TABLE orders (
     order_id	    	NUMBER	        NOT NULL,
     member_id	    	NUMBER          NOT NULL,
     order_num           CHAR(15)        NOT NULL,
-    imp_uid             VARCHAR2(20)    NOT NULL,
+    imp_uid             VARCHAR2(20)    NULL,
     order_payment       NUMBER          NOT NULL,
     order_state     	VARCHAR2(10)    DEFAULT 'ORDER',
     order_date      	DATE            DEFAULT SYSDATE,
@@ -158,7 +158,7 @@ CREATE TABLE product (
 	subject             VARCHAR2(255)   NULL,
 	content             VARCHAR2(255)   NULL,
 	price               NUMBER          NULL,
-    representative_image VARCHAR2(100)   NULL,
+    representative_image VARCHAR2(255)  NULL,
 	upload_date         DATE            DEFAULT SYSDATE,
 	update_date         DATE            DEFAULT NULL,
 	auction_deadline    DATE            NULL,
@@ -252,7 +252,7 @@ CREATE TABLE wish (
 CREATE TABLE delivery (
 	order_id	    	NUMBER          NOT NULL,
     recipient           VARCHAR2(30)    NOT NULL,
-    deliveryTel         CHAR(11)        NOT NULL,
+    delivery_tel        CHAR(11)        NOT NULL,
 	postcode	    	CHAR(5)	        NOT NULL,
 	address         	VARCHAR2(255)   NOT NULL,
 	detail_address  	VARCHAR2(255)   NOT NULL,
@@ -293,8 +293,8 @@ CREATE TABLE review (
 CREATE TABLE review_image(
     review_image_id     NUMBER          NOT NULL,
     review_id           NUMBER          NOT NULL,
-    original_file_name  VARCHAR2(30)    NOT NULL,
-    store_image_name    VARCHAR2(100)   NOT NULL,
+    original_file_name  VARCHAR2(255)   NOT NULL,
+    store_image_name    VARCHAR2(255)   NOT NULL,
     CONSTRAINT PK_REVIEW_IMAGE PRIMARY KEY (review_image_id),
     CONSTRAINT FK_REVIEW_IMAGE_REVIEW_ID FOREIGN KEY (review_id) REFERENCES review(review_id)
 );
