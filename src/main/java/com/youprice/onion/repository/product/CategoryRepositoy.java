@@ -28,9 +28,10 @@ public interface CategoryRepositoy extends JpaRepository<Category, Long> {
    List<Category> findAllByParentId(Long id);
 
 
+
     Category deleteById(CategoryUpdateDTO id);
 
-
+    List<Category> findByParentId(Long categoryId);
 
 
     @Repository
