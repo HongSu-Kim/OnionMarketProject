@@ -1,5 +1,6 @@
 package com.youprice.onion.service.member;
 
+import com.youprice.onion.dto.member.MailDTO;
 import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.dto.member.MemberJoinDTO;
 import com.youprice.onion.dto.member.MemberModifyDTO;
@@ -24,6 +25,12 @@ public interface MemberService {
     public List<Member> findId(String email);
 
     public int countId(String email);
+
+    public MailDTO createEmail(String email);
+
+    String getTempPwd();
+
+//    public void updatePwd(String str, String email);
 
 //    public void profileImageUpdate(Long memberId, MemberModifyDTO memberModifyDTO, MultipartFile memberImageName);
 }
