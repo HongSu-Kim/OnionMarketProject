@@ -51,13 +51,13 @@
             </div>
 
             <div class="form-group">
-                <label for="postcode">우편번호</label>
-                <input type="text" id="postcode" value="${memberDTO.postcode}" class="form-control" placeholder="수정할 우편번호를 입력해 주세요."/>
+                <label>우편번호</label> &nbsp; <input type="button" value="우편번호 찾기" id="postcodeBtn" onclick="sample6_execDaumPostcode()">
+                <input type="text" id="postcode" value="${memberDTO.postcode}" class="form-control" placeholder="수정할 우편번호를 입력해 주세요." readonly="readonly"/>
             </div>
 
             <div class="form-group">
                 <label for="address">주소</label>
-                <input type="text" id="address" value="${memberDTO.address}" class="form-control" placeholder="수정할 주소를 입력해 주세요."/>
+                <input type="text" id="address" value="${memberDTO.address}" class="form-control" placeholder="수정할 주소를 입력해 주세요." readonly="readonly"/>
             </div>
 
             <div class="form-group">
@@ -66,8 +66,8 @@
             </div>
 
             <div class="form-group">
-                <label for="extraAddress">주소 추가사항</label>
-                <input type="text" id="extraAddress" value="${memberDTO.extraAddress}" class="form-control" placeholder="수정할 주소 추가사항을 입력해 주세요."/>
+                <label for="extraAddress">참고사항</label>
+                <input type="text" id="extraAddress" value="${memberDTO.extraAddress}" class="form-control" placeholder="참고사항을 입력해 주세요."/>
             </div>
 
             <div class="form-group">
