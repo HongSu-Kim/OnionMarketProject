@@ -31,93 +31,42 @@
 							</thead>
 							<tbody>
 
-								<!-- view test -->
-								<tr>
-									<td class="text-align-left pointer" onclick="location.href='/product/Detail?productId=1'">
-										<img src="/img/product/edd75ee44b39477ef71df02dbc46e873c802479d.png" class="list-img">
-										<span>제목1</span>
-									</td>
-									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="10000"/>원</td>
-									<td>2022/10/17</td>
-									<td>
-										<p>거래중</p>
-										<p>
-											<a onclick="confirm('상태를 예약중으로 변경하시겠습니까?') ? location.href='/product/progressUpdate?productId=1&productProgress=RESERVED' : false"
-												 class="primary-btn">예약중</a>
-											<a onclick="confirm('상태를 판매완료로 변경하시겠습니까?') ? location.href='/product/progressUpdate?productId=1&productProgress=SOLDOUT' : false"
-												 class="primary-btn">판매완료</a>
-										</p>
-									</td>
-								</tr>
-								<tr>
-									<td class="text-align-left pointer" onclick="location.href='/product/Detail?productId=2'">
-										<img src="/img/product/edd75ee44b39477ef71df02dbc46e873c802479d.png" height="100">
-										<span>제목2</span>
-									</td>
-									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="20000"/>원</td>
-									<td>2022/10/16</td>
-									<td>
-										<p>예약중</p>
-										<p>
-											<a onclick="confirm('상태를 거래중으로 변경하시겠습니까?') ? location.href='/product/progressUpdate?productId=2&productProgress=TRADINGS' : false"
-												 class="primary-btn">거래중</a>
-											<a onclick="confirm('상태를 판매완료로 변경하시겠습니까?') ? location.href='/product/progressUpdate?productId=2&productProgress=SOLDOUT' : false"
-												 class="primary-btn">판매완료</a>
-										</p>
-									</td>
-								</tr>
-								<tr>
-									<td class="text-align-left pointer" onclick="location.href='/product/Detail?productId=3'">
-										<img src="/img/product/edd75ee44b39477ef71df02dbc46e873c802479d.png" height="100">
-										<span>제목3</span>
-									</td>
-									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="30000"/>원</td>
-									<td>2022/10/15</td>
-									<td>
-										<p>판매완료</p>
-										<p>
-											<a href="/review/created/1" class="primary-btn">판매후기등록</a>
-										</p>
-									</td>
-								</tr>
-								<!-- view test end -->
-
 								<!-- 주문 없음 -->
 								<c:if test="${empty page.content}">
 									<tr>
-										<td colspan="5" style="text-align: center">판매한 상품이 존재하지 않습니다.</td>
+										<td colspan="5" class="text-align-center">판매한 상품이 존재하지 않습니다.</td>
 									</tr>
 								</c:if>
 
 								<!-- 주문 정보 -->
 								<c:forEach var="productDTO" items="${page.content}">
 									<tr>
-										<td class="text-align-left pointer" onclick="location.href='/product/Detail?productId=${productDTO.productId}';">
-											<img src="/img/product/${productDTO.productImageName}" height="100">
+										<td class="text-align-left pointer" onclick="location.href='/product/Detail/${productDTO.productId}';">
+											<img src="/img/product/${productDTO.representativeImage}" class="list-img">
 											<span>${productDTO.subject}</span>
 										</td>
 										<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${productDTO.price}"/>원</td>
 										<td>
-											<fmt:parseDate var="orderDate" value="${orderDTO.orderDate}" pattern="yyyy-MM-dd'T'HH:mm:ss"/>
-											<fmt:formatDate value="${orderDate}" pattern="yyyy/MM/dd"/>
+											<fmt:parseDate var="date" value="${productDTO.date}" pattern="yyyy-MM-dd'T'HH:mm:ss"/>
+											<fmt:formatDate value="${date}" pattern="yyyy/MM/dd"/>
 										</td>
 										<td>
 											<p>${productDTO.productProgress.kor}</p>
 											<p>
 												<c:if test="${productDTO.productProgress eq 'TRADINGS'}">
-													<a onclick="confirm('상태를 예약중으로 변경하시겠습니까?') ? location.href='/product/progressUpdate?productId=${productDTO.productId}&productProgress=RESERVED' : false"
+													<a onclick="confirm('상태를 예약중으로 변경하시겠습니까?') ? location.href='/product/progressUpdate/${productDTO.productId}/RESERVED' : false"
 														 class="primary-btn">예약중</a>
-													<a onclick="confirm('상태를 판매완료로 변경하시겠습니까?') ? location.href='/product/progressUpdate?productId=${productDTO.productId}&productProgress=SOLDOUT' : false"
+													<a onclick="confirm('상태를 판매완료로 변경하시겠습니까?') ? location.href='/product/progressUpdate/${productDTO.productId}/SOLDOUT' : false"
 														 class="primary-btn">판매완료</a>
 												</c:if>
 												<c:if test="${productDTO.productProgress eq 'RESERVED'}">
-													<a onclick="confirm('상태를 거래중으로 변경하시겠습니까?') ? location.href='/product/progressUpdate?productId=${productDTO.productId}&productProgress=TRADINGS' : false"
+													<a onclick="confirm('상태를 거래중으로 변경하시겠습니까?') ? location.href='/product/progressUpdate/${productDTO.productId}/TRADINGS' : false"
 														 class="primary-btn">거래중</a>
-													<a onclick="confirm('상태를 판매완료로 변경하시겠습니까?') ? location.href='/product/progressUpdate?productId=${productDTO.productId}&productProgress=SOLDOUT' : false"
+													<a onclick="confirm('상태를 판매완료로 변경하시겠습니까?') ? location.href='/product/progressUpdate/${productDTO.productId}/SOLDOUT' : false"
 														 class="primary-btn">판매완료</a>
 												</c:if>
 												<c:if test="${productDTO.productProgress eq 'SOLDOUT'}">
-													<a href="/review/created/${orderDTO.orderId}" class="primary-btn">판매후기등록</a>
+													<a href="/review/created/${productDTO.orderId}" class="primary-btn">판매후기등록</a>
 												</c:if>
 											</p>
 										</td>

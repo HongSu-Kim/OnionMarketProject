@@ -19,11 +19,11 @@
 						<tbody>
 							<tr>
 								<c:set var="productDTO" value="${orderDTO.productDTO}"/>
-								<td class="text-align-left pointer" onclick="location.href='/product/detail?productId=${productDTO.productId}'">
-									<img src="/img/product/${productDTO.representativeImage}">
+								<td class="text-align-left pointer" onclick="location.href='/product/detail/${productDTO.productId}'">
+									<img src="/img/product/${productDTO.representativeImage}" class="list-img">
 									<span>${productDTO.subject}</span>
 								</td>
-								<td class="pointer" onclick="location.href='/order/detail?orderId=${orderDTO.orderId}'">
+								<td class="pointer" onclick="location.href='/order/detail/${orderDTO.orderId}'">
 									${orderDTO.imp_uid}
 								</td>
 								<td>
@@ -38,13 +38,13 @@
 									<p>
 										<c:if test="${orderDTO.orderState eq 'ORDER'}">
 											<c:if test="${!empty orderDTO.deliveryDTO}">
-												<a href="/order/detail?orderId=${orderDTO.orderId}&mode=update" class="primary-btn">배송지변경</a>
+												<a href="/order/detail/${orderDTO.orderId}/update" class="primary-btn">배송지변경</a>
 											</c:if>
-											<a onclick="confirm('정말 취소하시겠습니까?') ? location.href='/order/cancel?orderId=${orderDTO.orderId}' : false"
+											<a onclick="confirm('정말 취소하시겠습니까?') ? location.href='/order/cancel/${orderDTO.orderId}' : false"
 												 class="primary-btn cart-btn">주문취소</a>
 										</c:if>
 										<c:if test="${orderDTO.orderState eq 'CANCEL'}">
-											<a href="/order/detail?orderId=${orderDTO.orderId}" class="primary-btn">주문확인</a>
+											<a href="/order/detail/${orderDTO.orderId}" class="primary-btn">주문확인</a>
 										</c:if>
 										<c:if test="${orderDTO.orderState eq 'COMPLETE'}">
 											<a href="/review/created/${orderDTO.orderId}" class="primary-btn">구매후기등록</a>

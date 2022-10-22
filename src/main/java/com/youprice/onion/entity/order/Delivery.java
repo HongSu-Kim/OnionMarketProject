@@ -42,10 +42,11 @@ public class Delivery {
         this.deliveryCost = orderAddDTO.getDeliveryCost();
     }
 
-	public void update(DeliveryDTO deliveryDTO) {
+	public Delivery update(DeliveryDTO deliveryDTO) {
 		recipient = deliveryDTO.getRecipient();
 		deliveryTel = deliveryDTO.getDeliveryTel();
 		address = new Address(deliveryDTO.getPostcode(), deliveryDTO.getAddress(), deliveryDTO.getDetailAddress(), deliveryDTO.getExtraAddress());
 		request = deliveryDTO.getRequest();
+		return this;
 	}
 }
