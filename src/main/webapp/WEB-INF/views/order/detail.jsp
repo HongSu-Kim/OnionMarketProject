@@ -36,8 +36,8 @@
 								<tr>
 									<c:set var="deliveryDTO" value="${orderDTO.deliveryDTO}"/>
 									<c:set var="productDTO" value="${orderDTO.productDTO}"/>
-									<td class="text-align-left pointer" onclick="location.href='/product/detail?productId=${productDTO.productId}'">
-										<img src="/img/product/${productDTO.representativeImage}" height="100">
+									<td class="text-align-left pointer" onclick="location.href='/product/detail/${productDTO.productId}'">
+										<img src="/img/product/${productDTO.representativeImage}" class="list-img">
 										<span>${productDTO.subject}</span>
 									</td>
 									<td>${orderDTO.imp_uid}</td>
@@ -50,14 +50,11 @@
 										<p>${orderDTO.orderState.kor}</p>
 										<p>
 											<c:if test="${orderDTO.orderState eq 'ORDER'}">
-												<c:if test="${!empty deliveryDTO}">
-													<a onclick="update()" class="primary-btn">배송지변경</a>
-												</c:if>
-												<a onclick="confirm('정말 취소하시겠습니까?') ? location.href='/order/cancel?orderId=${orderDTO.orderId}' : false"
+												<a onclick="confirm('정말 취소하시겠습니까?') ? location.href='/order/cancel/${orderDTO.orderId}' : false"
 													 class="primary-btn cart-btn">주문취소</a>
 											</c:if>
 											<c:if test="${orderDTO.orderState eq 'CANCEL'}">
-												<a href="/order/detail?orderId=${orderDTO.orderId}" class="primary-btn">주문확인</a>
+												<a href="/order/detail/${orderDTO.orderId}" class="primary-btn">주문확인</a>
 											</c:if>
 											<c:if test="${orderDTO.orderState eq 'COMPLETE'}">
 												<a href="/review/created/${orderDTO.orderId}" class="primary-btn">구매후기등록</a>
@@ -91,53 +88,52 @@
 				</div>
 
 				<!-- 배송 정보 -->
-				<div class="col-8 col-md-6">
-					<c:if test="${!empty deliveryDTO}">
-						<div class="checkout__input">
-							<h4>배송 정보</h4>
-<%--							<c:set var="memberDTO" value="${orderDTO.memberDTO}"/>--%>
-							<p>주문자명</p>
-<%--							<input type="text" id="name" name="name" value="${memberDTO.name}" readonly/>--%>
-						</div>
-						<div class="row">
-							<div class="col-lg-6">
-								<div class="checkout__input">
-									<p>연락처</p>
-<%--									<input type="text" id="tel" name="tel" value="${memberDTO.tel}" readonly/>--%>
-								</div>
-							</div>
-							<div class="col-lg-6">
-								<div class="checkout__input">
-									<p>이메일</p>
-<%--									<input type="text" id="email" name="email" value="${memberDTO.email}" readonly/>--%>
-								</div>
-							</div>
-						</div>
-						<div class="checkout__input">
-							<p>
-								배송 주소
+				<c:if test="${!empty deliveryDTO}">
+					<div class="col-8 col-md-6">
+						<div class="deliveryInfo">
+							<h4>배송 정보
 								<c:if test="${!empty deliveryDTO}">
 									<a type="button" class="primary-btn" style="padding: 8px 15px 7px; float: right;"
-										 id="updateBtn" onclick="update()">배송지 변경</a>
-									<a type="button" class="primary-btn cart-btn" style="padding: 8px 15px 7px; display: none;"
-										 id="postcodeBtn" onclick="sample6_execDaumPostcode()">우편번호 찾기</a>
+										 id="updateBtn" onclick="update()">배송 정보 변경</a>
 									<a type="button" class="primary-btn" style="padding: 8px 15px 7px; float: right; display: none;"
 										 id="submitBtn" onclick="save()">완료</a>
 									<input type="hidden" id="mode" value="${mode}">
 								</c:if>
-							</p>
-							<input type="hidden" id="orderId" value="${deliveryDTO.orderId}"/>
-							<input type="text" class="checkout__input__add" id="postcode" name="postcode" value="${deliveryDTO.postcode}" readonly>
-							<input type="text" class="checkout__input__add" id="address" name="address" value="${deliveryDTO.address}" readonly>
-							<input type="text" class="checkout__input__add" id="detailAddress" name="detailAddress" value="${deliveryDTO.detailAddress}" placeholder="상세주소" readonly>
-							<input type="text" id="extraAddress" name="extraAddress" value="${deliveryDTO.extraAddress}" placeholder="참고항목" readonly>
+							</h4>
+							<c:set var="memberDTO" value="${orderDTO.memberDTO}"/>
+							<div class="row">
+								<div class="col-lg-6">
+									<div class="checkout__input">
+										<p>받는사람</p>
+										<input type="text" id="recipient" name="recipient" value="${memberDTO.name}" readonly/>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="checkout__input">
+										<p>연락처</p>
+										<input type="text" id="deliveryTel" name="deliveryTel" value="${memberDTO.tel}" readonly/>
+									</div>
+								</div>
+							</div>
+							<div class="checkout__input">
+								<p>
+									배송 주소
+									<a type="button" class="primary-btn cart-btn" style="padding: 8px 15px 7px; display: none;"
+										 id="postcodeBtn" onclick="sample6_execDaumPostcode()">우편번호 찾기</a>
+								</p>
+								<input type="hidden" id="orderId" value="${deliveryDTO.orderId}"/>
+								<input type="text" class="checkout__input__add" id="postcode" name="postcode" value="${deliveryDTO.postcode}" readonly>
+								<input type="text" class="checkout__input__add" id="address" name="address" value="${deliveryDTO.address}" readonly>
+								<input type="text" class="checkout__input__add" id="detailAddress" name="detailAddress" value="${deliveryDTO.detailAddress}" placeholder="상세주소" readonly>
+								<input type="text" id="extraAddress" name="extraAddress" value="${deliveryDTO.extraAddress}" placeholder="참고항목" readonly>
+							</div>
+							<div class="checkout__input">
+								<p>요청사항</p>
+								<input type="text" id="request" name="request" value="${deliveryDTO.request}" placeholder="요청사항" readonly/>
+							</div>
 						</div>
-						<div class="checkout__input">
-							<p>요청사항</p>
-							<input type="text" id="request" name="request" value="${deliveryDTO.request}" placeholder="요청사항" readonly/>
-						</div>
-					</c:if>
-				</div>
+					</div>
+				</c:if>
 
 			</div>
 		</div>

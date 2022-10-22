@@ -31,39 +31,21 @@ $('#memberAddr').click(function () {
     $('#extraAddress').val($('#hiddenExtraAddress').val())
 })
 
-// 유효성 검사
-function valid() {
-
-    $('#orderPayment').val($('#totalPrice').html())
-
-    if (!$('#acc-or').is(':checked')) {
-        alert("결제정보를 확인해주세요")
-        return true
-    }
-
-    if ($('#delivery').val() == "false")
-        return false
-
-    if ($('#postcode').val() == "")
-        return true
-    if ($('#address').val() == "")
-        return true
-    if ($('#detailAddress').val() == "")
-        return true
-}
-
 // 결제 - 양파페이
 $('#payment').click(function () {
-    if (valid())
+    if (validate())
         return
 
+    $('#orderPayment').val($('#totalPrice').html())
     $('#form').submit()
 })
 
 // imp 결제
 $('#imp-payment').click(function() {
-    if (valid())
+    if (validate())
         return
+
+    $('#orderPayment').val($('#totalPrice').html())
 
     let param = {
         pg: "html5_inicis", // (html5_inicis - 이니시스웹표준)
@@ -123,6 +105,50 @@ $('#imp-payment').click(function() {
         }
     });
 })
+
+// 유효성 검사
+function validate() {
+    $('.err-msg').remove()
+
+    if ($('#delivery').val() == "true") {
+        let result = false
+
+        if (!$('#recipient').val()) {
+            $('#recipient').before('<span class="err-msg">받을 사람을 입력해주세요.</span>')
+            result = true;
+        }
+
+        if (!$('#deliveryTel').val()) {
+            $('#deliveryTel').before('<span class="err-msg">연락처를 입력해주세요.</span>')
+            result = true;
+        }
+
+        let postcodeRegex = /^[0-9]{5}$/
+        if (!$('#postcode').val()) {
+            $('#postcode').before('<span class="err-msg">우편번호를 입력해주세요.</span>')
+            result = true;
+        } else if (!postcodeRegex.test($('#postcode').val())) {
+            $('#postcode').before('<span class="err-msg">우편번호 형식이 맞지않습니다.</span>')
+            result = true;
+        }
+
+        if (!$('#address').val()) {
+            $('#address').before('<span class="err-msg">주소를 입력해주세요.</span>')
+            result = true;
+        }
+
+        if (!$('#detailAddress').val()) {
+            $('#detailAddress').before('<span class="err-msg">참고항목을 입력해주세요.</span>')
+            result = true;
+        }
+        if (result) return result
+    }
+
+    if (!$('#acc-or').is(':checked')) {
+        alert("결제정보를 확인해주세요")
+        return true
+    }
+}
 
 // 주소
 function sample6_execDaumPostcode() {

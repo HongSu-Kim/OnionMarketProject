@@ -23,6 +23,10 @@
     float: right;
 }
 
+.err-msg {
+    color: red;
+}
+
 .list-img {
     width: 100px;
     height: 100px;
@@ -53,6 +57,7 @@ td a.primary-btn,td a.primary-btn.cart-btn {
     background: #7fad39;
     border: none;
 }
+
 .order-btn.cart-btn {
     color: #6f6f6f;
     background: #f5f5f5;

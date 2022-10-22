@@ -10,6 +10,9 @@
 
 	<title>buyList</title>
 
+	<style>
+      label.error{display:block;color:red;}
+	</style>
 </head>
 <body>
 <section class="spad">
@@ -29,9 +32,9 @@
 						<div class="owl-item mb-6">
 							<h4>상품 정보</h4>
 							<div class="latest-prdouct__slider__item">
-								<a href="/product/detail?productId=${productDTO.productId}" class="latest-product__item">
+								<a class="latest-product__item">
 									<div class="latest-product__item__pic">
-										<img src="/img/product/${productDTO.representativeImage}" alt="${productDTO.subject}">
+										<img src="/img/product/${productDTO.representativeImage}" alt="${productDTO.subject}" class="list-img">
 									</div>
 									<div class="latest-product__item__text">
 										<h6>${productDTO.subject}</h6>
