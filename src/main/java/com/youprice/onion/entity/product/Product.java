@@ -62,13 +62,14 @@ public class Product {
     private ProductProgress productProgress; //판매상태 Reserved,tradings,soldout 예약중,거래중,판매완료
 
     private Boolean payStatus; //페이현황
-    private String blindStatus; //블라인드현황
+    private Boolean blindStatus; //블라인드현황
 
-
-    @OneToMany(mappedBy = "product")//이미지번호
+    //이미지 참조 양방향
+    @OneToMany(mappedBy = "product")
     private List<ProductImage> productImageList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "product")//태그번호
+    //태그 참조 양방향
+    @OneToMany(mappedBy = "product")
     private List<ProductTag> productTagList = new ArrayList<>();
 
     //찜 참조 양방향
@@ -109,7 +110,7 @@ public class Product {
         this.auctionDeadline = auctionDeadline;
         this.productProgress = ProductProgress.TRADINGS;
         this.payStatus = payStatus;
-        this.blindStatus = "no";
+        this.blindStatus = false;
 
     }
     
@@ -145,6 +146,12 @@ public class Product {
 		}
 		return this;
 	}
+    
+    // 블라인드 처리(삭제)
+    public Product blindProduct(Boolean blindStatus) {
+        this.blindStatus = true;
+        return this;
+    }
 	public Product progressUpdate(ProductProgress productProgress) {
 		this.productProgress = productProgress;
 		return this;

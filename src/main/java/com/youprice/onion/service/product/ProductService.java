@@ -22,7 +22,7 @@ public interface ProductService {
     List<ProductListDTO> getProductCategoryList(Long start, Long end);
 
     //상품 전체 조회
-    List<ProductListDTO> getProductList();
+    List<ProductListDTO> getProductList(Boolean blindStatus);
 
     //상품 하나 조회
     ProductDTO getProductDTO(Long productId);
@@ -41,5 +41,6 @@ public interface ProductService {
     CategoryFindDTO findCategoryId(Long categoryId);
 
     Page<ProductSellListDTO> getProductSellListDTO(Long memberId, Pageable pageable);
+
 
 }
