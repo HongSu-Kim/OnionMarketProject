@@ -37,7 +37,7 @@ public class SearchServiceImpl implements SearchService {
      return ;
     }
 
-    if(prohibitionKeywordRepositoy.findAllByProhibitionKeywordName(SearchName)!=null ){ //금지키워드 조건 예시
+    if(prohibitionKeywordRepositoy.existsByProhibitionKeywordNameAndProhibitionKeywordNameContaining(SearchName,SearchName)== true ){ //금지키워드 조건 예시
 
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out =response.getWriter();

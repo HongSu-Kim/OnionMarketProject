@@ -27,10 +27,10 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepositoy.Categoryrepositoy categoryrepositoy;
 
     @Override
-    public void TopCategoryAdd(CategoryAddDTO categoryCreatedto, String topcategoryName, HttpServletResponse response)throws IOException { //상위카테고리 생성
+    public void TopCategoryAdd(CategoryAddDTO categoryCreatedto, String topcategoryName, HttpServletResponse response) throws IOException { //상위카테고리 생성
         Category category = new Category();
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out =response.getWriter();
+        PrintWriter out = response.getWriter();
 
         Optional<Category> DuplicatechecktopcategoryName = categoryRepositoy.findByCategoryName(topcategoryName);
         if (DuplicatechecktopcategoryName.isPresent()) {
@@ -39,16 +39,12 @@ public class CategoryServiceImpl implements CategoryService {
             return;
         }
 
-        if(topcategoryName == "") {
-            
+        if (topcategoryName == "") {
+
             out.println("<script>alert('공백입니다 상위키워드를 다시입력하세요');history.go(-1); </script>");
             out.flush();
             return;
-        }
-
-
-
-        else
+        } else
 
             category.TopcategoryAdd(categoryCreatedto, topcategoryName);
 
@@ -60,11 +56,11 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     @Override
-    public void SubCategoryAdd(CategoryAddDTO categoryAddDTO, String topcategoryName,HttpServletResponse response)throws IOException { //하위카테고리생성
+    public void SubCategoryAdd(CategoryAddDTO categoryAddDTO, String topcategoryName, HttpServletResponse response) throws IOException { //하위카테고리생성
         Category category = new Category();
         categoryAddDTO.setCategory(categoryRepositoy.findByCategoryName(topcategoryName).orElse(null));
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out =response.getWriter();
+        PrintWriter out = response.getWriter();
 
         Optional<Category> DuplicatechecksubcategoryName =
                 categoryRepositoy.findByCategoryNameAndParent(categoryAddDTO.getCategoryName(), categoryAddDTO.getCategory());
@@ -73,14 +69,14 @@ public class CategoryServiceImpl implements CategoryService {
             out.flush();
             return;
         }
-        if(topcategoryName==""){
+        if (topcategoryName == "") {
             out.println("<script>alert('상위카테고리가 공백입니다 상위키워드를 다시입력하세요');history.go(-1); </script>");
             out.flush();
             return;
 
         }
 
-        if(categoryAddDTO.getCategoryName() == "") {
+        if (categoryAddDTO.getCategoryName() == "") {
 
             out.println("<script>alert('공백입니다 하위키워드를 다시입력하세요');history.go(-1); </script>");
             out.flush();
@@ -115,14 +111,13 @@ public class CategoryServiceImpl implements CategoryService {
     public List<CategoryFindDTO> CategoryIdFind(String name) { //카테고리이름으로 카테고리조회
 
         Category category = new Category();
-        category =categoryRepositoy.findAllByCategoryName(name);
+        category = categoryRepositoy.findAllByCategoryName(name);
         System.out.println(category.getId()); //114
 
 
-
-  return categoryRepositoy.findAllByParentId(category.getId())
-          .stream().map(CategoryFindDTO::new)
-          .collect(Collectors.toList());
+        return categoryRepositoy.findAllByParentId(category.getId())
+                .stream().map(CategoryFindDTO::new)
+                .collect(Collectors.toList());
 
 
         // @Override
@@ -143,14 +138,21 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryrepositoy.findTopCategory(); //parent_id가 null인 상위카테고리조회
     }
 
+//    @Override
+
     @Override
-    public List<Category> findSubCategory() { //parent_id가 null이 아닌 카테고리조회
-
-        return  categoryrepositoy.findSubcategory();
-
-
+    public List<Category> findSubCategory() {  //parent_id가 null이 아닌 카테고리조회
+        return categoryrepositoy.findSubcategory();
     }
 
+
+//    public List<CategoryFindDTO> findSubCategory(Long categoryId) { //parent_id가 null이 아닌 카테고리조회
+//
+//        return categoryRepositoy.findByParentId(categoryId)
+//                .stream().map(CategoryFindDTO::new)
+//                .collect(Collectors.toList());
+//
+//    }
 
 
 
