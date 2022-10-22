@@ -19,7 +19,7 @@ public class ProductSellListDTO {
 	private LocalDateTime date; //등록시간
 	private ProductProgress productProgress; //판매상태 Reserved,tradings,soldout 예약중,거래중,판매완료
 	private Boolean payStatus; //페이현황
-	private String blindStatus; //블라인드현황
+	private Boolean blindStatus; //블라인드현황
 
 	private String townName;
 	private String productImageName;
