@@ -41,11 +41,16 @@ public class SearchController {
     public String KeywordCreate(Model model, SearchAddDTO searchAddDTO,
                                 @RequestParam("searchName") String searchName, HttpServletResponse response) throws IOException {
 
+
+
+
+
         if(searchService.findBySearchName(searchName)==null) {
 
        // prohibitionKeywordService.ProhibitionKeywordFind(searchName);
             searchService.SearchCreate(searchAddDTO,searchName,response);
         }
+        
 
 
         else
