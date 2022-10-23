@@ -10,20 +10,13 @@ import java.util.Optional;
 @Repository
 public interface TownRepositoy extends JpaRepository<Town,Long> {
 
-
-
     List<Town> findAllById(Long townId);
 
     List<Town> findAllByMemberId(Long memberId);
 
-
-
     Optional<Town> findByCoordinateTownName(String townName);
 
-
-
-
-
+	Optional<Town> findByMemberIdAndCoordinateTownNameContains(long memberId, String townNameStr);
 }
 
 
