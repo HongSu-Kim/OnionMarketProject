@@ -63,6 +63,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client' //oauth2
     implementation 'org.springframework.security:spring-security-taglibs' //spring-security taglibs
     implementation 'org.springframework.boot:spring-boot-starter-mail' // mail
+	implementation 'org.apache.commons:commons-email:1.5' //commons-email
 
     implementation 'com.querydsl:querydsl-jpa'
     annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"
