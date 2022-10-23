@@ -1,19 +1,19 @@
-buildscript {
-    ext {
-//        springBootVersion = '2.7.3'
-        querydslPluginVersion = '1.0.10'
-    }
-    repositories {
-        mavenCentral()
-        maven { url "https://plugins.gradle.org/m2/" } // plugin 저장소
-    }
-    dependencies {
-//        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-//        classpath "io.spring.gradle:dependency-management-plugin:1.0.13.RELEASE"
-        classpath("org.springframework.boot:spring-boot-gradle-plugin")
-        classpath("gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:${querydslPluginVersion}")
-    }
-}
+//buildscript {
+//    ext {
+////        springBootVersion = '2.7.3'
+//        querydslPluginVersion = '1.0.10'
+//    }
+//    repositories {
+//        mavenCentral()
+//        maven { url "https://plugins.gradle.org/m2/" } // plugin 저장소
+//    }
+//    dependencies {
+////        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+////        classpath "io.spring.gradle:dependency-management-plugin:1.0.13.RELEASE"
+//        classpath("org.springframework.boot:spring-boot-gradle-plugin")
+//        classpath("gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:${querydslPluginVersion}")
+//    }
+//}
 
 plugins {
     id 'org.springframework.boot' version '2.7.3'
@@ -21,21 +21,21 @@ plugins {
     id 'java'
 }
 
-apply plugin: "com.ewerk.gradle.plugins.querydsl"
+//apply plugin: "com.ewerk.gradle.plugins.querydsl"
 
 group = 'com.youprice'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
-compileQuerydsl{
-    options.annotationProcessorPath = configurations.querydsl
-}
+//compileQuerydsl{
+//    options.annotationProcessorPath = configurations.querydsl
+//}
 
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
-    querydsl.extendsFrom compileClasspath
+//    querydsl.extendsFrom compileClasspath
 }
 
 repositories {
@@ -64,35 +64,41 @@ dependencies {
     implementation 'org.springframework.security:spring-security-taglibs' //spring-security taglibs
     implementation 'org.springframework.boot:spring-boot-starter-mail' // mail
 
+    // querydsl
     implementation 'com.querydsl:querydsl-jpa'
     annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 
-    compile("com.querydsl:querydsl-core")
-    compile("com.querydsl:querydsl-apt")
-    compile("com.querydsl:querydsl-collections")
+//    compile("com.querydsl:querydsl-core")
+//    compile("com.querydsl:querydsl-apt")
+//    compile("com.querydsl:querydsl-collections")
+
+    implementation 'org.jsoup:jsoup:1.15.3'
 }
 
-def querydslSrcDir = 'src/main/generated'
-querydsl {
-    library = "com.querydsl:querydsl-apt"
-    jpa = true
-    querydslSourcesDir = querydslSrcDir
-}
-sourceSets {
-    main {
-        java {
-            srcDirs = ['src/main/java', querydslSrcDir]
-        }
-    }
-}
-project.afterEvaluate {
-    project.tasks.compileQuerydsl.options.compilerArgs = [
-            "-proc:only",
-            "-processor", project.querydsl.processors() +
-                    ',lombok.launch.AnnotationProcessorHider$AnnotationProcessor'
-    ]
+//def querydslSrcDir = 'src/main/generated'
+//querydsl {
+//    library = "com.querydsl:querydsl-apt"
+//    jpa = true
+//    querydslSourcesDir = querydslSrcDir
+//}
+//sourceSets {
+//    main {
+//        java {
+//            srcDirs = ['src/main/java', querydslSrcDir]
+//        }
+//    }
+//}
+//project.afterEvaluate {
+//    project.tasks.compileQuerydsl.options.compilerArgs = [
+//            "-proc:only",
+//            "-processor", project.querydsl.processors() +
+//                    ',lombok.launch.AnnotationProcessorHider$AnnotationProcessor'
+//    ]
+//}
+clean {
+    delete file('src/main/generated')
 }
 
 tasks.named('test') {

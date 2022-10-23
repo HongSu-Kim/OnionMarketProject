@@ -116,22 +116,25 @@
 			<div class="col-lg-6">
 				<nav class="header__menu">
 					<ul>
+						<li><a href="/crawling">crawling</a>
+						</li>
 						<li><a href="/product/list">상품</a>
 							<ul class="header__menu__dropdown">
-								<li><a href="/product/main">메인 리스트</a></li>
+								<li><a href="/product/list">메인 리스트</a></li>
 								<li><a href="/product/add">상품 등록</a></li>
 								<li><a href="/product/auctionList">경매 상품</a></li>
 								<li><a href="#">Temp4</a></li>
 							</ul>
 						</li>
-						<li><a href="#">거래내역</a>
-							<ul class="header__menu__dropdown">
-								<li><a href="/wish/list">Wish List</a></li>
-								<li><a href="/order/buyList">Buy List</a></li>
-								<li><a href="/order/sellList">Sell List</a></li>
-								<li><a href="#">Temp4</a></li>
-							</ul>
-						</li>
+						<sec:authorize access="isAuthenticated()">
+							<li><a href="/order/buyList">거래내역</a>
+								<ul class="header__menu__dropdown">
+									<li><a href="/order/buyList">구매 목록</a></li>
+									<li><a href="/order/sellList">판매 목록</a></li>
+									<li><a href="/wish/list">찜 목록</a></li>
+								</ul>
+							</li>
+						</sec:authorize>
 						<li><a href="#">공지사항</a>
 							<ul class="header__menu__dropdown">
 								<li><a href="/notice/list">Notice List</a></li>
@@ -141,42 +144,34 @@
 							</ul>
 						</li>
 						<sec:authorize access="isAnonymous()">
-						<li><a href="#">마이페이지</a>
-							<ul class="header__menu__dropdown">
-
-								<li><a href="/member/login">Login</a></li>
-								<li><a href="/member/join">Join</a></li>
-
-								</sec:authorize>
-								<sec:authorize access="hasRole('ROLE_USER')">
-									<li><a href="#">마이페이지</a>
-										<ul class="header__menu__dropdown">
-											<li><a href="/member/mypage">My Page</a></li>
-											<li><a href="/town/town">동네 설정</a></li>
-											<li><a href="/member/logout">Logout</a></li>
-
-										</ul>
-									</li>
-								</sec:authorize>
-
-								<sec:authorize access="hasRole('ROLE_ADMIN')">
-
-								<li><a href="#">관리자페이지</a>
-
-									<ul class="header__menu__dropdown">
-
-
-										<li><a href="/coordinate/coordinate">지역 관리</a></li>
-										<li><a href="/tag/tag">태그 관리</a></li>
-										<li><a href="/prohibitionkeyword/prohibitionkeyword">금지어 관리</a></li>
-										<li><a href="/category/category"> 카테고리 관리 </a></li>
-										<li><a href="/member/logout">Logout</a></li>
-
-
-									</ul>
-								</li>
-							</ul>
-							</sec:authorize>
+							<li><a href="#">로그인</a>
+								<ul class="header__menu__dropdown">
+									<li><a href="/member/login">Login</a></li>
+									<li><a href="/member/join">Join</a></li>
+								</ul>
+							</li>
+						</sec:authorize>
+						<sec:authorize access="hasRole('ROLE_USER')">
+							<li><a href="/member/mypage">마이페이지</a>
+								<ul class="header__menu__dropdown">
+									<li><a href="/member/mypage">My Page</a></li>
+									<li><a href="/town/town">동네 설정</a></li>
+									<li><a href="/member/logout">Logout</a></li>
+								</ul>
+							</li>
+						</sec:authorize>
+						<sec:authorize access="hasRole('ROLE_ADMIN')">
+							<li><a href="#">관리자페이지</a>
+								<ul class="header__menu__dropdown">
+									<li><a href="/coordinate/coordinate">지역 관리</a></li>
+									<li><a href="/tag/tag">태그 관리</a></li>
+									<li><a href="/prohibitionkeyword/prohibitionkeyword">금지어 관리</a></li>
+									<li><a href="/category/category"> 카테고리 관리 </a></li>
+									<li><a href="/member/logout">Logout</a></li>
+								</ul>
+							</li>
+						</sec:authorize>
+					</ul>
 				</nav>
 			</div>
 			<div class="col-lg-3">
@@ -204,7 +199,6 @@
 						<span>All departments</span>
 					</div>
 					<ul>
-
 						<li><a href="/product/main/category?categoryId=1">디지털/가전</a></li>
 						<li><a href="/product/main/category?categoryId=9">가구/인테리어</a></li>
 						<li><a href="/product/main/category?categoryId=12">생활/가공식품</a></li>
@@ -219,7 +213,6 @@
 						<li><a href="/product/main/category?categoryId=96">반려동물용품</a></li>
 						<li><a href="/product/main/category?categoryId=105">식물</a></li>
 						<li><a href="/product/main/category?categoryId=114">기타</a></li>
-
 					</ul>
 				</div>
 			</div>
