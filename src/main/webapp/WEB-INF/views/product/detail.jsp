@@ -29,17 +29,6 @@
 							<img src="/img/product/${imageList.productImageName}" alt=""/>
 						</c:forEach>
 					</div>
-
-					<div class="product__details__pic__slider owl-carousel">
-						<img data-imgbigurl="img/product/details/product-details-2.jpg"
-							 src="img/product/details/thumb-1.jpg" alt="">
-						<img data-imgbigurl="img/product/details/product-details-3.jpg"
-							 src="img/product/details/thumb-2.jpg" alt="">
-						<img data-imgbigurl="img/product/details/product-details-5.jpg"
-							 src="img/product/details/thumb-3.jpg" alt="">
-						<img data-imgbigurl="img/product/details/product-details-4.jpg"
-							 src="img/product/details/thumb-4.jpg" alt="">
-					</div>
 				</div>
 			</div>
 			<div class="col-lg-6 col-md-6">
@@ -65,23 +54,35 @@
 								<fmt:parseDate var="deadline" value="${productFindDTO.auctionDeadline}" pattern="yyyy-MM-dd'T'HH:mm"/>
 								<p class="time-title">경매 마감까지 남은 시간</p>
 								<div class="time" >
-<%--									<span id="d-day"></span>--%>
-<%--									<span class="col">:</span>--%>
 									<span id="d-day-hour"></span>
 									<span class="col">:</span>
 									<span id="d-day-min"></span>
 									<span class="col">:</span>
 									<span id="d-day-sec"></span>
 								</div>
-								<p>
-									경매 입찰기간<br/>
-									<fmt:formatDate value="${uploadDate}" pattern="yyyy-MM-dd"/>
-									~ <fmt:formatDate value="${deadline}" pattern="yyyy-MM-dd"/>
-								</p>
+								<div>
+									<div>경매 시작가: <fmt:formatNumber maxFractionDigits="3" value="${productFindDTO.price}"/>원</div>
+									<div>
+										경매 입찰기간
+										<span>
+										<fmt:formatDate value="${uploadDate}" pattern="yyyy/MM/dd HH:mm"/>
+										~ <fmt:formatDate value="${deadline}" pattern="yyyy/MM/dd HH:mm"/>
+										</span>
+										<p>
+											입찰가 <input type="text" id="bid" name="bid"/>원
+<%--											최소 입찰가 <fmt:formatNumber maxFractionDigits="3" value="${bidFindDTO.price}"/>원--%>
+										</p>
+
+									</div>
+
+								</div>
 								<input type="hidden" id="upload" value="${uploadDate}">
 								<input type="hidden" id="auctionDeadline" value="${deadline}">
 							</c:when>
-							<c:otherwise><p><fmt:formatDate value="${uploadDate}" pattern="yyyy-MM-dd"/></p></c:otherwise>
+							<c:otherwise>
+								<fmt:parseDate var="uploadDate" value="${productFindDTO.uploadDate}" pattern="yyyy-MM-dd'T'HH:mm"/>
+								<p><fmt:formatDate value="${uploadDate}" pattern="yyyy-MM-dd"/></p>
+							</c:otherwise>
 						</c:choose>
 					</div>
 <%--					<p>Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Vestibulum ac diam sit amet quam--%>
@@ -103,7 +104,15 @@
 								<div class="product__item__text">
 									<input type="hidden" id="wishId" value="1"/>
 									<input type="hidden" id="productId" value="${productId}"/>
-									<a href="/order/payment/${productId}" hr class="primary-btn">바로 구매</a>
+									<c:choose>
+										<c:when test="${productFindDTO.auctionDeadline ne null}">
+
+											<a href="/bid/bidding/${productId}" hr class="primary-btn">입찰하기</a>
+										</c:when>
+										<c:otherwise>
+											<a href="/order/payment/${productId}" hr class="primary-btn">구매하기</a>
+										</c:otherwise>
+									</c:choose>
 									<a href="/complain/created/${productId}" class="primary-btn">신고하기</a>
 									<a href="#" class="primary-btn">채팅하기</a>
 									<form action="/wish/addWish/${productId}" method="get">
@@ -227,11 +236,6 @@
 	</div>
 </section>
 <!-- Related Product Section End -->
-
-
-<form action="/product/main" method="get">
-	<input type="submit" value="목록 보기"/>
-</form>
 
 </body>
 </html>
