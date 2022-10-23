@@ -1,14 +1,16 @@
 package com.youprice.onion.controller.member;
 
 import com.youprice.onion.dto.member.*;
+import com.youprice.onion.security.auth.CustomUserDetails;
 import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.security.validator.CustomValidators;
 import com.youprice.onion.service.member.MemberService;
 import com.youprice.onion.service.member.ProhibitionKeywordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
@@ -16,10 +18,12 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -28,11 +32,13 @@ import java.util.Map;
 public class MemberController {
 
     private final MemberService memberService;
+//    private final SendEmailService sendEmailService;
 
     private final CustomValidators.UserIdValidator userIdValidator;
     private final CustomValidators.NicknameValidator nicknameValidator;
     private final CustomValidators.EmailValidator emailValidator;
     private final ProhibitionKeywordService prohibitionKeywordService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     //회원가입 시 유효성 검증에 필요
     @InitBinder
@@ -112,6 +118,26 @@ public class MemberController {
         return "member/modify";
     }
 
+    //회원정보 수정 전 비밀번호 확인
+    @GetMapping("/preModify")
+    public String preModifyView() {
+        return "member/preModify";
+    }
+
+    //security 비밀번호를 CustomUserDetails에서 받아옴
+    @PostMapping("/preModify")
+    public String postPrevModify(Authentication auth, @RequestParam("preModifypwd") String preModifypwd, RedirectAttributes rttr) {
+        CustomUserDetails customUserDetails = (CustomUserDetails) auth.getPrincipal();
+        String pwd = customUserDetails.getPassword();
+        if(passwordEncoder.matches(preModifypwd, pwd)) {
+            return "redirect:/member/modify";
+        }
+        else {
+            rttr.addFlashAttribute("msg", "msg");
+            return "redirect:/member/preModify";
+        }
+    }
+
     //마이페이지
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/mypage")
@@ -124,12 +150,12 @@ public class MemberController {
     }
 
     //아이디 찾기
-    @GetMapping("/findIdView")
+    @GetMapping("/findId")
     public String findIdView() {
         return "member/findIdView";
     }
 
-    @PostMapping("findId")
+    @PostMapping("/findId")
     public String findId(MemberFindDTO memberFindDTO, Model model) {
         if (memberService.countId(memberFindDTO.getEmail()) == 0) {
             model.addAttribute("msg", "존재하지 않는 사용자 입니다. 이메일을 다시 확인해 주세요.");
@@ -140,12 +166,27 @@ public class MemberController {
         }
     }
 
-/*    //임시 비밀번호 이메일 보내기
-    @Transactional
-    @PostMapping("/sendEmail")
-    public String sendEmail(@RequestParam("email") String email) {
-        MailDTO mailDTO = memberService.createMail
-    }*/
+    //비밀번호 찾기
+    @GetMapping("/findPwd")
+    public String findPwdView(@ModelAttribute("memberDTO") MemberDTO memberDTO) {
+        return "member/findPwdView";
+    }
+
+    @PostMapping("/findPwd")
+    public String findPwd(MemberDTO memberDTO, BindingResult bindingResult, Model model) throws Exception {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("memberDTO", memberDTO);
+            return "member/findPwdView";
+        }
+       memberDTO = memberService.findPwd(memberDTO.getEmail());
+
+        if (memberDTO == null) {
+            bindingResult.addError(new FieldError("memberDTO", "email", "존재하지 않는 이메일 입니다. 다시 확인해 주세요."));
+            return "member/findPwdView";
+        }
+        return "redirect:/member/login";
+    }
 
     //관심 카테고리
     @GetMapping("/category")
