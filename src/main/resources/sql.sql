@@ -48,7 +48,7 @@ DROP TABLE member PURGE;
 
 CREATE TABLE member (
 	member_id			NUMBER			NOT NULL,
-	role				VARCHAR2(50)    DEFAULT 'ROLE_USER',
+	role				VARCHAR2(50)    DEFAULT 'USER',
 	user_id				VARCHAR2(30)    NOT NULL,
 	pwd					VARCHAR2(60)    NOT NULL,
 	nickname			VARCHAR2(40)    NOT NULL,
@@ -165,7 +165,7 @@ CREATE TABLE product (
 	view_count          NUMBER          DEFAULT 0,
 	product_progress    VARCHAR2(20)    NULL,
 	pay_status          VARCHAR2(20)    NULL,
-	blind_status        VARCHAR2(20)    NULL,
+	blind_status        CHAR(1)         DEFAULT 0,
 	CONSTRAINT PK_PRODUCT PRIMARY KEY (product_id),
 	CONSTRAINT FK_PRODUCT_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id),
 	CONSTRAINT FK_PRODUCT_TOWN_ID FOREIGN KEY (town_id) REFERENCES town(town_id),
@@ -194,7 +194,7 @@ CREATE TABLE bidding (
 
 CREATE TABLE tag (
 	tag_id      		NUMBER        	NOT NULL,
-	tag_name    		VARCHAR2(10)  	NOT NULL,
+	tag_name    		VARCHAR2(50)  	NOT NULL,
 	tag_count   		NUMBER        	NOT NULL,
 	CONSTRAINT PK_TAG PRIMARY KEY (tag_id)
 );
@@ -344,6 +344,7 @@ CREATE TABLE notice_image (
 	CONSTRAINT FK_NOTICE_IMAGE_NOTICE_ID FOREIGN KEY (notice_id) REFERENCES notice(notice_id)
 );
 
+----------------------------------------------------------------------------------------------------
 
 INSERT INTO coordinate VALUES(1,'서울특별시 강남구 역삼1동','37.4954841','127.0333574');
 INSERT INTO coordinate VALUES(2,'서울특별시 강남구 역삼2동','37.4959674','127.0468034');
@@ -411,8 +412,7 @@ INSERT INTO Coordinate VALUES( 63,' 서울특별시 강동구 성내2동','37.53
 INSERT INTO Coordinate VALUES( 64,' 서울특별시 강동구 둔촌1동','37.5333656','  127.1419851');
 INSERT INTO Coordinate VALUES( 65 ,'서울특별시 강동구 둔촌2동','37.5332885',' 127.1419221');
 
-
-
+----------------------------------------------------------------------------------------------------
 
 INSERT INTO category VALUES(1,'디지털/가전','');
 
@@ -423,52 +423,31 @@ INSERT INTO category VALUES(5,'PC/노트북',1);
 INSERT INTO category VALUES(6,'게임/타이틀',1);
 INSERT INTO category VALUES(7,'카메라/DSLR',1);
 INSERT INTO category VALUES(8,'PC부품/저장장치',1);
-
-
-select * from product where CATEGORY_ID  BETWEEN   15 AND 21;
-
-select * from product where CATEGORY_ID =15;
-
---------------------------------------------------------------
-
+--------------------------------------------------
 INSERT INTO category VALUES(9,'가구/인테리어','');
 
 INSERT INTO category VALUES(10,'가구',9);
 INSERT INTO category VALUES(11,'인테리어',9);
-
-
---------------------------------------------------------------
-
+--------------------------------------------------
 INSERT INTO category VALUES(12,'생활/가공식품','');
 
 INSERT INTO category VALUES(13,'주방용품',12);
 INSERT INTO category VALUES(14,'생활용품',12);
 INSERT INTO category VALUES(15,'식품',12);
 INSERT INTO category VALUES(16,'산업용품',12);
---------------------------------------------------------------
+--------------------------------------------------
 INSERT INTO category VALUES(17,'유아동','');
 
 INSERT INTO category VALUES(18,'베이비의류(0~2세)',17);
 INSERT INTO category VALUES(19,'여아의류(3~6세)',17);
-
 INSERT INTO category VALUES(20,'여주니어의류(7세~)',17);
-
 INSERT INTO category VALUES(21,'남아의류(3~6세)',17);
-
 INSERT INTO category VALUES(22,'남주니어의류(7세~)',17);
-
 INSERT INTO category VALUES(23,'유아동신발/잡화',17);
-
 INSERT INTO category VALUES(24,'교육/완구/인형',17);
-
 INSERT INTO category VALUES(25,'유아동용품',17);
-
-
 INSERT INTO category VALUES(26,'이유용품/유아식기',17);
-
-
-
---------------------------------------------------------------
+--------------------------------------------------
 INSERT INTO category VALUES(27,'남성의류','');
 
 INSERT INTO category VALUES(28,'패딩/점퍼',27);
@@ -485,9 +464,7 @@ INSERT INTO category VALUES(38,'반바지',27);
 INSERT INTO category VALUES(39,'자켓',27);
 INSERT INTO category VALUES(40,'정장',27);
 INSERT INTO category VALUES(41,'조끼/트레이닝',27);
-
-
---------------------------------------------------------------
+--------------------------------------------------
 INSERT INTO category VALUES(42,'여성의류','');
 
 INSERT INTO category VALUES(43,'패딩/점퍼',42);
@@ -504,13 +481,13 @@ INSERT INTO category VALUES(53,'반바지',42);
 INSERT INTO category VALUES(54,'자켓',42);
 INSERT INTO category VALUES(55,'정장',42);
 INSERT INTO category VALUES(56,'조끼/트레이닝',42);
---------------------------------------------------------------
+--------------------------------------------------
 INSERT INTO category VALUES(57,'가방/잡화','');
 
 INSERT INTO category VALUES(58,'남성가방',57);
 INSERT INTO category VALUES(59,'여성가방',57);
 INSERT INTO category VALUES(60,'여행용',57);
---------------------------------------------------------------
+--------------------------------------------------
 INSERT INTO category VALUES(61,'뷰티/미용','');
 
 INSERT INTO category VALUES(62,'스킨케어',61);
@@ -522,9 +499,7 @@ INSERT INTO category VALUES(67,'미용소품/기기',61);
 INSERT INTO category VALUES(68,'다이어트/이너뷰티',61);
 INSERT INTO category VALUES(69,'남성 화장품',61);
 INSERT INTO category VALUES(70,'여성 화장품',61);
-
-
---------------------------------------------------------------
+--------------------------------------------------
 INSERT INTO category VALUES(71,'스포츠/레저','');
 
 INSERT INTO category VALUES(72,'골프',71);
@@ -541,17 +516,13 @@ INSERT INTO category VALUES(82,'자전거',71);
 INSERT INTO category VALUES(83,'등산/클라이밍',71);
 INSERT INTO category VALUES(84,'헬스/요가/필라테스',71);
 INSERT INTO category VALUES(85,'배드민턴',71);
-
-
---------------------------------------------------------------
+--------------------------------------------------
 INSERT INTO category VALUES(86,'게임/음반','');
 
 INSERT INTO category VALUES(87,'CD/DVD/LP',86);
 INSERT INTO category VALUES(88,'악기',86);
 INSERT INTO category VALUES(89,'게임CD',86);
-
-
---------------------------------------------------------------
+--------------------------------------------------
 INSERT INTO category VALUES(90,'도서/티켓','');
 
 INSERT INTO category VALUES(91,'도서',90);
@@ -559,8 +530,7 @@ INSERT INTO category VALUES(92,'문구',90);
 INSERT INTO category VALUES(93,'기프티콘/쿠폰',90);
 INSERT INTO category VALUES(94,'상품권',90);
 INSERT INTO category VALUES(95,'티켓',90);
-
---------------------------------------------------------------
+--------------------------------------------------
 INSERT INTO category VALUES(96,'반려동물용품','');
 
 INSERT INTO category VALUES(97,'강아지 용품',96);
@@ -571,8 +541,7 @@ INSERT INTO category VALUES(101,'고양이 사료/간식',96);
 INSERT INTO category VALUES(102,'기타(고양이)',96);
 INSERT INTO category VALUES(103,'기타(반려동물 용품)',96);
 INSERT INTO category VALUES(104,'기타(반려동물 사료/간식)',96);
-
---------------------------------------------------------------
+--------------------------------------------------
 INSERT INTO category VALUES(105,'식물','');
 
 INSERT INTO category VALUES(106,'꽃',105);
@@ -583,8 +552,8 @@ INSERT INTO category VALUES(110,'난초',105);
 INSERT INTO category VALUES(111,'채소/과일',105);
 INSERT INTO category VALUES(112,'수경식물',105);
 INSERT INTO category VALUES(113,'에어플랜트',105);
-
-
---------------------------------------------------------------
+--------------------------------------------------
 INSERT INTO category VALUES(114,'기타','');
 INSERT INTO category VALUES(115,'기타',114);
+
+----------------------------------------------------------------------------------------------------

@@ -34,11 +34,17 @@ public class ProductServiceImpl implements ProductService {
     private final TownRepositoy townRepositoy;
     private final CategoryRepositoy categoryRepository;
     private final ProductRepository productRepository;
+	private final ProductRepository.Querydsl productRepositoryQuerydsl;
     private final ProductImageRepository productImageRepository;
 
     private final ProhibitionKeywordRepositoy prohibitionKeywordRepositoy;
 
     private final static String COOKIE = "alreadyViewCookie";
+
+	@Override
+	public Page<ProductListDTO> getProductListDTO(SearchRequirements searchRequirements) {
+		return productRepositoryQuerydsl.findAllBySearchRequirements(searchRequirements).map(ProductListDTO::new);
+	}
 
     //상품 등록
     @Override
