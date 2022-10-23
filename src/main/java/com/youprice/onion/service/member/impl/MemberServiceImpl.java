@@ -7,7 +7,7 @@ import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
+//import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,8 +34,8 @@ public class MemberServiceImpl implements MemberService {
     @Value("$(file.path}")
     private String uploadFolder;
 
-    @Autowired
-    private final ModelMapper modelMapper;
+//    @Autowired
+//    private final ModelMapper modelMapper;
 
     //회원가입
     @Transactional
