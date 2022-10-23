@@ -117,6 +117,11 @@ public class Member {
         this.memberImageName = memberImageName;
     }
 
+    //비밀번호 찾기
+    public void findPwd(String pwd) {
+        this.pwd = pwd;
+    }
+
 	// 결제
 	public boolean payment(int cash) {
 		if (this.cash < cash){

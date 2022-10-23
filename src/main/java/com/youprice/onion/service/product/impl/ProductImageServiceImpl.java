@@ -33,9 +33,5 @@ public class ProductImageServiceImpl implements ProductImageService {
                 .stream().map(ProductImageDTO::new)
                 .collect(Collectors.toList());
     }
-    public void deleteImage(Long imageId){
-        ProductImage productImage = productImageRepository.findById(imageId).orElse(null);
-        productImageRepository.delete(productImage);
-    }
 
 }

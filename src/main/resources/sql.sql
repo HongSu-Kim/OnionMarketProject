@@ -48,7 +48,7 @@ DROP TABLE member PURGE;
 
 CREATE TABLE member (
 	member_id			NUMBER			NOT NULL,
-	role				VARCHAR2(50)    DEFAULT 'ROLE_USER',
+	role				VARCHAR2(50)    DEFAULT 'USER',
 	user_id				VARCHAR2(30)    NOT NULL,
 	pwd					VARCHAR2(60)    NOT NULL,
 	nickname			VARCHAR2(40)    NOT NULL,
@@ -67,7 +67,6 @@ CREATE TABLE member (
 	complaint_count     NUMBER          DEFAULT 0,
 	CONSTRAINT PK_MEMBER PRIMARY KEY (member_id)
 );
-
 
 CREATE TABLE follow (
 	follow_id           NUMBER          NOT NULL,
@@ -165,7 +164,7 @@ CREATE TABLE product (
 	view_count          NUMBER          DEFAULT 0,
 	product_progress    VARCHAR2(20)    NULL,
 	pay_status          VARCHAR2(20)    NULL,
-	blind_status        VARCHAR2(20)    NULL,
+	blind_status        CHAR(1)         DEFAULT 0,
 	CONSTRAINT PK_PRODUCT PRIMARY KEY (product_id),
 	CONSTRAINT FK_PRODUCT_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id),
 	CONSTRAINT FK_PRODUCT_TOWN_ID FOREIGN KEY (town_id) REFERENCES town(town_id),
@@ -194,7 +193,7 @@ CREATE TABLE bidding (
 
 CREATE TABLE tag (
 	tag_id      		NUMBER        	NOT NULL,
-	tag_name    		VARCHAR2(10)  	NOT NULL,
+	tag_name    		VARCHAR2(50)  	NOT NULL,
 	tag_count   		NUMBER        	NOT NULL,
 	CONSTRAINT PK_TAG PRIMARY KEY (tag_id)
 );
@@ -344,131 +343,158 @@ CREATE TABLE notice_image (
 	CONSTRAINT FK_NOTICE_IMAGE_NOTICE_ID FOREIGN KEY (notice_id) REFERENCES notice(notice_id)
 );
 
+----------------------------------------------------------------------------------------------------
 
-INSERT INTO coordinate VALUES(1,'서울특별시 강남구 역삼1동','37.4954841','127.0333574');
-INSERT INTO coordinate VALUES(2,'서울특별시 강남구 역삼2동','37.4959674','127.0468034');
-INSERT INTO coordinate VALUES(3,'서울특별시 강남구 논현1동','37.5115706 ','127.028461');
-INSERT INTO coordinate VALUES(4,'서울특별시 강남구 논현2동','37.517342','127.037213');
-INSERT INTO coordinate VALUES(5,'서울특별시 강남구 삼성1동','37.5144424','127.062532');
-INSERT INTO coordinate VALUES(6,'서울특별시 강남구 삼성2동','37.5112','127.04595');
-INSERT INTO coordinate VALUES(7,'서울특별시 강남구 대치1동','37.4931821','127.0567047');
-INSERT INTO coordinate VALUES(8,'서울특별시 강남구 대치2동','37.5022848','127.0642072');
-INSERT INTO coordinate VALUES(9,'서울특별시 강남구 대치4동','37.4997415','127.0579127');
-INSERT INTO coordinate VALUES(10,'서울특별시 강남구 도곡1동','37.488238','127.0390246');
-INSERT INTO coordinate VALUES(11,'서울특별시 강남구 도곡2동','37.4837425','127.0464338');
-INSERT INTO coordinate VALUES(12,'서울특별시 강남구 청담동','37.525107','127.049291');
-INSERT INTO coordinate VALUES(13,'서울특별시 강남구 신사동','37.5240101','127.0227814');
-INSERT INTO coordinate VALUES(14,'서울특별시 강남구 압구정동','37.530642','127.030713');
-INSERT INTO coordinate VALUES(15,'서울특별시 강남구 개포1동','37.4827409','127.055737');
-INSERT INTO coordinate VALUES(16,'서울특별시 강남구 개포4동','37.4771404','127.0497486');
-INSERT INTO coordinate VALUES(17,'서울특별시 강남구 일원1동','37.491839','127.0879629');
-INSERT INTO coordinate VALUES(18,'서울특별시 강남구 일원2동','37.4922048','127.0737224');
-INSERT INTO coordinate VALUES(19,'서울특별시 강남구 일원본동','37.4833484','127.0864633');
-INSERT INTO coordinate VALUES(20,'서울특별시 강남구 세곡동','37.4643683','127.1043555');
-INSERT INTO coordinate VALUES(21 ,'서울특별시 송파구 잠실본동','37.5060716','127.0832037');
-INSERT INTO coordinate VALUES(22 ,'서울특별시 송파구 잠실2동','37.5119488','127.088559 ');
-INSERT INTO coordinate VALUES(23 ,'서울특별시 송파구 잠실3동','37.513333', '127.094375');
-INSERT INTO coordinate VALUES(24 ,'서울특별시 송파구 잠실4동','37.5201089','127.1122668');
-INSERT INTO coordinate VALUES(25 ,'서울특별시 송파구 잠실6동','37.518142','127.10065');
-INSERT INTO coordinate VALUES(26 ,'서울특별시 송파구 잠실7동','37.5086777','127.0771146');
-INSERT INTO coordinate VALUES(27 , '서울특별시 송파구 풍납1동','37.538092','127.122075');
-INSERT INTO coordinate VALUES(28 ,'서울특별시 송파구 풍납2동','37.528833','127.116825');
-INSERT INTO coordinate VALUES(29 ,'서울특별시 송파구 삼전동','37.502714','127.0925354');
-INSERT INTO coordinate VALUES(30,'서울특별시 송파구 석촌동','37.503592','127.1037');
-INSERT INTO coordinate VALUES(31,'서울특별시 송파구 송파1동','37.5062595',  '127.1093393');
-INSERT INTO coordinate VALUES(32 ,'서울특별시 송파구 송파2동','37.502317',  '127.1167651');
-INSERT INTO coordinate VALUES(33 ,'서울특별시 송파구 방이1동','37.510933',  '127.123925');
-INSERT INTO coordinate VALUES(34 ,'서울특별시 송파구 방이2동','37.5164444',  '127.1114868');
-INSERT INTO coordinate VALUES(35 ,'서울특별시 송파구 오륜동','37.515425',  '127.1343');
-INSERT INTO coordinate VALUES(36 ,'서울특별시 송파구 오금동','37.5030528',  '127.1281494');
-INSERT INTO coordinate VALUES(37 ,'서울특별시 송파구 가락본동','37.4955568',  '127.1217864');
-INSERT INTO coordinate VALUES(38 ,'서울특별시 송파구 가락1동','37.4964898',  '127.1098653');
-INSERT INTO coordinate VALUES(39 ,'서울특별시 송파구 가락2동','37.4987054',  '127.1266714');
-INSERT INTO coordinate VALUES(40 ,'서울특별시 송파구 문정1동','37.4900982',  '127.1241719');
-INSERT INTO coordinate VALUES(41,'서울특별시 송파구 문정2동','37.489823',    '127.1108107');
-INSERT INTO coordinate VALUES(42,'서울특별시 송파구 장지동','37.4785',      '127.1354');
-INSERT INTO coordinate VALUES(43,'서울특별시 송파구 거여1동','37.4969643',   '127.1432324');
-INSERT INTO coordinate VALUES(44,'서울특별시 송파구 거여2동 ','37.4935803',   '127.1468764');
-INSERT INTO coordinate VALUES(45 ,'서울특별시 송파구 마천1동','37.4960195',  '127.1499724');
-INSERT INTO coordinate VALUES(46 ,'서울특별시 송파구 마천2동','37.4968477',  '127.1485193');
-INSERT INTO coordinate VALUES(47 ,' 서울특별시 송파구 위례동','37.4811656',  '127.1439378');
-INSERT INTO Coordinate VALUES(48 ,' 서울특별시 강동구 암사1동','37.551508','  127.132663');
-INSERT INTO Coordinate VALUES( 49,' 서울특별시 강동구 암사2동','37.5517481','  127.1272074');
-INSERT INTO Coordinate VALUES( 50,'서울특별시 강동구 암사3동','37.5549912','  127.1408249');
-INSERT INTO Coordinate VALUES( 51 ,'서울특별시 강동구 고덕1동','37.5572593', '127.1515382');
-INSERT INTO Coordinate VALUES( 52,'서울특별시 강동구 고덕2동','37.5605',     '127.16435 ');
-INSERT INTO Coordinate VALUES( 53,'서울특별시 강동구 강일동','37.5649783',  '127.173909 ');
-INSERT INTO Coordinate VALUES( 54,'서울특별시 강동구 명일1동','37.5512453',  '127.1443656');
-INSERT INTO Coordinate VALUES( 55 ,'서울특별시 강동구 명일2동','37.546366',  '127.1513427');
-INSERT INTO Coordinate VALUES( 56 ,'서울특별시 강동구 천호1동','37.5450159', '127.1368066');
-INSERT INTO Coordinate VALUES( 57 ,'서울특별시 강동구 천호2동','37.5435257', '127.1254351');
-INSERT INTO Coordinate VALUES( 58,'서울특별시 강동구 천호3동','37.5361455',  '127.1332269');
-INSERT INTO Coordinate VALUES( 59,'서울특별시 강동구 길동','37.5345598',  '127.1426791');
-INSERT INTO Coordinate VALUES( 60 ,'서울특별시 강동구 상일1동','37.5506614', '127.1649058');
-INSERT INTO Coordinate VALUES( 61,'서울특별시 강동구 상일2동','37.5499518',  '127.1758801');
-INSERT INTO Coordinate VALUES( 62,' 서울특별시 강동구 성내1동','37.5304417',  '127.122425');
-INSERT INTO Coordinate VALUES( 63,' 서울특별시 강동구 성내2동','37.532425',  '127.129563');
-INSERT INTO Coordinate VALUES( 64,' 서울특별시 강동구 둔촌1동','37.5333656','  127.1419851');
-INSERT INTO Coordinate VALUES( 65 ,'서울특별시 강동구 둔촌2동','37.5332885',' 127.1419221');
+INSERT INTO member VALUES(1, 'ADMIN', 'admin', '$2a$10$8gkJSCifAA3aWUAZJazhnuYLi2JVSbC7D2UtDmu0cUG9NScriVtZ6', --pwd : admin123
+                          'admin', '관리자', SYSDATE, '01012341234', '06234', '서울 강남구 역삼동 823',
+                          '4층 아이티윌', '디글디글', 'youprice.onion.email@gmail.com', null, 0, 0, 0, 0);
+INSERT INTO member VALUES(2, 'USER', 'user1', '$2a$10$LHSAHnF2CqW7nU8ilNxlC.Gw7GikRfCe3PgDqnJHKUChGfZUhbokG', --pwd : user1
+                          'user1', '유저1', SYSDATE, '01011111111', '06253', '서울 강남구 역삼동 838',
+                          '1', '', 'user1@naver.com', null, 1000000000, 0, 0, 0);
+INSERT INTO member VALUES(3, 'USER', 'user2', '$2a$10$8gkJSCifAA3aWUAZJazhnuYLi2JVSbC7D2UtDmu0cUG9NScriVtZ6', --pwd : user2
+                          'user2', '유저2', SYSDATE, '01022222222', '06120', '서울 강남구 논현동 200-7',
+                          '2', '', 'user2@naver.com', null, 20000, 0, 0, 0);
+INSERT INTO member VALUES(4, 'USER', 'user3', '$2a$10$8gkJSCifAA3aWUAZJazhnuYLi2JVSbC7D2UtDmu0cUG9NScriVtZ6', --pwd : user3
+                          'user3', '유저3', SYSDATE, '01033333333', '06308', '서울 강남구 개포동 1205-1',
+                          '3', '', 'user3@naver.com', null, 0, 0, 0, 0);
+INSERT INTO member VALUES(5, 'USER', 'user4', '$2a$10$maqcisSSo/UvHjaBGlkdGeMdVmkYVVBUPtg9Yjy4eRXXV17v4yhTO', --pwd : user4
+                          'user4', '유저4', SYSDATE, '01044444444', '06517', '서울 서초구 잠원동 54-5',
+                          '4', '', 'user4@naver.com', null, 1000, 0, 0, 0);
+INSERT INTO member VALUES(6, 'USER', 'user5', '$2a$10$No.Tv7ToHFb7dT0shjJlQ.acUoZeiW5a.PVvxn9fBL0ZjKcQ07Ipm', --pwd : user5
+                          'user5', '유저5', SYSDATE, '01055555555', '06744', '서울 서초구 양재동 20-30',
+                          '5', '', 'user5@naver.com', null, 2000, 0, 0, 0);
+INSERT INTO member VALUES(7, 'USER', 'user6', '$2a$10$dTp.BTXTF4tkmWxzcKA0o.6QitOj1./MDoHfCFOfhgrQsJv3YvIgC', --pwd : user6
+                          'user6', '유저6', SYSDATE, '010666666', '06729', '서울 서초구 서초동 1357-35',
+                          '6', '', 'user6@naver.com', null, 2000, 0, 0, 0);
 
+----------------------------------------------------------------------------------------------------
 
+INSERT INTO coordinate VALUES(1,  '서울특별시 강남구 역삼1동',  '37.4954841',  '127.0333574');
+INSERT INTO coordinate VALUES(2,  '서울특별시 강남구 역삼2동',  '37.4959674',  '127.0468034');
+INSERT INTO coordinate VALUES(3,  '서울특별시 강남구 논현1동',  '37.5115706 ', '127.028461');
+INSERT INTO coordinate VALUES(4,  '서울특별시 강남구 논현2동',  '37.517342',   '127.037213');
+INSERT INTO coordinate VALUES(5,  '서울특별시 강남구 삼성1동',  '37.5144424',  '127.062532');
+INSERT INTO coordinate VALUES(6,  '서울특별시 강남구 삼성2동',  '37.5112',     '127.04595');
+INSERT INTO coordinate VALUES(7,  '서울특별시 강남구 대치1동',  '37.4931821',  '127.0567047');
+INSERT INTO coordinate VALUES(8,  '서울특별시 강남구 대치2동',  '37.5022848',  '127.0642072');
+INSERT INTO coordinate VALUES(9,  '서울특별시 강남구 대치4동',  '37.4997415',  '127.0579127');
+INSERT INTO coordinate VALUES(10, '서울특별시 강남구 도곡1동',  '37.488238',   '127.0390246');
+INSERT INTO coordinate VALUES(11, '서울특별시 강남구 도곡2동',  '37.4837425',  '127.0464338');
+INSERT INTO coordinate VALUES(12, '서울특별시 강남구 청담동',   '37.525107',   '127.049291');
+INSERT INTO coordinate VALUES(13, '서울특별시 강남구 신사동',   '37.5240101',  '127.0227814');
+INSERT INTO coordinate VALUES(14, '서울특별시 강남구 압구정동', '37.530642',   '127.030713');
+INSERT INTO coordinate VALUES(15, '서울특별시 강남구 개포1동',  '37.4827409',  '127.055737');
+INSERT INTO coordinate VALUES(16, '서울특별시 강남구 개포4동',  '37.4771404',  '127.0497486');
+INSERT INTO coordinate VALUES(17, '서울특별시 강남구 일원1동',  '37.491839',   '127.0879629');
+INSERT INTO coordinate VALUES(18, '서울특별시 강남구 일원2동',  '37.4922048',  '127.0737224');
+INSERT INTO coordinate VALUES(19, '서울특별시 강남구 일원본동', '37.4833484',  '127.0864633');
+INSERT INTO coordinate VALUES(20, '서울특별시 강남구 세곡동',   '37.4643683',  '127.1043555');
+--------------------------------------------------
+INSERT INTO coordinate VALUES(21, '서울특별시 송파구 잠실본동', '37.5060716', '127.0832037');
+INSERT INTO coordinate VALUES(22, '서울특별시 송파구 잠실2동',  '37.5119488', '127.088559 ');
+INSERT INTO coordinate VALUES(23, '서울특별시 송파구 잠실3동',  '37.513333',  '127.094375');
+INSERT INTO coordinate VALUES(24, '서울특별시 송파구 잠실4동',  '37.5201089', '127.1122668');
+INSERT INTO coordinate VALUES(25, '서울특별시 송파구 잠실6동',  '37.518142',  '127.10065');
+INSERT INTO coordinate VALUES(26, '서울특별시 송파구 잠실7동',  '37.5086777', '127.0771146');
+INSERT INTO coordinate VALUES(27, '서울특별시 송파구 풍납1동',  '37.538092',  '127.122075');
+INSERT INTO coordinate VALUES(28, '서울특별시 송파구 풍납2동',  '37.528833',  '127.116825');
+INSERT INTO coordinate VALUES(29, '서울특별시 송파구 삼전동',   '37.502714',  '127.0925354');
+INSERT INTO coordinate VALUES(30, '서울특별시 송파구 석촌동',   '37.503592',  '127.1037');
+INSERT INTO coordinate VALUES(31, '서울특별시 송파구 송파1동',  '37.5062595', '127.1093393');
+INSERT INTO coordinate VALUES(32, '서울특별시 송파구 송파2동',  '37.502317',  '127.1167651');
+INSERT INTO coordinate VALUES(33, '서울특별시 송파구 방이1동',  '37.510933',  '127.123925');
+INSERT INTO coordinate VALUES(34, '서울특별시 송파구 방이2동',  '37.5164444', '127.1114868');
+INSERT INTO coordinate VALUES(35, '서울특별시 송파구 오륜동',   '37.515425',  '127.1343');
+INSERT INTO coordinate VALUES(36, '서울특별시 송파구 오금동',   '37.5030528', '127.1281494');
+INSERT INTO coordinate VALUES(37, '서울특별시 송파구 가락본동', '37.4955568', '127.1217864');
+INSERT INTO coordinate VALUES(38, '서울특별시 송파구 가락1동',  '37.4964898', '127.1098653');
+INSERT INTO coordinate VALUES(39, '서울특별시 송파구 가락2동',  '37.4987054', '127.1266714');
+INSERT INTO coordinate VALUES(40, '서울특별시 송파구 문정1동',  '37.4900982', '127.1241719');
+INSERT INTO coordinate VALUES(41, '서울특별시 송파구 문정2동',  '37.489823',  '127.1108107');
+INSERT INTO coordinate VALUES(42, '서울특별시 송파구 장지동',   '37.4785',    '127.1354');
+INSERT INTO coordinate VALUES(43, '서울특별시 송파구 거여1동',  '37.4969643', '127.1432324');
+INSERT INTO coordinate VALUES(44, '서울특별시 송파구 거여2동',  '37.4935803', '127.1468764');
+INSERT INTO coordinate VALUES(45, '서울특별시 송파구 마천1동',  '37.4960195', '127.1499724');
+INSERT INTO coordinate VALUES(46, '서울특별시 송파구 마천2동',  '37.4968477', '127.1485193');
+INSERT INTO coordinate VALUES(47, '서울특별시 송파구 위례동',   '37.4811656', '127.1439378');
+--------------------------------------------------
+INSERT INTO Coordinate VALUES(48, '서울특별시 강동구 암사1동','37.551508','  127.132663');
+INSERT INTO Coordinate VALUES(49, '서울특별시 강동구 암사2동','37.5517481','  127.1272074');
+INSERT INTO Coordinate VALUES(50, '서울특별시 강동구 암사3동','37.5549912','  127.1408249');
+INSERT INTO Coordinate VALUES(51, '서울특별시 강동구 고덕1동','37.5572593', '127.1515382');
+INSERT INTO Coordinate VALUES(52, '서울특별시 강동구 고덕2동','37.5605',     '127.16435 ');
+INSERT INTO Coordinate VALUES(53, '서울특별시 강동구 강일동','37.5649783',  '127.173909 ');
+INSERT INTO Coordinate VALUES(54, '서울특별시 강동구 명일1동','37.5512453',  '127.1443656');
+INSERT INTO Coordinate VALUES(55, '서울특별시 강동구 명일2동','37.546366',  '127.1513427');
+INSERT INTO Coordinate VALUES(56, '서울특별시 강동구 천호1동','37.5450159', '127.1368066');
+INSERT INTO Coordinate VALUES(57, '서울특별시 강동구 천호2동','37.5435257', '127.1254351');
+INSERT INTO Coordinate VALUES(58, '서울특별시 강동구 천호3동','37.5361455',  '127.1332269');
+INSERT INTO Coordinate VALUES(59, '서울특별시 강동구 길동','37.5345598',  '127.1426791');
+INSERT INTO Coordinate VALUES(60, '서울특별시 강동구 상일1동','37.5506614', '127.1649058');
+INSERT INTO Coordinate VALUES(61, '서울특별시 강동구 상일2동','37.5499518',  '127.1758801');
+INSERT INTO Coordinate VALUES(62, '서울특별시 강동구 성내1동','37.5304417',  '127.122425');
+INSERT INTO Coordinate VALUES(63, '서울특별시 강동구 성내2동','37.532425',  '127.129563');
+INSERT INTO Coordinate VALUES(64, '서울특별시 강동구 둔촌1동','37.5333656','  127.1419851');
+INSERT INTO Coordinate VALUES(65, '서울특별시 강동구 둔촌2동','37.5332885',' 127.1419221');
 
+----------------------------------------------------------------------------------------------------
+
+INSERT INTO town VALUES(1, 1, 1);
+INSERT INTO town VALUES(2, 1, 2);
+INSERT INTO town VALUES(3, 1, 3);
+INSERT INTO town VALUES(4, 1, 4);
+INSERT INTO town VALUES(5, 1, 5);
+INSERT INTO town VALUES(6, 1, 6);
+INSERT INTO town VALUES(7, 1, 7);
+INSERT INTO town VALUES(8, 1, 8);
+INSERT INTO town VALUES(9, 1, 9);
+INSERT INTO town VALUES(10, 1, 10);
+INSERT INTO town VALUES(11, 1, 11);
+INSERT INTO town VALUES(12, 1, 12);
+INSERT INTO town VALUES(13, 1, 13);
+INSERT INTO town VALUES(14, 1, 14);
+INSERT INTO town VALUES(15, 1, 15);
+INSERT INTO town VALUES(16, 1, 16);
+INSERT INTO town VALUES(17, 1, 17);
+INSERT INTO town VALUES(18, 1, 18);
+INSERT INTO town VALUES(19, 1, 19);
+
+----------------------------------------------------------------------------------------------------
 
 INSERT INTO category VALUES(1,'디지털/가전','');
 
 INSERT INTO category VALUES(2,'모바일',1);
-INSERT INTO category VALUES(3,' 가전제품',1);
+INSERT INTO category VALUES(3,'가전제품',1);
 INSERT INTO category VALUES(4,'오디오/영상/관련기기',1);
 INSERT INTO category VALUES(5,'PC/노트북',1);
 INSERT INTO category VALUES(6,'게임/타이틀',1);
 INSERT INTO category VALUES(7,'카메라/DSLR',1);
 INSERT INTO category VALUES(8,'PC부품/저장장치',1);
-
-
-select * from product where CATEGORY_ID  BETWEEN   15 AND 21;
-
-select * from product where CATEGORY_ID =15;
-
---------------------------------------------------------------
-
+--------------------------------------------------
 INSERT INTO category VALUES(9,'가구/인테리어','');
 
 INSERT INTO category VALUES(10,'가구',9);
 INSERT INTO category VALUES(11,'인테리어',9);
-
-
---------------------------------------------------------------
-
+--------------------------------------------------
 INSERT INTO category VALUES(12,'생활/가공식품','');
 
 INSERT INTO category VALUES(13,'주방용품',12);
 INSERT INTO category VALUES(14,'생활용품',12);
 INSERT INTO category VALUES(15,'식품',12);
 INSERT INTO category VALUES(16,'산업용품',12);
---------------------------------------------------------------
+--------------------------------------------------
 INSERT INTO category VALUES(17,'유아동','');
 
 INSERT INTO category VALUES(18,'베이비의류(0~2세)',17);
 INSERT INTO category VALUES(19,'여아의류(3~6세)',17);
-
 INSERT INTO category VALUES(20,'여주니어의류(7세~)',17);
-
 INSERT INTO category VALUES(21,'남아의류(3~6세)',17);
-
 INSERT INTO category VALUES(22,'남주니어의류(7세~)',17);
-
 INSERT INTO category VALUES(23,'유아동신발/잡화',17);
-
 INSERT INTO category VALUES(24,'교육/완구/인형',17);
-
 INSERT INTO category VALUES(25,'유아동용품',17);
-
-
 INSERT INTO category VALUES(26,'이유용품/유아식기',17);
-
-
-
---------------------------------------------------------------
+--------------------------------------------------
 INSERT INTO category VALUES(27,'남성의류','');
 
 INSERT INTO category VALUES(28,'패딩/점퍼',27);
@@ -485,9 +511,7 @@ INSERT INTO category VALUES(38,'반바지',27);
 INSERT INTO category VALUES(39,'자켓',27);
 INSERT INTO category VALUES(40,'정장',27);
 INSERT INTO category VALUES(41,'조끼/트레이닝',27);
-
-
---------------------------------------------------------------
+--------------------------------------------------
 INSERT INTO category VALUES(42,'여성의류','');
 
 INSERT INTO category VALUES(43,'패딩/점퍼',42);
@@ -504,13 +528,13 @@ INSERT INTO category VALUES(53,'반바지',42);
 INSERT INTO category VALUES(54,'자켓',42);
 INSERT INTO category VALUES(55,'정장',42);
 INSERT INTO category VALUES(56,'조끼/트레이닝',42);
---------------------------------------------------------------
+--------------------------------------------------
 INSERT INTO category VALUES(57,'가방/잡화','');
 
 INSERT INTO category VALUES(58,'남성가방',57);
 INSERT INTO category VALUES(59,'여성가방',57);
 INSERT INTO category VALUES(60,'여행용',57);
---------------------------------------------------------------
+--------------------------------------------------
 INSERT INTO category VALUES(61,'뷰티/미용','');
 
 INSERT INTO category VALUES(62,'스킨케어',61);
@@ -522,9 +546,7 @@ INSERT INTO category VALUES(67,'미용소품/기기',61);
 INSERT INTO category VALUES(68,'다이어트/이너뷰티',61);
 INSERT INTO category VALUES(69,'남성 화장품',61);
 INSERT INTO category VALUES(70,'여성 화장품',61);
-
-
---------------------------------------------------------------
+--------------------------------------------------
 INSERT INTO category VALUES(71,'스포츠/레저','');
 
 INSERT INTO category VALUES(72,'골프',71);
@@ -541,17 +563,13 @@ INSERT INTO category VALUES(82,'자전거',71);
 INSERT INTO category VALUES(83,'등산/클라이밍',71);
 INSERT INTO category VALUES(84,'헬스/요가/필라테스',71);
 INSERT INTO category VALUES(85,'배드민턴',71);
-
-
---------------------------------------------------------------
+--------------------------------------------------
 INSERT INTO category VALUES(86,'게임/음반','');
 
 INSERT INTO category VALUES(87,'CD/DVD/LP',86);
 INSERT INTO category VALUES(88,'악기',86);
 INSERT INTO category VALUES(89,'게임CD',86);
-
-
---------------------------------------------------------------
+--------------------------------------------------
 INSERT INTO category VALUES(90,'도서/티켓','');
 
 INSERT INTO category VALUES(91,'도서',90);
@@ -559,8 +577,7 @@ INSERT INTO category VALUES(92,'문구',90);
 INSERT INTO category VALUES(93,'기프티콘/쿠폰',90);
 INSERT INTO category VALUES(94,'상품권',90);
 INSERT INTO category VALUES(95,'티켓',90);
-
---------------------------------------------------------------
+--------------------------------------------------
 INSERT INTO category VALUES(96,'반려동물용품','');
 
 INSERT INTO category VALUES(97,'강아지 용품',96);
@@ -571,8 +588,7 @@ INSERT INTO category VALUES(101,'고양이 사료/간식',96);
 INSERT INTO category VALUES(102,'기타(고양이)',96);
 INSERT INTO category VALUES(103,'기타(반려동물 용품)',96);
 INSERT INTO category VALUES(104,'기타(반려동물 사료/간식)',96);
-
---------------------------------------------------------------
+--------------------------------------------------
 INSERT INTO category VALUES(105,'식물','');
 
 INSERT INTO category VALUES(106,'꽃',105);
@@ -583,8 +599,8 @@ INSERT INTO category VALUES(110,'난초',105);
 INSERT INTO category VALUES(111,'채소/과일',105);
 INSERT INTO category VALUES(112,'수경식물',105);
 INSERT INTO category VALUES(113,'에어플랜트',105);
-
-
---------------------------------------------------------------
+--------------------------------------------------
 INSERT INTO category VALUES(114,'기타','');
 INSERT INTO category VALUES(115,'기타',114);
+
+----------------------------------------------------------------------------------------------------

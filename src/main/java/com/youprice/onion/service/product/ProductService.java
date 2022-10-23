@@ -2,6 +2,7 @@ package com.youprice.onion.service.product;
 
 import com.youprice.onion.dto.order.ProductSellListDTO;
 import com.youprice.onion.dto.product.*;
+import org.jsoup.select.Elements;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,6 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface ProductService {
+	//상품 목록 조회
+	Page<ProductListDTO> getProductListDTO(SearchRequirements searchRequirements);
     //상품등록
     Long addProduct(ProductAddDTO productAddDTO, List<MultipartFile> fileList) throws Exception;
     //상품수정

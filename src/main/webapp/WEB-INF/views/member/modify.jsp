@@ -82,7 +82,7 @@
 
         </form>
         <button id="btn-member-modify" class="btn btn-primary bi bi-check-lg"oninput="memberModify()">완료</button>
-        <a href="/member/" role="button" class="btn btn-info bi bi-arrow-return-left"> 목록</a>
+        <a href="/member/mypage" role="button" class="btn btn-info bi bi-arrow-return-left"> 마이 페이지</a>
     </div>
 </div>
 

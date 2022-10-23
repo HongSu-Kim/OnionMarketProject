@@ -16,7 +16,7 @@ $(document).ready(function () {
             subject: "required",
             content: { required:true },
             price: { required:true, digits:true, min:100, max:999999},
-            fileList: { required:true, filesize: 5*1024*1024 }
+            productImageName: { required:true, filesize: 5*1024*1024 }
         },
         messages: {
             townId: {
@@ -39,7 +39,7 @@ $(document).ready(function () {
                 min: "최소 가격은 100원 이상입니다.",
                 max: "최대 가격은 999,999원입니다."
             },
-            fileList: {
+            productImageName: {
                 required: "이미지는 최소 1개 이상입니다.",
                 filesize: "이미지 최대 크기는 5MB입니다."
             }
@@ -51,7 +51,7 @@ $(document).ready(function () {
 $(document).ready(function() {
     $('.btnAdd').click(function () {
         $('.addInput').append(
-            '<input type="file" name="fileList" id="fileList"><button type="button" class="btnRemove">삭제</button><br>'
+            '<input type="file" name="productImageName" id="productImageName"><button type="button" class="btnRemove">삭제</button><br>'
         );//input file
         $('.btnRemove').on('click',function(){//this='.btnRemove'
             $(this).prev().remove();// .prev()=input file을 가리키고 remove()실행
