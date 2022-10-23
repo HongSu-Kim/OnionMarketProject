@@ -9,6 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface ProductService {
+	//상품 목록 조회
+	Page<ProductListDTO> getProductListDTO(SearchRequirements searchRequirements);
     //상품등록
     Long addProduct(ProductAddDTO productAddDTO, List<MultipartFile> fileList) throws Exception;
     //상품수정
