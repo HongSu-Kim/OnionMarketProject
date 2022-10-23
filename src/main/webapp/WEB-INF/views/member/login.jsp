@@ -36,7 +36,8 @@
 
             <button class="btn btn-primary bi bi-lock-fill">로그인</button>
             <a href="/member/join" role="button" class="btn btn-primary bi bi-lock-fill">회원가입</a>
-            <a href="/member/findIdView" role="button" class="btn btn-primary bi bi-lock-fill">아이디 찾기</a>
+            <a href="/member/findId" role="button" class="btn btn-primary bi bi-lock-fill">아이디 찾기</a>
+            <a href="/member/findPwd" role="button" class="btn btn-primary bi bi-lock-fill">비밀번호 찾기</a>
         </form>
             <div>&nbsp;</div>
     </div>

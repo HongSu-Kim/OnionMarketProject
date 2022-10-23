@@ -17,9 +17,7 @@
 
     <div class="jumbotron">
         아이디는&nbsp;
-            <c:forEach items="${member}" var="member">
                 <span>[${member.userId}]</span>
-            </c:forEach>
         &nbsp;입니다.
         <hr/>
         <button type="button" class="btn btn-primary" onclick="location.href='/member/login'">로그인</button>
