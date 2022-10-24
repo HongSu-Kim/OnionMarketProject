@@ -1,3 +1,24 @@
+//비밀번호 확인
+$(function(){
+    $("#alert-success").hide();
+    $("#alert-danger").hide();
+    $("input").keyup(function(){
+        var pwd=$("#pwd").val();
+        var pwdCheck=$("#pwdCheck").val();
+        if(pwd != "" || pwdCheck != ""){
+            if(pwd == pwdCheck){
+                $("#alert-success").show();
+                $("#alert-danger").hide();
+                $("#btn-member-modify").removeAttr("disabled");
+            }else{
+                $("#alert-success").hide();
+                $("#alert-danger").show();
+                $("#btn-member-modify").attr("disabled", "disabled");
+            }
+        }
+    });
+});
+
 const main = {
     init : function() {
         const _this = this;
@@ -33,9 +54,10 @@ const main = {
         } else if(!/^[ㄱ-ㅎ가-힣a-z0-9-_]{2,10}$/.test(data.nickname)) {
             alert("닉네임은 특수문자를 제외한 2~10자리여야 합니다.");
             $('#nickname').focus();
-
-            $('#email').focus();
             return false;
+        } else if (!/^(?:\w+\.?)*\w+@(?:\w+\.)+\w+$/.test(data.email)) {
+            alert("이메일 형식이 올바르지 않습니다.");
+            $('#email').focus();
         }
         const con_check = confirm("수정하시겠습니까?");
         if (con_check === true) {
@@ -49,7 +71,7 @@ const main = {
                     window.location.href = "/member/mypage";
                 },
                 error: function (e) {
-                    alert("이미 사용중인 닉네임입니다. 다시 입력해 주세요.");
+                    alert(e.responseText);
                 }
 
             }).done(function () {

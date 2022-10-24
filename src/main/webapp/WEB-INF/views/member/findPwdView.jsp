@@ -17,7 +17,7 @@
         <h1 class="h4 text-gray-900 mb-2">입력된 정보로 임시 비밀번호가 발송됩니다.</h1>
     </div>
 
-    <form action="/member/findPwd" method="post">
+    <form:form action="/member/findPwd" method="post">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 
             <div class="form-group">
@@ -27,9 +27,9 @@
             <button type="submit" id="pwdFind" class="btn btn-primary bi bi-lock-fill">확인</button>
         <hr/>
         <a href="/member/login" class="btn btn-primary bi bi-lock-fill">로그인</a>
-        <a href="/member/findPwd" class="btn btn-primary bi bi-lock-fill">비밀번호 찾기</a>
+        <a href="/member/findId" class="btn btn-primary bi bi-lock-fill">아이디 찾기</a>
         <a href="/member/join" class="btn btn-primary bi bi-lock-fill">회원가입</a>
-        </form>
+        </form:form>
 
     <hr>
     <div class="text-center">
