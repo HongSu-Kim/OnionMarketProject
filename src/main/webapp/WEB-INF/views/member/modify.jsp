@@ -26,9 +26,18 @@
             </div>
 
             <div class="form-group">
-                <label for="pwd">비밀번호</label>
-                <input type="password" id="pwd" class="form-control" placeholder="수정할 비밀번호를 입력해 주세요."/>
+                <label>비밀번호</label>
+                <input type="password" name="pwd" id="pwd" class="form-control" placeholder="수정할 비밀번호를 입력해주세요"/>
+                <span id="valid_pwd">${valid_pwd}</span>
             </div>
+
+            <div class="form-group">
+                <label>비밀번호 재확인</label>
+                <input type="password" name="pwdCheck" id="pwdCheck" class="form-control" placeholder="비밀번호를 입력해주세요"/>
+            </div>
+
+            <div class="alert alert-success" id="alert-success">비밀번호가 일치합니다.</div>
+            <div class="alert alert-danger" id="alert-danger">비밀번호가 일치하지 않습니다.</div>
 
             <div class="form-group">
                 <label for="name">이름</label>
@@ -81,7 +90,7 @@
             </div>
 
         </form>
-        <button id="btn-member-modify" class="btn btn-primary bi bi-check-lg"oninput="memberModify()">완료</button>
+        <button id="btn-member-modify" class="btn btn-primary bi bi-check-lg" oninput="memberModify()">완료</button>
         <a href="/member/mypage" role="button" class="btn btn-info bi bi-arrow-return-left"> 마이 페이지</a>
     </div>
 </div>

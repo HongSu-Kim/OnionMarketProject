@@ -7,33 +7,33 @@
 <html>
 <head>
 
-    <title>Password Check</title>
+    <title>회원 탈퇴</title>
 
-    <script>
+<%--    <script>
         var msg = '${msg}';
         if(msg === 'msg') {
             alert("비밀번호가 일치하지 않습니다. 다시 확인해 주세요.");
         }
-    </script>
+    </script>--%>
 
 </head>
 
 <body onload="document.myForm.pwd.focus();">
 
-<h1>비밀번호 확인</h1>
+<h1>회원 탈퇴</h1>
 <hr>
 
 <div id="posts_list">
     <div class="container col-md-6">
-        <form action="/member/preModify" method="post" name="myForm">
+        <form action="/member/withdraw" method="post" name="myForm">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 
             <div class="form-group">
                 <label>비밀번호</label>
-                <input type="password" class="form-control" name="preModifypwd" placeholder="비밀번호를 입력해주세요">
+                <input type="password" class="form-control" name="withdrawpwd" placeholder="비밀번호를 입력해주세요">
             </div>
 
-            <button class="btn btn-primary bi bi-lock-fill">확인</button>
+            <button class="btn btn-primary bi bi-lock-fill">탈퇴하기</button>
             <a href="/member/mypage" role="button" class="btn btn-primary bi bi-lock-fill">마이 페이지</a>
         </form>
             <div>&nbsp;</div>
