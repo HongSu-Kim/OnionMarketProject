@@ -68,7 +68,16 @@ public class ProductController {
     }
 
     @GetMapping("/detail/{productId}")//상품 상세페이지 주소
-    public String detail(@PathVariable("productId") Long productId, @LoginUser SessionDTO userSession, Model model) throws Exception{
+    public String detail(@PathVariable("productId") Long productId, @LoginUser SessionDTO userSession, Model model,
+                         HttpServletResponse response) throws Exception{
+
+        /*세션아이디로 동네 조회*/
+        List<TownFindDTO> townList = townService.townLists(userSession.getId());
+        //동네정보가 없을 경우 등록 처리
+        if(townList.size() == 0) {
+            AlertRedirect.warningMessage(response, "/town/town", "내 동네를 먼저 등록해주세요.");
+            return null;
+        }
 
         productService.updateView(productId);//조회수 증가
 
