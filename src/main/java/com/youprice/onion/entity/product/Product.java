@@ -63,7 +63,6 @@ public class Product {
     //주문 참조 양방향
     @OneToMany(mappedBy = "product")
     private List<Order> orderList = new ArrayList<>();
-
     //이미지 참조 양방향
     @OneToMany(mappedBy = "product")
     private List<ProductImage> productImageList = new ArrayList<>();

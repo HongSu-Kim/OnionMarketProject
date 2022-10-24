@@ -54,7 +54,6 @@ public class ProductServiceImpl implements ProductService {
         Member member = memberRepository.findById(productAddDTO.getMemberId()).orElse(null);
         Town town = townRepositoy.findById(productAddDTO.getTownId()).orElse(null);
         Category category = categoryRepository.findById(productAddDTO.getCategoryId()).orElse(null);
-        Order order = null;
 
         //대표이미지 설정
         productAddDTO.setRepresentativeImage(getImageName()+fileList.get(0).getOriginalFilename());
