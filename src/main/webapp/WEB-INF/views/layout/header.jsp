@@ -118,7 +118,7 @@
 					<ul>
 						<li><a href="/product/list">상품</a>
 							<ul class="header__menu__dropdown">
-								<li><a href="/product/list">메인 리스트</a></li>
+								<li><a href="/product/list">상품 리스트</a></li>
 								<li><a href="/product/add">상품 등록</a></li>
 								<li><a href="/product/auctionList">경매 상품</a></li>
 								<li><a href="#">Temp4</a></li>
@@ -247,7 +247,7 @@
 
 <!-- Breadcrumb Section Begin -->
 <c:if test="${pageName != 'main'}">
-	<section class="breadcrumb-section set-bg" data-setbg="/template/img/breadcrumb.jpg">
+	<section class="breadcrumb-section set-bg" data-setbg="/template/img/onion.jpg">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12 text-center">

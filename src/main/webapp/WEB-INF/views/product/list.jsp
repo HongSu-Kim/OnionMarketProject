@@ -20,7 +20,7 @@
 
 
 
-		<a href="/product/detail?productId=${list.productId}">
+		<a href="/product/detail/${list.productId}">
 			제목: ${list.subject}<br/><br/>
 		</a>
 		<img src="/img/product/${list.productImageName}"/><br/>
@@ -37,15 +37,13 @@
 </div>
 
 
-</div>
-
 
 <div>
 
 	<c:forEach var="searchList" items="${searchList}">
 
 
-		<a href="/product/detail?productId=${searchList.productId}">
+		<a href="/product/detail/${searchList.productId}">
 			제목: ${searchList.subject}<br/><br/>
 		</a>
 		<img src="/img/product/${searchList.productImageName}"/><br/>
@@ -69,7 +67,7 @@
 	<c:forEach var="categoryList1" items="${categoryList1}">
 
 
-		<a href="/product/detail?productId=${categoryList1.productId}">
+		<a href="/product/detail/${categoryList1.productId}">
 			제목: ${categoryList1.subject}<br/><br/>
 		</a>
 		<img src="/img/product/${categoryList1.productImageName}"/><br/>
@@ -94,7 +92,7 @@
 	<c:forEach var="categoryList2" items="${categoryList2}">
 
 
-		<a href="/product/detail?productId=${categoryList2.productId}">
+		<a href="/product/detail/${categoryList2.productId}">
 			제목: ${categoryList2.subject}<br/><br/>
 		</a>
 		<img src="/img/product/${categoryList2.productImageName}"/><br/>
@@ -115,7 +113,7 @@
 	<c:forEach var="categoryList3" items="${categoryList3}">
 
 
-		<a href="/product/detail?productId=${categoryList3.productId}">
+		<a href="/product/detail/${categoryList3.productId}">
 			제목: ${categoryList3.subject}<br/><br/>
 		</a>
 		<img src="/img/product/${categoryList3.productImageName}"/><br/>
@@ -136,7 +134,7 @@
 	<c:forEach var="categoryList4" items="${categoryList4}">
 
 
-		<a href="/product/detail?productId=${categoryList4.productId}">
+		<a href="/product/detail/${categoryList4.productId}">
 			제목: ${categoryList4.subject}<br/><br/>
 		</a>
 		<img src="/img/product/${categoryList4.productImageName}"/><br/>
@@ -157,7 +155,7 @@
 	<c:forEach var="categoryList5" items="${categoryList5}">
 
 
-		<a href="/product/detail?productId=${categoryList5.productId}">
+		<a href="/product/detail/${categoryList5.productId}">
 			제목: ${categoryList5.subject}<br/><br/>
 		</a>
 		<img src="/img/product/${categoryList5.productImageName}"/><br/>
@@ -178,7 +176,7 @@
 	<c:forEach var="categoryList6" items="${categoryList6}">
 
 
-		<a href="/product/detail?productId=${categoryList6.productId}">
+		<a href="/product/detail/${categoryList6.productId}">
 			제목: ${categoryList6.subject}<br/><br/>
 		</a>
 		<img src="/img/product/${categoryList6.productImageName}"/><br/>
@@ -199,7 +197,7 @@
 	<c:forEach var="categoryList7" items="${categoryList7}">
 
 
-		<a href="/product/detail?productId=${categoryList7.productId}">
+		<a href="/product/detail/${categoryList7.productId}">
 			제목: ${categoryList7.subject}<br/><br/>
 		</a>
 		<img src="/img/product/${categoryList7.productImageName}"/><br/>
@@ -220,7 +218,7 @@
 	<c:forEach var="categoryList8" items="${categoryList8}">
 
 
-		<a href="/product/detail?productId=${categoryList8.productId}">
+		<a href="/product/detail/${categoryList8.productId}">
 			제목: ${categoryList8.subject}<br/><br/>
 		</a>
 		<img src="/img/product/${categoryList8.productImageName}"/><br/>
@@ -241,7 +239,7 @@
 	<c:forEach var="categoryList9" items="${categoryList9}">
 
 
-		<a href="/product/detail?productId=${categoryList9.productId}">
+		<a href="/product/detail/${categoryList9.productId}">
 			제목: ${categoryList9.subject}<br/><br/>
 		</a>
 		<img src="/img/product/${categoryList9.productImageName}"/><br/>
@@ -262,7 +260,7 @@
 	<c:forEach var="categoryList10" items="${categoryList10}">
 
 
-		<a href="/product/detail?productId=${categoryList10.productId}">
+		<a href="/product/detail/${categoryList10.productId}">
 			제목: ${categoryList10.subject}<br/><br/>
 		</a>
 		<img src="/img/product/${categoryList10.productImageName}"/><br/>
@@ -284,7 +282,7 @@
 
 
 
-		<a href="/product/detail?productId=${categoryList11.productId}">
+		<a href="/product/detail/${categoryList11.productId}">
 			제목: ${categoryList11.subject}<br/><br/>
 		</a>
 		<img src="/img/product/${categoryList11.productImageName}"/><br/>
@@ -305,7 +303,7 @@
 	<c:forEach var="categoryList12" items="${categoryList12}">
 
 
-		<a href="/product/detail?productId=${categoryList12.productId}">
+		<a href="/product/detail/${categoryList12.productId}">
 			제목: ${categoryList12.subject}<br/><br/>
 		</a>
 		<img src="/img/product/${categoryList12.productImageName}"/><br/>
@@ -326,7 +324,7 @@
 	<c:forEach var="categoryList13" items="${categoryList13}">
 
 
-		<a href="/product/detail?productId=${categoryList13.productId}">
+		<a href="/product/detail/${categoryList13.productId}">
 			제목: ${categoryList13.subject}<br/><br/>
 		</a>
 		<img src="/img/product/${categoryList13.productImageName}"/><br/>
@@ -347,7 +345,7 @@
 	<c:forEach var="categoryList14" items="${categoryList14}">
 
 
-		<a href="/product/detail?productId=${categoryList14.productId}">
+		<a href="/product/detail/${categoryList14.productId}">
 			제목: ${categoryList2.subject}<br/><br/>
 		</a>
 		<img src="/img/product/${categoryList14.productImageName}"/><br/>
@@ -366,9 +364,6 @@
 
 <form action="/product/add">
 	<input type="submit" value=" 상품 등록하기 " class="btn2"/>
-</form>
-<form action="/login">
-	<input type="submit" value=" 로그인/로그아웃 "/>
 </form>
 
 </body>

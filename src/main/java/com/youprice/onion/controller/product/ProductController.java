@@ -24,6 +24,7 @@ public class ProductController {
     private final TownService townService;
     private final CategoryService categoryService;
     private final ProductImageService productImageService;
+    private final BiddingService biddingService;
 
     @GetMapping("add")//상픔 등록 주소
     public String add(Model model, @LoginUser SessionDTO userSession, HttpServletResponse response) throws IOException {
@@ -67,20 +68,53 @@ public class ProductController {
     }
 
     @GetMapping("/detail/{productId}")//상품 상세페이지 주소
-    public String detail(@PathVariable("productId") Long productId, @LoginUser SessionDTO userSession, Model model) throws Exception{
+    public String detail(@PathVariable("productId") Long productId, @LoginUser SessionDTO userSession, Model model,
+                         HttpServletResponse response) throws Exception{
+
+        /*세션아이디로 동네 조회*/
+        List<TownFindDTO> townList = townService.townLists(userSession.getId());
+        //동네정보가 없을 경우 등록 처리
+        if(townList.size() == 0) {
+            AlertRedirect.warningMessage(response, "/town/town", "내 동네를 먼저 등록해주세요.");
+            return null;
+        }
 
         productService.updateView(productId);//조회수 증가
 
         ProductFindDTO productFindDTO = productService.getProductFindDTO(productId);
+//        입찰 리스트 조회
+        List<BiddingListDTO> biddingList = biddingService.getBiddingList();
+        if(biddingList.size()>0) {
+            int bid = biddingList.get(biddingList.size()-1).getBid();
 
+            model.addAttribute("bid",bid);
+        }
         model.addAttribute("userSession",userSession);
         model.addAttribute("productId",productId);
         model.addAttribute("productFindDTO",productFindDTO);
+        model.addAttribute("biddingList",biddingList);
 
         return "product/detail";
     }
+    @PostMapping("bid/{productId}")//상품 입찰 주소
+    public String bidProduct(@LoginUser SessionDTO sessionDTO, @PathVariable("productId") Long productId,
+                             BiddingAddDTO biddingAddDTO, ProductUpdateDTO productUpdateDTO, Model model) throws Exception{
 
-    @GetMapping(value = "main")//상품 리스트 메인 화면 주소
+        biddingAddDTO.setMemberId(sessionDTO.getId());
+        biddingAddDTO.setProductId(productId);
+
+        /*입찰 목록 생성*/
+        biddingService.bidProduct(biddingAddDTO);
+
+        /*입찰 종료 후 마지막 입찰가로 상품가격 업데이트 */
+//        productService.updateProduct(productId, productUpdateDTO);
+
+        model.addAttribute("productId",productId);
+
+        return "redirect:/product/detail/"+productId;
+    }
+
+    @GetMapping(value = "list")//상품 리스트 메인 화면 주소
     public String main(Model model) throws Exception {
 
         Boolean blindStatus = false;
@@ -89,7 +123,7 @@ public class ProductController {
 
         model.addAttribute("list",list);
 
-        return "product/main";//상품 리스트 메인 화면페이지
+        return "product/list";//상품 리스트 메인 화면페이지
     }
     @GetMapping(value = "main/category")//상품 카테고리별 화면 주소
     public String main(Model model,@RequestParam("categoryId") int categoryId ) throws Exception {

@@ -1,6 +1,8 @@
 package com.youprice.onion.service.product.impl;
 
 import com.youprice.onion.dto.product.BiddingAddDTO;
+import com.youprice.onion.dto.product.BiddingListDTO;
+import com.youprice.onion.dto.product.ProductListDTO;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.product.Bidding;
 import com.youprice.onion.entity.product.Product;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Id;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,5 +39,12 @@ public class BiddingServiceImpl implements BiddingService {
         Bidding bidding = new Bidding(product,member,biddingAddDTO);
 
         return biddingRepository.save(bidding).getId();
+    }
+
+    @Override
+    public List<BiddingListDTO> getBiddingList() {
+        return biddingRepository.findAll().stream()
+                .map(biddingList -> new BiddingListDTO(biddingList))
+                .collect(Collectors.toList());
     }
 }
