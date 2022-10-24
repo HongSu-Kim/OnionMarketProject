@@ -17,19 +17,27 @@
 
 
 
-<form:form action="townresult" method="post">
+
 
     <strong>[동네설정은 최대 3곳 가능]</동네설정은> </strong>
     <br/>
 
+<%--    <button type="submit"  class="btn btnEvent" name="" value=" ">--%>
+<%--        <img src="https://cdn-icons-png.flaticon.com/512/5735/5735394.png" alt="btnImages" class="btnImages"--%>
+<%--             height="23" width="23" border="0" align="left">--%>
+<%--    </button>--%>
+
+<form:form action="/town/townResult" method="post">
+
 원하는 동네 검색: <input type="text" name="wishtown" value="" />
     <input type="hidden" name="memberId" value="${memberDTO.id}">
-   <input type="submit" value="동네설정하기"/>
+   <input type="submit" value="동네설정하기"/><br/><br/>
 </form:form>
+    <strong> [동네예시]<br/>
 
-<strong> [동네예시]<br/><br/>
-강남구 / 송파구 / 강동구
-</strong>
+        <a href="/town/townresult?wishtown=1 ">강남구</a>/<a href="/town/townresult?wishtown=2 ">송파구</a>
+        <a href="/town/townresult?wishtown=3 ">/강동구</a>
+    </strong>
 
 <br/><br/>
 

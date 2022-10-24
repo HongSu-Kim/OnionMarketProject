@@ -49,21 +49,25 @@ public class TownServiceImpl implements TownService {
 
 
 
-  if(townRepositoy.countByMemberId(member.getId())>=3){
+  if(townRepositoy.countByMemberId(member.getId())>=10){
    out.println("<script>alert('가능한 동네설정개수를 초과하셨습니다(최대 3개)');history.go(-2); </script>");
    out.flush();
    return ;
   }
 
 
-  Optional<Town> DuplicatechecktopcategoryName = townRepositoy.findByCoordinateTownName(coordinate.getTownName());
+  Optional<Town> DuplicatechecktopcategoryName = townRepositoy.findByMemberIdAndCoordinateTownNameContains(member.getId(), coordinate.getTownName());
   if (DuplicatechecktopcategoryName.isPresent()) {
    out.println("<script>alert('이미설정한 동네입니다 다시입력하세요');history.go(-2); </script>");
    out.flush();
    return;
   }
 
-
+ if(townRepositoy.findByCoordinateId(coordinate.getId())==false) {
+  out.println("<script>alert('없는 동네번호입니다!');history.go(-2); </script>");
+  out.flush();
+  return;
+ }
   town.townCreate(townAddDTO,coordinate,member);
 
   townRepositoy.save(town);

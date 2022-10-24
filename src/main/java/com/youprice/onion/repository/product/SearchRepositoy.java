@@ -1,5 +1,6 @@
 package com.youprice.onion.repository.product;
 
+import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.entity.product.Search;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,6 +15,8 @@ public interface SearchRepositoy extends JpaRepository<Search,Long> {
 
 
    public Search findBySearchName(String searchName);
+
+   List<Search> findAllByOrderBySearchCountDesc();
 
 
 
@@ -35,6 +38,14 @@ public interface SearchRepositoy extends JpaRepository<Search,Long> {
                     .setParameter("SearchName", SearchName)
 
                     .executeUpdate();
+        }
+
+        public List<Search> findSearchRank() { //인기검색어 조회
+
+
+            return em.createQuery("select o from Search o  ", Search.class)
+                    .getResultList();
+
         }
 
     }
