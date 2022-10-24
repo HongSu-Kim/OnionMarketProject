@@ -89,12 +89,11 @@ public class Product {
     private List<Bidding> biddingList = new ArrayList<>();
 
     //상품 등록 시 정보 생성
-    public Product(Member member,Town town,Category category,Order order,ProductAddDTO productAddDTO) {
+    public Product(Member member,Town town,Category category,ProductAddDTO productAddDTO) {
 
         this.member = member;
         this.town = town;
         this.category = category;
-        this.order = order;
         this.subject = productAddDTO.getSubject();
         this.content = productAddDTO.getContent();
         this.price = productAddDTO.getPrice();
@@ -148,13 +147,6 @@ public class Product {
         this.auctionDeadline = updateDTO.getAuctionDeadline();
         this.payStatus = updateDTO.getPayStatus();
     }
-
-	// 주문시 상품상태 판매완료로 변경
-	public Product order(Order order) {
-		this.order = order;
-		this.productProgress = ProductProgress.SOLDOUT;
-		return this;
-	}
 
 	// 상품상태 수정
 	public Product progressUpdate(String productProgress) {
