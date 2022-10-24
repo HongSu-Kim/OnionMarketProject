@@ -53,8 +53,31 @@ public class TownController {
         return "product/town";
     }
 
-    @PostMapping("townresult")
+
+    @GetMapping("townresult")
     public String find(Town town, Model model, @RequestParam("wishtown") String wishtown,
+                       @LoginUser SessionDTO sessionDTO) {
+
+
+        List<CoordinateFindDTO> Gangnam = coordinateService.FindGangnam();
+        List<CoordinateFindDTO> Songpa = coordinateService.FindSongpa();
+        List<CoordinateFindDTO> Gangdong = coordinateService.FindGangdong();
+        MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
+
+        model.addAttribute("memberDTO",memberDTO);
+
+        model.addAttribute("Gangnam", Gangnam);
+        model.addAttribute("Songpa", Songpa);
+        model.addAttribute("Gangdong", Gangdong);
+        model.addAttribute("wishtown", wishtown);
+
+
+        return "product/townresult";
+    }
+
+
+    @PostMapping("townResult")
+    public String townResult(Town town, Model model, @RequestParam("wishtown") String wishtown,
                        @LoginUser SessionDTO sessionDTO) {
 
 
