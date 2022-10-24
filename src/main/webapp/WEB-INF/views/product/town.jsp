@@ -19,6 +19,8 @@
 
 <form:form action="townresult" method="post">
 
+    <strong>[동네설정은 최대 3곳 가능]</동네설정은> </strong>
+    <br/>
 
 원하는 동네 검색: <input type="text" name="wishtown" value="" />
     <input type="hidden" name="memberId" value="${memberDTO.id}">
