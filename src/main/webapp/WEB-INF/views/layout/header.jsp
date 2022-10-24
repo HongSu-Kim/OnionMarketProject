@@ -116,8 +116,6 @@
 			<div class="col-lg-6">
 				<nav class="header__menu">
 					<ul>
-						<li><a href="/crawling">crawling</a>
-						</li>
 						<li><a href="/product/list">상품</a>
 							<ul class="header__menu__dropdown">
 								<li><a href="/product/list">메인 리스트</a></li>
@@ -163,6 +161,7 @@
 						<sec:authorize access="hasRole('ROLE_ADMIN')">
 							<li><a href="#">관리자페이지</a>
 								<ul class="header__menu__dropdown">
+									<li><a onclick="confirm('크롤링') ? location.href='/crawling' : false">crawling</a></li>
 									<li><a href="/coordinate/coordinate">지역 관리</a></li>
 									<li><a href="/tag/tag">태그 관리</a></li>
 									<li><a href="/prohibitionkeyword/prohibitionkeyword">금지어 관리</a></li>
