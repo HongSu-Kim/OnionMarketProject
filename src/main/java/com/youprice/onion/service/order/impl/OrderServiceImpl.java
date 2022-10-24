@@ -16,6 +16,7 @@ import com.youprice.onion.service.order.OrderService;
 import com.youprice.onion.util.PaymentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -54,7 +55,8 @@ public class OrderServiceImpl implements OrderService {
 
 		// 양파페이 결제
 		if (orderAddDTO.getImp_uid() == null)
-			member.payment(orderAddDTO.getOrderPayment());
+			if (member.subCash(orderAddDTO.getOrderPayment()))
+				throw new RuntimeException();
 
 		// 주문내역 생성
 		Order order = new Order(member, orderAddDTO.getOrderNum(), orderAddDTO.getImp_uid(), orderAddDTO.getOrderPayment());
@@ -139,7 +141,7 @@ public class OrderServiceImpl implements OrderService {
 				
 				// 양파페이 결제시 환불
 			} else {
-				order.getMember().repayment(order.getOrderPayment());
+				order.getMember().addCash(order.getOrderPayment());
 			}
 			
 			return order;

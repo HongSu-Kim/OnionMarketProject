@@ -113,6 +113,21 @@ public class Product {
 
     }
 
+	public Product(Member member, Town town, Category category, String subject, String content, int price, String representativeImage, boolean payStatus) {
+		this.member = member;
+		this.town = town;
+		this.category = category;
+		this.subject = subject;
+		this.content = content;
+		this.price = price;
+		this.representativeImage = representativeImage;
+		this.uploadDate = LocalDateTime.now();
+		this.auctionDeadline = null;
+		this.productProgress = ProductProgress.TRADINGS;
+		this.payStatus = payStatus;
+		this.blindStatus = false;
+	}
+
     //상품 수정 시 정보 변경
     public void updateProduct(Long productId, Town town, Category category, ProductUpdateDTO updateDTO) {
 
