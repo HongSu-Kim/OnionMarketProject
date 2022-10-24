@@ -1,5 +1,7 @@
 package com.youprice.onion.config;
 
+import com.youprice.onion.security.auth.CustomAuthFailureHandler;
+import com.youprice.onion.security.auth.CustomAuthSuccessHandler;
 import com.youprice.onion.service.member.impl.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -24,8 +26,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomUserDetailsService customUserDetailsService;
-    private final AuthenticationFailureHandler customFailureHandler;
-    private final AuthenticationSuccessHandler customSuccessHandler;
+    private final CustomAuthFailureHandler customFailureHandler;
+    private final CustomAuthSuccessHandler customSuccessHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -58,6 +60,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //페이지 권한 설정
         http.authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/**/**.admin").hasRole("ADMIN")
+                .antMatchers("/**/login", "/**/join", "/**/findId", "/**/findPwd").access("!hasRole('USER') and !hasRole('ADMIN')")
                 .antMatchers("/member/mypage").authenticated()
                 .antMatchers("/**").permitAll();
 
@@ -68,14 +72,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter("pwd") //parameter명을 pwd로 변경
                 .loginProcessingUrl("/member/loginProc") //Security에서 해당 주소로 오는 요청을 낚아채서 수행
                 .failureHandler(customFailureHandler) //로그인 실패 핸들러
-                .defaultSuccessUrl("/member/home") //로그인 성공 시 이동 페이지
+                .defaultSuccessUrl("/") //로그인 성공 시 이동 페이지
                 .successHandler(customSuccessHandler) //로그인 성공 핸들러
                 .permitAll();
 
         //로그아웃 설정
         http.logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
-                .logoutSuccessUrl("/member/home")
+                .logoutSuccessUrl("/")
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID");
 

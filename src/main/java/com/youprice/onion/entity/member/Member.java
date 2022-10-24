@@ -122,6 +122,10 @@ public class Member {
         this.pwd = pwd;
     }
 
+    public void withdraw(Role role) {
+        this.role = role;
+    }
+
 	// 결제
 	public boolean subCash(int cash) {
 		if (this.cash < cash){
