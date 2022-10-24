@@ -3,6 +3,7 @@ package com.youprice.onion.controller.product;
 
 import com.youprice.onion.dto.product.ProductListDTO;
 import com.youprice.onion.dto.product.SearchAddDTO;
+import com.youprice.onion.entity.product.Search;
 import com.youprice.onion.service.member.MemberService;
 import com.youprice.onion.service.member.ProhibitionKeywordService;
 import com.youprice.onion.service.product.CategoryService;
@@ -33,7 +34,12 @@ public class SearchController {
     @GetMapping("search")
     public String SearchCreate(Model model){
 
-        return "product/search";
+
+       List<Search> popularSearch = searchService.findBySearchRank();
+
+       model.addAttribute("popularSearch",popularSearch);
+
+        return "product/popularSearch";
     }
 
     @GetMapping("result")

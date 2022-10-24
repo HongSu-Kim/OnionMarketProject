@@ -15,6 +15,8 @@ public interface SearchService {
 
     Search findBySearchName(String searchName);
 
+    List<Search> findBySearchRank();
+
     int searchupdatecount(String searchName);
 
 
