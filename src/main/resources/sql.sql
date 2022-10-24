@@ -348,13 +348,13 @@ CREATE TABLE notice_image (
 INSERT INTO member VALUES(1, 'ADMIN', 'admin', '$2a$10$8gkJSCifAA3aWUAZJazhnuYLi2JVSbC7D2UtDmu0cUG9NScriVtZ6', --pwd : admin123
                           'admin', '관리자', SYSDATE, '01012341234', '06234', '서울 강남구 역삼동 823',
                           '4층 아이티윌', '디글디글', 'youprice.onion.email@gmail.com', null, 0, 0, 0, 0);
-INSERT INTO member VALUES(2, 'USER', 'user1', '$2a$10$LHSAHnF2CqW7nU8ilNxlC.Gw7GikRfCe3PgDqnJHKUChGfZUhbokG', --pwd : user1
+INSERT INTO member VALUES(2, 'USER', 'user1', '$2a$10$X5ICHy3CCqtWl0su87UzMuCe.v2V92TBIH5szmZ.hBJd/tD/7o8LW', --pwd : user1
                           'user1', '유저1', SYSDATE, '01011111111', '06253', '서울 강남구 역삼동 838',
                           '1', '', 'user1@naver.com', null, 1000000000, 0, 0, 0);
-INSERT INTO member VALUES(3, 'USER', 'user2', '$2a$10$8gkJSCifAA3aWUAZJazhnuYLi2JVSbC7D2UtDmu0cUG9NScriVtZ6', --pwd : user2
+INSERT INTO member VALUES(3, 'USER', 'user2', '$2a$10$yCBZmjwdiIsWneGJll69X.Z7DGnGx4pSgeBw1oNVZkbxvg4w./uUy', --pwd : user2
                           'user2', '유저2', SYSDATE, '01022222222', '06120', '서울 강남구 논현동 200-7',
                           '2', '', 'user2@naver.com', null, 20000, 0, 0, 0);
-INSERT INTO member VALUES(4, 'USER', 'user3', '$2a$10$8gkJSCifAA3aWUAZJazhnuYLi2JVSbC7D2UtDmu0cUG9NScriVtZ6', --pwd : user3
+INSERT INTO member VALUES(4, 'USER', 'user3', '$2a$10$Az6LE39WK9WzZB5eTstyN.a3Ry8eEJaOS.bwdNAr2J8pwlKjfRL.C', --pwd : user3
                           'user3', '유저3', SYSDATE, '01033333333', '06308', '서울 강남구 개포동 1205-1',
                           '3', '', 'user3@naver.com', null, 0, 0, 0, 0);
 INSERT INTO member VALUES(5, 'USER', 'user4', '$2a$10$maqcisSSo/UvHjaBGlkdGeMdVmkYVVBUPtg9Yjy4eRXXV17v4yhTO', --pwd : user4
@@ -364,7 +364,7 @@ INSERT INTO member VALUES(6, 'USER', 'user5', '$2a$10$No.Tv7ToHFb7dT0shjJlQ.acUo
                           'user5', '유저5', SYSDATE, '01055555555', '06744', '서울 서초구 양재동 20-30',
                           '5', '', 'user5@naver.com', null, 2000, 0, 0, 0);
 INSERT INTO member VALUES(7, 'USER', 'user6', '$2a$10$dTp.BTXTF4tkmWxzcKA0o.6QitOj1./MDoHfCFOfhgrQsJv3YvIgC', --pwd : user6
-                          'user6', '유저6', SYSDATE, '010666666', '06729', '서울 서초구 서초동 1357-35',
+                          'user6', '유저6', SYSDATE, '01066666666', '06729', '서울 서초구 서초동 1357-35',
                           '6', '', 'user6@naver.com', null, 2000, 0, 0, 0);
 
 ----------------------------------------------------------------------------------------------------
