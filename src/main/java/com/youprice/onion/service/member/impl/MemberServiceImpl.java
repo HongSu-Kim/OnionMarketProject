@@ -5,6 +5,7 @@ import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.repository.member.BlockRepository;
 import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.service.member.MemberService;
+import com.youprice.onion.util.MailUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 //import org.modelmapper.ModelMapper;
@@ -15,11 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 @Slf4j
@@ -82,8 +79,8 @@ public class MemberServiceImpl implements MemberService {
 
     //아이디 찾기
     @Override
-    public List<Member> findId(String email) {
-        return memberRepository.findByEmail(email);
+    public MemberDTO findId(String email) {
+        return memberRepository.findByEmail(email).map(MemberDTO::new).orElse(null);
     }
 
     @Override
@@ -91,45 +88,36 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.countByEmail(email);
     }
 
-    //비밀번호 찾기 메일 생성
+    //비밀번호 찾기
     @Override
-    public MailDTO createEmail(String email) {
-        String str = getTempPwd();
-        MailDTO mailDTO = new MailDTO();
-        mailDTO.setEmail(email);
-        mailDTO.setTitle("양파마켓 임시 비밀번호 이메일 입니다.");
-        mailDTO.setMessage("안녕하세요, 양파마켓 임시 비밀번호 안내 이메일 입니다." + "회원님의 임시 비밀번호는 [ " + str + " ] 입니다." + "로그인 후에 반드시 비밀번호를 변경해 주시기 바랍니다.");
+    public MemberDTO findPwd(String email) throws Exception {
 
+        //회원정보 불러오기
+        Member member = memberRepository.findByEmail(email).orElse(null);
 
-        return mailDTO;
-    }
+        //이메일 전송
+        if (member != null) {
 
-    //임시 비밀번호 생성
-    @Override
-    public String getTempPwd() {
-        char[] charSet = new char[] {
-                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
-                'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
-        };
-        String str = "";
+            //임시 비밀번호 생성
+            String tempPwd = UUID.randomUUID().toString().replace("-", "");
+            tempPwd = tempPwd.substring(0, 10);
 
-        int idx = 0;
-        for (int i = 0; i < 10; i++) {
-            idx = (int) (charSet.length * Math.random());
-            str += charSet[idx];
+            member.findPwd(tempPwd);
+
+            //이메일 전송
+            MailUtil mail = new MailUtil();
+            mail.sendMail(member);
+
+            //암호화된 임시 비밀번호 저장
+            member.findPwd(passwordEncoder.encode(member.getPwd()));
+
+            memberRepository.save(member);
         }
-        return str;
+
+        MemberDTO memberDTO = new MemberDTO(member);
+
+        return memberDTO;
     }
-    //메일 보내기
-
-
-    //기존 비밀번호를 임시 비밀번호로 업데이트
-/*    @Override
-    public void updatePwd(String str, MemberFindDTO memberFindDTO) {
-        String pwd = str;
-        memberRepository.findByEmail(memberFindDTO.getEmail())
-    }*/
 
     @Override
     public MemberDTO getMemberDTO(Long memberId) {

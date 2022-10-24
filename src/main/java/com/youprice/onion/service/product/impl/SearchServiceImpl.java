@@ -4,12 +4,14 @@ import com.youprice.onion.dto.product.SearchAddDTO;
 import com.youprice.onion.entity.product.Search;
 import com.youprice.onion.repository.member.ProhibitionKeywordRepositoy;
 import com.youprice.onion.repository.product.SearchRepositoy;
+import com.youprice.onion.service.member.ProhibitionKeywordService;
 import com.youprice.onion.service.product.SearchService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,8 +26,10 @@ public class SearchServiceImpl implements SearchService {
 
  private  final ProhibitionKeywordRepositoy prohibitionKeywordRepositoy;
 
+ private  final ProhibitionKeywordService prohibitionKeywordService;
+
  @Override
- public void SearchCreate(SearchAddDTO searchAddDTO, String SearchName, HttpServletResponse response) throws IOException {
+ public void SearchCreate(SearchAddDTO searchAddDTO, String SearchName,HttpServletResponse response) throws IOException {
     Search search = new Search();
 
     if(SearchName == ""){
@@ -37,7 +41,7 @@ public class SearchServiceImpl implements SearchService {
      return ;
     }
 
-    if(prohibitionKeywordRepositoy.existsByProhibitionKeywordNameAndProhibitionKeywordNameContaining(SearchName,SearchName)== true ){ //금지키워드 조건 예시
+    if(prohibitionKeywordService.ProhibitionKeywordFind(SearchName) ==true ){ //금지키워드 조건 예시
 
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out =response.getWriter();
@@ -46,7 +50,7 @@ public class SearchServiceImpl implements SearchService {
         out.flush();
 
 
-        return;
+        return ;
     }
 
  search.SearchAdd(searchAddDTO);

@@ -89,36 +89,34 @@ public class Product {
     private List<Bidding> biddingList = new ArrayList<>();
 
     //상품 등록 시 정보 생성
-    public Product(Member member,Town town,Category category,Order order,String subject,String content,int price,
-                   String representativeImage,LocalDateTime auctionDeadline,Boolean payStatus) {
+    public Product(Member member,Town town,Category category,Order order,ProductAddDTO productAddDTO) {
 
         this.member = member;
         this.town = town;
         this.category = category;
         this.order = order;
-        this.subject = subject;
-        this.content = content;
-        this.price = price;
-        this.representativeImage = representativeImage;
-        if(uploadDate==null) {
-            this.uploadDate = LocalDateTime.now();
+        this.subject = productAddDTO.getSubject();
+        this.content = productAddDTO.getContent();
+        this.price = productAddDTO.getPrice();
+        this.representativeImage = productAddDTO.getRepresentativeImage();
+        this.uploadDate = LocalDateTime.now();
+        //경매 현황=false -> 경매 기한=null
+        if(productAddDTO.getAuctionStatus()!=true) {
+            productAddDTO.setAuctionDeadline(null);
+        }else{
+            productAddDTO.setAuctionDeadline(LocalDateTime.now().plusHours(12));
         }
-        if(uploadDate!=null) {
-            this.updateDate = LocalDateTime.now();
-        }
-
-        this.auctionDeadline = auctionDeadline;
+        this.auctionDeadline = productAddDTO.getAuctionDeadline();
         this.productProgress = ProductProgress.TRADINGS;
-        this.payStatus = payStatus;
+        this.payStatus = productAddDTO.getPayStatus();
         this.blindStatus = false;
 
     }
-    
-    //상품 수정 시 정보 변경
-    public void updateProduct(Long id, Town town, Category category, ProductUpdateDTO updateDTO,
-                               LocalDateTime auctionDeadline) {
 
-        this.id = id;
+    //상품 수정 시 정보 변경
+    public void updateProduct(Long productId, Town town, Category category, ProductUpdateDTO updateDTO) {
+
+        this.id = productId;
         this.town = town;
         this.category = category;
         this.subject = updateDTO.getSubject();
@@ -126,7 +124,13 @@ public class Product {
         this.price = updateDTO.getPrice();
         this.representativeImage = updateDTO.getRepresentativeImage();
         this.updateDate = LocalDateTime.now();
-        this.auctionDeadline = auctionDeadline;
+        //경매 현황=false -> 경매 기한=null
+        if(updateDTO.getAuctionStatus()!=true) {
+           updateDTO.setAuctionDeadline(null);
+        }else{
+           updateDTO.setAuctionDeadline(LocalDateTime.now().plusHours(12));
+        }
+        this.auctionDeadline = updateDTO.getAuctionDeadline();
         this.payStatus = updateDTO.getPayStatus();
     }
 

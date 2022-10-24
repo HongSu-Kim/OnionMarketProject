@@ -62,7 +62,7 @@
 							<hr/>
 						</div>
 						<div class="checkout__input">
-							<p>경매 등록</p><%--true/false로 변경--%>
+							<p>경매 등록</p>
 							<p style="color: #aaaaaa">
 								경매 기간은 3일입니다.
 								<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="auctionStatus" value="true">
@@ -118,7 +118,9 @@
 								<div class="checkout__input">
 									<div class='addInput'>
 										<p>상품 이미지<span>*</span></p>
-										<input type="file" name="productImageName" id="fileList" value="${imageList}"><button type="button" class="btnRemove">삭제</button><br>
+<%--										<c:forEach var="imageList" items="${imageList}">--%>
+<%--										<input type="file" name="productImageName" id="fileList" value="${imageList.productImageName }" onchange="alert(this.value)" ><button type="button" class="btnRemove">삭제</button><br>--%>
+<%--										</c:forEach>--%>
 									</div>
 									<button type="button" class="btnAdd">이미지 추가</button><br>
 								</div>

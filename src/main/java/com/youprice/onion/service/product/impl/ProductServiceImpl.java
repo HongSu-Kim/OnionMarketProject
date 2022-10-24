@@ -8,7 +8,6 @@ import com.youprice.onion.entity.product.*;
 import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.repository.member.ProhibitionKeywordRepositoy;
 import com.youprice.onion.repository.product.*;
-import com.youprice.onion.service.product.ProductImageService;
 import com.youprice.onion.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -59,16 +58,9 @@ public class ProductServiceImpl implements ProductService {
 
         //대표이미지 설정
         productAddDTO.setRepresentativeImage(getImageName()+fileList.get(0).getOriginalFilename());
-        //경매 현황=null -> 경매 기한=null
-        if(productAddDTO.getAuctionStatus()!=true) {
-            productAddDTO.setAuctionDeadline(null);
-        }else{
-            productAddDTO.setAuctionDeadline(LocalDateTime.now().plusDays(3));
-        }
 
         // 상품 등록
-        Product product = new Product(member,town,category,order,productAddDTO.getSubject(),productAddDTO.getContent(),
-                productAddDTO.getPrice(),productAddDTO.getRepresentativeImage(),productAddDTO.getAuctionDeadline(),productAddDTO.getPayStatus());
+        Product product = new Product(member,town,category,order,productAddDTO);
 
         Long productId = productRepository.save(product).getId();
 
@@ -92,53 +84,38 @@ public class ProductServiceImpl implements ProductService {
 
         //수정한 카테고리번호
         Category category = categoryRepository.findById(updateDTO.getCategoryId()).orElse(null);
+        //리턴처리해줘야함
 
         //대표이미지 설정
         updateDTO.setRepresentativeImage(getImageName()+updateDTO.getProductImageName().get(0).getOriginalFilename());
 
-        //경매 현황=null -> 경매 기한=null
-        if(updateDTO.getAuctionStatus()!=true) {
-            updateDTO.setAuctionDeadline(null);
-        }else{
-            updateDTO.setAuctionDeadline(LocalDateTime.now().plusDays(3));
-        }
-
         Product product = productRepository.findById(productId).orElse(null);
-        product.updateProduct(productId, town, category, updateDTO, updateDTO.getAuctionDeadline());
+        product.updateProduct(productId, town, category, updateDTO);
 
-        // 상품 이미지 수정
+        productRepository.save(product);
+        //상품 이미지 수정
         //반복으로 지우고 저장
         String path = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\product";
 
-        List<ProductImage> productImageList = productImageRepository.findByProductId(productId);
-
-//        for (ProductImage productImage : productImageList){
-//
-//            for(int i=0;i<updateDTO.getProductImageName().size();i++) {
-//                //DB이름과 DTO이름이 같을 때
-//                if(productImage.getProductImageName().substring(12).equals(updateDTO.getProductImageName().get(i).getOriginalFilename())==true) {
-//                    productImage.getProductImageName().replaceAll(productImage.getProductImageName(),
-//                            getImageName()+updateDTO.getProductImageName().get(i).getOriginalFilename());
-//                }else if(productImage.getProductImageName().substring(12).equals(updateDTO.getProductImageName().get(i).getOriginalFilename())==false){
-//
-//                }
-//
-//            }
-//
-//
-//            File file = new File(path+"\\"+productImage.getProductImageName());
-//            if (file.exists()) {
-//                file.delete();
-//            }
-//        }
-
-        productRepository.save(product);
         //조회한 값
-        List<ProductImage> imageList = productImages(productId, updateDTO.getProductImageName());
-        for(ProductImage productImage : imageList){
+        List<ProductImage> imageList = updateImage(productId, updateDTO.getProductImageName());
+        for(ProductImage image : imageList){
+            
+            List<ProductImage> productImageList = productImageRepository.findByProductId(productId);
+            for (ProductImage productImage : productImageList){
 
-            productImage.updateImage(productImage.getId(), product, productImage.getProductImageName());
-            productImageRepository.save(productImage);
+                productImageRepository.delete(productImage);
+
+                File file = new File(path+"\\"+productImage.getProductImageName());
+                if (file.exists()) {
+                    file.delete();
+                }
+            }
+
+            image.updateImage(image.getId(), product, image.getProductImageName());
+
+            productImageRepository.save(image);
+
         }
 
         return productRepository.save(product).getId();
@@ -213,6 +190,22 @@ public class ProductServiceImpl implements ProductService {
         }
         return productImageList;
     }
+    //이미지 수정
+    private List<ProductImage> updateImage(Long productId, List<MultipartFile> fileList) throws Exception {
+        List<ProductImage> productImageList = new ArrayList<>();
+        Product product = productRepository.findById(productId).orElse(null);
+
+        for (MultipartFile file : fileList) {
+
+            if (!file.isEmpty()) {
+                String productImageName = saveFile(file);
+                ProductImage image = new ProductImage(product, productImageName);
+
+                productImageList.add(image);
+            }
+        }
+        return productImageList;
+    }
 
     // imageName 생성
     @Transactional(readOnly = true)
@@ -270,49 +263,4 @@ public class ProductServiceImpl implements ProductService {
       return productRepository.findByMemberId(memberId, pageable).map(ProductSellListDTO::new);
     }
 
-
-//    @Override
-//    public String getFirstImage(List<ProductImageDTO> productImageList) throws Exception {
-//
-//        for(ProductImageDTO productImage : productImageList){
-//
-//            productImage = prdo;
-//
-//        }
-//
-//        return productImage;
-//    }
-
-    //    @Override
-//    @Transactional
-//    public int updateView(Long productId, HttpServletRequest req, HttpServletResponse resp) {
-//
-//        Cookie[] cookies = req.getCookies();
-//        boolean checkCookie = false;
-//        int result = 0;
-//        if(cookies != null) {
-//            for (Cookie cookie : cookies){
-//                //조회 시 체크 true
-//                if(cookie.getName().equals(COOKIE+productId)) checkCookie = true;
-//            }
-//            if(!checkCookie){
-//                Cookie newCookie = addCookieForOverlap(productId);
-//                resp.addCookie(newCookie);
-//                result = productRepository.updateView(productId);
-//            }
-//        }else {
-//            Cookie newCookie = addCookieForOverlap(productId);
-//            resp.addCookie(newCookie);
-//            result = productRepository.updateView(productId);
-//        }
-//        return result;
-//    }
-//
-//    private Cookie addCookieForOverlap(Long productId) {
-//        Cookie cookie = new Cookie(COOKIE+productId, String.valueOf(productId));
-//        cookie.setComment("조회수 중복 방지");
-//        cookie.setMaxAge(10000);
-//        cookie.setHttpOnly(true);
-//        return cookie;
-//    }
 }
