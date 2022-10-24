@@ -106,7 +106,7 @@ public class CrawlingController {
 				Town town = townRepositoy.findByMemberIdAndCoordinateTownNameContains(1L, townNameStr).orElse(defaultTown);
 
 
-				Product product = new Product(member, town, category, null, subject, content, intPrice, representativeImage, null, payStatus);
+				Product product = new Product(member, town, category, subject, content, intPrice, representativeImage, payStatus);
 				productRepository.save(product);
 				log.error("Product 저장");
 				productImageRepository.save(new ProductImage(product, representativeImage));
