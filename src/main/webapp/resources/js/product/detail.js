@@ -10,7 +10,7 @@ function remainedTime() {
     var et = end.getTime(); // 오픈시간만 가져온다
 
     if(st<et){ //현재시간이 오픈시간보다 이르면 오픈시간까지의 남은 시간을 구한다.
-        sec = parseInt(et - st) / 1000;
+        sec = parseInt(et-st) / 1000;
         // day  = parseInt(sec/60/60/24);
         // sec = (sec - (day * 60 * 60 * 24));
         hour = parseInt(sec/60/60);

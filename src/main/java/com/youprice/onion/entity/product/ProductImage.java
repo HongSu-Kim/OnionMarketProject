@@ -26,6 +26,7 @@ public class ProductImage {
         }
 
         public void updateImage(Long id, Product product, String productImageName) {
+
                 this.id = id;
                 this.product = product;
                 this.productImageName = productImageName;

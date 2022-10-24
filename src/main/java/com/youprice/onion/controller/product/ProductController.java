@@ -217,7 +217,7 @@ public class ProductController {
         List<TownFindDTO> townList = townService.townLists(userSession.getId());
 
         /*ProductDTO 및 ProductImageDTO 조회*/
-        ProductDTO productDTO = productService.getProductDTO(productId);
+        ProductFindDTO productFindDTO = productService.getProductFindDTO(productId);
         List<ProductImageDTO> imageList = productImageService.getProductImage(productId);
 
         /*카테고리 조회*/
@@ -228,7 +228,7 @@ public class ProductController {
         model.addAttribute("townList", townList);
         model.addAttribute("topCategory", topCategory);
         model.addAttribute("subCategory", subCategory);
-        model.addAttribute("dto",productDTO);
+        model.addAttribute("dto",productFindDTO);
         model.addAttribute("productId",productId);
 
         return "product/updateProduct";

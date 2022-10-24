@@ -1,6 +1,7 @@
 package com.youprice.onion.repository.product;
 
 
+import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.entity.product.Town;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -16,7 +17,11 @@ public interface TownRepositoy extends JpaRepository<Town,Long> {
 
     Optional<Town> findByCoordinateTownName(String townName);
 
-	Optional<Town> findByMemberIdAndCoordinateTownNameContains(long memberId, String townNameStr);
+	Optional<Town> findByMemberIdAndCoordinateTownNameContains(Long memberId, String townNameStr);
+
+
+
+    int countByMemberId(Long memberId);
 }
 
 

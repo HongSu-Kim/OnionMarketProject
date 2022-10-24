@@ -123,7 +123,7 @@ public class Member {
     }
 
 	// 결제
-	public boolean payment(int cash) {
+	public boolean subCash(int cash) {
 		if (this.cash < cash){
 			return false;
 		} else {
@@ -133,7 +133,7 @@ public class Member {
 	}
 
 	// 결제 취소
-	public void repayment(int cash) {
+	public void addCash(int cash) {
 		this.cash += cash;
 	}
 }
