@@ -68,7 +68,7 @@
 										<span class="checkmark"></span>
 									</label>
 								</div>
-							<c:if test="${payStatus}">
+							<c:if test="${productDTO.payStatus}">
 								<button type="button" class="order-btn btn-50" id="payment">양파페이</button>
 							</c:if>
 							<button type="button" class="order-btn btn-50 float-right" id="imp-payment">결제하기</button>
