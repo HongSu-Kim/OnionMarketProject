@@ -20,7 +20,7 @@
     </div>
 </nav>
 <br/><br/><br/><br/>
-<form:form action="" method="post">
+<form:form action="search/search" method="get">
 
     <input type="hidden" name="userId" value="asd"/>
 

@@ -8,14 +8,13 @@ import com.youprice.onion.service.member.ProhibitionKeywordService;
 import com.youprice.onion.service.product.CategoryService;
 import com.youprice.onion.service.product.ProductService;
 import com.youprice.onion.service.product.SearchService;
+import com.youprice.onion.util.AlertRedirect;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
@@ -37,29 +36,30 @@ public class SearchController {
         return "product/search";
     }
 
-    @PostMapping("search")
+    @GetMapping("result")
     public String KeywordCreate(Model model, SearchAddDTO searchAddDTO,
-                                @RequestParam("searchName") String searchName, HttpServletResponse response) throws IOException {
+                           @RequestParam("searchName") String searchName, HttpServletResponse response) throws IOException {
+
+        try {
+            if (searchService.findBySearchName(searchName) == null) {
 
 
+                searchService.SearchCreate(searchAddDTO, searchName, response);
 
+            } else
+                searchService.searchupdatecount(searchName);
+            List<ProductListDTO> searchList = productService.getSearchList(searchName, searchName);
 
+            model.addAttribute("searchList", searchList);
 
-        if(searchService.findBySearchName(searchName)==null) {
+            return "product/main";
 
-       // prohibitionKeywordService.ProhibitionKeywordFind(searchName);
-            searchService.SearchCreate(searchAddDTO,searchName,response);
+        } catch (RuntimeException e) {
+            return AlertRedirect.warningMessage(response, "검색중 오류입니다\n");
+
         }
-        
 
 
-        else
-            searchService.searchupdatecount(searchName);
-        List<ProductListDTO> searchList =  productService.getSearchList(searchName,searchName);
-
-         model.addAttribute("searchList",searchList);
-
-        return "product/main";
     }
 
 

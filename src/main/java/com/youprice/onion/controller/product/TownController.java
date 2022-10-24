@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -73,10 +75,11 @@ public class TownController {
     }
 
     @PostMapping("town")
-    public String townAdd(Model model,TownAddDTO townAddDTO) {
+    public String townAdd(Model model, TownAddDTO townAddDTO , HttpServletResponse response)throws IOException {
 
 
-        townService.townAdd(townAddDTO);
+
+        townService.townAdd(townAddDTO,response);
         return "redirect:/town/town";
 
 
