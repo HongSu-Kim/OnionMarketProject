@@ -228,7 +228,8 @@
 							<button type="submit" class="site-btn">SEARCH</button>
 						</form:form>
 					</div>
-					<div class="hero__search__phone">
+						<button onclick="location.href='/member/login'" class="site-btn" style="height: 50px; width: 210px; margin-left: 25px;">ONION MARKET LOGIN</button>
+<%--					<div class="hero__search__phone">
 						<div class="hero__search__phone__icon">
 							<i class="fa fa-phone"></i>
 						</div>
@@ -236,7 +237,7 @@
 							<h5>+65 11.188.888</h5>
 							<span>support 24/7 time</span>
 						</div>
-					</div>
+					</div>--%>
 				</div>
 			</div>
 		</div>
