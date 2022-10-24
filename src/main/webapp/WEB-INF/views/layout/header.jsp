@@ -118,7 +118,7 @@
 					<ul>
 						<li><a href="/product/list">상품</a>
 							<ul class="header__menu__dropdown">
-								<li><a href="/product/list">메인 리스트</a></li>
+								<li><a href="/product/list">상품 리스트</a></li>
 								<li><a href="/product/add">상품 등록</a></li>
 								<li><a href="/product/auctionList">경매 상품</a></li>
 								<li><a href="#">Temp4</a></li>
@@ -228,7 +228,8 @@
 							<button type="submit" class="site-btn">SEARCH</button>
 						</form:form>
 					</div>
-					<div class="hero__search__phone">
+						<button onclick="location.href='/member/login'" class="site-btn" style="height: 50px; width: 210px; margin-left: 25px;">ONION MARKET LOGIN</button>
+<%--					<div class="hero__search__phone">
 						<div class="hero__search__phone__icon">
 							<i class="fa fa-phone"></i>
 						</div>
@@ -236,7 +237,7 @@
 							<h5>+65 11.188.888</h5>
 							<span>support 24/7 time</span>
 						</div>
-					</div>
+					</div>--%>
 				</div>
 			</div>
 		</div>
@@ -247,7 +248,7 @@
 
 <!-- Breadcrumb Section Begin -->
 <c:if test="${pageName != 'main'}">
-	<section class="breadcrumb-section set-bg" data-setbg="/template/img/breadcrumb.jpg">
+	<section class="breadcrumb-section set-bg" data-setbg="/template/img/onion.jpg">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12 text-center">

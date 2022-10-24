@@ -21,7 +21,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override //userId가 DB에 있는지 확인
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+
         Member member = memberRepository.findByUserId(userId).orElseThrow(() -> new UsernameNotFoundException("해당 사용자가 존재하지 않습니다. : " + userId));
+
+        //탈퇴한 회원일 경우(role = ROLE_WITHDRAWAL)
+        if (member.getRole().name().equals("WITHDRAWAL")) {
+            throw new UsernameNotFoundException("탈퇴한 회원입니다.");
+        }
 
         session.setAttribute("member", new SessionDTO(member));
 

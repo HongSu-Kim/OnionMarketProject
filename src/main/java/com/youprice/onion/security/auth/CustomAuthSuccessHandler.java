@@ -25,7 +25,7 @@ public class CustomAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
 
         String url;
         if (request.getHeader("Referer").indexOf("/member") > 0) {
-            url = "/product/main";
+            url = "/";
         } else {
             url = request.getHeader("Referer");
         }

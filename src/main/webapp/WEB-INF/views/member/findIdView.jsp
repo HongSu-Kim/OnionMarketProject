@@ -8,6 +8,7 @@
 <head>
 
     <title>아이디 찾기</title>
+<%--
 
     <script type="text/javascript">
         var msg = "${msg}";
@@ -16,6 +17,7 @@
             alert(msg);
         }
     </script>
+--%>
 
 </head>
 
