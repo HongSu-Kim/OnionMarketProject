@@ -43,10 +43,6 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category; //카테고리번호 FK
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
-    private Order order; //주문번호 FK
-
     private String subject; //제목
     private String content; //내용
     private int price; //상품가격
@@ -63,6 +59,10 @@ public class Product {
 
     private Boolean payStatus; //페이현황
     private Boolean blindStatus; //블라인드현황
+
+    //주문 참조 양방향
+    @OneToMany(mappedBy = "product")
+    private List<Order> orderList = new ArrayList<>();
 
     //이미지 참조 양방향
     @OneToMany(mappedBy = "product")

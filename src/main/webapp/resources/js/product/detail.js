@@ -34,3 +34,22 @@ function remainedTime() {
     }
 }
 setInterval(remainedTime,1000); //1초마다 검사를 해주면 실시간으로 시간을 알 수 있다.
+
+$(document).ready(function () {
+    //$('#registerForm').validate(); //유효성 검사를 적용
+    // validate signup form on keyup and submit
+    $('#productForm').validate({
+
+        rules: {
+            bid: { required:true, digits:true, min:100, max:999999},
+        },
+        messages: {
+            bid: {
+                required: "가격을 입력해주세요.",
+                digits: "숫자만 입력 가능합니다.",
+                min: "최소 가격은 100원 이상입니다.",
+                max: "최대 가격은 999,999원입니다."
+            }
+        }
+    });
+});

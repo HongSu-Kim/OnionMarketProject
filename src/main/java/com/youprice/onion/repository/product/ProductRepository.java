@@ -19,6 +19,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +37,9 @@ public interface   ProductRepository extends JpaRepository<Product, Long> {
 
     //블라인드 처리가 안된 상품만 조회
     List<Product> findByBlindStatus(Boolean blindStatus);
+
+	//경매 상품만 조회
+	List<Product> findAllByAuctionDeadlineNotNull();
 
 	// 판매 상품 리스트
 	Page<Product> findByMemberId(Long memberId, Pageable pageable);

@@ -120,8 +120,7 @@
 							<ul class="header__menu__dropdown">
 								<li><a href="/product/list">상품 리스트</a></li>
 								<li><a href="/product/add">상품 등록</a></li>
-								<li><a href="/product/auctionList">경매 상품</a></li>
-								<li><a href="#">Temp4</a></li>
+								<li><a href="/product/auctionList">경매 리스트</a></li>
 							</ul>
 						</li>
 						<sec:authorize access="isAuthenticated()">
@@ -218,7 +217,7 @@
 			<div class="col-lg-9">
 				<div class="hero__search">
 					<div class="hero__search__form">
-						<form:form action="/search/search"  method="post" >
+						<form:form action="/search/result"  method="get">
 							<div class="hero__search__categories">
 								All Categories
 								<span class="arrow_carrot-down"></span>
