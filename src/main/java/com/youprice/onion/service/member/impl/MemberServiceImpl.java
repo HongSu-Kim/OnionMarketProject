@@ -1,15 +1,15 @@
 package com.youprice.onion.service.member.impl;
 
-import com.youprice.onion.dto.member.MemberDTO;
-import com.youprice.onion.dto.member.MemberJoinDTO;
-import com.youprice.onion.dto.member.MemberModifyDTO;
+import com.youprice.onion.dto.member.*;
 import com.youprice.onion.entity.member.Member;
+import com.youprice.onion.entity.member.Role;
 import com.youprice.onion.repository.member.BlockRepository;
 import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.service.member.MemberService;
+import com.youprice.onion.util.MailUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
+//import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,11 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 @Slf4j
@@ -36,8 +32,8 @@ public class MemberServiceImpl implements MemberService {
     @Value("$(file.path}")
     private String uploadFolder;
 
-    @Autowired
-    private final ModelMapper modelMapper;
+//    @Autowired
+//    private final ModelMapper modelMapper;
 
     //회원가입
     @Transactional
@@ -67,29 +63,69 @@ public class MemberServiceImpl implements MemberService {
     //회원정보 수정
     @Transactional
     @Override
-    public boolean modify(MemberModifyDTO memberModifyDTO) {
-        Member member = memberRepository.findById(memberModifyDTO.getId()).orElseThrow(() ->
-                new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+    public void modify(MemberModifyDTO memberModifyDTO) {
+        Member findById = memberRepository.findById(memberModifyDTO.getId()).orElseThrow(() ->
+                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
-        Member member1 = memberRepository.findByNickname(memberModifyDTO.getNickname()).orElse(null);
-        if (member1 == null || member1.getId() == memberModifyDTO.getId()) {
-            String encPwd = passwordEncoder.encode(memberModifyDTO.getPwd());
-            member.modify(encPwd, memberModifyDTO.getNickname(), memberModifyDTO.getTel(), memberModifyDTO.getPostcode(), memberModifyDTO.getAddress(), memberModifyDTO.getDetailAddress(), memberModifyDTO.getExtraAddress(), memberModifyDTO.getEmail(), memberModifyDTO.getMemberImageName());
-            return true;
+        Member findByEmail = memberRepository.findByEmail(memberModifyDTO.getEmail()).orElse(null);
+        Member findByNickname = memberRepository.findByNickname(memberModifyDTO.getNickname()).orElse(null);
+
+        if (findByEmail != null && findByEmail.getId() != memberModifyDTO.getId()) {
+            throw  new IllegalArgumentException("이미 존재하는 이메일 입니다. 다시 입력해 주세요.");
+        } else if (findByNickname != null && findByNickname.getId() != memberModifyDTO.getId()) {
+            throw new IllegalArgumentException("이미 존재하는 닉네임 입니다. 다시 입력해 주세요.");
         } else {
-            return false;
+            String encPwd = passwordEncoder.encode(memberModifyDTO.getPwd());
+            findById.modify(encPwd, memberModifyDTO.getNickname(), memberModifyDTO.getTel(), memberModifyDTO.getPostcode(), memberModifyDTO.getAddress(), memberModifyDTO.getDetailAddress(), memberModifyDTO.getExtraAddress(), memberModifyDTO.getEmail(), memberModifyDTO.getMemberImageName());
         }
     }
 
     //아이디 찾기
     @Override
-    public List<Member> findId(String email) {
-        return memberRepository.findByEmail(email);
+    public MemberDTO findId(String email) {
+        return memberRepository.findByEmail(email).map(MemberDTO::new).orElse(null);
     }
 
     @Override
     public int countId(String email) {
         return memberRepository.countByEmail(email);
+    }
+
+    //비밀번호 찾기
+    @Override
+    public MemberDTO findPwd(String email) throws Exception {
+
+        //회원정보 불러오기
+        Member member = memberRepository.findByEmail(email).orElse(null);
+
+        if (member == null) {
+            return null;
+        }
+        //이메일 전송
+
+        //임시 비밀번호 생성
+        String tempPwd = UUID.randomUUID().toString().replace("-", "");
+        tempPwd = tempPwd.substring(0, 10);
+
+        member.findPwd(tempPwd);
+
+        //이메일 전송
+        MailUtil mail = new MailUtil();
+        mail.sendMail(member);
+
+        //암호화된 임시 비밀번호 저장
+        member.findPwd(passwordEncoder.encode(member.getPwd()));
+        memberRepository.save(member);
+
+        return new MemberDTO(member);
+    }
+
+    @Transactional
+    @Override
+    public void withdraw(String userId) {
+        Member member = memberRepository.findByUserId(userId).orElse(null);
+        member.withdraw(Role.valueOf("WITHDRAWAL"));
+        memberRepository.save(member);
     }
 
     @Override

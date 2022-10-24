@@ -18,9 +18,7 @@ public class ProductAddDTO {
     private Long orderId; //주문번호
 
     private String subject; //제목
-
     private String content; //설명
-
     private int price; //상품가격
 
     private LocalDateTime auctionDeadline; //경매기한

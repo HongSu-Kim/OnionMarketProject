@@ -62,13 +62,14 @@ public class Product {
     private ProductProgress productProgress; //판매상태 Reserved,tradings,soldout 예약중,거래중,판매완료
 
     private Boolean payStatus; //페이현황
-    private String blindStatus; //블라인드현황
+    private Boolean blindStatus; //블라인드현황
 
-
-    @OneToMany(mappedBy = "product")//이미지번호
+    //이미지 참조 양방향
+    @OneToMany(mappedBy = "product")
     private List<ProductImage> productImageList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "product")//태그번호
+    //태그 참조 양방향
+    @OneToMany(mappedBy = "product")
     private List<ProductTag> productTagList = new ArrayList<>();
 
     //찜 참조 양방향
@@ -88,36 +89,49 @@ public class Product {
     private List<Bidding> biddingList = new ArrayList<>();
 
     //상품 등록 시 정보 생성
-    public Product(Member member,Town town,Category category,Order order,String subject,String content,int price,
-                   String representativeImage,LocalDateTime auctionDeadline,Boolean payStatus) {
+    public Product(Member member,Town town,Category category,Order order,ProductAddDTO productAddDTO) {
 
         this.member = member;
         this.town = town;
         this.category = category;
         this.order = order;
-        this.subject = subject;
-        this.content = content;
-        this.price = price;
-        this.representativeImage = representativeImage;
-        if(uploadDate==null) {
-            this.uploadDate = LocalDateTime.now();
+        this.subject = productAddDTO.getSubject();
+        this.content = productAddDTO.getContent();
+        this.price = productAddDTO.getPrice();
+        this.representativeImage = productAddDTO.getRepresentativeImage();
+        this.uploadDate = LocalDateTime.now();
+        //경매 현황=false -> 경매 기한=null
+        if(productAddDTO.getAuctionStatus()!=true) {
+            productAddDTO.setAuctionDeadline(null);
+        }else{
+            productAddDTO.setAuctionDeadline(LocalDateTime.now().plusHours(12));
         }
-        if(uploadDate!=null) {
-            this.updateDate = LocalDateTime.now();
-        }
-
-        this.auctionDeadline = auctionDeadline;
+        this.auctionDeadline = productAddDTO.getAuctionDeadline();
         this.productProgress = ProductProgress.TRADINGS;
-        this.payStatus = payStatus;
-        this.blindStatus = "no";
+        this.payStatus = productAddDTO.getPayStatus();
+        this.blindStatus = false;
 
     }
-    
-    //상품 수정 시 정보 변경
-    public void updateProduct(Long id, Town town, Category category, ProductUpdateDTO updateDTO,
-                               LocalDateTime auctionDeadline) {
 
-        this.id = id;
+	public Product(Member member, Town town, Category category, String subject, String content, int price, String representativeImage, boolean payStatus) {
+		this.member = member;
+		this.town = town;
+		this.category = category;
+		this.subject = subject;
+		this.content = content;
+		this.price = price;
+		this.representativeImage = representativeImage;
+		this.uploadDate = LocalDateTime.now();
+		this.auctionDeadline = null;
+		this.productProgress = ProductProgress.TRADINGS;
+		this.payStatus = payStatus;
+		this.blindStatus = false;
+	}
+
+    //상품 수정 시 정보 변경
+    public void updateProduct(Long productId, Town town, Category category, ProductUpdateDTO updateDTO) {
+
+        this.id = productId;
         this.town = town;
         this.category = category;
         this.subject = updateDTO.getSubject();
@@ -125,7 +139,13 @@ public class Product {
         this.price = updateDTO.getPrice();
         this.representativeImage = updateDTO.getRepresentativeImage();
         this.updateDate = LocalDateTime.now();
-        this.auctionDeadline = auctionDeadline;
+        //경매 현황=false -> 경매 기한=null
+        if(updateDTO.getAuctionStatus()!=true) {
+           updateDTO.setAuctionDeadline(null);
+        }else{
+           updateDTO.setAuctionDeadline(LocalDateTime.now().plusHours(12));
+        }
+        this.auctionDeadline = updateDTO.getAuctionDeadline();
         this.payStatus = updateDTO.getPayStatus();
     }
 
@@ -143,6 +163,16 @@ public class Product {
 				this.productProgress = pp;
 			}
 		}
+		return this;
+	}
+    
+    // 블라인드 처리(삭제)
+    public Product blindProduct(Boolean blindStatus) {
+        this.blindStatus = true;
+        return this;
+    }
+	public Product progressUpdate(ProductProgress productProgress) {
+		this.productProgress = productProgress;
 		return this;
 	}
 }

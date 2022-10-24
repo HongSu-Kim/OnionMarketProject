@@ -116,4 +116,28 @@ public class Member {
         this.email = email;
         this.memberImageName = memberImageName;
     }
+
+    //비밀번호 찾기
+    public void findPwd(String pwd) {
+        this.pwd = pwd;
+    }
+
+    public void withdraw(Role role) {
+        this.role = role;
+    }
+
+	// 결제
+	public boolean subCash(int cash) {
+		if (this.cash < cash){
+			return false;
+		} else {
+			this.cash -= cash;
+			return true;
+		}
+	}
+
+	// 결제 취소
+	public void addCash(int cash) {
+		this.cash += cash;
+	}
 }

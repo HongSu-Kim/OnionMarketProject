@@ -1,17 +1,17 @@
 package com.youprice.onion.controller.member;
 
-import com.youprice.onion.dto.member.MemberDTO;
-import com.youprice.onion.dto.member.MemberFindDTO;
-import com.youprice.onion.dto.member.MemberJoinDTO;
-import com.youprice.onion.dto.member.SessionDTO;
-import com.youprice.onion.entity.member.Member;
+import com.youprice.onion.dto.member.*;
 import com.youprice.onion.repository.member.MemberRepository;
+import com.youprice.onion.security.auth.CustomUserDetails;
 import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.security.validator.CustomValidators;
 import com.youprice.onion.service.member.MemberService;
 import com.youprice.onion.service.member.ProhibitionKeywordService;
+import com.youprice.onion.util.AlertRedirect;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,11 +20,12 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -38,6 +39,7 @@ public class MemberController {
     private final CustomValidators.NicknameValidator nicknameValidator;
     private final CustomValidators.EmailValidator emailValidator;
     private final ProhibitionKeywordService prohibitionKeywordService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     //회원가입 시 유효성 검증에 필요
     @InitBinder
@@ -101,6 +103,7 @@ public class MemberController {
         return "member/login";
     }
 
+    //로그아웃 페이지
     @GetMapping("/logout")
     public String logout() {
         return "member/logout";
@@ -117,25 +120,28 @@ public class MemberController {
         return "member/modify";
     }
 
-    //아이디 찾기
-    @GetMapping("/findIdView")
-    public String findIdView() {
-        return "member/findIdView";
+    //회원정보 수정 전 비밀번호 확인 페이지
+    @GetMapping("/preModify")
+    public String preModifyView() {
+        return "member/preModify";
     }
 
-    @PostMapping("findId")
-    public String findId(MemberFindDTO memberFindDTO, Model model) {
-        if (memberService.countId(memberFindDTO.getEmail()) == 0) {
-            model.addAttribute("msg", "존재하지 않는 사용자 입니다. 이메일을 다시 확인해 주세요.");
-            return "member/findIdView";
-        } else {
-            model.addAttribute("member", memberService.findId(memberFindDTO.getEmail()));
-            return "member/findId";
+    //security 비밀번호를 CustomUserDetails에서 받아옴
+    @PostMapping("/preModify")
+    public String PreModify(Authentication auth, @RequestParam("preModifypwd") String preModifypwd, RedirectAttributes rttr) {
+        CustomUserDetails customUserDetails = (CustomUserDetails) auth.getPrincipal();
+        String pwd = customUserDetails.getPassword();
+        if(passwordEncoder.matches(preModifypwd, pwd)) {
+            return "redirect:/member/modify";
+        }
+        else {
+            rttr.addFlashAttribute("msg", "msg");
+            return "redirect:/member/preModify";
         }
     }
 
     //마이페이지
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/mypage")
     public String mypageView(@LoginUser SessionDTO sessionDTO, Model model) {
         if (sessionDTO != null) {
@@ -143,6 +149,63 @@ public class MemberController {
             model.addAttribute("sessionDTO", sessionDTO);
         }
         return "member/mypage";
+    }
+
+    //아이디 찾기
+    @GetMapping("/findId")
+    public String findIdView() {
+        return "member/findIdView";
+    }
+
+    @PostMapping("/findId")
+    public String findId(MemberFindDTO memberFindDTO, Model model, HttpServletResponse response)throws Exception {
+        if (memberService.countId(memberFindDTO.getEmail()) == 0) {
+//            model.addAttribute("msg", "존재하지 않는 사용자 입니다. 이메일을 다시 확인해 주세요.");
+//            return "member/findIdView";
+            return AlertRedirect.warningMessage(response, "/member/findId", "존재하지 않는 이메일 입니다. 다시 확인해 주세요.");
+        } else {
+            model.addAttribute("member", memberService.findId(memberFindDTO.getEmail()));
+            return "member/findId";
+        }
+    }
+
+    //비밀번호 찾기
+    @GetMapping("/findPwd")
+    public String findPwdView(@ModelAttribute("memberDTO") MemberDTO memberDTO) {
+        return "member/findPwdView";
+    }
+
+    @PostMapping("/findPwd")
+    public String findPwd(MemberDTO memberDTO, BindingResult bindingResult, HttpServletResponse response) throws Exception {
+
+        if (bindingResult.hasErrors()) {
+            return AlertRedirect.warningMessage(response, "/member/findPwd", "존재하지 않는 이메일 입니다. 다시 확인해 주세요.");
+        }
+       memberDTO = memberService.findPwd(memberDTO.getEmail());
+
+        if (memberDTO == null) {
+            return AlertRedirect.warningMessage(response, "/member/findPwd", "존재하지 않는 이메일 입니다. 다시 확인해 주세요.");
+        }
+        return "redirect:/member/login";
+    }
+
+    //회원탈퇴
+    @GetMapping("/withdraw")
+    public String withdrawView() {
+        return "member/withdraw";
+    }
+
+    @PostMapping("/withdraw")
+    public String withdraw(Authentication auth, @RequestParam("withdrawpwd") String withdrawpwd, HttpServletResponse response) throws Exception {
+        CustomUserDetails customUserDetails = (CustomUserDetails) auth.getPrincipal();
+        String pwd = customUserDetails.getPassword();
+        if (passwordEncoder.matches(withdrawpwd, pwd)) {
+            memberService.withdraw(((CustomUserDetails) auth.getPrincipal()).getUsername());
+            return "redirect:/member/logout";
+
+        } else {
+            return AlertRedirect.warningMessage(response, "/member/withdraw", "비밀번호가 일치하지 않습니다. 다시 확인해 주세요.");
+        }
     }
 
     //관심 카테고리

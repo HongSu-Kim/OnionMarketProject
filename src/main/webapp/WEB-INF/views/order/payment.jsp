@@ -10,6 +10,9 @@
 
 	<title>buyList</title>
 
+	<style>
+      label.error{display:block;color:red;}
+	</style>
 </head>
 <body>
 <section class="spad">
@@ -29,9 +32,9 @@
 						<div class="owl-item mb-6">
 							<h4>상품 정보</h4>
 							<div class="latest-prdouct__slider__item">
-								<a href="/product/detail?productId=${productDTO.productId}" class="latest-product__item">
+								<a class="latest-product__item">
 									<div class="latest-product__item__pic">
-										<img src="/img/product/${productDTO.representativeImage}" alt="${productDTO.subject}">
+										<img src="/img/product/${productDTO.representativeImage}" alt="${productDTO.subject}" class="list-img">
 									</div>
 									<div class="latest-product__item__text">
 										<h6>${productDTO.subject}</h6>
@@ -65,7 +68,9 @@
 										<span class="checkmark"></span>
 									</label>
 								</div>
-							<button type="button" class="order-btn btn-50" id="payment">양파페이</button>
+							<c:if test="${productDTO.payStatus}">
+								<button type="button" class="order-btn btn-50" id="payment">양파페이</button>
+							</c:if>
 							<button type="button" class="order-btn btn-50 float-right" id="imp-payment">결제하기</button>
 						</div>
 

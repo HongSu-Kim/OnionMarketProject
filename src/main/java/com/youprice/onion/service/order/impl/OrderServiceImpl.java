@@ -7,6 +7,7 @@ import com.youprice.onion.entity.order.Delivery;
 import com.youprice.onion.entity.order.Order;
 import com.youprice.onion.entity.order.OrderState;
 import com.youprice.onion.entity.product.Product;
+import com.youprice.onion.entity.product.ProductProgress;
 import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.repository.order.DeliveryRepository;
 import com.youprice.onion.repository.order.OrderRepository;
@@ -15,8 +16,10 @@ import com.youprice.onion.service.order.OrderService;
 import com.youprice.onion.util.PaymentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,18 +53,24 @@ public class OrderServiceImpl implements OrderService {
 		Member member = memberRepository.findById(orderAddDTO.getMemberId()).orElse(null);
 		Product product = productRepository.findById(orderAddDTO.getProductId()).orElse(null);
 
+		// 양파페이 결제
+		if (orderAddDTO.getImp_uid() == null)
+			if (member.subCash(orderAddDTO.getOrderPayment()))
+				throw new RuntimeException();
+
 		// 주문내역 생성
 		Order order = new Order(member, orderAddDTO.getOrderNum(), orderAddDTO.getImp_uid(), orderAddDTO.getOrderPayment());
-		Long orderId = orderRepository.save(order).getId();
+//		Long orderId = orderRepository.save(order).getId();
 
 		// 배송정보 생성
 		if (orderAddDTO.isDelivery()) {
 			Delivery delivery = new Delivery(order, orderAddDTO);
-			deliveryRepository.save(delivery);
+//			deliveryRepository.save(delivery);
 		}
 
+		// 상품상태 변경 - sold out
 		product.order(order);
-		productRepository.save(product);
+		Long orderId = productRepository.save(product).getOrder().getId();
 
 		return orderId;
 	}
@@ -102,24 +111,39 @@ public class OrderServiceImpl implements OrderService {
 		return result.toString();
 	}
 
+	// 구매 내역 조회
 	@Override
 	@Transactional(readOnly = true)
 	public Page<OrderDTO> getBuyList(Long memberId, Pageable pageable) {
 		return orderRepository.findAllByMemberId(memberId, pageable).map(OrderDTO::new);
 	}
 
+	// 주문 취소
 	@Override
 	public void cancel(Long orderId) {
 		orderRepository.findById(orderId).map(order -> {
+			
+			// 주문 상태 변경 - cancel
 			order.update(OrderState.CANCEL);
-			if (order.getOrderNum() != order.getImp_uid()){
+
+			// 상품 상태 변경 - tradings
+			order.getProduct().progressUpdate(ProductProgress.TRADINGS);
+
+			
+			// imp 결제시 환불
+			if (order.getImp_uid() != null){
 				try {
 					paymentService.paymentCancel(order.getImp_uid(), order.getOrderNum(), order.getOrderPayment());
 				} catch (IOException ioe) {
 					log.error("결제 취소중 오류입니다 : " + ioe.toString());
 					throw new RuntimeException();
 				}
+				
+				// 양파페이 결제시 환불
+			} else {
+				order.getMember().addCash(order.getOrderPayment());
 			}
+			
 			return order;
 		}).orElse(null);
 	}

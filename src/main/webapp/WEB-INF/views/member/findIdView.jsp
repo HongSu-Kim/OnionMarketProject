@@ -8,6 +8,7 @@
 <head>
 
     <title>아이디 찾기</title>
+<%--
 
     <script type="text/javascript">
         var msg = "${msg}";
@@ -16,6 +17,7 @@
             alert(msg);
         }
     </script>
+--%>
 
 </head>
 
@@ -28,11 +30,14 @@
     <form action="/member/findId" method="post">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
         <div class="form-group">
-            <input type="email" class="form-control" name="email" placeholder="이메일을 입력해주세요">
+            <label>이메일</label>
+            <input type="email" name="email" class="form-control" placeholder="이메일을 입력해주세요"/>
         </div>
         <button type="submit" class="btn btn-primary bi bi-lock-fill">확인</button>
+        <hr/>
         <a href="/member/login" class="btn btn-primary bi bi-lock-fill">로그인</a>
-        <a href="#" class="btn btn-primary bi bi-lock-fill">비밀번호 찾기</a>
+        <a href="/member/findPwd" class="btn btn-primary bi bi-lock-fill">비밀번호 찾기</a>
+        <a href="/member/join" class="btn btn-primary bi bi-lock-fill">회원가입</a>
     </form>
 
     <hr>

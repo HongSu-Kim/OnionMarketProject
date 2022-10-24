@@ -81,3 +81,29 @@ $(function() {
     });
     $('#content').keyup(); // 처음 세팅
 });
+
+//상위카테고리를 클릭할시 해당 하위카테고리 조회
+$("#aa").change(function (){
+
+    $.ajax({
+        url: "/product/aa",
+        method: "GET",
+        data:({ categoryId :$("#aa").val()}   ),
+        datatype : "json",
+        success: function (subCategory){
+
+            // for(var i = 0; i < subCategory.size; i++) {
+            //     $("#aa").append('<option value="'+ subCategory.get(i).getId() +'">'  + subCategory.get(i).getCategoryName() + '</option>')
+            //
+            //
+            //
+            //
+            //
+            // }
+
+        }
+
+    }).fail(function () {
+
+    })
+})

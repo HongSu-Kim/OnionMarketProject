@@ -17,7 +17,7 @@ public interface ProhibitionKeywordRepositoy extends JpaRepository<ProhibitionKe
 
  ProhibitionKeyword findAllByProhibitionKeywordName(String ProhibitionKeywordName);
 
- boolean existsByProhibitionKeywordName(String ProhibitionKeywordName);
+ boolean existsByProhibitionKeywordNameContaining(String ProhibitionKeywordName);
 
  Long deleteByProhibitionKeywordName(String ProhibitionKeywordName);
 

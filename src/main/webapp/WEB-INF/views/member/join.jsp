@@ -26,9 +26,17 @@
 
             <div class="form-group">
                 <label>비밀번호</label>
-                <input type="password" name="pwd" value="${memberJoinDTO.pwd}" class="form-control" placeholder="비밀번호를 입력해주세요"/>
+                <input type="password" name="pwd" id="pwd" class="form-control" placeholder="비밀번호를 입력해주세요"/>
                 <span id="valid_pwd">${valid_pwd}</span>
             </div>
+
+            <div class="form-group">
+                <label>비밀번호 재확인</label>
+                <input type="password" name="pwdCheck" id="pwdCheck" class="form-control" placeholder="비밀번호를 입력해주세요"/>
+            </div>
+
+            <div class="alert alert-success" id="alert-success">비밀번호가 일치합니다.</div>
+            <div class="alert alert-danger" id="alert-danger">비밀번호가 일치하지 않습니다.</div>
 
             <div class="form-group">
                 <label>이름</label>
@@ -55,26 +63,27 @@
             </div>
 
             <div class="form-group">
-                <label>우편번호</label>
-                <input type="text" name="postcode" value="${memberJoinDTO.postcode}" class="form-control" placeholder="우편번호를 입력해주세요"/>
+                <label>우편번호</label> &nbsp; <input type="button" value="우편번호 찾기" id="postcodeBtn" onclick="sample6_execDaumPostcode()">
+
+                <input type="text" name="postcode" id="postcode" value="${memberJoinDTO.postcode}" class="form-control" placeholder="우편번호를 입력해주세요" readonly="readonly"/>
                 <span id="valid_postcode">${valid_postcode}</span>
             </div>
 
             <div class="form-group">
                 <label>주소</label>
-                <input type="text" name="address" value="${memberJoinDTO.address}" class="form-control" placeholder="주소를 입력해주세요"/>
+                <input type="text" name="address" id="address" value="${memberJoinDTO.address}" class="form-control" placeholder="주소를 입력해주세요" readonly="readonly"/>
                 <span id="valid_address">${valid_address}</span>
             </div>
 
             <div class="form-group">
                 <label>상세주소</label>
-                <input type="text" name="detailAddress" value="${memberJoinDTO.detailAddress}" class="form-control" placeholder="상세주소를 입력해주세요"/>
+                <input type="text" name="detailAddress" id="detailAddress" value="${memberJoinDTO.detailAddress}" class="form-control" placeholder="상세주소를 입력해주세요"/>
                 <span id="valid_detailAddress">${valid_detailAddress}</span>
             </div>
 
             <div class="form-group">
-                <label>주소 추가사항</label>
-                <input type="text" name="extraAddress" value="${memberJoinDTO.extraAddress}" class="form-control" placeholder="주소 추가사항을 입력해주세요"/>
+                <label>참고항목</label>
+                <input type="text" name="extraAddress" id="extraAddress" value="${memberJoinDTO.extraAddress}" class="form-control" placeholder="참고항목을 입력해주세요"/>
             </div>
 
             <div class="form-group">
@@ -83,10 +92,12 @@
                 <span id="valid_email">${valid_email}</span>
             </div>
 
-            <button type="submit" class="btn btn-primary bi bi-person">가입</button>
+
+            <button type="submit" id="submit" class="btn btn-primary bi bi-person">가입</button>
             <a href="/member/login" role="button" class="btn btn-info bi bi-arrow-return-left">돌아가기</a>
         </form:form>
     </div>
 </div>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </body>
 </html>

@@ -10,5 +10,4 @@ public interface ProductImageService {
     List<ProductImageDTO> getProductImage(Long productId);
     //이미지 전체 조회
     List<ProductImageDTO> getProductImageList();
-
 }

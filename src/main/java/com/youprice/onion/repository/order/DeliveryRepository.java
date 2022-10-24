@@ -12,6 +12,6 @@ import java.util.Optional;
 @Repository
 public interface DeliveryRepository extends JpaRepository<Delivery, Long> {
 
-	@Query(value = "select d from Delivery d where d.id = ?1")
-	Optional<Delivery> findDeliveryById(Long orderId);
+//	@Query(value = "select d from Delivery d where d.id = ?1")
+//	Optional<Delivery> findDeliveryById(Long orderId);
 }

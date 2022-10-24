@@ -9,12 +9,10 @@ import com.youprice.onion.util.AlertRedirect;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
@@ -26,15 +24,18 @@ public class ProductController {
     private final TownService townService;
     private final CategoryService categoryService;
     private final ProductImageService productImageService;
+    private final BiddingService biddingService;
 
     @GetMapping("add")//상픔 등록 주소
     public String add(Model model, @LoginUser SessionDTO userSession, HttpServletResponse response) throws IOException {
+
         //Session이 없을 경우 로그인 처리
         if(userSession == null){
             AlertRedirect.warningMessage(response,"/member/login", "로그인이 필요합니다.");
             return "redirect:/member/login";
         }
 
+        /*세션아이디로 동네 조회*/
         List<TownFindDTO> townList = townService.townLists(userSession.getId());
         //동네정보가 없을 경우 등록 처리
         if(townList.size() == 0) {
@@ -42,6 +43,7 @@ public class ProductController {
             return null;
         }
 
+        /*카테고리 조회*/
         List<Category> topCategory = categoryService.findTopCategory();
         List<Category> subCategory = categoryService.findSubCategory();
 
@@ -52,40 +54,76 @@ public class ProductController {
         return "product/addProduct";//상품등록 페이지
     }
     @PostMapping("add")//실제 상품 등록 주소
-    public String addProduct(@LoginUser SessionDTO userSession, @Valid ProductAddDTO productAddDTO,
+    public String addProduct(@LoginUser SessionDTO userSession, ProductAddDTO productAddDTO,
                              List<MultipartFile> fileList, Model model) throws Exception {
 
         /*세션아이디로 멤버아이디 set*/
         productAddDTO.setMemberId(userSession.getId());
-
+        /*상품 등록*/
         Long productId = productService.addProduct(productAddDTO,fileList);
 
         model.addAttribute("productId",productId);
 
-        return "redirect:/product/detail?productId="+productId;//상품 상세페이지로 이동
+        return "redirect:/product/detail/"+productId;//상품 상세페이지로 이동
     }
 
-    @GetMapping("detail")//상품 상세페이지 주소
-    public String detail(Long productId, Model model) throws Exception{
+    @GetMapping("/detail/{productId}")//상품 상세페이지 주소
+    public String detail(@PathVariable("productId") Long productId, @LoginUser SessionDTO userSession, Model model,
+                         HttpServletResponse response) throws Exception{
+
+        /*세션아이디로 동네 조회*/
+        List<TownFindDTO> townList = townService.townLists(userSession.getId());
+        //동네정보가 없을 경우 등록 처리
+        if(townList.size() == 0) {
+            AlertRedirect.warningMessage(response, "/town/town", "내 동네를 먼저 등록해주세요.");
+            return null;
+        }
 
         productService.updateView(productId);//조회수 증가
 
         ProductFindDTO productFindDTO = productService.getProductFindDTO(productId);
+//        입찰 리스트 조회
+        List<BiddingListDTO> biddingList = biddingService.getBiddingList();
+        if(biddingList.size()>0) {
+            int bid = biddingList.get(biddingList.size()-1).getBid();
 
+            model.addAttribute("bid",bid);
+        }
+        model.addAttribute("userSession",userSession);
         model.addAttribute("productId",productId);
         model.addAttribute("productFindDTO",productFindDTO);
+        model.addAttribute("biddingList",biddingList);
 
         return "product/detail";
     }
+    @PostMapping("bid/{productId}")//상품 입찰 주소
+    public String bidProduct(@LoginUser SessionDTO sessionDTO, @PathVariable("productId") Long productId,
+                             BiddingAddDTO biddingAddDTO, ProductUpdateDTO productUpdateDTO, Model model) throws Exception{
 
-    @GetMapping(value = "main")//상품 리스트 메인 화면 주소
+        biddingAddDTO.setMemberId(sessionDTO.getId());
+        biddingAddDTO.setProductId(productId);
+
+        /*입찰 목록 생성*/
+        biddingService.bidProduct(biddingAddDTO);
+
+        /*입찰 종료 후 마지막 입찰가로 상품가격 업데이트 */
+//        productService.updateProduct(productId, productUpdateDTO);
+
+        model.addAttribute("productId",productId);
+
+        return "redirect:/product/detail/"+productId;
+    }
+
+    @GetMapping(value = "list")//상품 리스트 메인 화면 주소
     public String main(Model model) throws Exception {
 
-        List<ProductListDTO> list = productService.getProductList();
+        Boolean blindStatus = false;
+
+        List<ProductListDTO> list = productService.getProductList(blindStatus);
 
         model.addAttribute("list",list);
 
-        return "product/main";//상품 리스트 메인 화면페이지
+        return "product/list";//상품 리스트 메인 화면페이지
     }
     @GetMapping(value = "main/category")//상품 카테고리별 화면 주소
     public String main(Model model,@RequestParam("categoryId") int categoryId ) throws Exception {
@@ -201,72 +239,68 @@ public class ProductController {
         return  "product/main";
     }
 
+    @GetMapping("/update/{productId}")//상품 업데이트 주소
+    public String update(Model model, @PathVariable("productId") Long productId, @LoginUser SessionDTO userSession, HttpServletResponse response) throws IOException {
 
-    @GetMapping(value = "update")//상품 업데이트 주소
-    public String update(Model model, Long productId, @LoginUser SessionDTO userSession, HttpServletResponse response) throws IOException {
-
+        /*세션 없을 경우 로그인 처리*/
         if(userSession == null){
             AlertRedirect.warningMessage(response,"/member/login", "로그인이 필요합니다.");
             return "redirect:/member/login";
         }
+        /*세션아이디로 동네 조회*/
+        List<TownFindDTO> townList = townService.townLists(userSession.getId());
 
-        ProductDTO productDTO = productService.getProductDTO(productId);
+        /*ProductDTO 및 ProductImageDTO 조회*/
+        ProductFindDTO productFindDTO = productService.getProductFindDTO(productId);
         List<ProductImageDTO> imageList = productImageService.getProductImage(productId);
 
-        List<TownFindDTO> townList = townService.townLists(userSession.getId());
-        String townName = townList.get(0).getTownName();
-
+        /*카테고리 조회*/
         List<Category> topCategory = categoryService.findTopCategory();
         List<Category> subCategory = categoryService.findSubCategory();
 
         model.addAttribute("imageList", imageList);
-        model.addAttribute("townName", townName);
+        model.addAttribute("townList", townList);
         model.addAttribute("topCategory", topCategory);
         model.addAttribute("subCategory", subCategory);
-        model.addAttribute("dto",productDTO);
+        model.addAttribute("dto",productFindDTO);
         model.addAttribute("productId",productId);
 
         return "product/updateProduct";
     }
 
 	// 상품상태 수정
-	@GetMapping("progressUpdate")
-	public String progressUpdate(Long productId, String productProgress) {
+	@GetMapping("progressUpdate/{productId}/{productProgress}")
+	public String progressUpdate(@PathVariable Long productId, @PathVariable String productProgress) {
 		productService.progressUpdate(productId, productProgress);
 		return "redirect:/order/sellList";
 	}
 
-    @PostMapping(value = "update")//실제 상품 업데이트 주소
-    public String updateProduct(Model model,Long productId, ProductUpdateDTO updateDTO, @LoginUser SessionDTO userSession,
+    @PostMapping("/update/{productId}")//실제 상품 업데이트 주소
+    public String updateProduct(Model model, Long productId, ProductUpdateDTO updateDTO, @LoginUser SessionDTO userSession,
                                  HttpServletResponse response) throws Exception{
 
+        /*세션 없을 경우 로그인 처리*/
         if(userSession == null){
             AlertRedirect.warningMessage(response,"/member/login", "로그인이 필요합니다.");
             return "redirect:/member/login";
         }
 
-        /*동네 이름으로 동네번호 조회 및 set*/
-        TownFindDTO townFindDTO = productService.findTownId(updateDTO.getTownName());
-        updateDTO.setTownId(townFindDTO.getId());
-        /*카테고리번호 set*/
-        updateDTO.setCategoryId(updateDTO.getCategoryId());
-
+        /*상품 정보 업데이트*/
         Long updateId = productService.updateProduct(productId, updateDTO);
 
         model.addAttribute("productId",updateId);
 
-        return "redirect:/product/detail?productId="+updateId;//상품 상세페이지로 이동
+        return "redirect:/product/detail/"+updateId;//상품 상세페이지로 이동
     }
 
-    @GetMapping(value = "delete")//상품 삭제 주소
-    public String removeProduct(Long productId, @LoginUser SessionDTO userSession, HttpServletResponse response)
+    @GetMapping("/delete/{productId}")//상품 삭제 주소
+    public String removeProduct(@PathVariable("productId") Long productId, @LoginUser SessionDTO userSession, HttpServletResponse response)
             throws Exception {
 
         if(userSession == null){
             AlertRedirect.warningMessage(response,"/member/login", "로그인이 필요합니다.");
             return "redirect:/member/login";
         }
-
         //DB삭제가 아닌 boolean사용
         productService.deleteProduct(productId);
 

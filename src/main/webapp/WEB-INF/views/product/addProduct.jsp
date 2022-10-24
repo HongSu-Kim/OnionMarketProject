@@ -1,8 +1,7 @@
-<%@ page import="javax.validation.constraints.NotEmpty" %>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%--<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>--%>
 
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -31,7 +30,6 @@
 
 	    input.error, textarea.error{display: inline-block; color: red;}
 		label.error{display:block;color:red;}
-	</style>
 	</style>
 	<title>상품 등록</title>
 </head>
@@ -68,7 +66,7 @@
 						<div class="checkout__input">
 							<p>경매 등록</p><%--true/false로 변경--%>
 							<p style="color: #aaaaaa">
-								경매 기간은 3일입니다.
+								경매 기간은 12시간입니다.
 								<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="auctionStatus" value="true">
 								<input type="hidden" name="auctionStatus" value="false">
 								<hr/>
@@ -144,43 +142,6 @@
 							<input type="button" value="뒤로가기" onclick="goBack();">
 						</div>
 					</div>
-<%--					<div class="col-lg-4 col-md-6">--%>
-<%--						<div class="checkout__order">--%>
-<%--							<h4>Your Order</h4>--%>
-<%--							<div class="checkout__order__products">Products <span>Total</span></div>--%>
-<%--							<ul>--%>
-<%--								<li>Vegetable’s Package <span>$75.99</span></li>--%>
-<%--								<li>Fresh Vegetable <span>$151.99</span></li>--%>
-<%--								<li>Organic Bananas <span>$53.99</span></li>--%>
-<%--							</ul>--%>
-<%--							<div class="checkout__order__subtotal">Subtotal <span>$750.99</span></div>--%>
-<%--							<div class="checkout__order__total">Total <span>$750.99</span></div>--%>
-<%--							<div class="checkout__input__checkbox">--%>
-<%--								<label for="acc-or">--%>
-<%--									Create an account?--%>
-<%--									<input type="checkbox" id="acc-or">--%>
-<%--									<span class="checkmark"></span>--%>
-<%--								</label>--%>
-<%--							</div>--%>
-<%--							<p>Lorem ipsum dolor sit amet, consectetur adip elit, sed do eiusmod tempor incididunt--%>
-<%--								ut labore et dolore magna aliqua.</p>--%>
-<%--							<div class="checkout__input__checkbox">--%>
-<%--								<label for="payment">--%>
-<%--									Check Payment--%>
-<%--									<input type="checkbox" id="payment">--%>
-<%--									<span class="checkmark"></span>--%>
-<%--								</label>--%>
-<%--							</div>--%>
-<%--							<div class="checkout__input__checkbox">--%>
-<%--								<label for="paypal">--%>
-<%--									Paypal--%>
-<%--									<input type="checkbox" id="paypal">--%>
-<%--									<span class="checkmark"></span>--%>
-<%--								</label>--%>
-<%--							</div>--%>
-<%--							<button type="submit" class="site-btn">PLACE ORDER</button>--%>
-<%--						</div>--%>
-<%--					</div>--%>
 				</div>
 			</form>
 		</div>
