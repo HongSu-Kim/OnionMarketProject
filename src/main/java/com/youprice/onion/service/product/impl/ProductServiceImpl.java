@@ -153,6 +153,13 @@ public class ProductServiceImpl implements ProductService {
                 .map(product -> new ProductListDTO(product))
                 .collect(Collectors.toList());
     }
+    //전체 경매 상품 조회
+    @Override
+    public List<ProductListDTO> getAuctionList() {
+        return productRepository.findAllByAuctionDeadlineNotNull().stream()
+                .map(product -> new ProductListDTO(product))
+                .collect(Collectors.toList());
+    }
 
     //검색에 따른 조회(제목,카테고리,내용)
     @Override
