@@ -3,7 +3,11 @@ package com.youprice.onion.repository.product;
 import static com.youprice.onion.entity.product.QCategory.*;
 import static com.youprice.onion.entity.product.QProduct.*;
 import static com.youprice.onion.entity.product.QTown.*;
+
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.youprice.onion.dto.product.SearchRequirements;
 import com.youprice.onion.entity.product.Product;
@@ -12,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -70,7 +75,7 @@ public interface   ProductRepository extends JpaRepository<Product, Long> {
 							blindStatusEq(searchRequirements.getBlindStatus()),
 							searchValueContains(searchRequirements.getSearchValue())
 					)
-					.orderBy((product.updateDate != null ? product.updateDate : product.uploadDate).desc())
+					.orderBy(orderBy(searchRequirements.getPageable()))
 					.offset(searchRequirements.getPageable().getOffset())
 					.limit(searchRequirements.getPageable().getPageSize())
 					.fetch();
@@ -91,6 +96,15 @@ public interface   ProductRepository extends JpaRepository<Product, Long> {
 			return new PageImpl<>(content, searchRequirements.getPageable(), count);
 		}
 
+		private OrderSpecifier<?> orderBy(Pageable pageable) {
+
+			for (Sort.Order o : pageable.getSort()) {
+				PathBuilder<Product> orderByExpression = new PathBuilder<>(Product.class, "product");
+				return new OrderSpecifier(o.isAscending() ? Order.ASC : Order.DESC, orderByExpression.get(o.getProperty()));
+			}
+
+			return null;
+		}
 		private BooleanExpression memberIdEq(Long memberId){
 			return memberId == null ? null : product.member.id.eq(memberId);
 		}

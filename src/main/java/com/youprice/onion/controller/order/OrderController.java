@@ -47,18 +47,18 @@ public class OrderController {
 	public String payment(@LoginUser SessionDTO sessionDTO, Model model, @ModelAttribute OrderAddDTO orderAddDTO, @PathVariable Long productId,
 						  HttpServletResponse response) throws IOException {
 		if (sessionDTO == null) return "redirect:/member/login";
-		if (productId == null) return "redirect:/product/main";
+		if (productId == null) return "redirect:/";
 
 		MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
 		ProductDTO productDTO = productService.getProductDTO(productId);
         orderAddDTO.setOrderNum(orderService.getOrderNum());
 
 		if (productDTO == null) {
-			return AlertRedirect.warningMessage(response, "/product/main", "상품정보가 존재하지 않습니다.");
+			return AlertRedirect.warningMessage(response, "/", "상품정보가 존재하지 않습니다.");
 		} else if (productDTO.getMemberId() == sessionDTO.getId()) {
-			return AlertRedirect.warningMessage(response, "/product/detail/" + productId, "자신의 상품은 구매할수 없습니다.");
+			return AlertRedirect.warningMessage(response, "자신의 상품은 구매할수 없습니다.");
 		} else if (productDTO.getProductProgress() != ProductProgress.TRADINGS) {
-			return AlertRedirect.warningMessage(response, "/product/main", "구매할 수 없는 상품입니다.");
+			return AlertRedirect.warningMessage(response, "/", "구매할 수 없는 상품입니다.");
 		}
 
 		model.addAttribute("memberDTO", memberDTO);
@@ -148,7 +148,7 @@ public class OrderController {
 	@GetMapping("cancel/{orderId}")
 	public String cancel(@PathVariable Long orderId, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		try {
-			
+			log.error(request.getHeader("Referer"));
 			// 주문취소
 			orderService.cancel(orderId);
 			

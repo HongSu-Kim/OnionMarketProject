@@ -60,7 +60,7 @@ public class ProductServiceImpl implements ProductService {
         productAddDTO.setRepresentativeImage(getImageName()+fileList.get(0).getOriginalFilename());
 
         // 상품 등록
-        Product product = new Product(member,town,category,order,productAddDTO);
+        Product product = new Product(member,town,category,productAddDTO);
 
         Long productId = productRepository.save(product).getId();
 
