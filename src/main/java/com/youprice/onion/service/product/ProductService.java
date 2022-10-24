@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ProductService {
@@ -20,12 +21,13 @@ public interface ProductService {
 	void progressUpdate(Long productId, String productProgress);
     //상품 삭제
     void deleteProduct(Long productId) throws Exception;
-
     // 카테고리별 상품 조회
     List<ProductListDTO> getProductCategoryList(Long start, Long end);
 
     //상품 전체 조회
     List<ProductListDTO> getProductList(Boolean blindStatus);
+    //경매상품 전체 조회
+    List<ProductListDTO> getAuctionList();
 
     //상품 하나 조회
     ProductDTO getProductDTO(Long productId);
