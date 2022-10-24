@@ -76,7 +76,7 @@ public class TownController {
     }
 
 
-    @PostMapping("townResult")
+    @PostMapping("townresult")
     public String townResult(Town town, Model model, @RequestParam("wishtown") String wishtown,
                        @LoginUser SessionDTO sessionDTO) {
 
