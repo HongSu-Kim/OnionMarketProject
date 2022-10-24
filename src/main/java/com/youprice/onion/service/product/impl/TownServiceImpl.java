@@ -49,7 +49,7 @@ public class TownServiceImpl implements TownService {
 
 
 
-  if(townRepositoy.countByMemberId(member.getId())>=10){
+  if(townRepositoy.countByMemberId(member.getId())>=3){
    out.println("<script>alert('가능한 동네설정개수를 초과하셨습니다(최대 3개)');history.go(-2); </script>");
    out.flush();
    return ;
@@ -63,11 +63,11 @@ public class TownServiceImpl implements TownService {
    return;
   }
 
- if(townRepositoy.findByCoordinateId(coordinate.getId())==false) {
-  out.println("<script>alert('없는 동네번호입니다!');history.go(-2); </script>");
-  out.flush();
-  return;
- }
+// if(townRepositoy.findByCoordinateId(coordinate.getId())==false) {
+//  out.println("<script>alert('없는 동네번호입니다!');history.go(-2); </script>");
+//  out.flush();
+//  return;
+// }
   town.townCreate(townAddDTO,coordinate,member);
 
   townRepositoy.save(town);
