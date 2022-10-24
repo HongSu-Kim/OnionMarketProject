@@ -9,5 +9,5 @@ public interface BiddingService {
 
     Long bidProduct(BiddingAddDTO biddingAddDTO);
 
-    List<BiddingListDTO> getBiddingList();
+    List<BiddingListDTO> getBiddingList(Long productId);
 }

@@ -7,13 +7,13 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>상품 리스트</title>
+	<title>경매 상품 리스트</title>
 </head>
 <body>
 
 
 <div>
-	<h3><상품 리스트입니다></h3><br/>
+	<h3><경매 상품 리스트입니다></h3><br/>
 	<c:forEach var="list" items="${list}">
 
 		<a href="/product/detail/${list.productId}">

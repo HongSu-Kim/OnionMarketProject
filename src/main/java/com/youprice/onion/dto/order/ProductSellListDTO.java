@@ -36,8 +36,5 @@ public class ProductSellListDTO {
 		payStatus = product.getPayStatus();
 		blindStatus = product.getBlindStatus();
 		representativeImage = product.getRepresentativeImage();
-
-		if (product.getOrder() != null)
-			orderId = product.getOrder().getId();
 	}
 }

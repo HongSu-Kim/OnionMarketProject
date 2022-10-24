@@ -43,10 +43,6 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category; //카테고리번호 FK
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
-    private Order order; //주문번호 FK
-
     private String subject; //제목
     private String content; //내용
     private int price; //상품가격
@@ -64,6 +60,9 @@ public class Product {
     private Boolean payStatus; //페이현황
     private Boolean blindStatus; //블라인드현황
 
+    //주문 참조 양방향
+    @OneToMany(mappedBy = "product")
+    private List<Order> orderList = new ArrayList<>();
     //이미지 참조 양방향
     @OneToMany(mappedBy = "product")
     private List<ProductImage> productImageList = new ArrayList<>();
@@ -89,12 +88,11 @@ public class Product {
     private List<Bidding> biddingList = new ArrayList<>();
 
     //상품 등록 시 정보 생성
-    public Product(Member member,Town town,Category category,Order order,ProductAddDTO productAddDTO) {
+    public Product(Member member,Town town,Category category,ProductAddDTO productAddDTO) {
 
         this.member = member;
         this.town = town;
         this.category = category;
-        this.order = order;
         this.subject = productAddDTO.getSubject();
         this.content = productAddDTO.getContent();
         this.price = productAddDTO.getPrice();
@@ -148,13 +146,6 @@ public class Product {
         this.auctionDeadline = updateDTO.getAuctionDeadline();
         this.payStatus = updateDTO.getPayStatus();
     }
-
-	// 주문시 상품상태 판매완료로 변경
-	public Product order(Order order) {
-		this.order = order;
-		this.productProgress = ProductProgress.SOLDOUT;
-		return this;
-	}
 
 	// 상품상태 수정
 	public Product progressUpdate(String productProgress) {

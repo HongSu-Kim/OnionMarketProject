@@ -61,8 +61,12 @@ public class SearchServiceImpl implements SearchService {
  }
 
 
+    @Override
+    public List<Search> findBySearchRank() {
+        return searchRepositoy.findAllByOrderBySearchCountDesc();
+    }
 
- @Override
+    @Override
  public Search findBySearchName(String searchName) {
   return searchRepositoy.findBySearchName(searchName);
  }
@@ -71,6 +75,8 @@ public class SearchServiceImpl implements SearchService {
  public int searchupdatecount(String searchName) {
   return searchrepositoy.updatecount(searchName);
  } //검색시 검색수 증가
+
+
 
 
 }

@@ -54,13 +54,12 @@ public class ProductServiceImpl implements ProductService {
         Member member = memberRepository.findById(productAddDTO.getMemberId()).orElse(null);
         Town town = townRepositoy.findById(productAddDTO.getTownId()).orElse(null);
         Category category = categoryRepository.findById(productAddDTO.getCategoryId()).orElse(null);
-        Order order = null;
 
         //대표이미지 설정
         productAddDTO.setRepresentativeImage(getImageName()+fileList.get(0).getOriginalFilename());
 
         // 상품 등록
-        Product product = new Product(member,town,category,order,productAddDTO);
+        Product product = new Product(member,town,category,productAddDTO);
 
         Long productId = productRepository.save(product).getId();
 
@@ -150,6 +149,13 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductListDTO> getProductList(Boolean blindStatus) {
         return productRepository.findByBlindStatus(false).stream()
+                .map(product -> new ProductListDTO(product))
+                .collect(Collectors.toList());
+    }
+    //전체 경매 상품 조회
+    @Override
+    public List<ProductListDTO> getAuctionList() {
+        return productRepository.findAllByAuctionDeadlineNotNull().stream()
                 .map(product -> new ProductListDTO(product))
                 .collect(Collectors.toList());
     }

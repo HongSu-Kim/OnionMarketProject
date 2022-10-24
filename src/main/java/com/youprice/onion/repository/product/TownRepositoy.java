@@ -19,7 +19,7 @@ public interface TownRepositoy extends JpaRepository<Town,Long> {
 
 	Optional<Town> findByMemberIdAndCoordinateTownNameContains(Long memberId, String townNameStr);
 
-
+    boolean findByCoordinateId(Long coordinateId);
 
     int countByMemberId(Long memberId);
 }
