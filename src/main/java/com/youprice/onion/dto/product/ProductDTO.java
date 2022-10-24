@@ -37,8 +37,6 @@ public class ProductDTO {
         memberId = product.getMember().getId();
         townId = product.getTown().getId();
         categoryId = product.getCategory().getId();
-		if (product.getOrder() != null)
-			orderId = product.getOrder().getId();
         subject = product.getSubject();
         content = product.getContent();
         price = product.getPrice();

@@ -40,7 +40,7 @@
 										<img src="/img/product/${productDTO.representativeImage}" class="list-img">
 										<span>${productDTO.subject}</span>
 									</td>
-									<td>${orderDTO.imp_uid}</td>
+									<td>${orderDTO.orderNum}</td>
 									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${orderDTO.orderPayment}"/>원</td>
 									<td>
 										<fmt:parseDate var="orderDate" value="${orderDTO.orderDate}" pattern="yyyy-MM-dd'T'HH:mm:ss"/>
@@ -52,9 +52,6 @@
 											<c:if test="${orderDTO.orderState eq 'ORDER'}">
 												<a onclick="confirm('정말 취소하시겠습니까?') ? location.href='/order/cancel/${orderDTO.orderId}' : false"
 													 class="primary-btn cart-btn">주문취소</a>
-											</c:if>
-											<c:if test="${orderDTO.orderState eq 'CANCEL'}">
-												<a href="/order/detail/${orderDTO.orderId}" class="primary-btn">주문확인</a>
 											</c:if>
 											<c:if test="${orderDTO.orderState eq 'COMPLETE'}">
 												<a href="/review/created/${orderDTO.orderId}" class="primary-btn">구매후기등록</a>
@@ -92,7 +89,7 @@
 					<div class="col-8 col-md-6">
 						<div class="deliveryInfo">
 							<h4>배송 정보
-								<c:if test="${!empty deliveryDTO}">
+								<c:if test="${!empty deliveryDTO && orderDTO.orderState eq 'ORDER' }">
 									<a type="button" class="primary-btn" style="padding: 8px 15px 7px; float: right;"
 										 id="updateBtn" onclick="update()">배송 정보 변경</a>
 									<a type="button" class="primary-btn" style="padding: 8px 15px 7px; float: right; display: none;"

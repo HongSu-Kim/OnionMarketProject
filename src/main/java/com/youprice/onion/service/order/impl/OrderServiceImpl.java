@@ -55,22 +55,25 @@ public class OrderServiceImpl implements OrderService {
 
 		// 양파페이 결제
 		if (orderAddDTO.getImp_uid() == null)
-			if (member.subCash(orderAddDTO.getOrderPayment()))
+			if (member.subCash(orderAddDTO.getOrderPayment()) < 0){
+				log.error("양파페이 부족");
 				throw new RuntimeException();
+			}
+		memberRepository.save(member);
+
+		// 상품상태 변경 - sold out
+		product.progressUpdate(ProductProgress.SOLDOUT);
+		productRepository.save(product);
 
 		// 주문내역 생성
-		Order order = new Order(member, orderAddDTO.getOrderNum(), orderAddDTO.getImp_uid(), orderAddDTO.getOrderPayment());
-//		Long orderId = orderRepository.save(order).getId();
+		Order order = new Order(member, product, orderAddDTO.getOrderNum(), orderAddDTO.getImp_uid(), orderAddDTO.getOrderPayment());
+		Long orderId = orderRepository.save(order).getId();
 
 		// 배송정보 생성
 		if (orderAddDTO.isDelivery()) {
 			Delivery delivery = new Delivery(order, orderAddDTO);
-//			deliveryRepository.save(delivery);
+			deliveryRepository.save(delivery);
 		}
-
-		// 상품상태 변경 - sold out
-		product.order(order);
-		Long orderId = productRepository.save(product).getOrder().getId();
 
 		return orderId;
 	}
@@ -129,7 +132,6 @@ public class OrderServiceImpl implements OrderService {
 			// 상품 상태 변경 - tradings
 			order.getProduct().progressUpdate(ProductProgress.TRADINGS);
 
-			
 			// imp 결제시 환불
 			if (order.getImp_uid() != null){
 				try {
