@@ -2,6 +2,7 @@ package com.youprice.onion.service.member.impl;
 
 import com.youprice.onion.dto.member.*;
 import com.youprice.onion.entity.member.Member;
+import com.youprice.onion.entity.member.Role;
 import com.youprice.onion.repository.member.BlockRepository;
 import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.service.member.MemberService;
@@ -62,18 +63,20 @@ public class MemberServiceImpl implements MemberService {
     //회원정보 수정
     @Transactional
     @Override
-    public boolean modify(MemberModifyDTO memberModifyDTO) {
-        Member member = memberRepository.findById(memberModifyDTO.getId()).orElseThrow(() ->
-                new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+    public void modify(MemberModifyDTO memberModifyDTO) {
+        Member findById = memberRepository.findById(memberModifyDTO.getId()).orElseThrow(() ->
+                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
-        Member member1 = memberRepository.findByNickname(memberModifyDTO.getNickname()).orElse(null);
+        Member findByEmail = memberRepository.findByEmail(memberModifyDTO.getEmail()).orElse(null);
+        Member findByNickname = memberRepository.findByNickname(memberModifyDTO.getNickname()).orElse(null);
 
-        if (member1 == null || member1.getId() == memberModifyDTO.getId()) {
-            String encPwd = passwordEncoder.encode(memberModifyDTO.getPwd());
-            member.modify(encPwd, memberModifyDTO.getNickname(), memberModifyDTO.getTel(), memberModifyDTO.getPostcode(), memberModifyDTO.getAddress(), memberModifyDTO.getDetailAddress(), memberModifyDTO.getExtraAddress(), memberModifyDTO.getEmail(), memberModifyDTO.getMemberImageName());
-            return true;
+        if (findByEmail != null && findByEmail.getId() != memberModifyDTO.getId()) {
+            throw  new IllegalArgumentException("이미 존재하는 이메일 입니다. 다시 입력해 주세요.");
+        } else if (findByNickname != null && findByNickname.getId() != memberModifyDTO.getId()) {
+            throw new IllegalArgumentException("이미 존재하는 닉네임 입니다. 다시 입력해 주세요.");
         } else {
-            return false;
+            String encPwd = passwordEncoder.encode(memberModifyDTO.getPwd());
+            findById.modify(encPwd, memberModifyDTO.getNickname(), memberModifyDTO.getTel(), memberModifyDTO.getPostcode(), memberModifyDTO.getAddress(), memberModifyDTO.getDetailAddress(), memberModifyDTO.getExtraAddress(), memberModifyDTO.getEmail(), memberModifyDTO.getMemberImageName());
         }
     }
 
@@ -95,28 +98,34 @@ public class MemberServiceImpl implements MemberService {
         //회원정보 불러오기
         Member member = memberRepository.findByEmail(email).orElse(null);
 
-        //이메일 전송
-        if (member != null) {
-
-            //임시 비밀번호 생성
-            String tempPwd = UUID.randomUUID().toString().replace("-", "");
-            tempPwd = tempPwd.substring(0, 10);
-
-            member.findPwd(tempPwd);
-
-            //이메일 전송
-            MailUtil mail = new MailUtil();
-            mail.sendMail(member);
-
-            //암호화된 임시 비밀번호 저장
-            member.findPwd(passwordEncoder.encode(member.getPwd()));
-
-            memberRepository.save(member);
+        if (member == null) {
+            return null;
         }
+        //이메일 전송
 
-        MemberDTO memberDTO = new MemberDTO(member);
+        //임시 비밀번호 생성
+        String tempPwd = UUID.randomUUID().toString().replace("-", "");
+        tempPwd = tempPwd.substring(0, 10);
 
-        return memberDTO;
+        member.findPwd(tempPwd);
+
+        //이메일 전송
+        MailUtil mail = new MailUtil();
+        mail.sendMail(member);
+
+        //암호화된 임시 비밀번호 저장
+        member.findPwd(passwordEncoder.encode(member.getPwd()));
+        memberRepository.save(member);
+
+        return new MemberDTO(member);
+    }
+
+    @Transactional
+    @Override
+    public void withdraw(String userId) {
+        Member member = memberRepository.findByUserId(userId).orElse(null);
+        member.withdraw(Role.valueOf("WITHDRAWAL"));
+        memberRepository.save(member);
     }
 
     @Override

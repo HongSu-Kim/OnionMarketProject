@@ -1,3 +1,4 @@
+//비밀번호 확인
 $(function(){
     $("#alert-success").hide();
     $("#alert-danger").hide();
