@@ -153,6 +153,7 @@
 								<ul class="header__menu__dropdown">
 									<li><a href="/member/mypage">My Page</a></li>
 									<li><a href="/town/town">동네 설정</a></li>
+									<li><a href="/keyword/keyword">키워드 설정</a></li>
 									<li><a href="/member/logout">Logout</a></li>
 								</ul>
 							</li>
@@ -217,7 +218,7 @@
 			<div class="col-lg-9">
 				<div class="hero__search">
 					<div class="hero__search__form">
-						<form:form action="/search/result"  method="get">
+						<form:form action="/search/list"  method="get">
 							<div class="hero__search__categories">
 								All Categories
 								<span class="arrow_carrot-down"></span>
