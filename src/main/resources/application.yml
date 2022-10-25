@@ -1,9 +1,11 @@
 server:
   port: 8083
-#  servlet:
-#    encoding:
-#      force: true
-#      charset: UTF-8
+  servlet:
+    encoding:
+      force: true
+      charset: UTF-8
+    session:
+      setMaxInactiveInterval: 1800
 
 spring:
   datasource:

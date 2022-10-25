@@ -18,7 +18,6 @@ public class ProductDTO {
     private Long townId; //Town FK
     private Long categoryId; //Category FK
     private Long auctionId; //Auction FK
-    private Long orderId; //Order FK
     private String subject; //제목
     private String content; //내용
     private int price; //상품가격
@@ -37,8 +36,6 @@ public class ProductDTO {
         memberId = product.getMember().getId();
         townId = product.getTown().getId();
         categoryId = product.getCategory().getId();
-		if (product.getOrder() != null)
-			orderId = product.getOrder().getId();
         subject = product.getSubject();
         content = product.getContent();
         price = product.getPrice();

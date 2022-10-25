@@ -19,6 +19,7 @@ DROP TABLE review PURGE;
 DROP TABLE complain PURGE;
 
 DROP TABLE delivery PURGE;
+DROP TABLE orders PURGE;
 DROP TABLE wish PURGE;
 
 DROP TABLE chat PURGE;
@@ -33,7 +34,6 @@ DROP TABLE product_image PURGE;
 DROP TABLE product PURGE;
 
 DROP TABLE category PURGE;
-DROP TABLE orders PURGE;
 
 DROP TABLE town PURGE;
 DROP TABLE coordinate PURGE;
@@ -86,8 +86,6 @@ CREATE TABLE block (
 	CONSTRAINT FK_BLOCK_BLOCK_TARGET_ID FOREIGN KEY (block_target_id) REFERENCES member(member_id)
 );
 
-
-
 CREATE TABLE keyword (
     keyword_id      	NUMBER          NOT NULL,
     member_id       	NUMBER          NOT NULL,
@@ -127,19 +125,6 @@ CREATE TABLE town (
 	CONSTRAINT FK_TOWN_COORDINATE_ID FOREIGN KEY (coordinate_id) REFERENCES coordinate(coordinate_id)
 );
 
-CREATE TABLE orders (
-    order_id	    	NUMBER	        NOT NULL,
-    member_id	    	NUMBER          NOT NULL,
-    order_num           CHAR(15)        NOT NULL,
-    imp_uid             VARCHAR2(20)    NULL,
-    order_payment       NUMBER          NOT NULL,
-    order_state     	VARCHAR2(10)    DEFAULT 'ORDER',
-    order_date      	DATE            DEFAULT SYSDATE,
-    modified_date   	DATE            DEFAULT NULL,
-    CONSTRAINT PK_ORDERS PRIMARY KEY (order_id),
-    CONSTRAINT FK_ORDERS_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id)
-);
-
 CREATE TABLE category (
     category_id     	NUMBER          NOT NULL,
     category_name  	    VARCHAR2(255)   NOT NULL,
@@ -153,7 +138,6 @@ CREATE TABLE product (
 	member_id           NUMBER          NOT NULL,
 	town_id             NUMBER          NOT NULL,
 	category_id         NUMBER          NOT NULL,
-	order_id            NUMBER          NULL,
 	subject             VARCHAR2(255)   NULL,
 	content             VARCHAR2(255)   NULL,
 	price               NUMBER          NULL,
@@ -168,8 +152,7 @@ CREATE TABLE product (
 	CONSTRAINT PK_PRODUCT PRIMARY KEY (product_id),
 	CONSTRAINT FK_PRODUCT_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id),
 	CONSTRAINT FK_PRODUCT_TOWN_ID FOREIGN KEY (town_id) REFERENCES town(town_id),
-    CONSTRAINT FK_PRODUCT_CATEGORY_ID FOREIGN KEY (category_id) REFERENCES  category(category_id),
-	CONSTRAINT FK_PRODUCT_ORDER_ID FOREIGN KEY (order_id) REFERENCES orders(order_id)
+    CONSTRAINT FK_PRODUCT_CATEGORY_ID FOREIGN KEY (category_id) REFERENCES  category(category_id)
 );
 
 CREATE TABLE product_image (
@@ -246,6 +229,21 @@ CREATE TABLE wish (
 	CONSTRAINT PK_WISH PRIMARY KEY (wish_id),
 	CONSTRAINT FK_WISH_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id),
 	CONSTRAINT FK_WISH_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id)
+);
+
+CREATE TABLE orders (
+    order_id	    	NUMBER	        NOT NULL,
+    member_id	    	NUMBER          NOT NULL,
+    product_id	    	NUMBER          NOT NULL,
+    order_num           CHAR(15)        NOT NULL,
+    imp_uid             VARCHAR2(20)    NULL,
+    order_payment       NUMBER          NOT NULL,
+    order_state     	VARCHAR2(10)    DEFAULT 'ORDER',
+    order_date      	DATE            DEFAULT SYSDATE,
+    modified_date   	DATE            DEFAULT NULL,
+    CONSTRAINT PK_ORDERS PRIMARY KEY (order_id),
+    CONSTRAINT FK_ORDERS_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id),
+    CONSTRAINT FK_ORDERS_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id)
 );
 
 CREATE TABLE delivery (

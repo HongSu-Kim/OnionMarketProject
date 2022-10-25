@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -71,19 +74,11 @@ public class ProductController {
     public String detail(@PathVariable("productId") Long productId, @LoginUser SessionDTO userSession, Model model,
                          HttpServletResponse response) throws Exception{
 
-        /*세션아이디로 동네 조회*/
-        List<TownFindDTO> townList = townService.townLists(userSession.getId());
-        //동네정보가 없을 경우 등록 처리
-        if(townList.size() == 0) {
-            AlertRedirect.warningMessage(response, "/town/town", "내 동네를 먼저 등록해주세요.");
-            return null;
-        }
-
         productService.updateView(productId);//조회수 증가
 
         ProductFindDTO productFindDTO = productService.getProductFindDTO(productId);
 //        입찰 리스트 조회
-        List<BiddingListDTO> biddingList = biddingService.getBiddingList();
+        List<BiddingListDTO> biddingList = biddingService.getBiddingList(productId);
         if(biddingList.size()>0) {
             int bid = biddingList.get(biddingList.size()-1).getBid();
 
@@ -96,11 +91,17 @@ public class ProductController {
 
         return "product/detail";
     }
-    @PostMapping("bid/{productId}")//상품 입찰 주소
-    public String bidProduct(@LoginUser SessionDTO sessionDTO, @PathVariable("productId") Long productId,
-                             BiddingAddDTO biddingAddDTO, ProductUpdateDTO productUpdateDTO, Model model) throws Exception{
+    @GetMapping("/bid/{productId}")//상품 입찰 주소
+    public String bidProduct(@PathVariable("productId") Long productId, @LoginUser SessionDTO userSession,
+                             BiddingAddDTO biddingAddDTO, ProductUpdateDTO productUpdateDTO,HttpServletResponse response,Model model) throws Exception{
 
-        biddingAddDTO.setMemberId(sessionDTO.getId());
+        //Session이 없을 경우 로그인 처리
+        if(userSession == null){
+            AlertRedirect.warningMessage(response,"/member/login", "로그인이 필요합니다.");
+            return "redirect:/member/login";
+        }
+
+        biddingAddDTO.setMemberId(userSession.getId());
         biddingAddDTO.setProductId(productId);
 
         /*입찰 목록 생성*/
@@ -114,8 +115,8 @@ public class ProductController {
         return "redirect:/product/detail/"+productId;
     }
 
-    @GetMapping(value = "list")//상품 리스트 메인 화면 주소
-    public String main(Model model) throws Exception {
+    @GetMapping(value = "list") //상품 리스트 주소
+    public String list(Model model) throws Exception {
 
         Boolean blindStatus = false;
 
@@ -125,6 +126,17 @@ public class ProductController {
 
         return "product/list";//상품 리스트 메인 화면페이지
     }
+
+    @GetMapping("auctionList") //경매 상품 리스트
+    public String auctionList(Model model) throws Exception {
+
+        List<ProductListDTO> list = productService.getAuctionList();
+
+        model.addAttribute("list", list);
+
+        return "product/auctionList";//상품 리스트 메인 화면페이지
+    }
+
     @GetMapping(value = "main/category")//상품 카테고리별 화면 주소
     public String main(Model model,@RequestParam("categoryId") int categoryId ) throws Exception {
 
