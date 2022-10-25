@@ -22,7 +22,7 @@ public class ProductListDTO {
     private LocalDateTime updateDate; //수정일
     private LocalDateTime auctionDeadline; //경매기한
     private String productImageName; //상품 이미지
-
+    private Boolean blindStatus; //블라인드현황
     private Long categoryId; //카테고리 아이디
 
     public ProductListDTO(Product product) {
@@ -39,6 +39,7 @@ public class ProductListDTO {
         }
         this.auctionDeadline = product.getAuctionDeadline();
         this.productImageName = product.getRepresentativeImage();
+        this.blindStatus = product.getBlindStatus();
         this.categoryId = product.getCategory().getId();
     }
 

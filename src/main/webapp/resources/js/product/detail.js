@@ -1,16 +1,16 @@
 function remainedTime() {
-    var upload = $("#upload"). val();
-    var auctionDeadline = $("#auctionDeadline"). val();
+    // var upload = $("#upload"). val();
+    var auctionDeadline = $("#deadline").val();
 
-    var open = new Date(upload); //현재시간을 구한다.
+    var open = new Date(); //현재시간을 구한다.
     var deadline = new Date(auctionDeadline);
     var start = new Date(open.getFullYear(),open.getMonth(),open.getDate(),open.getHours(),open.getMinutes(),open.getSeconds());
-    var end = new Date(deadline.getFullYear(),deadline.getMonth(),deadline.getDate(),deadline.getHours(),deadline.getMinutes(),deadline.getSeconds());
-    var st = start.getTime(); // 현재의 시간만 가져온다
+    var end = new Date(deadline.getFullYear(),deadline.getMonth(),deadline.getDay(),deadline.getHours(),deadline.getMinutes(),deadline.getSeconds());
+    var st = open.getTime(); // 현재의 시간만 가져온다
     var et = end.getTime(); // 오픈시간만 가져온다
 
     if(st<et){ //현재시간이 오픈시간보다 이르면 오픈시간까지의 남은 시간을 구한다.
-        sec = parseInt(et-st) / 1000;
+        sec = parseInt(et-st)/1000;
         // day  = parseInt(sec/60/60/24);
         // sec = (sec - (day * 60 * 60 * 24));
         hour = parseInt(sec/60/60);
@@ -41,7 +41,12 @@ $(document).ready(function () {
     $('#productForm').validate({
 
         rules: {
-            bid: { required:true, digits:true, min:100, max:999999},
+            bid: {
+                required:true,
+                digits:true,
+                min:100,
+                max:999999
+            }
         },
         messages: {
             bid: {
@@ -51,5 +56,6 @@ $(document).ready(function () {
                 max: "최대 가격은 999,999원입니다."
             }
         }
+
     });
 });

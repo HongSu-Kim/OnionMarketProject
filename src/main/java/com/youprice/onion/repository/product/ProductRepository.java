@@ -44,7 +44,7 @@ public interface   ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByBlindStatus(Boolean blindStatus);
 
 	//경매 상품만 조회
-	List<Product> findAllByAuctionDeadlineNotNull();
+	List<Product> findByAuctionDeadlineNotNullAndBlindStatus(Boolean blindStatus);
 
 	// 판매 상품 리스트
 	Page<Product> findByMemberId(Long memberId, Pageable pageable);

@@ -2,12 +2,10 @@ package com.youprice.onion.service.product;
 
 import com.youprice.onion.dto.order.ProductSellListDTO;
 import com.youprice.onion.dto.product.*;
-import org.jsoup.select.Elements;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ProductService {
@@ -27,7 +25,7 @@ public interface ProductService {
     //상품 전체 조회
     List<ProductListDTO> getProductList(Boolean blindStatus);
     //경매상품 전체 조회
-    List<ProductListDTO> getAuctionList();
+    List<ProductListDTO> getAuctionList(Boolean blindStatus);
 
     //상품 하나 조회
     ProductDTO getProductDTO(Long productId);
@@ -38,6 +36,8 @@ public interface ProductService {
 
     //조회수 증가
     int updateView(Long productId);
+
+    List<ProductListDTO> updateBlindStatus();
 
     //동네번호 조회
     TownFindDTO findTownId(String townName);

@@ -118,9 +118,8 @@ public class ProductController {
     @GetMapping(value = "list") //상품 리스트 주소
     public String list(Model model) throws Exception {
 
-        Boolean blindStatus = false;
 
-        List<ProductListDTO> list = productService.getProductList(blindStatus);
+        List<ProductListDTO> list = productService.getProductList(false);
 
         model.addAttribute("list",list);
 
@@ -130,7 +129,7 @@ public class ProductController {
     @GetMapping("auctionList") //경매 상품 리스트
     public String auctionList(Model model) throws Exception {
 
-        List<ProductListDTO> list = productService.getAuctionList();
+        List<ProductListDTO> list = productService.updateBlindStatus();
 
         model.addAttribute("list", list);
 
@@ -143,7 +142,7 @@ public class ProductController {
         if (categoryId == 1) {
             List<ProductListDTO> categoryList1 = productService.getProductCategoryList(1L, 8L);
             model.addAttribute("categoryList1", categoryList1);
-            return "product/main";
+            return "product/list";
         }
 
 
@@ -151,14 +150,14 @@ public class ProductController {
             List<ProductListDTO> categoryList2 = productService.getProductCategoryList(9L, 11L);
             model.addAttribute("categoryList2", categoryList2);
 
-            return "product/main";
+            return "product/list";
         }
 
         if (categoryId == 12) {
             List<ProductListDTO> categoryList3 = productService.getProductCategoryList(12L, 16L);
             model.addAttribute("categoryList3", categoryList3);
 
-            return "product/main";
+            return "product/list";
         }
 
 
@@ -166,7 +165,7 @@ public class ProductController {
             List<ProductListDTO> categoryList4 = productService.getProductCategoryList(17L, 26L);
             model.addAttribute("categoryList4", categoryList4);
 
-            return "product/main";
+            return "product/list";
         }
 
 
@@ -174,7 +173,7 @@ public class ProductController {
             List<ProductListDTO> categoryList5 = productService.getProductCategoryList(27L, 41L);
             model.addAttribute("categoryList5", categoryList5);
 
-            return "product/main";
+            return "product/list";
         }
 
 
@@ -182,7 +181,7 @@ public class ProductController {
             List<ProductListDTO> categoryList6 = productService.getProductCategoryList(42L, 56L);
             model.addAttribute("categoryList6", categoryList6);
 
-            return "product/main";
+            return "product/list";
         }
 
 
@@ -190,7 +189,7 @@ public class ProductController {
             List<ProductListDTO> categoryList7 = productService.getProductCategoryList(57L, 60L);
             model.addAttribute("categoryList7", categoryList7);
 
-            return "product/main";
+            return "product/list";
         }
 
 
@@ -198,7 +197,7 @@ public class ProductController {
             List<ProductListDTO> categoryList8 = productService.getProductCategoryList(61L, 70L);
             model.addAttribute("categoryList8", categoryList8);
 
-            return "product/main";
+            return "product/list";
         }
 
 
@@ -206,7 +205,7 @@ public class ProductController {
             List<ProductListDTO> categoryList9 = productService.getProductCategoryList(71L, 85L);
             model.addAttribute("categoryList9", categoryList9);
 
-            return "product/main";
+            return "product/list";
         }
 
 
@@ -214,7 +213,7 @@ public class ProductController {
             List<ProductListDTO> categoryList10 = productService.getProductCategoryList(86L, 89L);
             model.addAttribute("categoryList10", categoryList10);
 
-            return "product/main";
+            return "product/list";
         }
 
 
@@ -222,21 +221,21 @@ public class ProductController {
             List<ProductListDTO> categoryList11 = productService.getProductCategoryList(90L, 95L);
             model.addAttribute("categoryList11", categoryList11);
 
-            return "product/main";
+            return "product/list";
         }
 
         if (categoryId == 96) {
             List<ProductListDTO> categoryList12 = productService.getProductCategoryList(96L, 104L);
             model.addAttribute("categoryList12", categoryList12);
 
-            return "product/main";
+            return "product/list";
         }
 
         if (categoryId == 105) {
             List<ProductListDTO> categoryList13 = productService.getProductCategoryList(105L, 113L);
             model.addAttribute("categoryList13", categoryList13);
 
-            return "product/main";
+            return "product/list";
         }
 
 
@@ -244,11 +243,11 @@ public class ProductController {
             List<ProductListDTO> categoryList14 = productService.getProductCategoryList(114L, 115L);
             model.addAttribute("categoryList14", categoryList14);
 
-            return "product/main";
+            return "product/list";
         }
 
 
-        return  "product/main";
+        return  "product/list";
     }
 
     @GetMapping("/update/{productId}")//상품 업데이트 주소
