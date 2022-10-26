@@ -15,7 +15,6 @@ public class ProductListDTO {
 
     private Long productId; //
     private String subject; //제목
-
     private String content; //내용
     private int price; //상품가격
     private LocalDateTime uploadDate; //등록시간

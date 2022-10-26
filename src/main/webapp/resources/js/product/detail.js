@@ -73,6 +73,5 @@ $(document).ready(function () {
                 max: "최대 가격은 999,999원입니다."
             }
         }
-
     });
 });
