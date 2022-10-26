@@ -18,7 +18,9 @@ import com.youprice.onion.util.AlertRedirect;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,7 +59,7 @@ public class OrderController {
 			return AlertRedirect.warningMessage(response, "/", "상품정보가 존재하지 않습니다.");
 		} else if (productDTO.getMemberId() == sessionDTO.getId()) {
 			return AlertRedirect.warningMessage(response, "자신의 상품은 구매할수 없습니다.");
-		} else if (productDTO.getProductProgress() != ProductProgress.TRADINGS) {
+		} else if (productDTO.getProductProgress() != ProductProgress.SALESON) {
 			return AlertRedirect.warningMessage(response, "/", "구매할 수 없는 상품입니다.");
 		}
 
@@ -108,6 +110,9 @@ public class OrderController {
 	public String buyList(@LoginUser SessionDTO sessionDTO, Model model, @PageableDefault Pageable pageable) {
 		if (sessionDTO == null) return "redirect:/member/login";
 
+		pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
+				pageable.getPageSize(), Sort.Direction.DESC, "id");
+
 		Page<OrderDTO> page = orderService.getBuyList(sessionDTO.getId(), pageable);
 
 		model.addAttribute("page", page);
@@ -138,6 +143,9 @@ public class OrderController {
 	public String sellList(@LoginUser SessionDTO sessionDTO, Model model, @PageableDefault Pageable pageable) {
 		if (sessionDTO == null) return "redirect:/member/login";
 
+		pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
+				pageable.getPageSize(), Sort.Direction.DESC, "id");
+
 		Page<ProductSellListDTO> page = productService.getProductSellListDTO(sessionDTO.getId(), pageable);
 
 		model.addAttribute("page", page);
@@ -148,7 +156,7 @@ public class OrderController {
 	@GetMapping("cancel/{orderId}")
 	public String cancel(@PathVariable Long orderId, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		try {
-			log.error(request.getHeader("Referer"));
+
 			// 주문취소
 			orderService.cancel(orderId);
 			
