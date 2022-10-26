@@ -9,7 +9,9 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.product.SearchRequirements;
+import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.entity.product.Product;
 import com.youprice.onion.entity.product.ProductProgress;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +50,9 @@ public interface   ProductRepository extends JpaRepository<Product, Long> {
 
 	// 판매 상품 리스트
 	Page<Product> findByMemberId(Long memberId, Pageable pageable);
+
+	// 하위 카테고리 상품 리스트
+	List<Product> findByCategoryId(Long categoryId);
 
     //
     List<Product> findByCategoryIdBetween(Long start, Long end);
