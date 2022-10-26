@@ -28,6 +28,7 @@ public class ProductUpdateDTO {
     private Boolean payStatus; //페이현황
 
     private LocalDateTime auctionDeadline; //경매기한
+    private Boolean blindStatus; //블라인드현황
     private Boolean auctionStatus; //경매현황
 
 

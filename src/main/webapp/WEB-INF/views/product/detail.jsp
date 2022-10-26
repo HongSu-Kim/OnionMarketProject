@@ -8,15 +8,16 @@
 <html>
 <head>
 	<style>
-		dt { float: left; margin-right: 10px;}
 		dl { }
+		dt { float: left; margin-right: 10px;}
+		dd { float: left; margin-right: 10px;}
 	</style>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>상품 정보</title>
 </head>
 <body>
 <!-- Product Details Section Begin -->
-<form action="/product/bid" method="post" enctype="multipart/form-data" id="productForm">
+<form action="/product/bid/${productId}" method="get" enctype="multipart/form-data" id="productForm">
 <section class="product-details spad">
 	<div class="container">
 		<div class="row">
@@ -36,12 +37,14 @@
 				<div class="product__details__text">
 					<h3>${productFindDTO.subject}</h3>
 					<div class="product__details__rating">
-						<i class="fa fa-star"></i>
-						<i class="fa fa-star"></i>
-						<i class="fa fa-star"></i>
-						<i class="fa fa-star"></i>
-						<i class="fa fa-star-half-o"></i>
-						<span>(18 reviews)</span>
+						<c:choose>
+							<c:when test="${reviewDTO.grade ne null}">
+								<c:forEach begin="1" end="${reviewDTO.grade}">★</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<p>판매자의 등록된 리뷰가 아직 없습니다.</p>
+							</c:otherwise>
+						</c:choose>
 					</div>
 					<div>
 					<div class="product__details__price"><fmt:formatNumber maxFractionDigits="3" value="${productFindDTO.price}"/>원</div>
@@ -49,6 +52,7 @@
 							<c:when test="${not empty productFindDTO.auctionDeadline}">
 								<fmt:parseDate var="uploadDate" value="${productFindDTO.uploadDate}" pattern="yyyy-MM-dd'T'HH:mm"/>
 								<fmt:parseDate var="deadline" value="${productFindDTO.auctionDeadline}" pattern="yyyy-MM-dd'T'HH:mm"/>
+								<input type="hidden" id="auctionDeadline" value="${deadline}"/>
 								<p class="time-title">경매 마감까지 남은 시간</p>
 								<div class="time" >
 									<span id="d-day-hour"></span>
@@ -62,7 +66,7 @@
 										현재가:
 										<c:choose>
 											<c:when test="${!empty bid}"><fmt:formatNumber maxFractionDigits="3" value="${bid}"/>원</c:when>
-											<c:otherwise>0원</c:otherwise>
+											<c:otherwise><fmt:formatNumber maxFractionDigits="3" value="${productFindDTO.price}"/>원</c:otherwise>
 										</c:choose>
 									</div>
 									<div>경매 시작가: <fmt:formatNumber maxFractionDigits="3" value="${productFindDTO.price}"/>원</div>
@@ -73,51 +77,45 @@
 										~ <fmt:formatDate value="${deadline}" pattern="yyyy/MM/dd HH:mm"/>
 										</span>
 										<p>
-											입찰가: <input type="text" name="bid"/>원
+											입찰가(원): <input type="text" id="bid" name="bid" placeholder="가격을 입력하세요"/>
+											<input type="hidden" id="nowPrice" value="${bid}"/>
 										</p>
 
 										<div>
 											최소 입찰가:
 											<c:choose>
-												<c:when test="${!empty bid}"><fmt:formatNumber maxFractionDigits="3" value="${bid}"/>원</c:when>
-												<c:otherwise>0원</c:otherwise>
+												<c:when test="${!empty bid}">
+													<fmt:formatNumber maxFractionDigits="3" value="${bid}"/>(원)
+												</c:when>
+												<c:otherwise>
+													<fmt:formatNumber maxFractionDigits="3" value="${productFindDTO.price}"/>(원)
+												</c:otherwise>
 											</c:choose>
 											<img src="/template/img/product/question.png" style="vertical-align:-3px; margin-left:10px; cursor:pointer" onmouseover="document.getElementById('limit_price_desc').style.display='block'" onmouseout="document.getElementById('limit_price_desc').style.display='none'"/>
 										</div>
 										<div id="limit_price_desc" style="margin-top:-8px; margin-left:0px; padding:10px; display:none; position:absolute; border:2px solid #3baecb; background:#f6f7f8; text-align:left;line-height:1.4; z-index:10">
-											<strong>최소입찰가</strong>는 <strong>현재가 금액 단위별로 일정금액</strong>이 증가됩니다. <br><strong>최소입찰가 이상</strong>으로 입찰해 주세요.<br/>
+											<strong>최소입찰가</strong>는 <strong>현재가 금액 단위별로 일정금액</strong>이 증가됩니다. <br><strong>최소입찰가 이상</strong>으로 입찰해 주세요.<br/><br/>
 											<div>
 												<dl height="17">
 													<dt bgcolor="#fff9f3" style="text-align:center"><strong>입찰금액 범위</strong></dt>
-													<dd bgcolor="#fff9f3" style="text-align:center"><strong>최소입찰 단위</strong></dd>
+													<dt bgcolor="#fff9f3" style="text-align:center"><strong>최소입찰 단위</strong></dt>
+													<br/>
 												</dl>
 												<dl>
-													<dt bgcolor="#ffffff" style="text-align:center">시작가  ~  500원 미만</dt>
-													<dd bgcolor="#ffffff" style="text-align:center">100원</dd>
+													<dt bgcolor="#ffffff" style="text-align:center">시작가  ~  10,000원 미만</dt>
+													<dt bgcolor="#ffffff" style="text-align:center">1,000원</dt>
 												</dl>
 												<dl>
-													<dt bgcolor="#ffffff" style="text-align:center">500  ~  10,000원 미만</dt>
-													<dd bgcolor="#ffffff" style="text-align:center">300원</dd>
-												</dl>
-												<dl>
-													<dt bgcolor="#ffffff" style="text-align:center">10,000원  ~  30,000원 미만</dt>
-													<dd bgcolor="#ffffff" style="text-align:center">500원</dd>
-												</dl>
-												<dl>
-													<dt bgcolor="#ffffff" style="text-align:center">30,000원  ~  50,000원 미만</dt>
-													<dd bgcolor="#ffffff" style="text-align:center">1,000원</dd>
-												</dl>
-												<dl>
-													<dt bgcolor="#ffffff" style="text-align:center">50,000원  ~  100,000원 미만</dt>
-													<dd bgcolor="#ffffff" style="text-align:center">2,000원</dd>
+													<dt bgcolor="#ffffff" style="text-align:center">10,000원  ~  100,000원 미만</dt>
+													<dt bgcolor="#ffffff" style="text-align:center">5,000원</dt>
 												</dl>
 												<dl>
 													<dt bgcolor="#ffffff" style="text-align:center">100,000원  ~  500,000원 미만</dt>
-													<dd bgcolor="#ffffff" style="text-align:center">3,000원</dd>
+													<dd bgcolor="#ffffff" style="text-align:center">10,000원</dd>
 												</dl>
 												<dl>
 													<dt bgcolor="#ffffff" style="text-align:center">500,000원이상 ~</dt>
-													<dd bgcolor="#ffffff" style="text-align:center">5,000원</dd>
+													<dd bgcolor="#ffffff" style="text-align:center">50,000원</dd>
 												</dl>
 											</div>
 										</div>
@@ -134,20 +132,22 @@
 														<dl>
 															<dd>${biddingList.userId}</dd>
 															<dd>${biddingList.bid}</dd>
-															<dd>${biddingList.biddingTime}</dd>
+															<dd>
+																<fmt:parseDate var="biddingTime" value="${biddingList.biddingTime}" pattern="yyyy-MM-dd'T'HH:mm"/>
+																<fmt:formatDate value="${biddingTime}" pattern="yyyy/MM/dd HH:mm"/>
+															</dd>
+															<br/>
 														</dl>
 													</c:forEach>
 												</c:when>
 												<c:otherwise>
-													<dd>등록된 입찰내역이 없습니다.</dd>
+													<dd>등록된 입찰내역이 없습니다.</dd><br/>
 												</c:otherwise>
 											</c:choose>
 
 										</div>
 									</div>
 								</div>
-								<input type="hidden" id="upload" value="${uploadDate}">
-								<input type="hidden" id="auctionDeadline" value="${deadline}">
 							</c:when>
 							<c:when test="${productFindDTO.updateDate ne productFindDTO.uploadDate}">
 								<fmt:parseDate var="updateDate" value="${productFindDTO.updateDate}" pattern="yyyy-MM-dd'T'HH:mm"/>
@@ -177,17 +177,15 @@
 									<input type="hidden" id="productId" value="${productId}"/>
 									<c:choose>
 										<c:when test="${productFindDTO.auctionDeadline ne null}">
-											<input type="submit" class="primary-btn" value="입찰하기"></a>
+											<input type="submit" class="primary-btn" value="입찰하기" style="border: 0px"></a>
 										</c:when>
 										<c:otherwise>
-											<a href="/order/payment/${productId}" hr class="primary-btn">구매하기</a>
+											<a href="/order/payment/${productId}" class="primary-btn">구매하기</a>
 										</c:otherwise>
 									</c:choose>
-									<a href="/complain/created/${productId}" class="primary-btn">신고하기</a>
+									<a href="/complain/created" class="primary-btn">신고하기</a>
 									<a href="#" class="primary-btn">채팅하기</a>
-									<form action="/wish/addWish/${productId}" method="get">
-										<i class="fa fa-heart wishBtn" type="submit"></i></a>찜 1
-									</form>
+									<a href="/wish/addWish/${productId}"><div class="primary-btn"><i class="fa fa-heart wishBtn"></i>찜하기</div></a>
 								</div>
 							</div>
 						</c:otherwise>

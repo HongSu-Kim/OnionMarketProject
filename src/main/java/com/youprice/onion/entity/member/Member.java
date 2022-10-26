@@ -127,13 +127,9 @@ public class Member {
     }
 
 	// 결제
-	public boolean subCash(int cash) {
-		if (this.cash < cash){
-			return false;
-		} else {
-			this.cash -= cash;
-			return true;
-		}
+	public int subCash(int cash) {
+		this.cash -= cash;
+		return this.cash;
 	}
 
 	// 결제 취소

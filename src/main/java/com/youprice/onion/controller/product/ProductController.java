@@ -1,20 +1,29 @@
 package com.youprice.onion.controller.product;
 
+import com.youprice.onion.dto.board.ReviewDTO;
 import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.product.*;
 import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.security.auth.LoginUser;
+import com.youprice.onion.service.board.ReviewService;
+import com.youprice.onion.service.member.ProhibitionKeywordService;
 import com.youprice.onion.service.product.*;
 import com.youprice.onion.util.AlertRedirect;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,6 +34,8 @@ public class ProductController {
     private final CategoryService categoryService;
     private final ProductImageService productImageService;
     private final BiddingService biddingService;
+    private final ReviewService reviewService;
+    private final ProhibitionKeywordService prohibitionKeywordService;
 
     @GetMapping("add")//상픔 등록 주소
     public String add(Model model, @LoginUser SessionDTO userSession, HttpServletResponse response) throws IOException {
@@ -54,9 +65,16 @@ public class ProductController {
         return "product/addProduct";//상품등록 페이지
     }
     @PostMapping("add")//실제 상품 등록 주소
-    public String addProduct(@LoginUser SessionDTO userSession, ProductAddDTO productAddDTO,
-                             List<MultipartFile> fileList, Model model) throws Exception {
+    public String addProduct(@LoginUser SessionDTO userSession, ProductAddDTO productAddDTO, BindingResult bindingResult
+                             ,List<MultipartFile> fileList, Model model) throws Exception {
 
+        if (prohibitionKeywordService.ProhibitionKeywordFind(productAddDTO.getSubject())) { //금지키워가있으면 true
+            bindingResult.addError(new FieldError("productAddDTO", "subject", "적합하지 않은 단어가 포함되어 있습니다."));
+
+            if (bindingResult.hasErrors()) {
+                return "product/addProduct";
+            }
+        }
         /*세션아이디로 멤버아이디 set*/
         productAddDTO.setMemberId(userSession.getId());
         /*상품 등록*/
@@ -68,70 +86,82 @@ public class ProductController {
     }
 
     @GetMapping("/detail/{productId}")//상품 상세페이지 주소
-    public String detail(@PathVariable("productId") Long productId, @LoginUser SessionDTO userSession, Model model,
-                         HttpServletResponse response) throws Exception{
-
-        /*세션아이디로 동네 조회*/
-        List<TownFindDTO> townList = townService.townLists(userSession.getId());
-        //동네정보가 없을 경우 등록 처리
-        if(townList.size() == 0) {
-            AlertRedirect.warningMessage(response, "/town/town", "내 동네를 먼저 등록해주세요.");
-            return null;
-        }
+    public String detail(@PathVariable("productId") Long productId, @LoginUser SessionDTO userSession, Model model)
+            throws Exception{
 
         productService.updateView(productId);//조회수 증가
 
         ProductFindDTO productFindDTO = productService.getProductFindDTO(productId);
-//        입찰 리스트 조회
-        List<BiddingListDTO> biddingList = biddingService.getBiddingList();
+        /*리뷰 조회*/
+        ReviewDTO reviewDTO = reviewService.findReviewDTO(productFindDTO.getMemberId());
+        /*입찰 리스트 조회*/
+        List<BiddingListDTO> biddingList = biddingService.getBiddingList(productId);
         if(biddingList.size()>0) {
             int bid = biddingList.get(biddingList.size()-1).getBid();
 
             model.addAttribute("bid",bid);
         }
+        /*카테고리 상품 추천*/
+//        CategoryFindDTO findDTO = productService.findCategoryId(productFindDTO.getCategoryId());
+        Random random = new Random();
+
         model.addAttribute("userSession",userSession);
         model.addAttribute("productId",productId);
         model.addAttribute("productFindDTO",productFindDTO);
+        model.addAttribute("reviewDTO",reviewDTO);
         model.addAttribute("biddingList",biddingList);
 
         return "product/detail";
     }
-    @PostMapping("bid/{productId}")//상품 입찰 주소
-    public String bidProduct(@LoginUser SessionDTO sessionDTO, @PathVariable("productId") Long productId,
-                             BiddingAddDTO biddingAddDTO, ProductUpdateDTO productUpdateDTO, Model model) throws Exception{
+    @GetMapping("/bid/{productId}")//상품 입찰 주소
+    public String bidProduct(@PathVariable("productId") Long productId, @LoginUser SessionDTO userSession,
+                             BiddingAddDTO biddingAddDTO, HttpServletResponse response,Model model) throws Exception{
 
-        biddingAddDTO.setMemberId(sessionDTO.getId());
+        //Session이 없을 경우 로그인 처리
+        if(userSession == null){
+            AlertRedirect.warningMessage(response,"/member/login", "로그인이 필요합니다.");
+            return "redirect:/member/login";
+        }
+        ProductFindDTO productFindDTO = productService.getProductFindDTO(productId);
+        biddingAddDTO.setMemberId(userSession.getId());
         biddingAddDTO.setProductId(productId);
 
         /*입찰 목록 생성*/
         biddingService.bidProduct(biddingAddDTO);
-
-        /*입찰 종료 후 마지막 입찰가로 상품가격 업데이트 */
-//        productService.updateProduct(productId, productUpdateDTO);
 
         model.addAttribute("productId",productId);
 
         return "redirect:/product/detail/"+productId;
     }
 
-    @GetMapping(value = "list")//상품 리스트 메인 화면 주소
-    public String main(Model model) throws Exception {
+    @GetMapping(value = "list") //상품 리스트 주소
+    public String list(Model model) throws Exception {
 
-        Boolean blindStatus = false;
 
-        List<ProductListDTO> list = productService.getProductList(blindStatus);
+        List<ProductListDTO> list = productService.getProductList(false);
 
         model.addAttribute("list",list);
 
         return "product/list";//상품 리스트 메인 화면페이지
     }
+
+    @GetMapping("auctionList") //경매 상품 리스트
+    public String auctionList(Model model) throws Exception {
+
+        List<ProductListDTO> list = productService.updateBlindStatus();
+
+        model.addAttribute("list", list);
+
+        return "product/auctionList";//상품 리스트 메인 화면페이지
+    }
+
     @GetMapping(value = "main/category")//상품 카테고리별 화면 주소
     public String main(Model model,@RequestParam("categoryId") int categoryId ) throws Exception {
 
         if (categoryId == 1) {
             List<ProductListDTO> categoryList1 = productService.getProductCategoryList(1L, 8L);
             model.addAttribute("categoryList1", categoryList1);
-            return "product/main";
+            return "product/list";
         }
 
 
@@ -139,14 +169,14 @@ public class ProductController {
             List<ProductListDTO> categoryList2 = productService.getProductCategoryList(9L, 11L);
             model.addAttribute("categoryList2", categoryList2);
 
-            return "product/main";
+            return "product/list";
         }
 
         if (categoryId == 12) {
             List<ProductListDTO> categoryList3 = productService.getProductCategoryList(12L, 16L);
             model.addAttribute("categoryList3", categoryList3);
 
-            return "product/main";
+            return "product/list";
         }
 
 
@@ -154,7 +184,7 @@ public class ProductController {
             List<ProductListDTO> categoryList4 = productService.getProductCategoryList(17L, 26L);
             model.addAttribute("categoryList4", categoryList4);
 
-            return "product/main";
+            return "product/list";
         }
 
 
@@ -162,7 +192,7 @@ public class ProductController {
             List<ProductListDTO> categoryList5 = productService.getProductCategoryList(27L, 41L);
             model.addAttribute("categoryList5", categoryList5);
 
-            return "product/main";
+            return "product/list";
         }
 
 
@@ -170,7 +200,7 @@ public class ProductController {
             List<ProductListDTO> categoryList6 = productService.getProductCategoryList(42L, 56L);
             model.addAttribute("categoryList6", categoryList6);
 
-            return "product/main";
+            return "product/list";
         }
 
 
@@ -178,7 +208,7 @@ public class ProductController {
             List<ProductListDTO> categoryList7 = productService.getProductCategoryList(57L, 60L);
             model.addAttribute("categoryList7", categoryList7);
 
-            return "product/main";
+            return "product/list";
         }
 
 
@@ -186,7 +216,7 @@ public class ProductController {
             List<ProductListDTO> categoryList8 = productService.getProductCategoryList(61L, 70L);
             model.addAttribute("categoryList8", categoryList8);
 
-            return "product/main";
+            return "product/list";
         }
 
 
@@ -194,7 +224,7 @@ public class ProductController {
             List<ProductListDTO> categoryList9 = productService.getProductCategoryList(71L, 85L);
             model.addAttribute("categoryList9", categoryList9);
 
-            return "product/main";
+            return "product/list";
         }
 
 
@@ -202,7 +232,7 @@ public class ProductController {
             List<ProductListDTO> categoryList10 = productService.getProductCategoryList(86L, 89L);
             model.addAttribute("categoryList10", categoryList10);
 
-            return "product/main";
+            return "product/list";
         }
 
 
@@ -210,21 +240,21 @@ public class ProductController {
             List<ProductListDTO> categoryList11 = productService.getProductCategoryList(90L, 95L);
             model.addAttribute("categoryList11", categoryList11);
 
-            return "product/main";
+            return "product/list";
         }
 
         if (categoryId == 96) {
             List<ProductListDTO> categoryList12 = productService.getProductCategoryList(96L, 104L);
             model.addAttribute("categoryList12", categoryList12);
 
-            return "product/main";
+            return "product/list";
         }
 
         if (categoryId == 105) {
             List<ProductListDTO> categoryList13 = productService.getProductCategoryList(105L, 113L);
             model.addAttribute("categoryList13", categoryList13);
 
-            return "product/main";
+            return "product/list";
         }
 
 
@@ -232,11 +262,11 @@ public class ProductController {
             List<ProductListDTO> categoryList14 = productService.getProductCategoryList(114L, 115L);
             model.addAttribute("categoryList14", categoryList14);
 
-            return "product/main";
+            return "product/list";
         }
 
 
-        return  "product/main";
+        return  "product/list";
     }
 
     @GetMapping("/update/{productId}")//상품 업데이트 주소
@@ -276,9 +306,16 @@ public class ProductController {
 	}
 
     @PostMapping("/update/{productId}")//실제 상품 업데이트 주소
-    public String updateProduct(Model model, Long productId, ProductUpdateDTO updateDTO, @LoginUser SessionDTO userSession,
-                                 HttpServletResponse response) throws Exception{
+    public String updateProduct(Model model, Long productId, ProductUpdateDTO updateDTO, BindingResult bindingResult,
+                                @LoginUser SessionDTO userSession, HttpServletResponse response) throws Exception{
 
+        if (prohibitionKeywordService.ProhibitionKeywordFind(updateDTO.getSubject())) { //금지키워가있으면 true
+            bindingResult.addError(new FieldError("productAddDTO", "subject", "적합하지 않은 단어가 포함되어 있습니다."));
+
+            if (bindingResult.hasErrors()) {
+                return "product/updateProduct";
+            }
+        }
         /*세션 없을 경우 로그인 처리*/
         if(userSession == null){
             AlertRedirect.warningMessage(response,"/member/login", "로그인이 필요합니다.");

@@ -2,7 +2,6 @@ package com.youprice.onion.service.product;
 
 import com.youprice.onion.dto.order.ProductSellListDTO;
 import com.youprice.onion.dto.product.*;
-import org.jsoup.select.Elements;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface ProductService {
+
 	//상품 목록 조회
 	Page<ProductListDTO> getProductListDTO(SearchRequirements searchRequirements);
     //상품등록
@@ -21,25 +21,26 @@ public interface ProductService {
     //상품 삭제
     void deleteProduct(Long productId) throws Exception;
 
-    // 카테고리별 상품 조회
-    List<ProductListDTO> getProductCategoryList(Long start, Long end);
-
+    //조회수 증가
+    int updateView(Long productId);
     //상품 전체 조회
     List<ProductListDTO> getProductList(Boolean blindStatus);
+    //경매상품 전체 조회
+    List<ProductListDTO> getAuctionList(Boolean blindStatus);
+    //경매 종료된 상품 처리 후 조회
+    List<ProductListDTO> updateBlindStatus();
 
     //상품 하나 조회
     ProductDTO getProductDTO(Long productId);
     //상품 하나 조회
     ProductFindDTO getProductFindDTO(Long productId);
+
     //제목과 내용으로 검색
     List<ProductListDTO> getSearchList(String subject,String content);
-
-    //조회수 증가
-    int updateView(Long productId);
-
+    //카테고리별 상품 조회
+    List<ProductListDTO> getProductCategoryList(Long start, Long end);
     //동네번호 조회
     TownFindDTO findTownId(String townName);
-
     //카테고리번호 조회
     CategoryFindDTO findCategoryId(Long categoryId);
 

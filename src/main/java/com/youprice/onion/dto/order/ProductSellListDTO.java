@@ -17,7 +17,7 @@ public class ProductSellListDTO {
 	private String subject; //제목
 	private int price; //상품가격
 	private LocalDateTime date; //등록시간
-	private ProductProgress productProgress; //판매상태 Reserved,tradings,soldout 예약중,거래중,판매완료
+	private ProductProgress productProgress; //판매상태 SALESON,RESERVED,TRADINGS,SOLDOUT 판매중,예약중,거래중,판매완료
 	private Boolean payStatus; //페이현황
 	private Boolean blindStatus; //블라인드현황
 
@@ -36,8 +36,5 @@ public class ProductSellListDTO {
 		payStatus = product.getPayStatus();
 		blindStatus = product.getBlindStatus();
 		representativeImage = product.getRepresentativeImage();
-
-		if (product.getOrder() != null)
-			orderId = product.getOrder().getId();
 	}
 }

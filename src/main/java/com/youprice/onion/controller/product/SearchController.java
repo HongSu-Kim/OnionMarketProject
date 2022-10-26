@@ -3,6 +3,7 @@ package com.youprice.onion.controller.product;
 
 import com.youprice.onion.dto.product.ProductListDTO;
 import com.youprice.onion.dto.product.SearchAddDTO;
+import com.youprice.onion.entity.product.Search;
 import com.youprice.onion.service.member.MemberService;
 import com.youprice.onion.service.member.ProhibitionKeywordService;
 import com.youprice.onion.service.product.CategoryService;
@@ -33,10 +34,15 @@ public class SearchController {
     @GetMapping("search")
     public String SearchCreate(Model model){
 
-        return "product/search";
+
+       List<Search> popularSearch = searchService.findBySearchRank();
+
+       model.addAttribute("popularSearch",popularSearch);
+
+        return "product/popularSearch";
     }
 
-    @GetMapping("result")
+    @GetMapping("list")
     public String KeywordCreate(Model model, SearchAddDTO searchAddDTO,
                            @RequestParam("searchName") String searchName, HttpServletResponse response) throws IOException {
 
@@ -52,7 +58,7 @@ public class SearchController {
 
             model.addAttribute("searchList", searchList);
 
-            return "product/main";
+            return "product/list";
 
         } catch (RuntimeException e) {
             return AlertRedirect.warningMessage(response, "검색중 오류입니다\n");

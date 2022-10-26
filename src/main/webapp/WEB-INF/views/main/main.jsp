@@ -38,7 +38,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="categories__slider owl-carousel">
-					<c:forEach var="productListDTO" items="${page.content}">
+					<c:forEach var="productListDTO" items="${hotProductList}">
 						<div class="col-lg-3">
 							<div class="categories__item set-bg" data-setbg="/img/product/${productListDTO.productImageName}">
 								<h5><a href="/product/detail/${productListDTO.productId}">${productListDTO.subject}</a></h5>
@@ -505,6 +505,47 @@
 	</section>
 	<!-- Blog Section End -->
 
+	<section class="from-blog spad">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="section-title from-blog__title">
+					<a href="/search/search">   <h2>중고거래 인기 검색어</h2></a>
+				</div>
+			</div>
+		</div>
+
+		<div class="featured__controls">
+			<ul>
+				<li >
+					<a href="top_keywords" style="color: black">All</a>
+				</li>
+				<li >
+					<a href="top_keywords" style="color: black">All</a>
+				</li>
+
+				<li >
+					<a href="top_keywords" style="color: black">All</a>
+				</li>
+
+				<li >
+					<a href="top_keywords" style="color: black">All</a>
+				</li>
+
+				<li >
+					<a href="top_keywords" style="color: black">All</a>
+				</li>
+			</ul>
+		</div>
+
+	</div>
 </section>
+
+
+
+
+
+
+
 </body>
 </html>

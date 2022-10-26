@@ -19,7 +19,6 @@ public class ProductFindDTO {
     private Long memberId; //Member FK
     private Long townId; //Town FK
     private Long categoryId; //Category FK
-    private Long orderId; //Order FK
     private String subject; //제목
     private String content; //내용
     private int price; //상품가격
@@ -28,7 +27,7 @@ public class ProductFindDTO {
     private LocalDateTime updateDate; //수정일
     private LocalDateTime auctionDeadline; //경매기한
     private int viewCount; //조회수
-    private ProductProgress productProgress; //판매상태 Reserved,tradings,soldout 예약중,거래중,판매완료
+    private ProductProgress productProgress; //판매상태 SALESON,RESERVED,TRADINGS,SOLDOUT 판매중,예약중,거래중,판매완료
     private Boolean payStatus; //페이현황
     private Boolean blindStatus; //블라인드현황
     private List<ProductImageDTO> productImageDTOList; //이미지 리스트
@@ -39,8 +38,6 @@ public class ProductFindDTO {
         memberId = product.getMember().getId();
         townId = product.getTown().getId();
         categoryId = product.getCategory().getId();
-		if (product.getOrder() != null)
-			orderId = product.getOrder().getId();
         subject = product.getSubject();
         content = product.getContent();
         price = product.getPrice();

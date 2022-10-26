@@ -18,10 +18,12 @@
 </form:form>
 
 <br/><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<strong><${wishtown}></strong>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-<c:if test="${wishtown == '강남구'}">
+
+
+
+<c:if test="${wishtown ==  '강남구'}">
 
 <c:forEach var="Gangnam" items="${Gangnam}">
     <br/>
@@ -44,7 +46,7 @@
 </c:if>
 
 
-<c:if test="${wishtown == '강동구'}">
+<c:if test="${wishtown ==  '강동구'}">
 
     <c:forEach var="Gangdong" items="${Gangdong}">
         <br/>
@@ -53,6 +55,9 @@
     </c:forEach>
 
 </c:if>
+
+
+
 
 
 </body>

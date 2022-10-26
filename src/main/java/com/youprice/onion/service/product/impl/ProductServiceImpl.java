@@ -3,7 +3,6 @@ package com.youprice.onion.service.product.impl;
 import com.youprice.onion.dto.order.ProductSellListDTO;
 import com.youprice.onion.dto.product.*;
 import com.youprice.onion.entity.member.Member;
-import com.youprice.onion.entity.order.Order;
 import com.youprice.onion.entity.product.*;
 import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.repository.member.ProhibitionKeywordRepositoy;
@@ -11,7 +10,6 @@ import com.youprice.onion.repository.product.*;
 import com.youprice.onion.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.select.Elements;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -54,13 +52,12 @@ public class ProductServiceImpl implements ProductService {
         Member member = memberRepository.findById(productAddDTO.getMemberId()).orElse(null);
         Town town = townRepositoy.findById(productAddDTO.getTownId()).orElse(null);
         Category category = categoryRepository.findById(productAddDTO.getCategoryId()).orElse(null);
-        Order order = null;
 
         //대표이미지 설정
         productAddDTO.setRepresentativeImage(getImageName()+fileList.get(0).getOriginalFilename());
 
         // 상품 등록
-        Product product = new Product(member,town,category,order,productAddDTO);
+        Product product = new Product(member,town,category,productAddDTO);
 
         Long productId = productRepository.save(product).getId();
 
@@ -153,6 +150,13 @@ public class ProductServiceImpl implements ProductService {
                 .map(product -> new ProductListDTO(product))
                 .collect(Collectors.toList());
     }
+    //전체 경매 상품 조회
+    @Override
+    public List<ProductListDTO> getAuctionList(Boolean blindStatus) {
+        return productRepository.findByAuctionDeadlineNotNullAndBlindStatus(false).stream()
+                .map(product -> new ProductListDTO(product))
+                .collect(Collectors.toList());
+    }
 
     //검색에 따른 조회(제목,카테고리,내용)
     @Override
@@ -208,7 +212,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     // imageName 생성
-    @Transactional(readOnly = true)
     public String getImageName() {
 
         LocalDateTime now = LocalDateTime.now();
@@ -244,6 +247,35 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public int updateView(Long productId) {
         return productRepository.updateView(productId);
+    }
+
+    @Override
+    @Transactional
+    public List<ProductListDTO> updateBlindStatus() {
+
+        List<ProductListDTO> blindList = getAuctionList(false);
+
+        LocalDateTime now = LocalDateTime.now();
+
+        for(ProductListDTO blindDTO : blindList) {
+
+            Product product = productRepository.findById(blindDTO.getProductId()).orElse(null);
+
+            if(blindDTO.getAuctionDeadline().isBefore(now)){
+
+                blindDTO.setBlindStatus(true);
+
+                product.updateAuctionProduct(blindDTO);
+
+                productRepository.save(product);
+
+                System.out.println("blindDTO = " + blindDTO.getBlindStatus());
+            }
+        }
+
+        List<ProductListDTO> list = getAuctionList(false);
+
+        return list;
     }
 
     //동네번호 조회

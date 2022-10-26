@@ -120,8 +120,7 @@
 							<ul class="header__menu__dropdown">
 								<li><a href="/product/list">상품 리스트</a></li>
 								<li><a href="/product/add">상품 등록</a></li>
-								<li><a href="/product/auctionList">경매 상품</a></li>
-								<li><a href="#">Temp4</a></li>
+								<li><a href="/product/auctionList">경매 리스트</a></li>
 							</ul>
 						</li>
 						<sec:authorize access="isAuthenticated()">
@@ -154,6 +153,7 @@
 								<ul class="header__menu__dropdown">
 									<li><a href="/member/mypage">My Page</a></li>
 									<li><a href="/town/town">동네 설정</a></li>
+									<li><a href="/keyword/keyword">키워드 설정</a></li>
 									<li><a href="/member/logout">Logout</a></li>
 								</ul>
 							</li>
@@ -218,7 +218,7 @@
 			<div class="col-lg-9">
 				<div class="hero__search">
 					<div class="hero__search__form">
-						<form:form action="/search/search"  method="post" >
+						<form:form action="/search/list"  method="get">
 							<div class="hero__search__categories">
 								All Categories
 								<span class="arrow_carrot-down"></span>
@@ -228,7 +228,8 @@
 							<button type="submit" class="site-btn">SEARCH</button>
 						</form:form>
 					</div>
-					<div class="hero__search__phone">
+						<button onclick="location.href='/member/login'" class="site-btn" style="height: 50px; width: 210px; margin-left: 25px;">ONION MARKET LOGIN</button>
+<%--					<div class="hero__search__phone">
 						<div class="hero__search__phone__icon">
 							<i class="fa fa-phone"></i>
 						</div>
@@ -236,7 +237,7 @@
 							<h5>+65 11.188.888</h5>
 							<span>support 24/7 time</span>
 						</div>
-					</div>
+					</div>--%>
 				</div>
 			</div>
 		</div>

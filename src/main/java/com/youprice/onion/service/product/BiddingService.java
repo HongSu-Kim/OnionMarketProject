@@ -7,7 +7,10 @@ import java.util.List;
 
 public interface BiddingService {
 
+    //상품 입찰
     Long bidProduct(BiddingAddDTO biddingAddDTO);
 
-    List<BiddingListDTO> getBiddingList();
+    //입찰목록 조회
+    List<BiddingListDTO> getBiddingList(Long productId);
+
 }
