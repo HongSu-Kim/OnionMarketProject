@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -94,6 +95,9 @@ public class ReviewServiceImpl implements ReviewService {
         Page<ReviewDTO> list = reviewRepository.findAll(pageable).map(ReviewDTO::new);
         return list;
     }
+    public List<ReviewDTO> findAll(){
+        return reviewRepository.findAll().stream().map(ReviewDTO::new).collect(Collectors.toList());
+    }
 
     // 수정
     @Transactional
@@ -113,6 +117,13 @@ public class ReviewServiceImpl implements ReviewService {
     public void deleteReview(ReviewDTO reviewDTO){
         Review review = reviewRepository.findById(reviewDTO.getReviewId()).orElse(null);
         reviewRepository.delete(review);
+
+        List<ReviewImageDTO> reviewImageList = reviewDTO.getReviewImageList();
+        for(ReviewImageDTO reviewImageDTO : reviewImageList) {
+            String filePath = filePath();
+            File file = new File(filePath, reviewImageDTO.getStoreImageName());
+            file.delete();
+        }
     }
 
     //=======================================================================================
@@ -149,6 +160,10 @@ public class ReviewServiceImpl implements ReviewService {
         multipartFile.transferTo(new File(filePath, storeFileName));
 
         return storeFileName;
+    }
+
+    public double avgGrade(Long salesId){
+        return reviewRepository.gradeAverage(salesId);
     }
 
 }

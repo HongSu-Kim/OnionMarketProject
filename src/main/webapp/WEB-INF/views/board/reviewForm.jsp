@@ -22,25 +22,25 @@
 
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 
-                    <input type="hidden" name="memberId" value="${memberDTO.id}">
+                    <input type="hidden" name="memberId" value="${orderDTO.memberDTO.id}">
                     <input type="hidden" name="orderId" value="${form == null ? orderDTO.orderId : form.orderId}">
                     <input type="hidden" name="salesId" value="${salesDTO.id}">
 
                     <div class="row form-group">
                         <div class="col-md-6 mb-3 mb-md-0">
                             <label class="text-black" style="font-size: 13pt;" for="fname">ID</label>
-                            <input type="text" id="fname" readonly="readonly" value="${memberDTO.userId}" class="form-control">
+                            <input type="text" id="fname" readonly="readonly" value="${orderDTO.memberDTO.userId}" class="form-control">
                         </div>
                         <div class="col-md-6">
                             <label class="text-black" style="font-size: 13pt;" for="lname">Name</label>
-                            <input type="text" id="lname" readonly="readonly" value="${memberDTO.name}" class="form-control">
+                            <input type="text" id="lname" readonly="readonly" value="${orderDTO.memberDTO.name}" class="form-control">
                         </div>
                     </div>
 
                     <div class="row form-group">
                         <div class="col-md-12">
                             <label class="text-black" style="font-size: 13pt;" for="email">Email</label>
-                            <input type="email" id="email" readonly="readonly" value="${memberDTO.email}" class="form-control">
+                            <input type="email" id="email" readonly="readonly" value="${orderDTO.memberDTO.email}" class="form-control">
                         </div>
                     </div><hr/><br/>
 
@@ -64,18 +64,18 @@
                     <div class="p-4 mb-3 bg-white">
                         <div style="display: flex">
                         <span><p class="mb-0 font-weight-bold">Product Name</p>
-                        <p class="mb-4">상품이름 ${productDTO.subject}</p></span>
+                        <p class="mb-4">상품이름 ${orderDTO.productDTO.subject}</p></span>
                             <span style="margin-left: 100px;">
                                 <img src="/template/img/blog/sidebar/sr-2.jpg" alt="">
-                            상품이미지<%-- <td><img src="/img/product/${productImageDTO.productImageName}"/></td> --%>
+                            상품이미지<img src="/img/product/${orderDTO.productDTO.representativeImage}"/></td>
                         </span>
                         </div>
 
                         <p class="mb-0 font-weight-bold">Price</p>
-                        <p class="mb-4">상품가격 ${productDTO.price}</p>
+                        <p class="mb-4">상품가격 ${orderDTO.productDTO.price}</p>
 
                         <p class="mb-0 font-weight-bold">Product Content</p>
-                        <p class="mb-0">상품내용 ${productDTO.content}</p>
+                        <p class="mb-0">상품내용 ${orderDTO.productDTO.content}</p>
 
                     </div>
 
