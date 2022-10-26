@@ -253,7 +253,7 @@ CREATE TABLE delivery (
 	postcode	    	CHAR(5)	        NOT NULL,
 	address         	VARCHAR2(255)   NOT NULL,
 	detail_address  	VARCHAR2(255)   NOT NULL,
-	extra_address   	VARCHAR2(255)   NOT NULL,
+	extra_address   	VARCHAR2(255)   NULL,
 	delivery_cost   	NUMBER          NOT NULL,
 	request         	VARCHAR2(255)   NULL,
 	CONSTRAINT PK_DELIVERY PRIMARY KEY (order_id),
