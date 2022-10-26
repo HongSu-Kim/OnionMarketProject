@@ -15,7 +15,7 @@
 </head>
 <body>
 
-
+    <div style="text-align: center">
 
 
 
@@ -27,13 +27,22 @@
 <%--             height="23" width="23" border="0" align="left">--%>
 <%--    </button>--%>
 
-<form:form action="/town/townresult" method="post">
+<form:form action="/town/townresult" method="get">
 
 원하는 동네 검색: <input type="text" name="wishtown" value="" />
     <input type="hidden" name="memberId" value="${memberDTO.id}">
    <input type="submit" value="동네설정하기"/><br/><br/>
 </form:form>
-    <strong> [동네예시]<br/>
+
+        <strong>현재 등록된 동네</strong><br/>
+        <c:forEach var="list" items="${list}">
+
+
+            <strong> [${list.townName}]</strong>
+            <br/>
+        </c:forEach>
+<br/>
+        <strong> [동네예시]<br/>
        강남구/  송파구/ 강동구
 <%--        <a href="/town/townresult?wishtown=1 ">강남구</a>/<a href="/town/townresult?wishtown=2 ">송파구</a>--%>
 <%--        <a href="/town/townresult?wishtown=3 ">/강동구</a>--%>
@@ -41,6 +50,9 @@
 
 <br/><br/>
 
+
+
+    </div>
 
 </body>
 </html>
