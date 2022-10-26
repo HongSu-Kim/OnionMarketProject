@@ -1,5 +1,7 @@
 package com.youprice.onion.dto.order;
 
+import com.youprice.onion.entity.order.Order;
+import com.youprice.onion.entity.order.OrderState;
 import com.youprice.onion.entity.product.Product;
 import com.youprice.onion.entity.product.ProductProgress;
 import lombok.Getter;
@@ -7,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -22,7 +26,6 @@ public class ProductSellListDTO {
 	private Boolean blindStatus; //블라인드현황
 
 	private String representativeImage;
-
 	private Long orderId;
 
 	public ProductSellListDTO(Product product) {
@@ -36,5 +39,8 @@ public class ProductSellListDTO {
 		payStatus = product.getPayStatus();
 		blindStatus = product.getBlindStatus();
 		representativeImage = product.getRepresentativeImage();
+
+		List<Order> orderList = product.getOrderList().stream().filter(order -> order.getOrderState() == OrderState.COMPLETE).collect(Collectors.toList());
+		orderId = orderList.size() == 0 ? null : orderList.get(0).getId();
 	}
 }

@@ -8,10 +8,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 
 @Component
-@RequiredArgsConstructor
 public class JPAQueryFactoryConfig {
-
-	private final EntityManager entityManager;
 
 	@Bean
 	public JPAQueryFactory queryFactory(EntityManager entityManager) {
