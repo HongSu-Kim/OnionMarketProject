@@ -37,12 +37,14 @@
 				<div class="product__details__text">
 					<h3>${productFindDTO.subject}</h3>
 					<div class="product__details__rating">
-						<i class="fa fa-star"></i>
-						<i class="fa fa-star"></i>
-						<i class="fa fa-star"></i>
-						<i class="fa fa-star"></i>
-						<i class="fa fa-star-half-o"></i>
-						<span>(18 reviews)</span>
+						<c:choose>
+							<c:when test="${reviewDTO.grade ne null}">
+								<c:forEach begin="1" end="${reviewDTO.grade}">★</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<p>판매자의 등록된 리뷰가 아직 없습니다.</p>
+							</c:otherwise>
+						</c:choose>
 					</div>
 					<div>
 					<div class="product__details__price"><fmt:formatNumber maxFractionDigits="3" value="${productFindDTO.price}"/>원</div>
@@ -50,7 +52,7 @@
 							<c:when test="${not empty productFindDTO.auctionDeadline}">
 								<fmt:parseDate var="uploadDate" value="${productFindDTO.uploadDate}" pattern="yyyy-MM-dd'T'HH:mm"/>
 								<fmt:parseDate var="deadline" value="${productFindDTO.auctionDeadline}" pattern="yyyy-MM-dd'T'HH:mm"/>
-								<input type="hidden" id="auctionDeadline" value="${dead}">
+								<input type="hidden" id="auctionDeadline" value="${deadline}"/>
 								<p class="time-title">경매 마감까지 남은 시간</p>
 								<div class="time" >
 									<span id="d-day-hour"></span>
@@ -75,14 +77,19 @@
 										~ <fmt:formatDate value="${deadline}" pattern="yyyy/MM/dd HH:mm"/>
 										</span>
 										<p>
-											입찰가: <input type="text" id="bid" name="bid" placeholder="가격을 입력하세요"/>원
+											입찰가(원): <input type="text" id="bid" name="bid" placeholder="가격을 입력하세요"/>
+											<input type="hidden" id="nowPrice" value="${bid}"/>
 										</p>
 
 										<div>
 											최소 입찰가:
 											<c:choose>
-												<c:when test="${!empty bid}"><fmt:formatNumber maxFractionDigits="3" value="${bid}"/>원</c:when>
-												<c:otherwise><fmt:formatNumber maxFractionDigits="3" value="${productFindDTO.price}"/></c:otherwise>
+												<c:when test="${!empty bid}">
+													<fmt:formatNumber maxFractionDigits="3" value="${bid}"/>(원)
+												</c:when>
+												<c:otherwise>
+													<fmt:formatNumber maxFractionDigits="3" value="${productFindDTO.price}"/>(원)
+												</c:otherwise>
 											</c:choose>
 											<img src="/template/img/product/question.png" style="vertical-align:-3px; margin-left:10px; cursor:pointer" onmouseover="document.getElementById('limit_price_desc').style.display='block'" onmouseout="document.getElementById('limit_price_desc').style.display='none'"/>
 										</div>
@@ -176,11 +183,9 @@
 											<a href="/order/payment/${productId}" class="primary-btn">구매하기</a>
 										</c:otherwise>
 									</c:choose>
-									<a href="/complain/created/${productId}" class="primary-btn">신고하기</a>
+									<a href="/complain/created" class="primary-btn">신고하기</a>
 									<a href="#" class="primary-btn">채팅하기</a>
-<%--									<form action="/wish/addWish/${productId}" method="get" enctype="multipart/form-data">--%>
-									<div class="primary-btn"><a href="/wish/addWish/${productId}"><i class="fa fa-heart wishBtn"></i>찜하기</a></div>
-<%--									</form>--%>
+									<a href="/wish/addWish/${productId}"><div class="primary-btn"><i class="fa fa-heart wishBtn"></i>찜하기</div></a>
 								</div>
 							</div>
 						</c:otherwise>
