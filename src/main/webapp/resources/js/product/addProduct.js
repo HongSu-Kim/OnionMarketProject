@@ -12,7 +12,15 @@ $(document).ready(function () {
 
         rules: {
             townId: "required",
-            categoryId: "required",
+            categoryId: {
+                required: function () {
+                    if ($("#categoryId option[value='0']")) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            },
             subject: "required",
             content: { required:true },
             price: { required:true, digits:true, min:100, max:999999},
@@ -21,9 +29,6 @@ $(document).ready(function () {
         messages: {
             townId: {
                 required: "동네를 선택해주세요."
-            },
-            categoryId: {
-                required: "카테고리를 선택해주세요."
             },
             subject: {
                 required: "제목은 필수 항목입니다."
