@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface BiddingRepository extends JpaRepository<Bidding, Long> {
 
-    List<Bidding> findByProductId(Long productId);
+    List<Bidding> findByProductIdOrderByBidDesc(Long productId);
 }

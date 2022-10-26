@@ -7,8 +7,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ProductProgress {
 
-	TRADINGS("거래중"),
+	SALESON("판매중"),
     RESERVED("예약중"),
+	TRADINGS("거래중"),
 	SOLDOUT("판매완료");
 
 	private String kor;

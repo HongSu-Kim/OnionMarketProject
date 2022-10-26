@@ -1,6 +1,6 @@
 function remainedTime() {
     // var upload = $("#upload"). val();
-    var auctionDeadline = $("#deadline").val();
+    var auctionDeadline = $("#auctionDeadline").val();
 
     var open = new Date(); //현재시간을 구한다.
     var deadline = new Date(auctionDeadline);
@@ -36,23 +36,40 @@ function remainedTime() {
 setInterval(remainedTime,1000); //1초마다 검사를 해주면 실시간으로 시간을 알 수 있다.
 
 $(document).ready(function () {
-    //$('#registerForm').validate(); //유효성 검사를 적용
-    // validate signup form on keyup and submit
+    if($("#nowBid").val()==$("#nowPrice").val()) {
+        $("#bid").val()>=$("#nowPrice").val();
+    }else {
+        if($("#nowBid").val()<10000){
+            min($("#nowBid").val()+1000)
+        }else if($("#nowBid").val()<100000){
+            min($("#nowBid").val()+5000)
+        }else if($("#nowBid").val()<500000){
+            min($("#nowBid").val()+10000)
+        }else {
+            min($("#nowBid").val()+50000)
+        }
+    }
+});
+
+$(document).ready(function () {
+
     $('#productForm').validate({
 
         rules: {
             bid: {
-                required:true,
+                required:true,  
                 digits:true,
-                min:100,
                 max:999999
+            },
+            nowPrice: {
+                min:$("#nowPrice").val()
             }
         },
         messages: {
             bid: {
                 required: "가격을 입력해주세요.",
                 digits: "숫자만 입력 가능합니다.",
-                min: "최소 가격은 100원 이상입니다.",
+                min: "최소 입찰가보다 커야합니다",
                 max: "최대 가격은 999,999원입니다."
             }
         }
