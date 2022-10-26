@@ -1,7 +1,9 @@
 package com.youprice.onion.dto.board;
 
 
+import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.entity.board.Inquiry;
+import com.youprice.onion.entity.member.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,6 +28,7 @@ public class InquiryDTO {
     private boolean secret;
     private List<AnswerDTO> answer;
 
+    private MemberDTO memberDTO;
 
     public InquiryDTO(Inquiry inquiry) {
         this.inquiryId = inquiry.getId();
@@ -38,6 +41,7 @@ public class InquiryDTO {
         this.status = inquiry.getStatus();
         this.secret = inquiry.isSecret();
         this.answer = inquiry.getAnswer().stream().map(AnswerDTO::new).collect(Collectors.toList());
+        this.memberDTO = new MemberDTO(inquiry.getMember());
     }
 
 }

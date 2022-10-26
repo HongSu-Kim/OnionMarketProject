@@ -2,16 +2,6 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<c:set var="cp" value="<%=request.getContextPath()%>"/>
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8" />
-
-	<title>sellList</title>
-
-</head>
-<body>
 <section class="spad">
 	<div class="container">
 		<div class="sellList">
@@ -79,6 +69,35 @@
 				</div>
 			</div>
 			<!-- Sell List End -->
+
+			<!-- List Paging -->
+			<div class="row">
+				<div class="col-lg-12">
+
+					<!-- 페이징 -->
+					<c:if test="${!empty page.content && page.totalPages != 1}">
+						<div class="product__pagination text-center">
+							<c:set var="size" value="${page.pageable.pageSize}"/>
+							<fmt:parseNumber var="pages" integerOnly="true" value="${page.number / size}"/>
+							<c:set var="startNumber" value="${pages * size + 1}"/>
+							<c:set var="endNumber" value="${page.totalPages > (pages + 1) * size ? (pages + 1) * size : page.totalPages}"/>
+							<c:if test="${page.totalPages > size && page.number + 1 > size}">
+								<a href="?page=1"><<</a>
+								<a href="?page=${startNumber - 1}"><</a>
+							</c:if>
+							<c:forEach var="currentNumber" begin="${startNumber}" end="${endNumber}">
+								<a href="?page=${currentNumber}">${currentNumber}</a>
+							</c:forEach>
+							<c:if test="${page.totalPages > endNumber}">
+								<a href="?page=${endNumber + 1}">></a>
+								<a href="?page=${page.totalPages}">>></a>
+							</c:if>
+						</div>
+					</c:if>
+
+				</div>
+			</div>
+			<!-- List Paging End -->
 
 		</div>
 	</div>

@@ -95,7 +95,7 @@ $('#imp-payment').click(function() {
                 },
                 error: function (error) { // DB 입력중 오류
                     alert(error.responseText)
-                    location.href = "/product/productMain"
+                    location.href = "/"
                 }
             }).done(function (data) {
                 // 가맹점 서버 결제 API 성공시 로직

@@ -3,6 +3,8 @@ package com.youprice.onion.dto.board;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
+
 @Getter@Setter
 public class ComplainFormDTO {
 
@@ -11,5 +13,4 @@ public class ComplainFormDTO {
     private Long chatroomId; // 채팅방번호 FK
     private String complainType; // 신고유형
     private String complainContent; // 신고내용
-
 }
