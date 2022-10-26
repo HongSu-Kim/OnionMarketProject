@@ -11,6 +11,7 @@ import com.youprice.onion.repository.chat.ChatroomRepository;
 import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.repository.product.ProductRepository;
 import com.youprice.onion.service.board.ComplainService;
+import com.youprice.onion.util.AlertRedirect;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -52,13 +53,23 @@ public class ComplainServiceImpl implements ComplainService {
         complainRepository.save(complain);
     }
 
-    public void modifyStatus(Long complainId, int select){
+    public String modifyStatus(Long complainId, String select){
         Complain complain = complainRepository.findById(complainId).orElse(null);
+        Member member = complain.getProduct().getMember();
 
-        if(select==0) {
-            complain.updateStatus("처리완료");
-        } else{
-            complain.updateStatus("접수취소");
+        if(select.equals("처리완료")) {
+            complain.updateStatus(select);
+            //member.addComplainCount(); // 처리완료가 되면 신고대상 회원의 complainCount 증가
+
+            if(member.getComplaintCount() >= 5){
+                Product product = productRepository.findById(complain.getProduct().getId()).orElse(null);
+                //product.modifyBlindStatus("blind");
+            }
+            return select;
+        } else{ // 접수취소되면 삭제
+            complain.updateStatus(select);
+            complainRepository.delete(complain);
+            return select;
         }
     }
 

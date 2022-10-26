@@ -12,5 +12,6 @@ public interface InquiryService {
     void deleteInquiry(InquiryDTO inquiryDTO);
 
     Page<InquiryDTO> findAll(Pageable pageable);
+    Page<InquiryDTO> MemberReviewList(Long memberId, Pageable pageable);
     Page<InquiryDTO> getSearchList(String field, String word, Pageable pageable);
 }
