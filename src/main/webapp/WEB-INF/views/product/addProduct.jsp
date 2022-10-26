@@ -60,7 +60,7 @@
 								</c:forEach>
 							</label>
 
-							<p><button type="button" onclick="location.href='/town/town'">내 동네 설정하러 가기</button></p><br>
+							<p><button type="button" class="primary-btn border-0" onclick="location.href='/town/town'">내 동네 설정하러 가기</button></p><br>
 							<hr/>
 						</div>
 						<div class="checkout__input">
@@ -75,19 +75,19 @@
 						</div>
 						<div class="checkout__input">
 							<p>카테고리 선택<span>*</span></p>
-							<select>
-								<option value="" selected="" disabled="">선택하세요</option>
-								<c:forEach var="topCategory" items="${topCategory}">
-									<option>${topCategory.categoryName}</option>
-								</c:forEach>
-							</select>
+<%--							<select>--%>
+<%--								<option value="" selected="" disabled="">선택하세요</option>--%>
+<%--								<c:forEach var="topCategory" items="${topCategory}">--%>
+<%--									<option>${topCategory.categoryName}</option>--%>
+<%--								</c:forEach>--%>
+<%--							</select>--%>
 							<select id="categoryId" name="categoryId">
-								<option value="" selected="" disabled="">선택하세요</option>
+								<option value="">선택하세요</option>
 								<c:forEach var="subCategory" items="${subCategory}">
 									<option value="${subCategory.id}">${subCategory.categoryName}</option>
 								</c:forEach>
 							</select>
-							<br><br><br><br><hr/>
+							<br><br><br><hr/>
 						</div>
 						<div class="checkout__input">
 							<p>상품 가격<span>*</span></p>
@@ -97,7 +97,7 @@
 						<div class="checkout__input">
 							<p>페이 결제</p><%--true/false로 변경--%>
 							<p style="color: #aaaaaa">
-								(페이 결제 시 혜택..?)
+								양파  페이
 								<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="payStatus" value="true">
 								<input type="hidden" name="payStatus" value="false">
 							</p>

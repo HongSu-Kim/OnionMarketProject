@@ -37,14 +37,14 @@
 				<div class="product__details__text">
 					<h3>${productFindDTO.subject}</h3>
 					<div class="product__details__rating">
-						<c:choose>
-							<c:when test="${reviewDTO.grade ne null}">
-								<c:forEach begin="1" end="${reviewDTO.grade}">★</c:forEach>
-							</c:when>
-							<c:otherwise>
-								<p>판매자의 등록된 리뷰가 아직 없습니다.</p>
-							</c:otherwise>
-						</c:choose>
+<%--						<c:choose>--%>
+<%--							<c:when test="${reviewAvg}">--%>
+<%--								리뷰 평점: ${reviewAvg}--%>
+<%--							</c:when>--%>
+<%--							<c:otherwise>--%>
+<%--								<p>판매자의 등록된 리뷰가 아직 없습니다.</p>--%>
+<%--							</c:otherwise>--%>
+<%--						</c:choose>--%>
 					</div>
 					<div>
 					<div class="product__details__price"><fmt:formatNumber maxFractionDigits="3" value="${productFindDTO.price}"/>원</div>
@@ -237,71 +237,73 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="section-title related__product__title">
-					<h2>Related Product</h2>
+					<h2>연 관  상 품</h2>
 				</div>
 			</div>
 		</div>
 		<div class="row">
+			<c:forEach var="categoryDTO" items="${categoryDTO}" end="3">
 			<div class="col-lg-3 col-md-4 col-sm-6">
 				<div class="product__item">
-					<div class="product__item__pic set-bg" data-setbg="img/product/product-1.jpg">
+					<div class="product__item__pic set-bg" data-setbg="/img/product/${categoryDTO.representativeImage}">
 						<ul class="product__item__pic__hover">
-							<li><a href="#"><i class="fa fa-heart"></i></a></li>
+							<li><a href="/wish/addWish/${productId}"><i class="fa fa-heart"></i></a></li>
 							<li><a href="#"><i class="fa fa-retweet"></i></a></li>
 							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
 						</ul>
 					</div>
 					<div class="product__item__text">
-						<h6><a href="#">Crab Pool Security</a></h6>
-						<h5>$30.00</h5>
+						<h6><a href="/product/detail/${categoryDTO.productId}">${categoryDTO.subject}</a></h6>
+						<h5><fmt:formatNumber maxFractionDigits="3" value="${categoryDTO.price}"/>원</h5>
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-3 col-md-4 col-sm-6">
-				<div class="product__item">
-					<div class="product__item__pic set-bg" data-setbg="img/product/product-2.jpg">
-						<ul class="product__item__pic__hover">
-							<li><a href="#"><i class="fa fa-heart"></i></a></li>
-							<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-						</ul>
-					</div>
-					<div class="product__item__text">
-						<h6><a href="#">Crab Pool Security</a></h6>
-						<h5>$30.00</h5>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-3 col-md-4 col-sm-6">
-				<div class="product__item">
-					<div class="product__item__pic set-bg" data-setbg="img/product/product-3.jpg">
-						<ul class="product__item__pic__hover">
-							<li><a href="#"><i class="fa fa-heart"></i></a></li>
-							<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-						</ul>
-					</div>
-					<div class="product__item__text">
-						<h6><a href="#">Crab Pool Security</a></h6>
-						<h5>$30.00</h5>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-3 col-md-4 col-sm-6">
-				<div class="product__item">
-					<div class="product__item__pic set-bg" data-setbg="img/product/product-7.jpg">
-						<ul class="product__item__pic__hover">
-							<li><a href="#"><i class="fa fa-heart"></i></a></li>
-							<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-						</ul>
-					</div>
-					<div class="product__item__text">
-						<h6><a href="#">Crab Pool Security</a></h6>
-						<h5>$30.00</h5>
-					</div>
-				</div>
-			</div>
+			</c:forEach>
+<%--			<div class="col-lg-3 col-md-4 col-sm-6">--%>
+<%--				<div class="product__item">--%>
+<%--					<div class="product__item__pic set-bg" data-setbg="img/product/product-2.jpg">--%>
+<%--						<ul class="product__item__pic__hover">--%>
+<%--							<li><a href="#"><i class="fa fa-heart"></i></a></li>--%>
+<%--							<li><a href="#"><i class="fa fa-retweet"></i></a></li>--%>
+<%--							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>--%>
+<%--						</ul>--%>
+<%--					</div>--%>
+<%--					<div class="product__item__text">--%>
+<%--						<h6><a href="#">Crab Pool Security</a></h6>--%>
+<%--						<h5>$30.00</h5>--%>
+<%--					</div>--%>
+<%--				</div>--%>
+<%--			</div>--%>
+<%--			<div class="col-lg-3 col-md-4 col-sm-6">--%>
+<%--				<div class="product__item">--%>
+<%--					<div class="product__item__pic set-bg" data-setbg="img/product/product-3.jpg">--%>
+<%--						<ul class="product__item__pic__hover">--%>
+<%--							<li><a href="#"><i class="fa fa-heart"></i></a></li>--%>
+<%--							<li><a href="#"><i class="fa fa-retweet"></i></a></li>--%>
+<%--							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>--%>
+<%--						</ul>--%>
+<%--					</div>--%>
+<%--					<div class="product__item__text">--%>
+<%--						<h6><a href="#">Crab Pool Security</a></h6>--%>
+<%--						<h5>$30.00</h5>--%>
+<%--					</div>--%>
+<%--				</div>--%>
+<%--			</div>--%>
+<%--			<div class="col-lg-3 col-md-4 col-sm-6">--%>
+<%--				<div class="product__item">--%>
+<%--					<div class="product__item__pic set-bg" data-setbg="img/product/product-7.jpg">--%>
+<%--						<ul class="product__item__pic__hover">--%>
+<%--							<li><a href="#"><i class="fa fa-heart"></i></a></li>--%>
+<%--							<li><a href="#"><i class="fa fa-retweet"></i></a></li>--%>
+<%--							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>--%>
+<%--						</ul>--%>
+<%--					</div>--%>
+<%--					<div class="product__item__text">--%>
+<%--						<h6><a href="#">Crab Pool Security</a></h6>--%>
+<%--						<h5>$30.00</h5>--%>
+<%--					</div>--%>
+<%--				</div>--%>
+<%--			</div>--%>
 		</div>
 	</div>
 </section>

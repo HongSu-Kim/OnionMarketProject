@@ -18,12 +18,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.NotNull;
+import javax.validation.Valid;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -35,6 +33,7 @@ public class ProductController {
     private final ProductImageService productImageService;
     private final BiddingService biddingService;
     private final ReviewService reviewService;
+    private final CoordinateService coordinateService;
     private final ProhibitionKeywordService prohibitionKeywordService;
 
     @GetMapping("add")//상픔 등록 주소
@@ -66,7 +65,7 @@ public class ProductController {
     }
     @PostMapping("add")//실제 상품 등록 주소
     public String addProduct(@LoginUser SessionDTO userSession, ProductAddDTO productAddDTO, BindingResult bindingResult
-                             ,List<MultipartFile> fileList, Model model) throws Exception {
+                             , List<MultipartFile> fileList, Model model) throws Exception {
 
         if (prohibitionKeywordService.ProhibitionKeywordFind(productAddDTO.getSubject())) { //금지키워가있으면 true
             bindingResult.addError(new FieldError("productAddDTO", "subject", "적합하지 않은 단어가 포함되어 있습니다."));
@@ -75,6 +74,7 @@ public class ProductController {
                 return "product/addProduct";
             }
         }
+
         /*세션아이디로 멤버아이디 set*/
         productAddDTO.setMemberId(userSession.getId());
         /*상품 등록*/
@@ -89,27 +89,23 @@ public class ProductController {
     public String detail(@PathVariable("productId") Long productId, @LoginUser SessionDTO userSession, Model model)
             throws Exception{
 
-        productService.updateView(productId);//조회수 증가
-
+        /*조회수 증가*/
+        productService.updateView(productId);
+        /*상품조회*/
         ProductFindDTO productFindDTO = productService.getProductFindDTO(productId);
         /*리뷰 조회*/
-        ReviewDTO reviewDTO = reviewService.findReviewDTO(productFindDTO.getMemberId());
+//        Double reviewAvg = reviewService.avgGrade(productFindDTO.getMemberId());
         /*입찰 리스트 조회*/
-        List<BiddingListDTO> biddingList = biddingService.getBiddingList(productId);
-        if(biddingList.size()>0) {
-            int bid = biddingList.get(biddingList.size()-1).getBid();
-
-            model.addAttribute("bid",bid);
-        }
+        List<BiddingListDTO> biddingList = biddingService.getBiddingList(productId, model);
         /*카테고리 상품 추천*/
-//        CategoryFindDTO findDTO = productService.findCategoryId(productFindDTO.getCategoryId());
-        Random random = new Random();
+        List<ProductFindDTO> categoryDTO = productService.getProductSubCategory(productId,productFindDTO.getCategoryId());
 
         model.addAttribute("userSession",userSession);
         model.addAttribute("productId",productId);
         model.addAttribute("productFindDTO",productFindDTO);
-        model.addAttribute("reviewDTO",reviewDTO);
+//        model.addAttribute("reviewAvg",reviewAvg);
         model.addAttribute("biddingList",biddingList);
+        model.addAttribute("categoryDTO",categoryDTO);
 
         return "product/detail";
     }
@@ -122,7 +118,6 @@ public class ProductController {
             AlertRedirect.warningMessage(response,"/member/login", "로그인이 필요합니다.");
             return "redirect:/member/login";
         }
-        ProductFindDTO productFindDTO = productService.getProductFindDTO(productId);
         biddingAddDTO.setMemberId(userSession.getId());
         biddingAddDTO.setProductId(productId);
 
@@ -135,10 +130,14 @@ public class ProductController {
     }
 
     @GetMapping(value = "list") //상품 리스트 주소
-    public String list(Model model) throws Exception {
+    public String list(@LoginUser SessionDTO userSession, Model model) throws Exception {
 
+        /*세션아이디로 동네 조회*/
+        List<TownFindDTO> townList = townService.townLists(userSession.getId());
 
-        List<ProductListDTO> list = productService.getProductList(false);
+        Long coordinateId = townList.get(0).getCoordinateId();
+
+        List<ProductListDTO> list = productService.getProductList(coordinateId,false);
 
         model.addAttribute("list",list);
 
