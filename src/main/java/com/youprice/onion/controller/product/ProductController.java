@@ -1,14 +1,19 @@
 package com.youprice.onion.controller.product;
 
+import com.youprice.onion.dto.board.ReviewDTO;
 import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.product.*;
 import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.security.auth.LoginUser;
+import com.youprice.onion.service.board.ReviewService;
+import com.youprice.onion.service.member.ProhibitionKeywordService;
 import com.youprice.onion.service.product.*;
 import com.youprice.onion.util.AlertRedirect;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +23,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Controller
 @RequiredArgsConstructor
@@ -28,6 +34,8 @@ public class ProductController {
     private final CategoryService categoryService;
     private final ProductImageService productImageService;
     private final BiddingService biddingService;
+    private final ReviewService reviewService;
+    private final ProhibitionKeywordService prohibitionKeywordService;
 
     @GetMapping("add")//상픔 등록 주소
     public String add(Model model, @LoginUser SessionDTO userSession, HttpServletResponse response) throws IOException {
@@ -57,9 +65,16 @@ public class ProductController {
         return "product/addProduct";//상품등록 페이지
     }
     @PostMapping("add")//실제 상품 등록 주소
-    public String addProduct(@LoginUser SessionDTO userSession, ProductAddDTO productAddDTO,
-                             List<MultipartFile> fileList, Model model) throws Exception {
+    public String addProduct(@LoginUser SessionDTO userSession, ProductAddDTO productAddDTO, BindingResult bindingResult
+                             ,List<MultipartFile> fileList, Model model) throws Exception {
 
+        if (prohibitionKeywordService.ProhibitionKeywordFind(productAddDTO.getSubject())) { //금지키워가있으면 true
+            bindingResult.addError(new FieldError("productAddDTO", "subject", "적합하지 않은 단어가 포함되어 있습니다."));
+
+            if (bindingResult.hasErrors()) {
+                return "product/addProduct";
+            }
+        }
         /*세션아이디로 멤버아이디 set*/
         productAddDTO.setMemberId(userSession.getId());
         /*상품 등록*/
@@ -71,44 +86,48 @@ public class ProductController {
     }
 
     @GetMapping("/detail/{productId}")//상품 상세페이지 주소
-    public String detail(@PathVariable("productId") Long productId, @LoginUser SessionDTO userSession, Model model,
-                         HttpServletResponse response) throws Exception{
+    public String detail(@PathVariable("productId") Long productId, @LoginUser SessionDTO userSession, Model model)
+            throws Exception{
 
         productService.updateView(productId);//조회수 증가
 
         ProductFindDTO productFindDTO = productService.getProductFindDTO(productId);
-//        입찰 리스트 조회
+        /*리뷰 조회*/
+        ReviewDTO reviewDTO = reviewService.findReviewDTO(productFindDTO.getMemberId());
+        /*입찰 리스트 조회*/
         List<BiddingListDTO> biddingList = biddingService.getBiddingList(productId);
         if(biddingList.size()>0) {
             int bid = biddingList.get(biddingList.size()-1).getBid();
 
             model.addAttribute("bid",bid);
         }
+        /*카테고리 상품 추천*/
+//        CategoryFindDTO findDTO = productService.findCategoryId(productFindDTO.getCategoryId());
+        Random random = new Random();
+
         model.addAttribute("userSession",userSession);
         model.addAttribute("productId",productId);
         model.addAttribute("productFindDTO",productFindDTO);
+        model.addAttribute("reviewDTO",reviewDTO);
         model.addAttribute("biddingList",biddingList);
 
         return "product/detail";
     }
     @GetMapping("/bid/{productId}")//상품 입찰 주소
     public String bidProduct(@PathVariable("productId") Long productId, @LoginUser SessionDTO userSession,
-                             BiddingAddDTO biddingAddDTO, ProductUpdateDTO productUpdateDTO,HttpServletResponse response,Model model) throws Exception{
+                             BiddingAddDTO biddingAddDTO, HttpServletResponse response,Model model) throws Exception{
 
         //Session이 없을 경우 로그인 처리
         if(userSession == null){
             AlertRedirect.warningMessage(response,"/member/login", "로그인이 필요합니다.");
             return "redirect:/member/login";
         }
-
+        ProductFindDTO productFindDTO = productService.getProductFindDTO(productId);
         biddingAddDTO.setMemberId(userSession.getId());
         biddingAddDTO.setProductId(productId);
 
         /*입찰 목록 생성*/
         biddingService.bidProduct(biddingAddDTO);
-
-        /*입찰 종료 후 마지막 입찰가로 상품가격 업데이트 */
-//        productService.updateProduct(productId, productUpdateDTO);
 
         model.addAttribute("productId",productId);
 
@@ -287,9 +306,16 @@ public class ProductController {
 	}
 
     @PostMapping("/update/{productId}")//실제 상품 업데이트 주소
-    public String updateProduct(Model model, Long productId, ProductUpdateDTO updateDTO, @LoginUser SessionDTO userSession,
-                                 HttpServletResponse response) throws Exception{
+    public String updateProduct(Model model, Long productId, ProductUpdateDTO updateDTO, BindingResult bindingResult,
+                                @LoginUser SessionDTO userSession, HttpServletResponse response) throws Exception{
 
+        if (prohibitionKeywordService.ProhibitionKeywordFind(updateDTO.getSubject())) { //금지키워가있으면 true
+            bindingResult.addError(new FieldError("productAddDTO", "subject", "적합하지 않은 단어가 포함되어 있습니다."));
+
+            if (bindingResult.hasErrors()) {
+                return "product/updateProduct";
+            }
+        }
         /*세션 없을 경우 로그인 처리*/
         if(userSession == null){
             AlertRedirect.warningMessage(response,"/member/login", "로그인이 필요합니다.");
