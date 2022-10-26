@@ -18,4 +18,6 @@ public interface InquiryRepository extends JpaRepository<Inquiry, Long> {
     //Page<Inquiry> searchSubject(String type, String subject, Pageable pageable);
     Page<Inquiry> findAllByInquirySubjectContaining(String subject, Pageable pageable);
 
+    Page<Inquiry> findAllByMember_Id(Long memberId, Pageable pageable);
+
 }

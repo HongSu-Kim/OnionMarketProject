@@ -23,7 +23,6 @@ public class InquiryServiceImpl implements InquiryService {
     private final InquiryRepository inquiryRepository;
     private final MemberRepository memberRepository;
 
-
     @Override
     public InquiryDTO findInquiryDTO(Long inquiryId) {
         return inquiryRepository.findById(inquiryId).map(InquiryDTO::new).orElse(null);
@@ -59,6 +58,11 @@ public class InquiryServiceImpl implements InquiryService {
         Page<InquiryDTO> list = inquiryRepository.findAll(pageable).map(InquiryDTO::new);
         return list;
     }
+    // 특정회원의 문의내역
+    public Page<InquiryDTO> MemberReviewList(Long memberId, Pageable pageable){
+        return inquiryRepository.findAllByMember_Id(memberId, pageable).map(InquiryDTO::new);
+    }
+
     // 검색
     public Page<InquiryDTO> getSearchList(String field, String word, Pageable pageable){
         if(field.equals("name")) {

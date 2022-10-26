@@ -57,6 +57,7 @@
             <div class="col-lg-12">
                 <form:form method="post" action="/review/update/${form == null ? reviewDTO.reviewId : form.reviewId}"
                            enctype="multipart/form-data" id="myform" modelAttribute="form">
+
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                     <input type="hidden" name="reviewId" value="${form == null ? reviewDTO.reviewId : form.reviewId}">
 
@@ -88,7 +89,7 @@
 
                     <%-- 첨부사진 개별 삭제 --%>
                     <div style="display: flex">
-                        <c:forEach items="${imageList}" var="reviewImageDTO">
+                        <c:forEach items="${reviewDTO.reviewImageList}" var="reviewImageDTO">
                             <div>
                                 <img src="/img/review/${reviewImageDTO.storeImageName}" width="200" height="200"/><br/>
                                 <button type="button" class="site-btn"
