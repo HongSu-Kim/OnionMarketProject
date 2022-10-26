@@ -19,7 +19,6 @@ public class ProductFindDTO {
     private Long memberId; //Member FK
     private Long townId; //Town FK
     private Long categoryId; //Category FK
-    private Long orderId; //Order FK
     private String subject; //제목
     private String content; //내용
     private int price; //상품가격

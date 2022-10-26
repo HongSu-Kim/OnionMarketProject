@@ -42,7 +42,7 @@ public class SearchController {
         return "product/popularSearch";
     }
 
-    @GetMapping("result")
+    @GetMapping("list")
     public String KeywordCreate(Model model, SearchAddDTO searchAddDTO,
                            @RequestParam("searchName") String searchName, HttpServletResponse response) throws IOException {
 
@@ -58,7 +58,7 @@ public class SearchController {
 
             model.addAttribute("searchList", searchList);
 
-            return "product/main";
+            return "product/list";
 
         } catch (RuntimeException e) {
             return AlertRedirect.warningMessage(response, "검색중 오류입니다\n");

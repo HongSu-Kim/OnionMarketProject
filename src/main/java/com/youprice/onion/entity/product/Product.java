@@ -4,6 +4,7 @@ package com.youprice.onion.entity.product;
 import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.product.ProductAddDTO;
 import com.youprice.onion.dto.product.ProductDTO;
+import com.youprice.onion.dto.product.ProductListDTO;
 import com.youprice.onion.dto.product.ProductUpdateDTO;
 import com.youprice.onion.entity.chat.Chatroom;
 import com.youprice.onion.entity.order.Order;
@@ -63,7 +64,6 @@ public class Product {
     //주문 참조 양방향
     @OneToMany(mappedBy = "product")
     private List<Order> orderList = new ArrayList<>();
-
     //이미지 참조 양방향
     @OneToMany(mappedBy = "product")
     private List<ProductImage> productImageList = new ArrayList<>();
@@ -146,6 +146,12 @@ public class Product {
         }
         this.auctionDeadline = updateDTO.getAuctionDeadline();
         this.payStatus = updateDTO.getPayStatus();
+    }
+
+    //경매 상품 가격&블라인드 수정
+    public void updateAuctionProduct(ProductListDTO productListDTO){
+        this.price = productListDTO.getPrice();
+        this.blindStatus = productListDTO.getBlindStatus();
     }
 
 	// 상품상태 수정
