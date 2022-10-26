@@ -9,5 +9,6 @@ public interface ComplainService {
 
     ComplainDTO findComplainDTO(Long id);
     void saveComplain(ComplainFormDTO complainFormDTO);
+    String modifyStatus(Long complainId, String select);
     Page<ComplainDTO> findAll(Pageable pageable);
 }

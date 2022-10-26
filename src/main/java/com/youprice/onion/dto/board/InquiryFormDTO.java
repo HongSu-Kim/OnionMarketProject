@@ -19,7 +19,7 @@ public class InquiryFormDTO {
     private String detailType; // 상세유형
 
     @NotEmpty(message = "제목을 입력해주세요")
-    @Size(max=200)
+    @Size(max = 200)
     private String inquirySubject; // 문의제목
 
     @NotEmpty(message = "문의 내용을 작성해주세요")
