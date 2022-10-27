@@ -28,6 +28,8 @@ public interface ProductService {
     //조회수 증가
     int updateView(Long productId);
     //상품 전체 조회
+    List<ProductListDTO> getProductList(Boolean blindStatus);
+    //동네 상품 전체 조회
     List<ProductListDTO> getProductList(Long coordinateId,Boolean blindStatus);
     //경매상품 전체 조회
     List<ProductListDTO> getAuctionList(Boolean blindStatus);
