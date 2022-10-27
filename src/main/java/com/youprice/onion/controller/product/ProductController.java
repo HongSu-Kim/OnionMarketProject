@@ -4,11 +4,14 @@ import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.product.*;
 import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.security.auth.LoginUser;
-import com.youprice.onion.service.board.ReviewService;
 import com.youprice.onion.service.member.ProhibitionKeywordService;
 import com.youprice.onion.service.product.*;
 import com.youprice.onion.util.AlertRedirect;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,10 +20,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -31,8 +33,6 @@ public class ProductController {
     private final CategoryService categoryService;
     private final ProductImageService productImageService;
     private final BiddingService biddingService;
-    private final ReviewService reviewService;
-    private final CoordinateService coordinateService;
     private final ProhibitionKeywordService prohibitionKeywordService;
 
     @GetMapping("add")//상픔 등록 주소
@@ -136,47 +136,52 @@ public class ProductController {
     }
 
     @GetMapping(value = "list") //상품 리스트 주소
-    public String list(@LoginUser SessionDTO userSession, Model model) throws Exception {
+    public String list(@LoginUser SessionDTO userSession, Model model, @PageableDefault Pageable pageable) throws Exception {
 
-        if(userSession!=null) {
-            /*세션아이디로 동네 조회*/
-            List<TownFindDTO> townList = townService.townLists(userSession.getId());
+        /*세션아이디로 동네 조회*/
+        List<Long> coordinateList = null;
 
-            switch (townList.size()){
-                case 0://동네정보가 없을 경우 상품 전체 조회
-                    List<ProductListDTO> listCase0 = productService.getProductList(false);
-                    model.addAttribute("list", listCase0);
-                    model.addAttribute("townList", townList);
-                    break;
-                case 1://동네정보가 하나일 경우 동네 상품 조회
-                    Long coordinateId = townList.get(0).getCoordinateId();
-                    List<ProductListDTO> listCase1 = productService.getProductList(coordinateId, false);
-                    model.addAttribute("list", listCase1);
-                    model.addAttribute("townList", townList);
-                    break;
-            }
-
-        }else {
-
-            List<ProductListDTO> list = productService.getProductList(false);
-            model.addAttribute("list", list);
+        if(userSession!=null){
+            coordinateList = townService.townLists(userSession.getId())
+                    .stream()
+                    .map(TownFindDTO::getCoordinateId)
+                    .collect(Collectors.toList());
 
         }
+
+        SearchRequirements searchRequirements = SearchRequirements.builder()
+                .coordinateIdList(coordinateList)
+                .build();
+
+        searchRequirements.setPageable(PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
+                pageable.getPageSize(),Sort.Direction.DESC, "uploadDate"));
+
+        List<ProductListDTO> list = productService.getProductListDTO(searchRequirements).getContent();
+
+        model.addAttribute("list",list);
+
         return "product/list";//상품 리스트 메인 화면페이지
     }
 
     @GetMapping("all")
-    public String allList(Model model) {
-        List<ProductListDTO> list = productService.getProductList(false);
+    public String allList(Model model,@PageableDefault Pageable pageable) {
+
+        SearchRequirements searchRequirements = SearchRequirements.builder()
+                .blindStatus(false)
+                .build();
+
+        searchRequirements.setPageable(PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
+                pageable.getPageSize(),Sort.Direction.DESC, "uploadDate"));
+        List<ProductListDTO> list = productService.getProductListDTO(searchRequirements).getContent();
 
         model.addAttribute("list", list);
         return "product/list";
     }
 
     @GetMapping("auctionList") //경매 상품 리스트
-    public String auctionList(Model model) throws Exception {
+    public String auctionList(Model model,@PageableDefault Pageable pageable) throws Exception {
 
-        List<ProductListDTO> list = productService.updateBlindStatus();
+        List<ProductListDTO> list = productService.getProductAuctionList();
 
         model.addAttribute("list", list);
 
@@ -337,7 +342,7 @@ public class ProductController {
     public String updateProduct(Model model, Long productId, ProductUpdateDTO updateDTO, BindingResult bindingResult,
                                 @LoginUser SessionDTO userSession, HttpServletResponse response) throws Exception{
 
-        if (prohibitionKeywordService.ProhibitionKeywordFind(updateDTO.getSubject())) { //금지키워가있으면 true
+        if (prohibitionKeywordService.ProhibitionKeywordFind(updateDTO.getSubject())) { //금지키워드가있으면 true
             bindingResult.addError(new FieldError("productAddDTO", "subject", "적합하지 않은 단어가 포함되어 있습니다."));
 
             if (bindingResult.hasErrors()) {
