@@ -163,9 +163,19 @@ public class ProductServiceImpl implements ProductService {
         return subCategoryProduct;
     }
 
-    //전체 상품 조회
+    //상품 전체 조회
+    @Override
+    public List<ProductListDTO> getProductList(Boolean blindStatus) {
+        return productRepository.findByBlindStatus(false)
+                .stream()
+                .map(product -> new ProductListDTO(product))
+                .collect(Collectors.toList());
+    }
+
+    //동네 상품 전체 조회
     @Override
     public List<ProductListDTO> getProductList(Long coordinateId,Boolean blindStatus) {
+
         List<ProductListDTO> list = productRepository.findByBlindStatus(false)
                 .stream()
                 .filter(gpl -> gpl.getTown().getCoordinate().getId()==coordinateId)

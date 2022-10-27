@@ -14,7 +14,6 @@ public class ProductAddDTO {
 
     private Long townId; //동네번호
 
-    @NotNull(message = "카테고리를 선택해주세요.")
     private Long categoryId; //카테고리번호
 
     private Long orderId; //주문번호
