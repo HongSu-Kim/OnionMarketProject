@@ -59,6 +59,8 @@ public interface   ProductRepository extends JpaRepository<Product, Long> {
     //제목과 내용으로 검색한 리스트 조회
     List<Product> findBySubjectContainingOrContentContaining(String subject,String content);
 
+	boolean existsBySubject(String subject);
+
 	@Repository
 	@RequiredArgsConstructor
 	class Querydsl {
