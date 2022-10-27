@@ -68,14 +68,16 @@ public class CrawlingController {
 				Element ele = iterator.next();
 
 				String subject = ele.select(".card-title").text();//제목
-				String price = ele.select(".card-price").text();//가격 - String
-				String content = subject + " " + price + "에 팝니다.";//내용
+				String priceStr = ele.select(".card-price").text();//가격 - String
+				String content = subject + " " + priceStr + "에 팝니다.";//내용
 				String townName = ele.select(".card-region-name").text();//동내이름
 				String imgSrc = ele.select(".card-photo img").attr("src");//이미지 - url
 
+				if (productRepository.existsBySubject(subject)) continue;
+
 				// 상품가격 int
-				log.error("price : " + price);
-				int intPrice = Integer.parseInt(price.replaceAll(",", "").replaceAll("원", "").replaceAll("만", "0000"));
+				log.error("price : " + priceStr);
+				int price = Integer.parseInt(priceStr.replaceAll(",", "").replaceAll("원", "").replaceAll("만", "0000"));
 
 				String[] townNameSplit = townName.split(" ");//동내이름 - split
 				String townNameStr = townNameSplit[townNameSplit.length - 1];
@@ -106,7 +108,7 @@ public class CrawlingController {
 				Town town = townRepositoy.findByMemberIdAndCoordinateTownNameContains(1L, townNameStr).orElse(defaultTown);
 
 
-				Product product = new Product(member, town, category, subject, content, intPrice, representativeImage, payStatus);
+				Product product = new Product(member, town, category, subject, content, price, representativeImage, payStatus);
 				productRepository.save(product);
 				log.error("Product 저장");
 				productImageRepository.save(new ProductImage(product, representativeImage));
