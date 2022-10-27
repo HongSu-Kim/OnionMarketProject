@@ -72,26 +72,7 @@
         text-align: left;
     }
 
-    a {
-        color: black;
-        text-decoration-line: none;
-        text-decoration: none;
 
-    }
-
-    a:link {
-        color: red;
-        text-decoration: none;
-    }
-
-    a:visited {
-        color: black;
-        text-decoration: none;
-    }
-
-    a:hover {
-        text-decoration: underline;
-    }
 
 
 </style>
@@ -124,10 +105,10 @@
         <strong>현재 등록된 동네</strong><br/>
         <c:forEach var="list" items="${list}">
 
-        <a href="#" onclick="statusChange(this)">
-            동네이름:  <strong> [${list.townName}]</strong><br/></a>
-<%--            위도: <strong> [${list.latitude}]</strong><br/>--%>
-<%--            경도: <strong> [${list.longitude}]</strong> <br/> </a>--%>
+
+          동네이름:  <strong> [${list.townName}]</strong><br/>
+            위도: <strong> [${list.latitude}]</strong><br/>
+            경도: <strong> [${list.longitude}]</strong> <br/>
 
         </c:forEach>
 <br/>
@@ -138,74 +119,19 @@
     </strong>
 
 <br/><br/>
-        <c:if test="${empty range}">
 
-        <h2>거리설정</h2>
-
-
-        <script type="text/javascript">
-
-            function statusChange(statusItem) {
-
-
-                var townName = $(statusItem).text();
-                var range = $("#range").val();
-
-
-                townName = $.trim(townName);
-                 $("#coordinateId").val(townName);
-                $("#latitude").val(townName);
-                $("#longitude").val(townName);
-
-                if (confirm( townName + "전방"+range+ "km 이내의 주변 상품을 보시겠습니까?") == true) {    //확인
-
-                    document.townadd.submit();
-
-                } else {   //취소
-
-                    return false;
-
-                }
-
-
-            }
-
-
-        </script>
-
-
-            <form:form action="/town/rangeProduct" name="townadd" method="post">
-        <div id="js-example-disabled">
-
-            <input type="range" name="range" id="range" min="0" max="10" step="2" value="0" data-rangeslider/>
-            <c:forEach var="list" items="${list}">
-            <input type="hidden" name="townName" id="coordinateId" value="${list.townName}" style="width: 15%;">
-            <input type="hidden" name="latitude" id="latitude" value="${list.latitude}" style="width: 15%;">
-            <input type="hidden" name="longitude" id="longitude" value="${list.longitude}" style="width: 15%;">
-            <output></output>
-            </c:forEach>
-
-        </div>
-
-        <button type="submit">해당 범위 설정</button>
-        </form:form>
-
-        </c:if>
-
-
-        <c:if test="${!empty range}">
         <c:forEach var="range" items="${range}">
 
         <h2>거리설정</h2>
 
-       전방 ${range}km 주변 물건 찾기
+        현재설정한 거리는 ${range}km입니다
         <form:form action="/town/rangeProduct" method="post">
         <div id="js-example-disabled">
 
 
-            <input type="range" name="range" min="0" max="10" step="2" value="${range}" data-rangeslider  />
+            <input type="range" name="range" min="0" max="10" step="2" value="${range}km" data-rangeslider disabled />
             <output></output>
-
+            <button data-behaviour="toggle">해당 범위 설정</button>
         </div>
 
         <button type="submit">해당 범위내 상품 찾기</button>
@@ -215,7 +141,6 @@
         </form:form>
 
         </c:forEach>
-        </c:if>
 
         <script src="//localhost:8083"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>

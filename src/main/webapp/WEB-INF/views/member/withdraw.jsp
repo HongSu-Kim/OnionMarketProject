@@ -30,10 +30,19 @@
 
             <div class="form-group">
                 <label>비밀번호</label>
-                <input type="password" class="form-control" name="withdrawpwd" placeholder="비밀번호를 입력해주세요">
+                <input type="password" class="form-control" name="withdrawpwd" id="withdrawpwd" placeholder="비밀번호를 입력해주세요">
             </div>
 
-            <button class="btn btn-primary bi bi-lock-fill">탈퇴하기</button>
+            <div class="form-group">
+                <label>비밀번호 재확인</label>
+                <input type="password" name="pwdCheck" id="pwdCheck" class="form-control" placeholder="비밀번호를 입력해주세요"/>
+            </div>
+
+
+            <div class="alert alert-success" id="alert-success">비밀번호가 일치합니다.</div>
+            <div class="alert alert-danger" id="alert-danger">비밀번호가 일치하지 않습니다.</div>
+
+            <button class="btn btn-primary bi bi-lock-fill" id="btn-member-withdraw">탈퇴하기</button>
             <a href="/member/mypage" role="button" class="btn btn-primary bi bi-lock-fill">마이 페이지</a>
         </form>
             <div>&nbsp;</div>
