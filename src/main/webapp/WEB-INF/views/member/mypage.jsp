@@ -19,6 +19,8 @@
 <hr/>
     <sec:authorize access="isAuthenticated()">
         <a sec:authorize access="isAuthenticated()" href="/member/preModify">회원정보 수정</a>
+        &nbsp;
+        <a sec:authorize access="isAuthenticated()" href="/member/withdraw">회원탈퇴</a>
     </sec:authorize>
 <hr/>
 <a href="/member/home">홈으로 가기</a>

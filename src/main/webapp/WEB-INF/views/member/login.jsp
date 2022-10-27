@@ -3,31 +3,25 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var = "cp" value = "<%=request.getContextPath()%>"/>
-<!DOCTYPE html>
-<html>
-<head>
+<section class="spad">
+    <div class="col-lg-12">
+        <div class="section-title related-blog-title">
+            <h2>LOGIN</h2>
+        </div>
+    </div>
 
-    <title>Login</title>
-
-</head>
-
-<body onload="document.myForm.userId.focus();">
-
-<h1>로그인</h1>
-<hr>
-
-<div id="posts_list">
-    <div class="container col-md-6">
+    <div class="container">
         <form action="/member/loginProc" method="post" name="myForm">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+
             <div class="form-group">
-                <label>아이디</label>
-                <input type="text" class="form-control" name="userId" placeholder="아이디를 입력해주세요">
+                <label for="userId">아이디</label>
+                <input type="text" class="form-control" id="userId" name="userId" placeholder="아이디를 입력해주세요" style="width: 250px;">
             </div>
 
             <div class="form-group">
-                <label>비밀번호</label>
-                <input type="password" class="form-control" name="pwd" placeholder="비밀번호를 입력해주세요">
+                <label for="pwd">비밀번호</label>
+                <input type="password" class="form-control" id="pwd" name="pwd" placeholder="비밀번호를 입력해주세요" style="width: 250px;">
             </div>
 
             <c:if test="${not empty error}">
@@ -39,10 +33,5 @@
             <a href="/member/findId" role="button" class="btn btn-primary bi bi-lock-fill">아이디 찾기</a>
             <a href="/member/findPwd" role="button" class="btn btn-primary bi bi-lock-fill">비밀번호 찾기</a>
         </form>
-            <div>&nbsp;</div>
     </div>
-</div>
-
-</body>
-
-</html>
+</section>
