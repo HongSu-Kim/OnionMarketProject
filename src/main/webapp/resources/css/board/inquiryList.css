@@ -2,34 +2,12 @@
     margin-top: 20px;
     margin-bottom: 20px;
 }
-#ac li{
-    list-style: none;
-}
-.menu2 li {
-    list-style: none;
-}
-#ac li a{
-    display:block;
-    width: 100%;
-    text-align: center;
-    height:50px;
-    line-height: 50px;
-}
-.menu1 a{
+#myPage > ul > li > a {
     color: black;
 }
-.menu2{
-    display:none;
+.linkcolor > td > a{
+    color: #155724;
 }
-.menu2 a{
-    background-color:#ccc;
-    color:blue;
-}
-.menu2 a:hover{
-    background-color:rgba(0, 0, 0, 0.500);
-}
-
-
 
 .n-section-title {
     border-bottom: 3px solid #7fad39;
