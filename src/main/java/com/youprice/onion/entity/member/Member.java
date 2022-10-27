@@ -122,6 +122,7 @@ public class Member {
         this.pwd = pwd;
     }
 
+    //회원 탈퇴
     public void withdraw(Role role) {
         this.role = role;
     }

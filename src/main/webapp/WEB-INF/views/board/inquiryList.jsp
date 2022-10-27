@@ -4,17 +4,6 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <c:set var="cp" value="<%=request.getContextPath()%>"/>
 
-<script>
-    $('.menu1').click(function () {
-        $('.menu2').slideUp();
-        if ($(this).children('.menu2').is(':hidden')) {
-            $(this).children('.menu2').slideDown();
-        } else {
-            $(this).children('.menu2').slideUp();
-        }
-    });
-</script>
-
 <%--<section class="hero hero-normal">--%>
 <section class="mypage-cont mypage-counsel">
     <div class="container" style="width: 1000px;">
@@ -34,8 +23,8 @@
                 </select>
 
                 <div style="height: 42px">
-                    <input type="text" name="word" style="height: 40px" class="col-xl-4" placeholder="Search">
-                    <button class="btn btn-outline-success" type="submit" style="height: 45px">
+                    <input type="text" name="word" style="width:200px; height: 40px" placeholder="Search">
+                    <button class="site-btn" type="submit" style="height: 45px">
                         <span class="icon_search"></span></button>
                 </div>
             </div>
@@ -73,61 +62,56 @@
             <!-- list띄우기 -->
             <tbody>
             <c:forEach var="dto" items="${questionlist.content }">
-                <tr>
-                    <ul id="ac">
-                        <li class="menu1">
-                            <td>${questionlist.totalElements - (questionlist.number * questionlist.size) - questionlist.content.indexOf(dto)}</td>
-                            <td>${dto.inquiryType}/${dto.detailType}</td>
+                <tr class="linkcolor">
+                    <td>${questionlist.totalElements - (questionlist.number * questionlist.size) - questionlist.content.indexOf(dto)}</td>
+                    <td>${dto.inquiryType}/${dto.detailType}</td>
 
-                            <!-- 비밀글 표시 -->
-                            <c:if test="${dto.secret == true}">
-                                <c:choose>
-                                    <%-- <c:when test="${dto.member.userId eq member.userid || member.role eq '[ROLE_ADMIN, ROLE_USER]'}"> --%>
-                                    <c:when test="${dto.memberId eq memberDTO.id || memberDTO.role eq 'ADMIN'}">
-                                        <%--|| sessionDTO.role eq 'ROLE_ADMIN'--%>
-                                        <!-- 작성자이거나 관리자일 때 볼 수 있는 링크 -->
-                                        <td>
+                    <!-- 비밀글 표시 -->
+                    <c:if test="${dto.secret == true}">
+                        <c:choose>
+                            <c:when test="${dto.memberId eq memberDTO.id || memberDTO.role eq 'ADMIN'}">
+                                <!-- 작성자이거나 관리자일 때 볼 수 있는 링크 -->
+                                <td>Q <a
+                                        href="/inquiry/article/${dto.inquiryId}?field=${param.field}&word=${param.word}&page=${param.page}">
+                                    <c:out value="${dto.inquirySubject}"/><c:if
+                                        test="${dto.answer.size() != 0}">[${dto.answer.size()}]</c:if>
+                                </a></td>
+                            </c:when>
 
-                                            <a href="#"><c:out value="${dto.inquirySubject}"/>
-                                                <c:if test="${dto.answer.size() != 0}">[${dto.answer.size()}]</c:if>
-                                            </a>
-                                            <ul class="menu2">
-                                                <li><a href="#">${dto.inquiryContent}</a></li>
-                                            </ul>
-
-                                        </td>
-                                    </c:when>
-
-                                    <c:otherwise>
-                                        <td class="text-secondary"><i class="icofont-lock"></i>
-                                            🔒<c:out value="${dto.inquirySubject}"/><c:if
-                                                    test="${dto.answer.size() != 0}">[${dto.answer.size()}]</c:if>
-                                        </td>
-                                    </c:otherwise>
-                                </c:choose>
-                            </c:if>
-
-                            <c:if test="${dto.secret == false}">
-                                <td>
-                                    <a href="#" style="color: #5a6268">
-                                        Q ${dto.inquirySubject}
-                                        <c:if test="${dto.answer.size() != 0}">[${dto.answer.size()}]</c:if>
-                                    </a>
+                            <c:otherwise>
+                                <td class="text-secondary"><i class="icofont-lock"></i>
+                                    🔒<c:out value="${dto.inquirySubject}"/><c:if
+                                            test="${dto.answer.size() != 0}">[${dto.answer.size()}]</c:if>
                                 </td>
-                            </c:if>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:if>
 
-                            <td>${dto.inquiryDate}</td>
-                            <td>${dto.memberDTO.nickname}</td>
-                            <td>${dto.status}</td>
+                    <c:if test="${dto.secret == false}">
+                        <td>
+                            <a href="/inquiry/article/${dto.inquiryId}?field=${param.field}&word=${param.word}&page=${param.page}">
+                                Q ${dto.inquirySubject}
+                                <c:if test="${dto.answer.size() != 0}">[${dto.answer.size()}]</c:if>
+                            </a>
+                        </td>
+                    </c:if>
 
-                        </li>
-                    </ul>
+                    <td>${dto.inquiryDate}</td>
+                    <td>${dto.memberDTO.nickname}</td>
+                    <td>
+                        <c:if test="${dto.status == '답변완료'}">
+                            <span style="color: #00c73c">${dto.status}</span>
+                        </c:if>
+                        <c:if test="${dto.status == '답변대기'}">
+                            <span style="color: #7e828f">${dto.status}</span>
+                        </c:if>
+                    </td>
                 </tr>
             </c:forEach>
             </tbody>
         </table>
 
-        <div class="n-table-none">
+        <div>
             <c:if test="${questionlist == null}"><span>등록된 1:1문의가 없습니다.</span></c:if>
         </div>
 
