@@ -29,18 +29,23 @@ public class AnswerController {
     @GetMapping("/created/{id}")
     public String answerForm(@PathVariable("id") Long inquiryId, Model model,
                              @LoginUser SessionDTO sessionDTO){
-        InquiryDTO inquiryDTO = inquiryService.findInquiryDTO(inquiryId);
         if(sessionDTO != null){
-            model.addAttribute("sessionDTO", sessionDTO);
-        }
-        model.addAttribute("inquiryDTO", inquiryDTO);
+            InquiryDTO inquiryDTO = inquiryService.findInquiryDTO(inquiryId);
+            MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
+            model.addAttribute("memberDTO", memberDTO);
+            model.addAttribute("inquiryDTO", inquiryDTO);
+        } else return "member/login";
         return "board/answerForm";
     }
 
     @PostMapping("created/{id}")
-    public String createdAnswer(@PathVariable("id") Long inquiryId,
-                                @ModelAttribute AnswerFormDTO answerFormDTO, BindingResult bindingResult){
+    public String createdAnswer(@PathVariable("id") Long inquiryId, Model model,
+                                @Valid @ModelAttribute AnswerFormDTO answerFormDTO, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
+            InquiryDTO inquiryDTO = inquiryService.findInquiryDTO(inquiryId);
+            MemberDTO memberDTO = memberService.getMemberDTO(answerFormDTO.getMemberId());
+            model.addAttribute("memberDTO",memberDTO);
+            model.addAttribute("inquiryDTO",inquiryDTO);
             return "board/answerForm";
         }
         answerService.saveAnswer(answerFormDTO);
@@ -53,22 +58,26 @@ public class AnswerController {
         AnswerDTO answerDTO = answerService.findAnswerDTO(id);
 
         if(sessionDTO != null){
-            model.addAttribute("sessionDTO", sessionDTO);
+            MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
+            model.addAttribute("memberDTO", memberDTO);
         }
         model.addAttribute("answerDTO",answerDTO);
-        model.addAttribute("sessionDTO",sessionDTO);
         return "board/answerForm";
     }
     // 수정
     @PostMapping("/update/{id}")
-    public String update(@PathVariable("id") Long answerId,
-                         @Valid @ModelAttribute AnswerFormDTO form, BindingResult bindingResult){
+    public String update(@PathVariable("id") Long answerId,Model model,
+                         @Valid @ModelAttribute AnswerFormDTO answerFormDTO, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            return "board/inquiryUpdate";
+            AnswerDTO answerDTO = answerService.findAnswerDTO(answerId);
+            MemberDTO memberDTO = memberService.getMemberDTO(answerFormDTO.getMemberId());
+            model.addAttribute("memberDTO",memberDTO);
+            model.addAttribute("answerDTO",answerDTO);
+            return "board/answerForm";
         }
 
         Long inquiryId = answerService.findAnswerDTO(answerId).getInquiryId();
-        answerService.updateAnswer(answerId, form);
+        answerService.updateAnswer(answerId, answerFormDTO);
         return "redirect:/inquiry/article/" + inquiryId;
     }
 

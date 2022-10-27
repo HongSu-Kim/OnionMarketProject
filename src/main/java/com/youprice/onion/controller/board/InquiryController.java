@@ -110,13 +110,10 @@ public class InquiryController {
         if(sessionDTO != null){
             MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
             model.addAttribute("memberDTO", memberDTO);
-        }
-
+        } else { return "member/login";}
         InquiryDTO inquiryDTO = inquiryService.findInquiryDTO(id);
-        List<AnswerDTO> answerList = answerService.findByInquiryId(id);
 
         model.addAttribute("inquiryDTO", inquiryDTO);
-        model.addAttribute("answerList", answerList);
         model.addAttribute("field", field);
         model.addAttribute("word", word);
 

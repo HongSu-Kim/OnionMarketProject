@@ -101,15 +101,15 @@
 
                         <div class="col-lg-12">
                             <div>문의제목</div>
-                            <input type="text" id="inquirySubject" name="inquirySubject" value="${form.inquirySubject}"
-                                   class="form-control" placeholder="${inquiryDTO.inquirySubject}">
+                            <input type="text" id="inquirySubject" name="inquirySubject" value="${inquiryDTO.inquirySubject}"
+                                   class="form-control">
                             <form:errors path="inquirySubject" cssClass="field-error"/><br/><br/>
                         </div>
 
                         <div class="col-lg-12 text-center">
                             <div class="text-left">문의내용</div>
                             <div>
-                                <textarea name="inquiryContent" placeholder="${inquiryDTO.inquiryContent}"></textarea>
+                                <textarea name="inquiryContent">${inquiryDTO.inquiryContent}</textarea>
                                 <form:errors path="inquiryContent" cssClass="field-error"/>
                             </div><br/>
 
