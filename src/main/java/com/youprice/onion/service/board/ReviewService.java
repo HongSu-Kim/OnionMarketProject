@@ -22,6 +22,7 @@ public interface ReviewService {
     MemberDTO getSalesUserName(OrderDTO orderDTO);
     Page<ReviewDTO> userReviewList(Long salesId, Pageable pageable);
     Page<ReviewDTO> findAll(Pageable pageable);
+    List<ReviewDTO> findAll();
     void updateReview(Long reviewId, ReviewUpdateDTO form) throws IOException;
     void deleteReview(ReviewDTO reviewDTO);
 
@@ -29,4 +30,6 @@ public interface ReviewService {
     String filePath();
     List<ReviewImage> storeImages(Long reviewId, List<MultipartFile> multipartFiles) throws IOException;
     String storePath(MultipartFile multipartFile) throws IOException;
+
+    double avgGrade(Long salesId);
 }

@@ -1,11 +1,11 @@
 package com.youprice.onion.dto.board;
 
+import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.entity.board.Complain;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-
 @Getter @Setter
 public class ComplainDTO {
 
@@ -17,6 +17,9 @@ public class ComplainDTO {
     private LocalDateTime complainDate; //신고일자
     private String complainContent; // 신고내용
     private String status; // 처리상태
+
+    private MemberDTO memberDTO;
+    private MemberDTO targetDTO;
 
     public ComplainDTO(Complain complain){
         this.complainId = complain.getId();
@@ -35,5 +38,7 @@ public class ComplainDTO {
         this.complainDate = complain.getComplainDate();
         this.complainContent = complain.getComplainContent();
         this.status = complain.getStatus();
+        this.memberDTO = new MemberDTO(complain.getMember());
+        this.targetDTO = new MemberDTO(complain.getProduct().getMember());
     }
 }

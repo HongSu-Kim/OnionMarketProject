@@ -9,7 +9,9 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.product.SearchRequirements;
+import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.entity.product.Product;
 import com.youprice.onion.entity.product.ProductProgress;
 import lombok.RequiredArgsConstructor;
@@ -44,15 +46,20 @@ public interface   ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByBlindStatus(Boolean blindStatus);
 
 	//경매 상품만 조회
-	List<Product> findAllByAuctionDeadlineNotNull();
+	List<Product> findByAuctionDeadlineNotNullAndBlindStatus(Boolean blindStatus);
 
 	// 판매 상품 리스트
 	Page<Product> findByMemberId(Long memberId, Pageable pageable);
+
+	// 하위 카테고리 상품 리스트
+	List<Product> findByCategoryId(Long categoryId);
 
     //
     List<Product> findByCategoryIdBetween(Long start, Long end);
     //제목과 내용으로 검색한 리스트 조회
     List<Product> findBySubjectContainingOrContentContaining(String subject,String content);
+
+	boolean existsBySubject(String subject);
 
 	@Repository
 	@RequiredArgsConstructor

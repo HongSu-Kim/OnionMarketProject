@@ -2,16 +2,6 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<c:set var = "cp" value = "<%=request.getContextPath()%>"/>
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8" />
-
-	<title>buyList</title>
-
-</head>
-<body>
 <section class="spad">
 	<div class="container">
 		<div class="buyList">
@@ -86,48 +76,24 @@
 			<div class="row">
 				<div class="col-lg-12">
 
-					<%--<div class="buyList__nav">
-						<nav th:if="${!lists.isEmpty()}" arial-label="Page navigation">
-							<ul class="pagination justify-content-center pagination-sm"
-									th:with="startNumber = ${lists.number / 10} * 10 + 1, endNumber = (${lists.totalPages} > ${startNumber + 9}) ? ${startNumber + 9} : ${lists.totalPages}">
-								<!-- << -->
-								<li><a class="page-link" th:href="@{|?boardCategory=${boardCategory}&page=1|}">&laquo;</a></li>
-								<!-- < -->
-								<li class="page-item" th:style="${lists.first} ? 'display:none'">
-									<!-- <a class="page-link" th:href="@{/question/list(page = ${paging.number})}">&lsaquo;</a> -->
-									<a class="page-link" th:href="@{|?boardCategory=${boardCategory}&page=${lists.number}|}">&lsaquo;</a>
-								</li>
-								<li class="page-item" th:each="page : ${#numbers.sequence(startNumber, endNumber)}" th:classappend="(${page} == ${lists.number + 1}) ? 'active' : null">
-									<a class="page-link" th:href="@{|?boardCategory=${boardCategory}&page=${page}|}" th:text="${page}"></a>
-								</li>
-								<!-- > -->
-								<li class="page-item" th:style="${lists.last} ? 'display:none'">
-									<a class="page-link" th:href="@{|?boardCategory=${boardCategory}&page=${lists.number + 2}|}">&rsaquo;</a>
-								</li>
-								<!-- >> -->
-								<li><a class="page-link" th:href="@{|?boardCategory=${boardCategory}&page=${lists.totalPages}|}">&raquo;</a></li>
-							</ul>
-						</nav>
-					</div>--%>
-
-					<!-- view test -->
-					<c:if test="${empty page.content}">
-						<div class="product__pagination text-center">
-							<a href="#">1</a>
-							<a href="#">2</a>
-							<a href="#">3</a>
-							<a href="#">></a>
-						</div>
-					</c:if>
-					<!-- view test end -->
-
 					<!-- 페이징 -->
-					<c:if test="${!empty page.content}">
+					<c:if test="${!empty page.content && page.totalPages != 1}">
 						<div class="product__pagination text-center">
-							<a href="#">1</a>
-							<a href="#">2</a>
-							<a href="#">3</a>
-							<a href="#">></a>
+							<c:set var="size" value="${page.pageable.pageSize}"/>
+							<fmt:parseNumber var="pages" integerOnly="true" value="${page.number / size}"/>
+							<c:set var="startNumber" value="${pages * size + 1}"/>
+							<c:set var="endNumber" value="${page.totalPages > (pages + 1) * size ? (pages + 1) * size : page.totalPages}"/>
+							<c:if test="${page.totalPages > size && page.number + 1 > size}">
+								<a href="?page=1"><<</a>
+								<a href="?page=${startNumber - 1}"><</a>
+							</c:if>
+							<c:forEach var="currentNumber" begin="${startNumber}" end="${endNumber}">
+								<a href="?page=${currentNumber}">${currentNumber}</a>
+							</c:forEach>
+							<c:if test="${page.totalPages > endNumber}">
+								<a href="?page=${endNumber + 1}">></a>
+								<a href="?page=${page.totalPages}">>></a>
+							</c:if>
 						</div>
 					</c:if>
 

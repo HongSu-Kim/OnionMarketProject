@@ -37,12 +37,14 @@
 				<div class="product__details__text">
 					<h3>${productFindDTO.subject}</h3>
 					<div class="product__details__rating">
-						<i class="fa fa-star"></i>
-						<i class="fa fa-star"></i>
-						<i class="fa fa-star"></i>
-						<i class="fa fa-star"></i>
-						<i class="fa fa-star-half-o"></i>
-						<span>(18 reviews)</span>
+<%--						<c:choose>--%>
+<%--							<c:when test="${reviewAvg}">--%>
+<%--								리뷰 평점: ${reviewAvg}--%>
+<%--							</c:when>--%>
+<%--							<c:otherwise>--%>
+<%--								<p>판매자의 등록된 리뷰가 아직 없습니다.</p>--%>
+<%--							</c:otherwise>--%>
+<%--						</c:choose>--%>
 					</div>
 					<div>
 					<div class="product__details__price"><fmt:formatNumber maxFractionDigits="3" value="${productFindDTO.price}"/>원</div>
@@ -50,6 +52,7 @@
 							<c:when test="${not empty productFindDTO.auctionDeadline}">
 								<fmt:parseDate var="uploadDate" value="${productFindDTO.uploadDate}" pattern="yyyy-MM-dd'T'HH:mm"/>
 								<fmt:parseDate var="deadline" value="${productFindDTO.auctionDeadline}" pattern="yyyy-MM-dd'T'HH:mm"/>
+								<input type="hidden" id="auctionDeadline" value="${deadline}"/>
 								<p class="time-title">경매 마감까지 남은 시간</p>
 								<div class="time" >
 									<span id="d-day-hour"></span>
@@ -63,7 +66,7 @@
 										현재가:
 										<c:choose>
 											<c:when test="${!empty bid}"><fmt:formatNumber maxFractionDigits="3" value="${bid}"/>원</c:when>
-											<c:otherwise>0원</c:otherwise>
+											<c:otherwise><fmt:formatNumber maxFractionDigits="3" value="${productFindDTO.price}"/>원</c:otherwise>
 										</c:choose>
 									</div>
 									<div>경매 시작가: <fmt:formatNumber maxFractionDigits="3" value="${productFindDTO.price}"/>원</div>
@@ -74,14 +77,19 @@
 										~ <fmt:formatDate value="${deadline}" pattern="yyyy/MM/dd HH:mm"/>
 										</span>
 										<p>
-											입찰가: <input type="text" name="bid" placeholder="가격을 입력하세요"/>원
+											입찰가(원): <input type="text" id="bid" name="bid" placeholder="가격을 입력하세요"/>
+											<input type="hidden" id="nowPrice" value="${bid}"/>
 										</p>
 
 										<div>
 											최소 입찰가:
 											<c:choose>
-												<c:when test="${!empty bid}"><fmt:formatNumber maxFractionDigits="3" value="${bid}"/>원</c:when>
-												<c:otherwise>0원</c:otherwise>
+												<c:when test="${!empty bid}">
+													<fmt:formatNumber maxFractionDigits="3" value="${bid}"/>(원)
+												</c:when>
+												<c:otherwise>
+													<fmt:formatNumber maxFractionDigits="3" value="${productFindDTO.price}"/>(원)
+												</c:otherwise>
 											</c:choose>
 											<img src="/template/img/product/question.png" style="vertical-align:-3px; margin-left:10px; cursor:pointer" onmouseover="document.getElementById('limit_price_desc').style.display='block'" onmouseout="document.getElementById('limit_price_desc').style.display='none'"/>
 										</div>
@@ -140,8 +148,6 @@
 										</div>
 									</div>
 								</div>
-								<input type="hidden" id="upload" value="${uploadDate}">
-								<input type="hidden" id="auctionDeadline" value="${deadline}">
 							</c:when>
 							<c:when test="${productFindDTO.updateDate ne productFindDTO.uploadDate}">
 								<fmt:parseDate var="updateDate" value="${productFindDTO.updateDate}" pattern="yyyy-MM-dd'T'HH:mm"/>
@@ -177,11 +183,9 @@
 											<a href="/order/payment/${productId}" class="primary-btn">구매하기</a>
 										</c:otherwise>
 									</c:choose>
-									<a href="/complain/created/${productId}" class="primary-btn">신고하기</a>
+									<a href="/complain/created" class="primary-btn">신고하기</a>
 									<a href="#" class="primary-btn">채팅하기</a>
-									<form action="/wish/addWish/${productId}" method="get">
-										<i class="fa fa-heart wishBtn" type="submit"></i></a>찜 1
-									</form>
+									<a href="/wish/addWish/${productId}"><div class="primary-btn"><i class="fa fa-heart wishBtn"></i>찜하기</div></a>
 								</div>
 							</div>
 						</c:otherwise>
@@ -233,71 +237,73 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="section-title related__product__title">
-					<h2>Related Product</h2>
+					<h2>연 관  상 품</h2>
 				</div>
 			</div>
 		</div>
 		<div class="row">
+			<c:forEach var="categoryDTO" items="${categoryDTO}" end="3">
 			<div class="col-lg-3 col-md-4 col-sm-6">
 				<div class="product__item">
-					<div class="product__item__pic set-bg" data-setbg="img/product/product-1.jpg">
+					<div class="product__item__pic set-bg" data-setbg="/img/product/${categoryDTO.representativeImage}">
 						<ul class="product__item__pic__hover">
-							<li><a href="#"><i class="fa fa-heart"></i></a></li>
+							<li><a href="/wish/addWish/${productId}"><i class="fa fa-heart"></i></a></li>
 							<li><a href="#"><i class="fa fa-retweet"></i></a></li>
 							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
 						</ul>
 					</div>
 					<div class="product__item__text">
-						<h6><a href="#">Crab Pool Security</a></h6>
-						<h5>$30.00</h5>
+						<h6><a href="/product/detail/${categoryDTO.productId}">${categoryDTO.subject}</a></h6>
+						<h5><fmt:formatNumber maxFractionDigits="3" value="${categoryDTO.price}"/>원</h5>
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-3 col-md-4 col-sm-6">
-				<div class="product__item">
-					<div class="product__item__pic set-bg" data-setbg="img/product/product-2.jpg">
-						<ul class="product__item__pic__hover">
-							<li><a href="#"><i class="fa fa-heart"></i></a></li>
-							<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-						</ul>
-					</div>
-					<div class="product__item__text">
-						<h6><a href="#">Crab Pool Security</a></h6>
-						<h5>$30.00</h5>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-3 col-md-4 col-sm-6">
-				<div class="product__item">
-					<div class="product__item__pic set-bg" data-setbg="img/product/product-3.jpg">
-						<ul class="product__item__pic__hover">
-							<li><a href="#"><i class="fa fa-heart"></i></a></li>
-							<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-						</ul>
-					</div>
-					<div class="product__item__text">
-						<h6><a href="#">Crab Pool Security</a></h6>
-						<h5>$30.00</h5>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-3 col-md-4 col-sm-6">
-				<div class="product__item">
-					<div class="product__item__pic set-bg" data-setbg="img/product/product-7.jpg">
-						<ul class="product__item__pic__hover">
-							<li><a href="#"><i class="fa fa-heart"></i></a></li>
-							<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-						</ul>
-					</div>
-					<div class="product__item__text">
-						<h6><a href="#">Crab Pool Security</a></h6>
-						<h5>$30.00</h5>
-					</div>
-				</div>
-			</div>
+			</c:forEach>
+<%--			<div class="col-lg-3 col-md-4 col-sm-6">--%>
+<%--				<div class="product__item">--%>
+<%--					<div class="product__item__pic set-bg" data-setbg="img/product/product-2.jpg">--%>
+<%--						<ul class="product__item__pic__hover">--%>
+<%--							<li><a href="#"><i class="fa fa-heart"></i></a></li>--%>
+<%--							<li><a href="#"><i class="fa fa-retweet"></i></a></li>--%>
+<%--							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>--%>
+<%--						</ul>--%>
+<%--					</div>--%>
+<%--					<div class="product__item__text">--%>
+<%--						<h6><a href="#">Crab Pool Security</a></h6>--%>
+<%--						<h5>$30.00</h5>--%>
+<%--					</div>--%>
+<%--				</div>--%>
+<%--			</div>--%>
+<%--			<div class="col-lg-3 col-md-4 col-sm-6">--%>
+<%--				<div class="product__item">--%>
+<%--					<div class="product__item__pic set-bg" data-setbg="img/product/product-3.jpg">--%>
+<%--						<ul class="product__item__pic__hover">--%>
+<%--							<li><a href="#"><i class="fa fa-heart"></i></a></li>--%>
+<%--							<li><a href="#"><i class="fa fa-retweet"></i></a></li>--%>
+<%--							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>--%>
+<%--						</ul>--%>
+<%--					</div>--%>
+<%--					<div class="product__item__text">--%>
+<%--						<h6><a href="#">Crab Pool Security</a></h6>--%>
+<%--						<h5>$30.00</h5>--%>
+<%--					</div>--%>
+<%--				</div>--%>
+<%--			</div>--%>
+<%--			<div class="col-lg-3 col-md-4 col-sm-6">--%>
+<%--				<div class="product__item">--%>
+<%--					<div class="product__item__pic set-bg" data-setbg="img/product/product-7.jpg">--%>
+<%--						<ul class="product__item__pic__hover">--%>
+<%--							<li><a href="#"><i class="fa fa-heart"></i></a></li>--%>
+<%--							<li><a href="#"><i class="fa fa-retweet"></i></a></li>--%>
+<%--							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>--%>
+<%--						</ul>--%>
+<%--					</div>--%>
+<%--					<div class="product__item__text">--%>
+<%--						<h6><a href="#">Crab Pool Security</a></h6>--%>
+<%--						<h5>$30.00</h5>--%>
+<%--					</div>--%>
+<%--				</div>--%>
+<%--			</div>--%>
 		</div>
 	</div>
 </section>

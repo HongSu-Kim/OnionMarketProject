@@ -21,17 +21,6 @@ public class BiddingController {
 
     private final BiddingService biddingService;
 
-//    @PostMapping("bidding") //실제 입찰
-//    public String biddingProduct(@LoginUser SessionDTO sessionDTO, @PathVariable("productId") Long productId,
-//                                 @ModelAttribute BiddingAddDTO biddingAddDTO, Model model) {
-//
-//        biddingAddDTO.setMemberId(sessionDTO.getId());
-//
-//        biddingService.bidProduct(biddingAddDTO);
-//
-//        model.addAttribute("productId",productId);
-//
-//        return "redirect:/product/detail/"+productId;//상품 상세페이지로 이동
-//    }
+
 
 }

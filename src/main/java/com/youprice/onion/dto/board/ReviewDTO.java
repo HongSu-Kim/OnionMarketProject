@@ -1,5 +1,6 @@
 package com.youprice.onion.dto.board;
 
+import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.entity.board.Review;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ public class ReviewDTO {
     private Long salesId;
     private List<ReviewImageDTO> reviewImageList;
 
+    private MemberDTO memberDTO;
     public ReviewDTO(Review review) {
         this.reviewId = review.getId();
         this.orderId = review.getOrder().getId();
@@ -32,5 +34,6 @@ public class ReviewDTO {
         this.reviewDate = review.getReviewDate();
         this.salesId = review.getSalesId();
         this.reviewImageList = review.getReviewImageName().stream().map(ReviewImageDTO::new).collect(Collectors.toList());
+        memberDTO = new MemberDTO(review.getMember());
     }
 }

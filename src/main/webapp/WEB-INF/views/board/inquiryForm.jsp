@@ -60,7 +60,7 @@
                 <div class="col-lg-12">
                     <div><!-- 문의유형 선택 -->
                         <label for="inquiryType">문의 유형</label><br/>
-                        <select id="inquiryType" name="inquiryType" onchange="selectType();" style="width: 300px;">
+                        <select class="form-select" id="inquiryType" name="inquiryType" onchange="selectType();" style="width: 300px;">
                             <c:choose>
                                 <c:when test="${form != null}">
                                     <option selected="selected" value="${form.inquiryType}">${form.inquiryType}</option>
@@ -130,26 +130,3 @@
     </div>
 </div>
 <!-- Contact Form End -->
-
-
-
-
-
-
-
-<script>
-    function selectType(){
-        let inquiryType = $("#inquiryType").val();
-
-        $("#type_회원정보").hide();
-        $("#type_거래").hide();
-        $("#type_기타서비스").hide();
-        // $("#type_기타서비스").css("visibility", "hidden");
-        $("#type_" + inquiryType).show();
-    }
-
-    function selectDetail(e){
-        let val = e.value;
-        document.getElementById('detail').value = val;
-    }
-</script>

@@ -11,10 +11,14 @@ import com.youprice.onion.repository.product.ProductRepository;
 import com.youprice.onion.service.order.WishService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -29,6 +33,10 @@ public class WishServiceImpl implements WishService {
 	// 찜 리스트 조회
 	@Override
 	public Page<WishListDTO> getWishList(Long memberId, Pageable pageable) {
+
+		pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
+				pageable.getPageSize(), Sort.Direction.DESC, "id");
+
 		return wishRepository.findAllByMemberId(memberId, pageable).map(wish -> {
 			int chatroomListSize = chatroomRepository.countByProductId(wish.getProduct().getId());
 			int wishListSize = wishRepository.countByProductId(wish.getProduct().getId());

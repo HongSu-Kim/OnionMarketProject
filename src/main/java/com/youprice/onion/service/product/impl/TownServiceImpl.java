@@ -26,70 +26,68 @@ import java.util.stream.Collectors;
 @Service
 public class TownServiceImpl implements TownService {
 
- private final TownRepositoy townRepositoy;
- private  final CoordinateRepositoy coordinateRepositoy;
- private  final MemberRepository memberRepositoy;
+    private final TownRepositoy townRepositoy;
+    private final CoordinateRepositoy coordinateRepositoy;
+    private final CoordinateRepositoy.Coordinaterepositoy coordinaterepositoy;
+    private final MemberRepository memberRepositoy;
 
 
- @Override
- public void townAdd(TownAddDTO townAddDTO, HttpServletResponse response)throws IOException {
-  Town town = new Town();
-  response.setContentType("text/html;charset=UTF-8");
-  PrintWriter out =response.getWriter();
+    @Override
+    public void townAdd(TownAddDTO townAddDTO, HttpServletResponse response, String townName) throws IOException {
+        Town town = new Town();
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
 
-  if(townAddDTO.getCoordinateId() ==null){
-   out.println("<script>alert('동네를 입력하세요');history.go(-2); </script>");
-   out.flush();
-   return;
-  }
+        Coordinate coordinate = coordinaterepositoy.findTownNumber(townAddDTO.getTownName());
+        Member member = memberRepositoy.findById(townAddDTO.getMemberId()).orElse(null);
 
+        System.out.println(coordinate.getId());
+        coordinate = coordinateRepositoy.findById(coordinate.getId()).orElse(null);
 
-  Member member = memberRepositoy.findById(townAddDTO.getMemberId()).orElse(null);
-  Coordinate coordinate = coordinateRepositoy.findById(townAddDTO.getCoordinateId()).orElse(null);
-
-
-
-  if(townRepositoy.countByMemberId(member.getId())>=3){
-   out.println("<script>alert('가능한 동네설정개수를 초과하셨습니다(최대 3개)');history.go(-2); </script>");
-   out.flush();
-   return ;
-  }
+        if (coordinate.getId() == null) {
+            out.println("<script>alert('동네를 입력하세요');history.go(-3); </script>");
+            out.flush();
+            return;
+        }
 
 
-  Optional<Town> DuplicatechecktopcategoryName = townRepositoy.findByMemberIdAndCoordinateTownNameContains(member.getId(), coordinate.getTownName());
-  if (DuplicatechecktopcategoryName.isPresent()) {
-   out.println("<script>alert('이미설정한 동네입니다 다시입력하세요');history.go(-2); </script>");
-   out.flush();
-   return;
-  }
+        if (townRepositoy.countByMemberId(member.getId()) >= 3) {
+            out.println("<script>alert('가능한 동네설정개수를 초과하셨습니다(최대 3개)');history.go(-3); </script>");
+            out.flush();
+            return;
+        }
+//
+//
+        Optional<Town> DuplicatechecktopcategoryName = townRepositoy.findByMemberIdAndCoordinateTownNameContains(member.getId(), coordinate.getTownName());
+        if (DuplicatechecktopcategoryName.isPresent()) {
+            out.println("<script>alert('이미설정한 동네입니다 다시입력하세요');history.go(-3); </script>");
+            out.flush();
+            return;
+        }
 
-// if(townRepositoy.findByCoordinateId(coordinate.getId())==false) {
-//  out.println("<script>alert('없는 동네번호입니다!');history.go(-2); </script>");
-//  out.flush();
-//  return;
-// }
-  town.townCreate(townAddDTO,coordinate,member);
+        town.townCreate(townAddDTO, coordinate, member);
 
-  townRepositoy.save(town);
-  out.println("<script>alert('동네 설정 완료!');history.go(-2); </script>");
-  out.flush();
- }
+        townRepositoy.save(town);
+        out.println("<script>alert('동네 설정 완료!');history.go(-3); </script>");
+        out.flush();
 
- @Override
- public List<TownFindDTO> townList(Long townId) { //townId로 전체리스트 조회
+    }
 
-  return townRepositoy.findAllById(townId)
-          .stream().map(town -> new TownFindDTO(town))
-          .collect(Collectors.toList());
- }
+    @Override
+    public List<TownFindDTO> townList(Long townId) { //townId로 전체리스트 조회
 
- @Override
- public List<TownFindDTO> townLists(Long memberId) { //memberId로 전체리스트 조회
+        return townRepositoy.findAllById(townId)
+                .stream().map(town -> new TownFindDTO(town))
+                .collect(Collectors.toList());
+    }
 
-  return townRepositoy.findAllByMemberId(memberId)
-          .stream().map(town -> new TownFindDTO(town))
-          .collect(Collectors.toList());
- }
+    @Override
+    public List<TownFindDTO> townLists(Long memberId) { //memberId로 전체리스트 조회
+
+        return townRepositoy.findAllByMemberId(memberId)
+                .stream().map(town -> new TownFindDTO(town))
+                .collect(Collectors.toList());
+    }
 
 
 }
