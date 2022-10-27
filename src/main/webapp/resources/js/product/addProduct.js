@@ -1,10 +1,5 @@
+
 /*상품 검증*/
-
-//이미지 파일 사이즈 지정
-$.validator.addMethod('filesize', function(value, element, param) {
-    return this.optional(element) || (element.files[0].size <= param)
-}, 'File size must be less than {0} bytes');
-
 $(document).ready(function () {
     //$('#registerForm').validate(); //유효성 검사를 적용
     // validate signup form on keyup and submit
@@ -12,15 +7,7 @@ $(document).ready(function () {
 
         rules: {
             townId: "required",
-            categoryId: {
-                required: function () {
-                    if ($("#categoryId option[value='0']")) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
-            },
+            categoryId: "required",
             subject: "required",
             content: { required:true },
             price: { required:true, digits:true, min:100, max:999999},
@@ -68,13 +55,18 @@ $(document).ready(function() {
 
 function setImageFromFile(input, expression) {
     if (input.files && input.files[0]) {
-    var reader = new FileReader();
-    reader.onload = function (e) {
-    $(expression).attr('src', e.target.result);
-};
-    reader.readAsDataURL(input.files[0]);
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $(expression).attr('src', e.target.result);
+        };
+        reader.readAsDataURL(input.files[0]);
     };
 };
+
+//이미지 파일 사이즈 지정
+$.validator.addMethod('filesize', function(value, element, param) {
+    return this.optional(element) || (element.files[0].size <= param)
+}, 'File size must be less than {0} bytes');
 
 //상품 내용 글자수 세기
 $(function() {
@@ -105,7 +97,6 @@ $("#aa").change(function (){
             //
             //
             // }
-
         }
 
     }).fail(function () {

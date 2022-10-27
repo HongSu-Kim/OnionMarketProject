@@ -1,6 +1,5 @@
 package com.youprice.onion.controller.product;
 
-import com.youprice.onion.dto.board.ReviewDTO;
 import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.product.*;
 import com.youprice.onion.entity.product.Category;
@@ -64,8 +63,8 @@ public class ProductController {
         return "product/addProduct";//상품등록 페이지
     }
     @PostMapping("add")//실제 상품 등록 주소
-    public String addProduct(@LoginUser SessionDTO userSession, ProductAddDTO productAddDTO, BindingResult bindingResult
-                             , List<MultipartFile> fileList, Model model) throws Exception {
+    public String addProduct(@LoginUser SessionDTO userSession, ProductAddDTO productAddDTO, BindingResult bindingResult,
+                             HttpServletResponse response, List<MultipartFile> fileList, Model model) throws Exception {
 
         if (prohibitionKeywordService.ProhibitionKeywordFind(productAddDTO.getSubject())) { //금지키워가있으면 true
             bindingResult.addError(new FieldError("productAddDTO", "subject", "적합하지 않은 단어가 포함되어 있습니다."));
@@ -73,6 +72,11 @@ public class ProductController {
             if (bindingResult.hasErrors()) {
                 return "product/addProduct";
             }
+        }
+        if (productAddDTO.getCategoryId()==null) {
+            AlertRedirect.warningMessage(response,"/product/add", "카테고리를 선택해주세요.");
+
+            return "redirect:/product/addProduct";
         }
 
         /*세션아이디로 멤버아이디 set*/
@@ -99,6 +103,8 @@ public class ProductController {
         List<BiddingListDTO> biddingList = biddingService.getBiddingList(productId, model);
         /*카테고리 상품 추천*/
         List<ProductFindDTO> categoryDTO = productService.getProductSubCategory(productId,productFindDTO.getCategoryId());
+
+        System.out.println("productFindDTO = " + productFindDTO.getAuctionDeadline());
 
         model.addAttribute("userSession",userSession);
         model.addAttribute("productId",productId);
@@ -132,16 +138,39 @@ public class ProductController {
     @GetMapping(value = "list") //상품 리스트 주소
     public String list(@LoginUser SessionDTO userSession, Model model) throws Exception {
 
-        /*세션아이디로 동네 조회*/
-        List<TownFindDTO> townList = townService.townLists(userSession.getId());
+        if(userSession!=null) {
+            /*세션아이디로 동네 조회*/
+            List<TownFindDTO> townList = townService.townLists(userSession.getId());
 
-        Long coordinateId = townList.get(0).getCoordinateId();
+            switch (townList.size()){
+                case 0://동네정보가 없을 경우 상품 전체 조회
+                    List<ProductListDTO> listCase0 = productService.getProductList(false);
+                    model.addAttribute("list", listCase0);
+                    model.addAttribute("townList", townList);
+                    break;
+                case 1://동네정보가 하나일 경우 동네 상품 조회
+                    Long coordinateId = townList.get(0).getCoordinateId();
+                    List<ProductListDTO> listCase1 = productService.getProductList(coordinateId, false);
+                    model.addAttribute("list", listCase1);
+                    model.addAttribute("townList", townList);
+                    break;
+            }
 
-        List<ProductListDTO> list = productService.getProductList(coordinateId,false);
+        }else {
 
-        model.addAttribute("list",list);
+            List<ProductListDTO> list = productService.getProductList(false);
+            model.addAttribute("list", list);
 
+        }
         return "product/list";//상품 리스트 메인 화면페이지
+    }
+
+    @GetMapping("all")
+    public String allList(Model model) {
+        List<ProductListDTO> list = productService.getProductList(false);
+
+        model.addAttribute("list", list);
+        return "product/list";
     }
 
     @GetMapping("auctionList") //경매 상품 리스트
