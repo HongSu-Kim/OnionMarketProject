@@ -13,6 +13,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     Optional<Review> findByOrder_Member_UserId(String userId);
 
     Page<Review> findAllBySalesIdOrderById(Long salesId, Pageable pageable);
-    @Query("select ROUND(AVG(NVL(r.grade, 0)),1) from Review r where r.salesId = :salesId")
+    @Query(value = "select ROUND(AVG(NVL(r.grade, 0)),1) from Review r where r.salesId = :salesId", nativeQuery = true)
     double gradeAverage(Long salesId);
 }

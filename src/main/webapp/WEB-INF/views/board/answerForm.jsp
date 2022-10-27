@@ -4,40 +4,85 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <c:set var="cp" value="<%=request.getContextPath()%>"/>
 
+<style>
+    .n-section-title {
+        border-bottom: 3px solid #7fad39;
+        padding-bottom: 10px;
+        margin-top: 200px;
+        line-height: 1.5;
+        font-size: 20px;
+        position: relative;
+    }
+
+    .n-section-title .tit {
+        display: inline-block;
+        font-size: 20pt;
+        font-weight: bolder;
+    }
+    .field-error{
+        border-color: #f07682;
+        color: #dc3545;
+        font-weight: bold;
+    }
+
+    .inquiryArticle > p {
+        margin-top: 10px;
+        font-weight: bold;
+        font-size: 17pt;
+        color: black;
+    }
+    .textArea {
+        border: 2px solid #7fad39;
+        margin-left: 10px;
+    }
+    .qna-container{
+        margin-bottom: 30px;
+    }
+</style>
+
 <section class="hero hero-normal">
-    <div class="container" style="width: 1200px;">
-        <div class="row">
-            <div class="col-lg-12">
-            <div class="container">
+    <div class="container" style="width: 800px;">
+        <div class="qna-container">
+            <div class="n-section-title">
+                <c:if test="${answerDTO == null}">
+                    <h1 class="tit">답변 작성하기</h1>
+                </c:if>
+                <c:if test="${answerDTO != null}">
+                    <h1 class="tit">답변 수정하기</h1>
+                </c:if>
+            </div>
+            <br/>
+
+            <div class="textborder">
                 <c:choose>
                     <c:when test="${answerDTO == null}">
                         <form:form method="post" action="/answer/created/${inquiryDTO.inquiryId}" modelAttribute="answerFormDTO">
-                            <input type="hidden" name="memberId" value="${sessionDTO.id}">
+                            <input type="hidden" name="memberId" value="${memberDTO.id}">
                             <input type="hidden" name="inquiryId" value="${inquiryDTO.inquiryId}">
 
-                            <h4>답변 작성하기</h4>
-                            <textarea name="answerContent" rows="8" cols="90" placeholder=""></textarea>
-                            <form:errors path="answerContent"/>
+                            <textarea name="answerContent" class="textArea" rows="8" cols="100"
+                                      placeholder="">${answerDTO.answerContent}</textarea>
+                            <span style="margin-left: 10px"><form:errors path="answerContent" cssClass="field-error"/></span>
+                            <input type="submit" class="site-btn" style="float: right; margin-right: 10px" value="등록하기">
                             <br/>
-                            ${answerDTO == null ? '<input type="submit" value="등록하기">' : '<input type="submit" value="수정하기">'}
                         </form:form>
                     </c:when>
 
                     <c:otherwise>
-                        <form:form method="post" action="/answer/update/${answerDTO.answerId}" modelAttribute="answerFormDTO">
-                            <input type="hidden" name="memberId" value="${sessionDTO.id}">
+                        <form:form method="post" action="/answer/update/${answerDTO.answerId}"
+                                   modelAttribute="answerFormDTO">
+                            <input type="hidden" name="memberId" value="${memberDTO.id}">
                             <input type="hidden" name="inquiryId" value="${answerDTO.answerId}">
 
-                            <h4>답변 수정하기</h4>
-                            <textarea name="answerContent" rows="8" cols="90" placeholder=""></textarea>
-                            <form:errors path="answerContent"/>
+                            <textarea name="answerContent" class="textArea" rows="8" cols="100"
+                                     placeholder="">${answerDTO.answerContent}</textarea>
+                            <span style="margin-left: 10px"><form:errors path="answerContent" cssClass="field-error"/></span>
+                            <input type="submit" class="site-btn" style="float: right; margin-right: 10px" value="수정하기">
                             <br/>
-                            ${answerDTO == null ? '<input type="submit" value="등록하기">' : '<input type="submit" value="수정하기">'}
                         </form:form>
                     </c:otherwise>
                 </c:choose>
 
-            </div>
             </div>
         </div>
     </div>
