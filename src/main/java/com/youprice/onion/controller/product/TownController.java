@@ -52,8 +52,29 @@ public class TownController {
         model.addAttribute("list", list);
 
 
+
         return "product/town";
     }
+
+    @PostMapping("rangeProduct")
+    public String rangeProduct(Model model, @LoginUser SessionDTO sessionDTO,@RequestParam("range")String range) {
+
+        if (sessionDTO == null) return "redirect:/member/login";
+        MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
+        List<TownFindDTO> list = townService.townLists(memberDTO.getId());
+
+        model.addAttribute("memberDTO", memberDTO);
+        model.addAttribute("list", list);
+        model.addAttribute("range", range);
+
+
+
+        return "product/town";
+    }
+
+
+
+
 
 
     @GetMapping("townresult")

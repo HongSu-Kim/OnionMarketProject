@@ -228,7 +228,12 @@
 							<button type="submit" class="site-btn">SEARCH</button>
 						</form:form>
 					</div>
+					<sec:authorize access="!hasRole('USER') and !hasRole('ADMIN') and !hasRole('WITHDRAWAL')">
 						<button onclick="location.href='/member/login'" class="site-btn" style="height: 50px; width: 210px; margin-left: 25px;">ONION MARKET LOGIN</button>
+					</sec:authorize>
+					<sec:authorize access="hasRole('USER') or hasRole('ADMIN')">
+						<button onclick="location.href='/member/mypage'" class="site-btn" style="height: 50px; width: 210px; margin-left: 25px;">MY PAGE</button>
+					</sec:authorize>
 <%--					<div class="hero__search__phone">
 						<div class="hero__search__phone__icon">
 							<i class="fa fa-phone"></i>

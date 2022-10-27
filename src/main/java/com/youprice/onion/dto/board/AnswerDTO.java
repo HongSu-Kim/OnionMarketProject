@@ -1,6 +1,8 @@
 package com.youprice.onion.dto.board;
 
+import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.entity.board.Answer;
+import com.youprice.onion.entity.member.Member;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +16,7 @@ public class AnswerDTO {
     private Long memberId; // 회원번호 FK
     private String answerContent; // 답변내용
     private LocalDateTime answerDate; // 답변등록일
+    private MemberDTO memberDTO;
 
     public AnswerDTO(Answer answer) {
         this.answerId = answer.getId();
@@ -21,5 +24,6 @@ public class AnswerDTO {
         this.memberId = answer.getMember().getId();
         this.answerContent = answer.getAnswerContent();
         this.answerDate = answer.getAnswerDate();
+        memberDTO = new MemberDTO(answer.getMember());
     }
 }
