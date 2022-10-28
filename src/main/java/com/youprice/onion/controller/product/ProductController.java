@@ -1,15 +1,17 @@
 package com.youprice.onion.controller.product;
 
-import com.youprice.onion.dto.board.ReviewDTO;
 import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.product.*;
 import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.security.auth.LoginUser;
-import com.youprice.onion.service.board.ReviewService;
 import com.youprice.onion.service.member.ProhibitionKeywordService;
 import com.youprice.onion.service.product.*;
 import com.youprice.onion.util.AlertRedirect;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,10 +20,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,8 +33,6 @@ public class ProductController {
     private final CategoryService categoryService;
     private final ProductImageService productImageService;
     private final BiddingService biddingService;
-    private final ReviewService reviewService;
-    private final CoordinateService coordinateService;
     private final ProhibitionKeywordService prohibitionKeywordService;
 
     @GetMapping("add")//상픔 등록 주소
@@ -64,8 +63,8 @@ public class ProductController {
         return "product/addProduct";//상품등록 페이지
     }
     @PostMapping("add")//실제 상품 등록 주소
-    public String addProduct(@LoginUser SessionDTO userSession, ProductAddDTO productAddDTO, BindingResult bindingResult
-                             , List<MultipartFile> fileList, Model model) throws Exception {
+    public String addProduct(@LoginUser SessionDTO userSession, ProductAddDTO productAddDTO, BindingResult bindingResult,
+                             HttpServletResponse response, List<MultipartFile> fileList, Model model) throws Exception {
 
         if (prohibitionKeywordService.ProhibitionKeywordFind(productAddDTO.getSubject())) { //금지키워가있으면 true
             bindingResult.addError(new FieldError("productAddDTO", "subject", "적합하지 않은 단어가 포함되어 있습니다."));
@@ -73,6 +72,11 @@ public class ProductController {
             if (bindingResult.hasErrors()) {
                 return "product/addProduct";
             }
+        }
+        if (productAddDTO.getCategoryId()==null) {
+            AlertRedirect.warningMessage(response,"/product/add", "카테고리를 선택해주세요.");
+
+            return "redirect:/product/addProduct";
         }
 
         /*세션아이디로 멤버아이디 set*/
@@ -99,6 +103,8 @@ public class ProductController {
         List<BiddingListDTO> biddingList = biddingService.getBiddingList(productId, model);
         /*카테고리 상품 추천*/
         List<ProductFindDTO> categoryDTO = productService.getProductSubCategory(productId,productFindDTO.getCategoryId());
+
+        System.out.println("productFindDTO = " + productFindDTO.getAuctionDeadline());
 
         model.addAttribute("userSession",userSession);
         model.addAttribute("productId",productId);
@@ -128,26 +134,57 @@ public class ProductController {
 
         return "redirect:/product/detail/"+productId;
     }
-
-    @GetMapping(value = "list") //상품 리스트 주소
-    public String list(@LoginUser SessionDTO userSession, Model model) throws Exception {
+    //상품 리스트 주소
+    @GetMapping(value = "list")
+    public String list(@LoginUser SessionDTO userSession, Model model, @PageableDefault Pageable pageable) throws Exception {
 
         /*세션아이디로 동네 조회*/
-        List<TownFindDTO> townList = townService.townLists(userSession.getId());
+        List<Long> coordinateList = null;
+        List<TownFindDTO> townList = null;
+        if(userSession!=null){
 
-        Long coordinateId = townList.get(0).getCoordinateId();
+            townList= townService.townLists(userSession.getId());
+            coordinateList = townService.townLists(userSession.getId())
+                    .stream()
+                    .map(TownFindDTO::getCoordinateId)
+                    .collect(Collectors.toList());
 
-        List<ProductListDTO> list = productService.getProductList(coordinateId,false);
+        }
+
+        SearchRequirements searchRequirements = SearchRequirements.builder()
+                .coordinateIdList(coordinateList)
+                .build();
+
+        searchRequirements.setPageable(PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
+                pageable.getPageSize(),Sort.Direction.DESC, "uploadDate"));
+
+        List<ProductListDTO> list = productService.getProductListDTO(searchRequirements).getContent();
 
         model.addAttribute("list",list);
-
+        model.addAttribute("townList",townList);
         return "product/list";//상품 리스트 메인 화면페이지
     }
 
-    @GetMapping("auctionList") //경매 상품 리스트
-    public String auctionList(Model model) throws Exception {
+    //상품 전체 리스트 주소
+    @GetMapping("allList")
+    public String allList(Model model,@PageableDefault Pageable pageable) {
 
-        List<ProductListDTO> list = productService.updateBlindStatus();
+        SearchRequirements searchRequirements = SearchRequirements.builder()
+                .blindStatus(false)
+                .build();
+
+        searchRequirements.setPageable(PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
+                pageable.getPageSize(),Sort.Direction.DESC, "uploadDate"));
+        List<ProductListDTO> list = productService.getProductListDTO(searchRequirements).getContent();
+
+        model.addAttribute("list", list);
+        return "product/list";
+    }
+
+    @GetMapping("auctionList") //경매 상품 리스트
+    public String auctionList(Model model,@PageableDefault Pageable pageable) throws Exception {
+
+        List<ProductListDTO> list = productService.getProductAuctionList();
 
         model.addAttribute("list", list);
 
@@ -308,7 +345,7 @@ public class ProductController {
     public String updateProduct(Model model, Long productId, ProductUpdateDTO updateDTO, BindingResult bindingResult,
                                 @LoginUser SessionDTO userSession, HttpServletResponse response) throws Exception{
 
-        if (prohibitionKeywordService.ProhibitionKeywordFind(updateDTO.getSubject())) { //금지키워가있으면 true
+        if (prohibitionKeywordService.ProhibitionKeywordFind(updateDTO.getSubject())) { //금지키워드가있으면 true
             bindingResult.addError(new FieldError("productAddDTO", "subject", "적합하지 않은 단어가 포함되어 있습니다."));
 
             if (bindingResult.hasErrors()) {

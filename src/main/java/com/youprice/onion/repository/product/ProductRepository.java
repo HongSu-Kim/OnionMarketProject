@@ -80,7 +80,8 @@ public interface   ProductRepository extends JpaRepository<Product, Long> {
 							categoryIdEq(searchRequirements.getCategoryId()),
 							productProgressEq(searchRequirements.getProductProgress()),
 							blindStatusEq(searchRequirements.getBlindStatus()),
-							searchValueContains(searchRequirements.getSearchValue())
+							searchValueContains(searchRequirements.getSearchValue()),
+							coordinateIdListIn(searchRequirements.getCoordinateIdList())
 					)
 					.orderBy(orderBy(searchRequirements.getPageable()))
 					.offset(searchRequirements.getPageable().getOffset())
@@ -96,7 +97,9 @@ public interface   ProductRepository extends JpaRepository<Product, Long> {
 							categoryIdEq(searchRequirements.getCategoryId()),
 							productProgressEq(searchRequirements.getProductProgress()),
 							blindStatusEq(searchRequirements.getBlindStatus()),
-							searchValueContains(searchRequirements.getSearchValue())
+							searchValueContains(searchRequirements.getSearchValue()),
+							coordinateIdListIn(searchRequirements.getCoordinateIdList())
+
 					)
 					.fetchOne();
 
@@ -129,6 +132,9 @@ public interface   ProductRepository extends JpaRepository<Product, Long> {
 		}
 		private BooleanExpression searchValueContains(String searchValue){
 			return searchValue == null ? null : product.subject.contains(searchValue).or(product.content.contains(searchValue));
+		}
+		private BooleanExpression coordinateIdListIn(List<Long> coordinateIdList){
+			return coordinateIdList == null || coordinateIdList.size()==0 ? null : product.town.id.in(coordinateIdList);
 		}
 	}
 }
