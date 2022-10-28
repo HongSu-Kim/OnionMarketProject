@@ -35,7 +35,7 @@ public class FollowServiceImpl implements FollowService {
         if (followRepository.existsByMemberIdAndTargetId(memberId, targetId)) return;
 
         Member member = memberRepository.findById(memberId).orElse(null);
-        Follow target = followRepository.findById(targetId).orElse(null);
+        Member target = memberRepository.findById(targetId).orElse(null);
 
         followRepository.save(new Follow(member, target));
     }
