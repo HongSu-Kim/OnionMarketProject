@@ -43,7 +43,7 @@ $(document).ready(function () {
 $(document).ready(function() {
     $('.btnAdd').click(function () {
         $('.addInput').append(
-            '<input type="file" name="fileList" id="fileList"><button type="button" class="btnRemove">삭제</button><br>'
+            '<input type="file" name="fileList" id="fileList"><button type="button" class="btnRemove" style="border-width: thin;">삭제</button>'
         );//input file
         $('.btnRemove').on('click',function(){//this='.btnRemove'
             $(this).prev().remove();// .prev()=input file을 가리키고 remove()실행

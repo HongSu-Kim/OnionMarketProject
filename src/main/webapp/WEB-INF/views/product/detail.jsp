@@ -82,10 +82,6 @@
 										<fmt:formatDate value="${uploadDate}" pattern="yyyy/MM/dd HH:mm"/>
 										~ <fmt:formatDate value="${deadline}" pattern="yyyy/MM/dd HH:mm"/>${dead}
 										</span>
-										<p>
-											입찰가(원): <input type="text" id="nowBid" name="bid" placeholder="가격을 입력하세요"/>
-											<input type="hidden" id="exBid" value="${bid}"/>
-										</p>
 
 										<div>
 											최소 입찰가:
@@ -97,7 +93,6 @@
 													<fmt:formatNumber maxFractionDigits="3" value="${productFindDTO.price}"/>(원)
 												</c:otherwise>
 											</c:choose>
-<%--											<img src="/template/img/product/question.png" style="vertical-align:-3px; margin-left:10px; cursor:pointer" onmouseover="document.getElementById('limit_price_desc').style.display='block'" onmouseout="document.getElementById('limit_price_desc').style.display='none'"/>--%>
 										</div>
 <%--										<div id="limit_price_desc" style="margin-top:-8px; margin-left:0px; padding:10px; display:none; position:absolute; border:2px solid #3baecb; background:#f6f7f8; text-align:left;line-height:1.4; z-index:10">--%>
 <%--											<strong>최소입찰가</strong>는 <strong>현재가 금액 단위별로 일정금액</strong>이 증가됩니다. <br><strong>최소입찰가 이상</strong>으로 입찰해 주세요.<br/><br/>--%>
@@ -130,6 +125,7 @@
 												<dt>입찰자</dt>
 												<dt>금액</dt>
 												<dt>입찰시간</dt>
+												<hr/>
 												<br/>
 											</dl>
 											<c:choose>
@@ -183,6 +179,10 @@
 									<input type="hidden" id="productId" value="${productId}"/>
 									<c:choose>
 										<c:when test="${productFindDTO.auctionDeadline ne null}">
+										<p style="text-align: left">
+											입찰가(원): <input type="text" id="nowBid" name="bid" placeholder="가격을 입력하세요"/>
+											<input type="hidden" id="exBid" value="${bid}"/>
+										</p>
 											<input type="submit" class="primary-btn" value="입찰하기" style="border: 0px"></a>
 										</c:when>
 										<c:otherwise>
@@ -265,51 +265,6 @@
 				</div>
 			</div>
 			</c:forEach>
-<%--			<div class="col-lg-3 col-md-4 col-sm-6">--%>
-<%--				<div class="product__item">--%>
-<%--					<div class="product__item__pic set-bg" data-setbg="img/product/product-2.jpg">--%>
-<%--						<ul class="product__item__pic__hover">--%>
-<%--							<li><a href="#"><i class="fa fa-heart"></i></a></li>--%>
-<%--							<li><a href="#"><i class="fa fa-retweet"></i></a></li>--%>
-<%--							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>--%>
-<%--						</ul>--%>
-<%--					</div>--%>
-<%--					<div class="product__item__text">--%>
-<%--						<h6><a href="#">Crab Pool Security</a></h6>--%>
-<%--						<h5>$30.00</h5>--%>
-<%--					</div>--%>
-<%--				</div>--%>
-<%--			</div>--%>
-<%--			<div class="col-lg-3 col-md-4 col-sm-6">--%>
-<%--				<div class="product__item">--%>
-<%--					<div class="product__item__pic set-bg" data-setbg="img/product/product-3.jpg">--%>
-<%--						<ul class="product__item__pic__hover">--%>
-<%--							<li><a href="#"><i class="fa fa-heart"></i></a></li>--%>
-<%--							<li><a href="#"><i class="fa fa-retweet"></i></a></li>--%>
-<%--							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>--%>
-<%--						</ul>--%>
-<%--					</div>--%>
-<%--					<div class="product__item__text">--%>
-<%--						<h6><a href="#">Crab Pool Security</a></h6>--%>
-<%--						<h5>$30.00</h5>--%>
-<%--					</div>--%>
-<%--				</div>--%>
-<%--			</div>--%>
-<%--			<div class="col-lg-3 col-md-4 col-sm-6">--%>
-<%--				<div class="product__item">--%>
-<%--					<div class="product__item__pic set-bg" data-setbg="img/product/product-7.jpg">--%>
-<%--						<ul class="product__item__pic__hover">--%>
-<%--							<li><a href="#"><i class="fa fa-heart"></i></a></li>--%>
-<%--							<li><a href="#"><i class="fa fa-retweet"></i></a></li>--%>
-<%--							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>--%>
-<%--						</ul>--%>
-<%--					</div>--%>
-<%--					<div class="product__item__text">--%>
-<%--						<h6><a href="#">Crab Pool Security</a></h6>--%>
-<%--						<h5>$30.00</h5>--%>
-<%--					</div>--%>
-<%--				</div>--%>
-<%--			</div>--%>
 		</div>
 	</div>
 </section>
