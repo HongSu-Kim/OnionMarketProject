@@ -114,7 +114,7 @@
                             <span id="valid_email">${valid_email}</span>
                         </div>
                         <button type="submit" id="submit" class="site-btn">가입하기</button>
-                        <button type="button" class="site-btn" onclick="location.href='/'">돌아가기</button>
+                        <button type="button" class="site-btn" onclick="location.href='/member/login'">돌아가기</button>
                     </div>
                 </div>
             </form:form>

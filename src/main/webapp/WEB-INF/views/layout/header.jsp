@@ -182,11 +182,31 @@
 			</div>
 			<div class="col-lg-3">
 				<div class="header__cart">
+					<sec:authorize access="isAuthenticated()">
 					<ul>
 						<li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-						<li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+<%--						<li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>--%>
 					</ul>
-					<div class="header__cart__price">item: <span>$150.00</span></div>
+						<nav class="header__menu profile">
+							<ul>
+								<li><a href="/product/list">${sessionDTO.nickname}</a>
+									<ul class="header__menu__dropdown">
+										<li><a href="/product/list">상품 리스트</a></li>
+										<li><a href="/product/add">상품 등록</a></li>
+										<li><a href="/product/auctionList">경매 리스트</a></li>
+										<li><a href="/product/allList">전체 리스트</a></li>
+									</ul>
+								</li>
+							</ul>
+						</nav>
+					</sec:authorize>
+					<sec:authorize access="!hasRole('USER') and !hasRole('ADMIN') and !hasRole('WITHDRAWAL')">
+						<div class="header__cart__price profile" style="font-weight: bold;"><a href="/member/join" style="color: black">회원가입</a></div>
+						<div class="header__cart__price profile" style="font-weight: bold;"><a href="/member/login" style="color: black">로그인</a></div>
+					</sec:authorize>
+					<sec:authorize access="isAuthenticated()">
+						<div class="header__cart__price" style="font-weight: bold;"><a href="/member/logout" style="color: black">로그아웃</a></div>
+					</sec:authorize>
 				</div>
 			</div>
 		</div>
