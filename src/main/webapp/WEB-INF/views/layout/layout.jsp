@@ -29,6 +29,7 @@
 	<link rel="stylesheet" href="/template/css/slicknav.min.css" type="text/css">
 	<link rel="stylesheet" href="/template/css/style.css" type="text/css">
 	<link rel="stylesheet" href="/css/onion.css" type="text/css">
+	<link rel="stylesheet" href="/css/chat.css" type="text/css">
 
 	<link rel="stylesheet" href="${cp}<tiles:getAsString name = 'css1'/>"/>
 	<link rel="stylesheet" href="${cp}<tiles:getAsString name = 'css2'/>"/>
@@ -50,6 +51,10 @@
 		<tiles:insertAttribute name="footer"/>
 		<%-- FOOTER END--%>
 
+		<%-- CHAT MODAL --%>
+<%--		<tiles:insertAttribute name="chatModal"/>--%>
+		<%-- CHAT MODAL END--%>
+
 	</div>
 
 	<!-- Js Plugins -->
@@ -62,6 +67,10 @@
 	<script src="/template/js/owl.carousel.min.js"></script>
 	<script src="/template/js/main.js"></script>
 
+	<!-- websocket -->
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+	<script src="/js/socket.js"></script>
 	<!-- iamport.payment.js -->
 	<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
 	<!-- 주소 api -->

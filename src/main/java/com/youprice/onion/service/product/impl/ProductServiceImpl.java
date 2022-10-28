@@ -124,7 +124,10 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	@Transactional
 	public void progressUpdate(Long productId, String productProgress) {
-		productRepository.findById(productId).map(product -> product.progressUpdate(productProgress)).orElse(null);
+		productRepository.findById(productId).map(product -> {
+			product.progressUpdate(productProgress);
+			return productRepository.save(product);
+		}).orElse(null);
 	}
 
 	//상품 삭제(DB삭제가 아닌 조회불가상태로 변경)

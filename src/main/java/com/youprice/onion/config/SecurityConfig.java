@@ -54,6 +54,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+		http.headers().frameOptions().sameOrigin(); // SockJS 동일한 사이트의 frame에서만 보여진다.
+
 //        http.csrf().disable(); //csrf 비활성화 코드
         http.csrf().ignoringAntMatchers("/api/**"); //REST API 사용 예외처리(csrf 활성화 중이므로 jsp폼에서 POST로 데이터 넘겨주는 곳에서 hidden으로 csrf토큰 넘겨줘야 함)
 

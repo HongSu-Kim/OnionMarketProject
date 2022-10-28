@@ -60,7 +60,7 @@ public class OrderController {
 		} else if (productDTO.getMemberId() == sessionDTO.getId()) {
 			return AlertRedirect.warningMessage(response, "자신의 상품은 구매할수 없습니다.");
 		} else if (productDTO.getProductProgress() != ProductProgress.SALESON) {
-			return AlertRedirect.warningMessage(response, "/", "구매할 수 없는 상품입니다.");
+			return AlertRedirect.warningMessage(response, "/", productDTO.getProductProgress().getKor() + "(으)로 구매할 수 없는 상품입니다.");
 		}
 
 		model.addAttribute("memberDTO", memberDTO);

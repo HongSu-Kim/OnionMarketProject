@@ -171,6 +171,12 @@
 								</ul>
 							</li>
 						</sec:authorize>
+						<li><a href="#">채팅</a>
+							<ul class="header__menu__dropdown">
+								<li><a href="/chatroom/list">list</a></li>
+								<li><a href="/chatroom/room">room</a></li>
+							</ul>
+						</li>
 					</ul>
 				</nav>
 			</div>

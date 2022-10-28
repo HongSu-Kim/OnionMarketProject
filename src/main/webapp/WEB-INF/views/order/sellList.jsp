@@ -43,17 +43,17 @@
 										<td>
 											<p>${productDTO.productProgress.kor}</p>
 											<p>
-												<c:if test="${productDTO.productProgress eq 'TRADINGS'}">
-													<a onclick="confirm('상태를 예약중으로 변경하시겠습니까?') ? location.href='/product/progressUpdate/${productDTO.productId}/RESERVED' : false"
-														 class="primary-btn">예약중</a>
-													<a onclick="confirm('상태를 판매완료로 변경하시겠습니까?') ? location.href='/product/progressUpdate/${productDTO.productId}/SOLDOUT' : false"
-														 class="primary-btn">판매완료</a>
+												<input type="hidden" id="productId" value="${productDTO.productId}"/>
+												<c:if test="${productDTO.productProgress eq 'SALESON'}">
+													<a class="primary-btn progressUpdate">예약중</a>
+													<a class="primary-btn progressUpdate">판매완료</a>
 												</c:if>
 												<c:if test="${productDTO.productProgress eq 'RESERVED'}">
-													<a onclick="confirm('상태를 거래중으로 변경하시겠습니까?') ? location.href='/product/progressUpdate/${productDTO.productId}/TRADINGS' : false"
-														 class="primary-btn">거래중</a>
-													<a onclick="confirm('상태를 판매완료로 변경하시겠습니까?') ? location.href='/product/progressUpdate/${productDTO.productId}/SOLDOUT' : false"
-														 class="primary-btn">판매완료</a>
+													<a class="primary-btn progressUpdate">판매중</a>
+													<a class="primary-btn progressUpdate">판매완료</a>
+												</c:if>
+												<c:if test="${productDTO.productProgress eq 'TRADINGS'}">
+													<a class="primary-btn progressUpdate">판매완료</a>
 												</c:if>
 												<c:if test="${productDTO.productProgress eq 'SOLDOUT'}">
 													<a href="/review/created/${productDTO.orderId}" class="primary-btn">판매후기등록</a>
@@ -76,6 +76,7 @@
 
 					<!-- 페이징 -->
 					<c:if test="${!empty page.content && page.totalPages != 1}">
+						<input type="hidden" id="pageNumber" value="${page.number + 1}"/>
 						<div class="product__pagination text-center">
 							<c:set var="size" value="${page.pageable.pageSize}"/>
 							<fmt:parseNumber var="pages" integerOnly="true" value="${page.number / size}"/>
