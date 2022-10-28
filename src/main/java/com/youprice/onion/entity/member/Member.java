@@ -3,6 +3,7 @@ package com.youprice.onion.entity.member;
 import com.youprice.onion.entity.board.Complain;
 import com.youprice.onion.entity.board.Inquiry;
 import com.youprice.onion.entity.board.Notice;
+import com.youprice.onion.entity.chat.Chat;
 import com.youprice.onion.entity.chat.Chatroom;
 import com.youprice.onion.entity.order.Order;
 import com.youprice.onion.entity.order.Wish;
@@ -62,6 +63,9 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     private List<Chatroom> chatroomList = new ArrayList<>(); //채팅방-회원번호 FK
+
+	@OneToMany(mappedBy = "member")
+	private List<Chat> chatList = new ArrayList<>(); //채팅-회원번호 FK
 
     @OneToMany(mappedBy = "member")
     private List<Notice> noticeList = new ArrayList<>(); //게시판-회원번호 FK
