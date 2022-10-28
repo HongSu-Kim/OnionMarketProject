@@ -22,10 +22,10 @@ public class Follow {
 
     @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name = "follow_target_id")
-    private Follow target; //팔로우된 회원번호 FK
+    private Member target; //팔로우된 회원번호 FK
 
     @Builder
-    public Follow(Member member, Follow target) {
+    public Follow(Member member, Member target) {
         this.member = member;
         this.target = target;
     }

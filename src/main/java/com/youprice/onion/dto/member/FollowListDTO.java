@@ -1,6 +1,7 @@
 package com.youprice.onion.dto.member;
 
 import com.youprice.onion.entity.member.Follow;
+import com.youprice.onion.entity.member.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,11 +21,11 @@ public class FollowListDTO {
 
     public FollowListDTO(Follow follow, int followListSize) {
         followId = follow.getId();
-        Follow target = follow.getTarget();
-        memberNickname = target.getMember().getNickname();
-        memberImageName = target.getMember().getMemberImageName();
-        userGrade = target.getMember().getUserGrade();
-        complaintCount = target.getMember().getComplaintCount();
+        Member target = follow.getTarget();
+        memberNickname = target.getNickname();
+        memberImageName = target.getMemberImageName();
+        userGrade = target.getUserGrade();
+        complaintCount = target.getComplaintCount();
         this.followListSize = followListSize;
     }
 }
