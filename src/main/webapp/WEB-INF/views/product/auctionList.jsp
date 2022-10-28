@@ -11,28 +11,44 @@
 </head>
 <body>
 
-
-<div>
-	<h3><경매 상품 리스트입니다></h3><br/>
-	<c:forEach var="list" items="${list}">
-
-		<a href="/product/detail/${list.productId}">
-			제목: ${list.subject}<br/><br/>
-		</a>
-		<img src="/img/product/${list.productImageName}"/><br/>
-		<c:if test="${list.auctionDeadline ne null}">
-			<p style="font-style: italic">
-				<경매 진행 중인 상품>
-			</p>
-		</c:if>
-		상품가격: ${list.price}
-		<%--      <p>등록일: ${list.uploadDate}</p><br/>--%>
-		<br/><br/><br/>
-
-	</c:forEach>
-</div>
-
-
+<!-- Featured Section Begin -->
+<section class="featured spad">
+	<div class="container">
+		<div class="row featured__filter">
+			<c:forEach var="list" items="${list}">
+				<div class="col-lg-3 col-md-4 col-sm-6">
+					<div class="featured__item">
+						<div class="featured__item__pic set-bg" data-setbg="/img/product/${list.productImageName}">
+							<ul class="featured__item__pic__hover">
+								<li><a href="/wish/addWish/${productId}"><i class="fa fa-heart"></i></a></li>
+								<li><a href="#"><i class="fa fa-retweet"></i></a></li>
+								<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+							</ul>
+							<div style="margin-top:93%;"><c:if test="${list.payStatus eq true}"><img src="/template/img/product/pay.png"></c:if></div>
+						</div>
+						<c:if test="${list.auctionDeadline ne null}">
+							<p style="font-style: italic;margin-left: 50px;">
+								<경매 진행 중인 상품>
+							</p>
+						</c:if>
+						<div class="featured__item__text">
+							<h6><a href="/product/detail/${list.productId}">${list.subject}</a></h6>
+							<fmt:parseDate var="uploadDate" value="${list.uploadDate}" pattern="yyyy-MM-dd'T'HH:mm"/>
+							<h5>
+								<c:choose>
+									<c:when test="${not empty list.bid}"><fmt:formatNumber maxFractionDigits="3" value="${list.bid}"/></c:when>
+									<c:when test="${empty list.bid}"><fmt:formatNumber maxFractionDigits="3" value="${list.price}"/></c:when>
+								</c:choose>
+								&nbsp;&nbsp;<fmt:formatDate value="${uploadDate}" pattern="MM/dd"/>
+							</h5>
+						</div>
+					</div>
+				</div>
+			</c:forEach>
+		</div>
+	</div>
+</section>
+<!-- Featured Section End -->
 
 <div>
 

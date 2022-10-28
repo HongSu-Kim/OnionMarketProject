@@ -34,22 +34,6 @@ function remainedTime() {
 }
 setInterval(remainedTime,1000);
 
-// $(document).ready(function () {
-//     if($("#nowBid").val()==$("#nowPrice").val()) {
-//         $("#bid").val()>=$("#nowPrice").val();
-//     }else {
-//         if($("#nowBid").val()<10000){
-//             min($("#nowBid").val()+1000)
-//         }else if($("#nowBid").val()<100000){
-//             min($("#nowBid").val()+5000)
-//         }else if($("#nowBid").val()<500000){
-//             min($("#nowBid").val()+10000)
-//         }else {
-//             min($("#nowBid").val()+50000)
-//         }
-//     }
-// });
-
 $(document).ready(function () {
 
     var price = Number($('#nowPrice').val()); //시작가
@@ -59,7 +43,7 @@ $(document).ready(function () {
     if(exBid == null) {
         now = price;
     }else {
-        now = exBid+1000;
+        now = exBid+10000;
     }
 
     $('#productForm').validate({
