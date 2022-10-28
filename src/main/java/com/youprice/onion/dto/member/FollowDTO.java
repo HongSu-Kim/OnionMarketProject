@@ -12,12 +12,12 @@ public class FollowDTO {
 
     private Long followId;
     private MemberDTO memberDTO;
-    private FollowDTO targetDTO;
+    private MemberDTO targetDTO;
 
     public FollowDTO(Follow follow) {
         followId = follow.getId();
         memberDTO = new MemberDTO(follow.getMember());
-        targetDTO = new FollowDTO(follow.getTarget());
+        targetDTO = new MemberDTO(follow.getTarget());
     }
 
 }
