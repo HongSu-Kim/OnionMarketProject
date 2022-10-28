@@ -32,7 +32,12 @@
 								<ul class="product__wish__item">
 									<input type="hidden" id="productId" value="${wishListDTO.productId}"/>
 									<c:if test="${wishListDTO.chatroomListSize > 0}">
-										<li><a href="/chatroom/..."><i class="fa fa-weixin"></i></a></li>
+										<c:if test="${empty wishListDTO.chatroomId}">
+											<li><a href="/chatroom/create/${wishListDTO.productId}"><i class="fa fa-weixin"></i></a></li>
+										</c:if>
+										<c:if test="${!empty wishListDTO.chatroomId}">
+											<li class="true"><a href="/chatroom/room/${wishListDTO.chatroomId}"><i class="fa fa-weixin"></i></a></li>
+										</c:if>
 										<span id="chatroomListSize">${wishListDTO.chatroomListSize}</span><li></li>
 									</c:if>
 									<li class="wishBtn true"><a href="#"><i class="fa fa-heart"></i></a></li>
