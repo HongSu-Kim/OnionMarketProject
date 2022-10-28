@@ -186,7 +186,12 @@
 						<li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
 						<li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
 					</ul>
-					<div class="header__cart__price">item: <span>$150.00</span></div>
+					<sec:authorize access="!hasRole('USER') and !hasRole('ADMIN') and !hasRole('WITHDRAWAL')">
+						<div class="header__cart__price" style="font-weight: bold;"><a href="/member/login" style="color: black">로그인/회원가입</a></div>
+					</sec:authorize>
+					<sec:authorize access="isAuthenticated()">
+						<div class="header__cart__price" style="font-weight: bold;"><a href="/member/logout" style="color: black">로그아웃</a></div>
+					</sec:authorize>
 				</div>
 			</div>
 		</div>
