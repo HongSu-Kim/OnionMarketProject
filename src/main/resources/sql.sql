@@ -212,14 +212,16 @@ CREATE TABLE chatroom (
 );
 
 CREATE TABLE chat (
-	chat_id         	NUMBER          NOT NULL,
-	chatroom_id     	NUMBER          NOT NULL,
-	message         	VARCHAR2(600)   NOT NULL,
-	chat_image_name 	VARCHAR2(255)   NULL,
-	read_or_not      	VARCHAR2(10)    NOT NULL,
-	sending_time    	DATE            DEFAULT SYSDATE,
-	CONSTRAINT PK_CHAT PRIMARY KEY (chat_id),
-	CONSTRAINT FK_CHAT_CHATROOM_ID  FOREIGN KEY (chatroom_id) REFERENCES chatroom(chatroom_id)
+    chat_id         	NUMBER          NOT NULL,
+    chatroom_id     	NUMBER          NOT NULL,
+    member_id     	    NUMBER          NOT NULL,
+    message         	VARCHAR2(600)   NOT NULL,
+    chat_image_name 	VARCHAR2(255)   NULL,
+    read_or_not      	VARCHAR2(10)    NOT NULL,
+    sending_time    	DATE            DEFAULT SYSDATE,
+    CONSTRAINT PK_CHAT PRIMARY KEY (chat_id),
+    CONSTRAINT FK_CHAT_CHATROOM_ID  FOREIGN KEY (chatroom_id) REFERENCES chatroom(chatroom_id),
+    CONSTRAINT FK_CHAT_MEMBER_ID  FOREIGN KEY (member_id) REFERENCES member(member_id)
 );
 
 CREATE TABLE wish (

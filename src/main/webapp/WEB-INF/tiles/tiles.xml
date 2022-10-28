@@ -7,7 +7,8 @@
 	<definition name="layout" template="/WEB-INF/views/layout/layout.jsp">
 		<put-attribute name="header" value="/WEB-INF/views/layout/header.jsp" />
 		<put-attribute name="body" value="" />
-		<put-attribute name="footer" value="/WEB-INF/views/layout/footer.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/views/layout/footer.jsp" />
+<!--        <put-attribute name="chatModal" value="/WEB-INF/views/modal/chat.jsp" />-->
 	</definition>
 	<definition name="*/*" extends="layout">
 		<put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />

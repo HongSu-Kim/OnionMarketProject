@@ -134,14 +134,16 @@ public class ProductController {
 
         return "redirect:/product/detail/"+productId;
     }
-
-    @GetMapping(value = "list") //상품 리스트 주소
+    //상품 리스트 주소
+    @GetMapping(value = "list")
     public String list(@LoginUser SessionDTO userSession, Model model, @PageableDefault Pageable pageable) throws Exception {
 
         /*세션아이디로 동네 조회*/
         List<Long> coordinateList = null;
-
+        List<TownFindDTO> townList = null;
         if(userSession!=null){
+
+            townList= townService.townLists(userSession.getId());
             coordinateList = townService.townLists(userSession.getId())
                     .stream()
                     .map(TownFindDTO::getCoordinateId)
@@ -159,11 +161,12 @@ public class ProductController {
         List<ProductListDTO> list = productService.getProductListDTO(searchRequirements).getContent();
 
         model.addAttribute("list",list);
-
+        model.addAttribute("townList",townList);
         return "product/list";//상품 리스트 메인 화면페이지
     }
 
-    @GetMapping("all")
+    //상품 전체 리스트 주소
+    @GetMapping("allList")
     public String allList(Model model,@PageableDefault Pageable pageable) {
 
         SearchRequirements searchRequirements = SearchRequirements.builder()
@@ -332,10 +335,10 @@ public class ProductController {
     }
 
 	// 상품상태 수정
-	@GetMapping("progressUpdate/{productId}/{productProgress}")
-	public String progressUpdate(@PathVariable Long productId, @PathVariable String productProgress) {
+	@GetMapping("progressUpdate/{productId}/{productProgress}/{pageNumber}")
+	public String progressUpdate(@PathVariable Long productId, @PathVariable String productProgress, @PathVariable int pageNumber) {
 		productService.progressUpdate(productId, productProgress);
-		return "redirect:/order/sellList";
+		return "redirect:/order/sellList?page=" + pageNumber;
 	}
 
     @PostMapping("/update/{productId}")//실제 상품 업데이트 주소

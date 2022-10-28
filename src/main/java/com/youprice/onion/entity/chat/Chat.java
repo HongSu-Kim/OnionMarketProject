@@ -1,12 +1,15 @@
 package com.youprice.onion.entity.chat;
 
+import com.youprice.onion.entity.member.Member;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Chat{
 
     @Id
@@ -18,9 +21,22 @@ public class Chat{
     @JoinColumn(name="chatroom_id")
     private Chatroom chatroom; //채팅방번호 FK
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "member_id")
+	private Member member; //회원번호 FK
+
     private String message; //메세지
     private String chatImageName; //첨부이미지
-    private char readOrNot; //읽음 표시
+    private boolean readOrNot; //읽음 표시
     private LocalDateTime sendingTime; //전송 시간
+
+	public Chat(Chatroom chatroom, Member member, String message, String chatImageName) {
+		this.chatroom = chatroom;
+		this.member = member;
+		this.message = message;
+		this.chatImageName = chatImageName;
+		readOrNot = false;
+		sendingTime = LocalDateTime.now();
+	}
 
 }

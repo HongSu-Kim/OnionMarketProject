@@ -1,0 +1,10 @@
+.product__add__input__file{
+
+}
+
+.product__add {
+    width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
