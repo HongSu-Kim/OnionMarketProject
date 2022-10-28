@@ -3,7 +3,8 @@ package com.youprice.onion.dto.product;
 import com.youprice.onion.entity.product.ProductProgress;
 import lombok.*;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,4 +21,5 @@ public class SearchRequirements {
 	private ProductProgress productProgress;//판매상태
 	private Boolean blindStatus;//블라인드현황
 	private String searchValue;//검색어
+	private List<Long> coordinateIdList;//지역PK목록
 }

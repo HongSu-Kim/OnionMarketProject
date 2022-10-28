@@ -22,15 +22,12 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            /*background:#ebebeb;*/
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-
 
 
         }
 
         #modal .modal-window {
-            overflow-y:auto;
+            overflow-y: auto;
 
             background-color: white;
 
@@ -39,13 +36,19 @@
             position: relative;
             top: -200px;
             padding: 10px;
+            border-radius: 15px;
+            border: 1px black;
+
+            box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+
+
         }
 
         #modal .title {
             padding-left: 10px;
             display: inline;
 
-            color: white;
+            color: black;
         }
 
         #modal .title h2 {
@@ -68,21 +71,46 @@
             color: black;
         }
 
-        /*a {*/
-        /*    color: black;*/
+        a {
+            color: black;
+            text-decoration-line: none;
+            text-decoration: none;
 
-        /*}*/
+        }
+
+        a:link {
+            color: red;
+            text-decoration: none;
+        }
+
+        a:visited {
+            color: black;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
 
 
         p {
             color: black;
+            border-top: 1px solid #d7d7d7;
+            border-left: 1px solid #e0e0e0;
+            border-right: 1px solid #e0e0e0;
+            border-bottom: 0 none;
 
         }
 
-        .js-load {
-            display: none;
+        input {
+            width: 100%;
+            height: 46px;
+            font-size: 16px;
+            color: #6f6f6f;
+            padding-left: 15px;
+            border: 1px solid #e1e1e1;
+            border-radius: 20px;
         }
-
     </style>
 
 </head>
@@ -126,50 +154,47 @@
     <div id="modal" class="modal-overlay">
         <div class="modal-window">
             <div class="title">
+                <div style="text-align: right">
+
+                 <a href="/town/town"><span class="icon_close"></span></a>
+                </div>
+                <div style="text-align: center">
+                    [동네설정은 최대 3곳 가능]
+                </div>
 
 
-
-
-                <strong>[동네설정은 최대 3곳 가능]</동네설정은> </strong>
                 <br/>
-
 
                 <form:form action="/town/townresult" method="post">
 
-                    원하는 동네 검색: <input type="text" name="wishtown" value=""/>
+                    <input type="text" name="wishtown" value="" placeholder="  원하는 동네 검색"/>
+                    <br/><br/>
+
                     <input type="hidden" name="memberId" value="${memberDTO.id}">
-                    <input type="submit" value="동네검색하기"/><br/>
+
+                    <input type="submit" value="동네검색하기" style="background-color: #7EBD3D; color: white"/><br/>
                 </form:form>
 
 
                 <form:form action="town" method="get">
 
 
-                    <div style="float: right">
-                        <button type="submit" class="btn btnEvent" name="" value=" ">
-                            <img src="https://cdn-icons-png.flaticon.com/512/458/458594.png" alt="btnImages"
-                                 class="btnImages"
-                                 height="23" width="23" border="0">
-                        </button>
-                    </div>
                 </form:form>
                 <form:form action="town" name="townadd" method="post">
                     <input type="hidden" name="memberId" value="${memberDTO.id}"/>
-                    <p>[원하는 동네를 선택하세요]</p> <input type="hidden" name="townName" id="coordinateId" style="width: 15%;">
-                    [동네예시]
-                    강남구/ 송파구/ 강동구
-                </form:form>
+                    <input type="hidden" name="townName" id="coordinateId" style="width: 15%;">
+
+                </form:form><br/>
                 <div style="text-align: center">
                     <c:if test="${wishtown ==  '강남구'}">
 
                         <c:forEach var="Gangnam" items="${Gangnam}">
 
 
+                            <a href="#" onclick="statusChange(this)"><p
+                                    style="margin-top: 10px; margin-bottom: 10px"> ${Gangnam.townName} </p></a>
 
-
-                            <a href="#" onclick="statusChange(this)"> ${Gangnam.townName} </a>
-
-                            <br/>
+                            <p></p>
 
                         </c:forEach>
 
@@ -179,9 +204,11 @@
                     <c:if test="${wishtown == '송파구'}">
 
                         <c:forEach var="Songpa" items="${Songpa}">
-                            <br/>
 
-                            <a href="#" onclick="statusChange(this)"> ${Songpa.townName}</a>
+
+                            <a href="#" onclick="statusChange(this)"><p
+                                    style="margin-top: 10px; margin-bottom: 10px"> ${Songpa.townName}</p></a>
+                            <p></p>
                         </c:forEach>
 
                     </c:if>
@@ -190,9 +217,11 @@
                     <c:if test="${wishtown ==  '강동구'}">
 
                         <c:forEach var="Gangdong" items="${Gangdong}">
-                            <br/>
 
-                            <a href="#" onclick="statusChange(this)"> ${Gangdong.townName}</a>
+
+                            <a href="#" onclick="statusChange(this)"><p
+                                    style="margin-top: 10px; margin-bottom: 10px"> ${Gangdong.townName}</p></a>
+                            <p></p>
                         </c:forEach>
 
                     </c:if>
@@ -203,19 +232,17 @@
             </div>
         </div>
 
-            <script type="text/javascript">
+        <script type="text/javascript">
 
-                $(window).on('load', function () {
-                    load('#js-load', '4');
-                    $("#js-btn-wrap .button").on("click", function () {
-                        load('#js-load', '4', '#js-btn-wrap');
-                    })
-                });
-            </script>
+            $(window).on('load', function () {
+                load('#js-load', '4');
+                $("#js-btn-wrap .button").on("click", function () {
+                    load('#js-load', '4', '#js-btn-wrap');
+                })
+            });
+        </script>
 
         <script>
-
-
 
 
             const modal = document.getElementById("modal")

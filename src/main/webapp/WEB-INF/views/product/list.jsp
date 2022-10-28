@@ -14,8 +14,17 @@
 
 <div>
 	<h3><상품 리스트입니다></h3><br/>
+	<c:if test="${townList ne null}">
+	<p>현재동네</p>
+		<c:forEach var="townList" items="${townList}">
+			<select>
+				<option>${townList.townName}</option>
+				<option>내 동네 설정하기</option>
+			</select>
+		</c:forEach>
+	</c:if>
+	<br><br>
 	<c:forEach var="list" items="${list}">
-
 		<a href="/product/detail/${list.productId}">
 			제목: ${list.subject}<br/><br/>
 		</a>
@@ -28,7 +37,6 @@
 		상품가격: ${list.price}
 		<%--      <p>등록일: ${list.uploadDate}</p><br/>--%>
 		<br/><br/><br/>
-
 	</c:forEach>
 </div>
 

@@ -121,6 +121,7 @@
 								<li><a href="/product/list">상품 리스트</a></li>
 								<li><a href="/product/add">상품 등록</a></li>
 								<li><a href="/product/auctionList">경매 리스트</a></li>
+								<li><a href="/product/all">전체 리스트</a></li>
 							</ul>
 						</li>
 						<sec:authorize access="isAuthenticated()">
