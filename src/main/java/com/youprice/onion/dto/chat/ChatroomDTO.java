@@ -19,10 +19,15 @@ public class ChatroomDTO {
 	private LocalDateTime createDate; //생성시간
 	private LocalDateTime modifyDate; //수정시간(마지막 채팅 시간)
 
-	private Slice<ChatDTO> chatDTOSlice;
 	private MemberDTO memberDTO;
 	private ProductDTO productDTO;
+	
+	// list 출력시 최근 채팅정보
 	private ChatDTO chatDTO;
+	// 채팅방에 채팅 10개씩 출력
+	private Slice<ChatDTO> chatDTOSlice;
+	private boolean hasNext;
+	private int page;
 
 	public ChatroomDTO(Chatroom chatroom) {
 		chatroomId = chatroom.getId();
@@ -32,5 +37,12 @@ public class ChatroomDTO {
 
 		memberDTO = new MemberDTO(chatroom.getMember());
 		productDTO = new ProductDTO(chatroom.getProduct());
+	}
+
+	// 채팅 내역 불러오기
+	public void setSlice(Slice<ChatDTO> chatDTOSlice) {
+		this.chatDTOSlice = chatDTOSlice;
+		hasNext = chatDTOSlice.hasNext();
+		page = chatDTOSlice.getNumber();
 	}
 }
