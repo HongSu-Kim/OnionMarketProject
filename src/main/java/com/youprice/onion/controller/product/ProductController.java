@@ -104,8 +104,6 @@ public class ProductController {
         /*카테고리 상품 추천*/
         List<ProductFindDTO> categoryDTO = productService.getProductSubCategory(productId,productFindDTO.getCategoryId());
 
-        System.out.println("productFindDTO = " + productFindDTO.getAuctionDeadline());
-
         model.addAttribute("userSession",userSession);
         model.addAttribute("productId",productId);
         model.addAttribute("productFindDTO",productFindDTO);
@@ -136,11 +134,13 @@ public class ProductController {
     }
     //상품 리스트 주소
     @GetMapping(value = "list")
-    public String list(@LoginUser SessionDTO userSession, Model model, @PageableDefault Pageable pageable) throws Exception {
+    public String list(@LoginUser SessionDTO userSession, Model model,
+                       @PageableDefault Pageable pageable) throws Exception {
 
         /*세션아이디로 동네 조회*/
         List<Long> coordinateList = null;
         List<TownFindDTO> townList = null;
+
         if(userSession!=null){
 
             townList= townService.townLists(userSession.getId());
@@ -148,17 +148,18 @@ public class ProductController {
                     .stream()
                     .map(TownFindDTO::getCoordinateId)
                     .collect(Collectors.toList());
-
         }
-
         SearchRequirements searchRequirements = SearchRequirements.builder()
                 .coordinateIdList(coordinateList)
                 .build();
 
+        System.out.println("동네이름 = " + searchRequirements.getCoordinateId());
         searchRequirements.setPageable(PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
                 pageable.getPageSize(),Sort.Direction.DESC, "uploadDate"));
 
         List<ProductListDTO> list = productService.getProductListDTO(searchRequirements).getContent();
+
+        System.out.println("list = " + list.size());
 
         model.addAttribute("list",list);
         model.addAttribute("townList",townList);

@@ -31,13 +31,13 @@
 								<!-- 주문 정보 -->
 								<c:forEach var="productDTO" items="${page.content}">
 									<tr>
-										<td class="text-align-left pointer" onclick="location.href='/product/Detail/${productDTO.productId}';">
+										<td class="text-align-left pointer" onclick="location.href='/product/detail/${productDTO.productId}';">
 											<img src="/img/product/${productDTO.representativeImage}" class="list-img">
 											<span>${productDTO.subject}</span>
 										</td>
 										<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${productDTO.price}"/>원</td>
 										<td>
-											<fmt:parseDate var="date" value="${productDTO.date}" pattern="yyyy-MM-dd'T'HH:mm:ss"/>
+<%--											<fmt:parseDate var="date" value="${productDTO.uploadDate}" pattern="yyyy-MM-dd'T'HH:mm:ss"/>--%>
 											<fmt:formatDate value="${date}" pattern="yyyy/MM/dd"/>
 										</td>
 										<td>
