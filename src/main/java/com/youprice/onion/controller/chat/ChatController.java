@@ -33,7 +33,8 @@ public class ChatController {
 	public void message(ChatDTO chatDTO){
 		log.error("ChatController : /chat/message : " + chatDTO.getMessage());
 		chatService.writeChat(chatDTO);
-		template.convertAndSend("/sub/chatroom/room/" + chatDTO.getChatroomId(), chatDTO);
+		template.convertAndSend("/sub/chat/" + chatDTO.getMemberId(), chatDTO);
+		template.convertAndSend("/sub/chat/" + chatDTO.getTargetId(), chatDTO);
 	}
 
 }

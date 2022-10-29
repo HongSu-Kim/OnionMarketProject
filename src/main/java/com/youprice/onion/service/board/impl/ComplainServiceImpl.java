@@ -49,7 +49,7 @@ public class ComplainServiceImpl implements ComplainService {
         } else {
            chatroom = chatroomRepository.findById(form.getChatroomId()).orElse(null);
         }
-        Complain complain = new Complain(member,product,chatroom,form.getComplainType(), form.getComplainContent(),"처리대기");
+        Complain complain = new Complain(member,product,chatroom,form.getComplainType(), form.getComplainContent(),"대기");
         complainRepository.save(complain);
     }
 
@@ -59,11 +59,11 @@ public class ComplainServiceImpl implements ComplainService {
 
         if(select.equals("처리완료")) {
             complain.updateStatus(select);
-            //member.addComplainCount(); // 처리완료가 되면 신고대상 회원의 complainCount 증가
+            member.addComplainCount(); // 처리완료가 되면 신고대상 회원의 complainCount 증가
 
             if(member.getComplaintCount() >= 5){
                 Product product = productRepository.findById(complain.getProduct().getId()).orElse(null);
-                //product.modifyBlindStatus("blind");
+                product.blindProduct(true);
             }
             return select;
         } else{ // 접수취소되면 삭제

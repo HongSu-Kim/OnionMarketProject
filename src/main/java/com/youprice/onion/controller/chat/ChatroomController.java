@@ -11,6 +11,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,27 +30,29 @@ public class ChatroomController {
 
 	// 전체 채팅방 조회
 	@GetMapping("list")
-	public String chatroomList(@LoginUser SessionDTO sessionDTO, Model model) {
-		if (sessionDTO == null) return "redirect:/member/login";
+	@ResponseBody
+	public ResponseEntity<?> chatroomList(@LoginUser SessionDTO sessionDTO) {
+		if (sessionDTO == null) return new ResponseEntity<>("/member/login", HttpStatus.UNAUTHORIZED);
 		log.error("ChatroomController : chatroom/list");
 
 		List<ChatroomDTO> chatroomDTOList = chatroomService.getChatroomDTOList(sessionDTO.getId());
 
-		model.addAttribute("chatroomDTOList", chatroomDTOList);
-		return "chat/list";
+		return new ResponseEntity<>(chatroomDTOList, HttpStatus.OK);
 	}
 
-	@GetMapping("create/{productId}")
-	public String chatroomCreate(@LoginUser SessionDTO sessionDTO, @PathVariable Long productId) {
-		if (sessionDTO == null) return "redirect:/member/login";
+	@PostMapping("create")
+	@ResponseBody
+	public ResponseEntity<?> chatroomCreate(@LoginUser SessionDTO sessionDTO, @RequestParam Long productId) {
+		if (sessionDTO == null) return new ResponseEntity<>("/member/login", HttpStatus.UNAUTHORIZED);
 		log.error("ChatroomController : chatroom/create");
 
-		chatroomService.createChatroom(sessionDTO.getId(), productId);
-		return "redirect:/chatroom/list";
+		Long chatroomId = chatroomService.createChatroom(sessionDTO.getId(), productId);
+		return new ResponseEntity<>(chatroomId, HttpStatus.OK);
 	}
 
 	@GetMapping("room/{chatroomId}")
-	public String chatroomChatroom(Model model, @PathVariable Long chatroomId, @PageableDefault Pageable pageable) {
+	@ResponseBody
+	public ResponseEntity<?> chatroomRoom(@PathVariable Long chatroomId, @PageableDefault Pageable pageable) {
 
 		pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
 				pageable.getPageSize(), Sort.Direction.DESC, "id");
@@ -57,8 +61,7 @@ public class ChatroomController {
 		ChatroomDTO chatroomDTO = chatroomService.getChatroomDTO(chatroomId, pageable);
 		log.error("ChatroomController : chatroom/room/" + chatroomDTO.getChatroomId());
 
-		model.addAttribute("chatroomDTO", chatroomDTO);
-		return "chat/room";
+		return new ResponseEntity<>(chatroomDTO, HttpStatus.OK);
 	}
 
 }

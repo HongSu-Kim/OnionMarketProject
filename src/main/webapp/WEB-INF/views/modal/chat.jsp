@@ -13,36 +13,38 @@
 				<i class="fa fa-solid fa-comment"></i>
 			</div>
 
-			<!-- chat box -->
-			<div class="chat-box">
-
-				<input type="hidden" id="chatroomId" value="${chatroomDTO.chatroomId}"/>
+			<!-- chat list -->
+			<div class="chat-box" id="chatList">
 				<input type="hidden" id="memberId" value="${member.id}"/>
 				<input type="hidden" id="memberNickname" value="${member.nickname}"/>
-				<%--<c:set var="seller" value="${chatroomDTO.memberDTO}"/>
-				<c:set var="buyer" value="${chatroomDTO.productDTO.memberDTO}"/>
-				<c:set var="user" value="${seller.id == member.id ? buyer.nickname : seller.nickname}"/>--%>
 
 				<div class="chat-box-header">
-					ChatBot
-					<span class="chat-box-toggle"><i class="material-icons">close</i></span>
+					채팅
+					<span class="chat-box-toggle right chat-close-btn"><i class="material-icons">close</i></span>
+				</div>
+				<div class="chat-box-body list">
+					<div class="chat-box-overlay"></div>
+					<div class="chat-logs" id="listArea">
+					</div>
+				</div>
+			</div>
+
+			<!-- chat room -->
+			<div class="chat-box" id="chatroom">
+				<input type="hidden" id="chatroomId"/>
+				<input type="hidden" id="page"/>
+				<input type="hidden" id="targetId"/>
+
+				<div class="chat-box-header">
+					<span class="chat-box-toggle left chat-list-btn"><i class="material-icons">arrow_back</i></span>
+					<span id="title">title</span>
+					<span class="chat-box-toggle right chat-close-btn"><i class="material-icons">close</i></span>
 				</div>
 				<div class="chat-box-body">
 					<div class="chat-box-overlay"></div>
 					<div class="chat-logs" id="msgArea">
-						<c:forEach var="chatDTO" items="${chatroomDTO.chatDTOSlice.content}">
-							<c:if test="${chatDTO.memberId == member.id}">
-								<div id="cm-msg" class="chat-msg self">
-									<div class="cm-msg-text">${chatDTO.message}</div>
-								</div>
-							</c:if>
-							<c:if test="${chatDTO.memberId != member.id}">
-								<div id="cm-msg" class="chat-msg user">
-									<div class="cm-msg-text">${chatDTO.message}</div>
-								</div>
-							</c:if>
-						</c:forEach>
-						<div id="padding" class="chat-msg padding"></div>
+						<div id="head" class="chat-msg-padding"></div>
+						<div id="foot" class="chat-msg-padding"></div>
 					</div><!--chat-log -->
 				</div>
 				<div class="chat-input-group">

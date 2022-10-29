@@ -141,4 +141,13 @@ public class Member {
 	public void addCash(int cash) {
 		this.cash += cash;
 	}
+
+    public int addPoint(int point){
+        this.point += point;
+        return this.point;
+    }
+    public Member addComplainCount(){
+        this.complaintCount += 1;
+        return this;
+    }
 }

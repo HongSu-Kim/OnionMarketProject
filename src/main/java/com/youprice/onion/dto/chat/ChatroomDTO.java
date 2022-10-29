@@ -22,6 +22,7 @@ public class ChatroomDTO {
 	private Slice<ChatDTO> chatDTOSlice;
 	private MemberDTO memberDTO;
 	private ProductDTO productDTO;
+	private ChatDTO chatDTO;
 
 	public ChatroomDTO(Chatroom chatroom) {
 		chatroomId = chatroom.getId();
