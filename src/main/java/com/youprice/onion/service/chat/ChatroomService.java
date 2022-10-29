@@ -9,6 +9,6 @@ public interface ChatroomService {
 
 	public List<ChatroomDTO> getChatroomDTOList(Long memberId);
 	public ChatroomDTO getChatroomDTO(Long chatroomId, Pageable pageable);
-	public void createChatroom(Long memberId, Long productId);
+	public Long createChatroom(Long memberId, Long productId);
 
 }

@@ -4,6 +4,7 @@ import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.product.Product;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -21,14 +22,15 @@ public class Chatroom{
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")
-	private Member member; //회원번호 FK
+	private Member member; //회원번호 FK - 구매자
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    private Product product; //상품번호 FK
+    private Product product; //상품번호 FK - 판매자
 
     private ChatroomState state; //채팅방 상태 - chatting,end,delete
     private LocalDateTime createDate; //생성시간
+	@Setter
     private LocalDateTime modifyDate; //수정시간(마지막 채팅 시간)
 
 
@@ -41,6 +43,7 @@ public class Chatroom{
 		this.product = product;
 		state = ChatroomState.CHATTING;
 		createDate = LocalDateTime.now();
+		modifyDate = LocalDateTime.now();
 	}
 
 }

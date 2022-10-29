@@ -21,7 +21,7 @@ $('.wishBtn').click(function () {
                 alert(msg)
             },
             error: function (request)  {
-                if(request.status == 401) {
+                if (request.status == 401) {
                     location.href = request.responseText
                 } else if (request.status == 403) {
                     alert(request.responseText)

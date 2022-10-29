@@ -34,32 +34,46 @@ public class ChatroomServiceImpl implements ChatroomService {
     private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
 
+	// 채팅방 리스트
 	@Override
 	public List<ChatroomDTO> getChatroomDTOList(Long memberId) {
-		return chatroomRepository.findAllByMemberId(memberId).stream().map(ChatroomDTO::new).collect(Collectors.toList());
+		return chatroomRepository.findAllByMemberIdOrderByModifyDate(memberId).stream().map(chatroom -> {
+			ChatroomDTO chatroomDTO = new ChatroomDTO(chatroom);
+
+			chatRepository.findOneByChatroomId(chatroomDTO.getChatroomId()).map(chat -> {
+				chatroomDTO.setChatDTO(new ChatDTO(chat));
+				return chat;
+			}).orElse(null);
+
+			return chatroomDTO;
+		}).collect(Collectors.toList());
 	}
 
+	// 채팅방 
 	@Override
 	public ChatroomDTO getChatroomDTO(Long chatroomId, Pageable pageable) {
 
 		return chatroomRepository.findById(chatroomId).map(chatroom -> {
 			ChatroomDTO chatroomDTO = new ChatroomDTO(chatroom);
 
-			Slice<ChatDTO> chatDTOSlice = chatRepository.findByChatroomId(chatroomId, pageable).map(ChatDTO::new);
-			List<ChatDTO> chatDTOList = new ArrayList<>(chatDTOSlice.getContent());
-			Collections.reverse(chatDTOList);
-			chatroomDTO.setChatDTOSlice(new SliceImpl<>(chatDTOList, pageable, chatDTOSlice.hasNext()));
-
+			chatroomDTO.setChatDTOSlice(chatRepository.findByChatroomId(chatroomId, pageable).map(ChatDTO::new));
 			return chatroomDTO;
 		}).orElse(null);
 	}
 
+	// 채팅방 생성
 	@Override
-	public void createChatroom(Long memberId, Long productId) {
+	public Long createChatroom(Long memberId, Long productId) {
+		// 채팅방이 이미 존재하면 아이디 반환
+		Chatroom chatroom = chatroomRepository.findByMemberIdAndProductId(memberId, productId).orElse(null);
+		if (chatroom != null) {
+			return chatroom.getId();
+		}
+
 		Member member = memberRepository.findById(memberId).orElse(null);
 		Product product = productRepository.findById(productId).orElse(null);
 
-		Chatroom chatroom = new Chatroom(member, product);
-		chatroomRepository.save(chatroom);
+		chatroom = new Chatroom(member, product);
+		return chatroomRepository.save(chatroom).getId();
 	}
 }
