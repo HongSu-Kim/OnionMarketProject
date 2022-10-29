@@ -1,12 +1,16 @@
 package com.youprice.onion.service.product;
 
+import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.order.ProductSellListDTO;
 import com.youprice.onion.dto.product.*;
+import com.youprice.onion.entity.product.Category;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.validation.Errors;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ProductService {
 
@@ -25,10 +29,12 @@ public interface ProductService {
     int updateView(Long productId);
     //상품 전체 조회
     List<ProductListDTO> getProductList(Boolean blindStatus);
+    //동네 상품 전체 조회
+    List<ProductListDTO> getProductList(Long coordinateId,Boolean blindStatus);
     //경매상품 전체 조회
     List<ProductListDTO> getAuctionList(Boolean blindStatus);
     //경매 종료된 상품 처리 후 조회
-    List<ProductListDTO> updateBlindStatus();
+    List<ProductListDTO> getProductAuctionList();
 
     //상품 하나 조회
     ProductDTO getProductDTO(Long productId);
@@ -39,12 +45,13 @@ public interface ProductService {
     List<ProductListDTO> getSearchList(String subject,String content);
     //카테고리별 상품 조회
     List<ProductListDTO> getProductCategoryList(Long start, Long end);
+    //하위 카테고리 조회
+    List<ProductFindDTO> getProductSubCategory(Long productId,Long categoryId);
     //동네번호 조회
     TownFindDTO findTownId(String townName);
     //카테고리번호 조회
     CategoryFindDTO findCategoryId(Long categoryId);
 
     Page<ProductSellListDTO> getProductSellListDTO(Long memberId, Pageable pageable);
-
 
 }

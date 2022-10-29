@@ -7,6 +7,7 @@ import com.youprice.onion.entity.product.*;
 import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.repository.member.ProhibitionKeywordRepositoy;
 import com.youprice.onion.repository.product.*;
+import com.youprice.onion.service.order.OrderService;
 import com.youprice.onion.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 	private final ProductRepository.Querydsl productRepositoryQuerydsl;
     private final ProductImageRepository productImageRepository;
+    private final OrderService orderService;
 
     private final ProhibitionKeywordRepositoy prohibitionKeywordRepositoy;
 
@@ -122,7 +124,10 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	@Transactional
 	public void progressUpdate(Long productId, String productProgress) {
-		productRepository.findById(productId).map(product -> product.progressUpdate(productProgress)).orElse(null);
+		productRepository.findById(productId).map(product -> {
+			product.progressUpdate(productProgress);
+			return productRepository.save(product);
+		}).orElse(null);
 	}
 
 	//상품 삭제(DB삭제가 아닌 조회불가상태로 변경)
@@ -138,17 +143,45 @@ public class ProductServiceImpl implements ProductService {
     //카테고리 전체 상품 조회
     @Override
     public List<ProductListDTO> getProductCategoryList(Long start, Long end) {
-        return productRepository.findByCategoryIdBetween(start,end).stream().
-                map(product -> new ProductListDTO(product))
+        return productRepository.findByCategoryIdBetween(start,end).stream()
+                .map(product -> new ProductListDTO(product))
+                .collect(Collectors.toList());
+    }
+    //특정 하위 카테고리 상품 조회
+    @Override
+    public List<ProductFindDTO> getProductSubCategory(Long productId,Long categoryId) {
+
+        List<ProductFindDTO> subCategoryProduct = productRepository.findByCategoryId(categoryId)
+                .stream()
+                .filter(spc -> spc.getId()!=productId)
+                .map(product -> new ProductFindDTO(product))
+                .collect(Collectors.toList());;
+
+        Collections.shuffle(subCategoryProduct);
+
+        return subCategoryProduct;
+    }
+
+    //상품 전체 조회
+    @Override
+    public List<ProductListDTO> getProductList(Boolean blindStatus) {
+        return productRepository.findByBlindStatus(false)
+                .stream()
+                .map(product -> new ProductListDTO(product))
                 .collect(Collectors.toList());
     }
 
-    //전체 상품 조회
+    //동네 상품 전체 조회
     @Override
-    public List<ProductListDTO> getProductList(Boolean blindStatus) {
-        return productRepository.findByBlindStatus(false).stream()
+    public List<ProductListDTO> getProductList(Long coordinateId,Boolean blindStatus) {
+
+        List<ProductListDTO> list = productRepository.findByBlindStatus(false)
+                .stream()
+                .filter(gpl -> gpl.getTown().getCoordinate().getId()==coordinateId)
                 .map(product -> new ProductListDTO(product))
                 .collect(Collectors.toList());
+
+        return list;
     }
     //전체 경매 상품 조회
     @Override
@@ -249,9 +282,10 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.updateView(productId);
     }
 
+    //경매기한이 끝나면 상품 조회X & 주문 목록으로
     @Override
     @Transactional
-    public List<ProductListDTO> updateBlindStatus() {
+    public List<ProductListDTO> getProductAuctionList() {
 
         List<ProductListDTO> blindList = getAuctionList(false);
 
@@ -268,8 +302,6 @@ public class ProductServiceImpl implements ProductService {
                 product.updateAuctionProduct(blindDTO);
 
                 productRepository.save(product);
-
-                System.out.println("blindDTO = " + blindDTO.getBlindStatus());
             }
         }
 

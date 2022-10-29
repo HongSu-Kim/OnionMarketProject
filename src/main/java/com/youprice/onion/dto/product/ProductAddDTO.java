@@ -2,6 +2,7 @@ package com.youprice.onion.dto.product;
 
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Getter

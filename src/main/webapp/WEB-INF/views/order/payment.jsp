@@ -1,20 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<meta name="_csrf" content="${_csrf.token}">
-<meta name="_csrf_header" content="${_csrf.headerName}">
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8" />
-
-	<title>buyList</title>
-
-	<style>
-      label.error{display:block;color:red;}
-	</style>
-</head>
-<body>
 <section class="spad">
 	<div class="container">
 		<div class="checkout__form">
@@ -63,6 +49,7 @@
 							<input type="hidden" id="orderPayment" name="orderPayment" value="${productDTO.price}">
 								<div class="checkout__input__checkbox">
 									<label for="acc-or">
+										이니시스 결제시 24시에 자동으로 환불됩니다.<br/>
 										결제에 동의하시겠습니까?
 										<input type="checkbox" id="acc-or">
 										<span class="checkmark"></span>

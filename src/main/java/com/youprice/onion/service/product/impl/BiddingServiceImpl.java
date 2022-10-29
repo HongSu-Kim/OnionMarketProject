@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,10 +41,19 @@ public class BiddingServiceImpl implements BiddingService {
     }
 
     @Override
-    public List<BiddingListDTO> getBiddingList(Long productId) {
-        return biddingRepository.findByProductIdOrderByBidDesc(productId).stream()
+    public List<BiddingListDTO> getBiddingList(Long productId, Model model) {
+        List<BiddingListDTO> biddingListDTO = biddingRepository.findByProductIdOrderByBidDesc(productId)
+                .stream()
                 .map(biddingList -> new BiddingListDTO(biddingList))
                 .collect(Collectors.toList());
+
+        if(biddingListDTO.size()>0) {
+            int bid = biddingListDTO.get(biddingListDTO.size()-1).getBid();
+
+            model.addAttribute("bid",bid);
+        }
+
+        return biddingListDTO;
     }
 
 }

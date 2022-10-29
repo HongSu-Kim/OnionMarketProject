@@ -54,6 +54,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+		http.headers().frameOptions().sameOrigin(); // SockJS 동일한 사이트의 frame에서만 보여진다.
+
 //        http.csrf().disable(); //csrf 비활성화 코드
         http.csrf().ignoringAntMatchers("/api/**"); //REST API 사용 예외처리(csrf 활성화 중이므로 jsp폼에서 POST로 데이터 넘겨주는 곳에서 hidden으로 csrf토큰 넘겨줘야 함)
 
@@ -73,8 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/member/loginProc") //Security에서 해당 주소로 오는 요청을 낚아채서 수행
                 .failureHandler(customFailureHandler) //로그인 실패 핸들러
                 .defaultSuccessUrl("/") //로그인 성공 시 이동 페이지
-                .successHandler(customSuccessHandler) //로그인 성공 핸들러
-                .permitAll();
+                .successHandler(customSuccessHandler); //로그인 성공 핸들러
 
         //로그아웃 설정
         http.logout()

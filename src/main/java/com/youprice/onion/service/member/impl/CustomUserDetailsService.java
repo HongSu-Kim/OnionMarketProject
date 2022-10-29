@@ -29,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("탈퇴한 회원입니다.");
         }
 
-        session.setAttribute("member", new SessionDTO(member));
+        session.setAttribute("sessionDTO", new SessionDTO(member));
 
         //시큐리티 세션에 유저 정보 저장
         return new CustomUserDetails(member);

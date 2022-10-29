@@ -38,8 +38,8 @@
 					<h3>${productFindDTO.subject}</h3>
 					<div class="product__details__rating">
 						<c:choose>
-							<c:when test="${reviewDTO.grade ne null}">
-								<c:forEach begin="1" end="${reviewDTO.grade}">★</c:forEach>
+							<c:when test="${reviewAvg ne null}">
+								리뷰 평점: ${reviewAvg}
 							</c:when>
 							<c:otherwise>
 								<p>판매자의 등록된 리뷰가 아직 없습니다.</p>
@@ -47,12 +47,18 @@
 						</c:choose>
 					</div>
 					<div>
-					<div class="product__details__price"><fmt:formatNumber maxFractionDigits="3" value="${productFindDTO.price}"/>원</div>
+						<div class="product__details__price">
+						<c:choose>
+							<c:when test="${!empty bid}"><fmt:formatNumber maxFractionDigits="3" value="${bid}"/>원</c:when>
+							<c:otherwise><fmt:formatNumber maxFractionDigits="3" value="${productFindDTO.price}"/>원</c:otherwise>
+						</c:choose>
+						<input type="hidden" id="nowPrice" value="${productFindDTO.price}">
+						</div>
 						<c:choose>
 							<c:when test="${not empty productFindDTO.auctionDeadline}">
 								<fmt:parseDate var="uploadDate" value="${productFindDTO.uploadDate}" pattern="yyyy-MM-dd'T'HH:mm"/>
 								<fmt:parseDate var="deadline" value="${productFindDTO.auctionDeadline}" pattern="yyyy-MM-dd'T'HH:mm"/>
-								<input type="hidden" id="auctionDeadline" value="${deadline}"/>
+								<input type="hidden" id="dead" value="${productFindDTO.auctionDeadline}"/>
 								<p class="time-title">경매 마감까지 남은 시간</p>
 								<div class="time" >
 									<span id="d-day-hour"></span>
@@ -74,56 +80,52 @@
 										경매 입찰기간
 										<span>
 										<fmt:formatDate value="${uploadDate}" pattern="yyyy/MM/dd HH:mm"/>
-										~ <fmt:formatDate value="${deadline}" pattern="yyyy/MM/dd HH:mm"/>
+										~ <fmt:formatDate value="${deadline}" pattern="yyyy/MM/dd HH:mm"/>${dead}
 										</span>
-										<p>
-											입찰가(원): <input type="text" id="bid" name="bid" placeholder="가격을 입력하세요"/>
-											<input type="hidden" id="nowPrice" value="${bid}"/>
-										</p>
 
 										<div>
 											최소 입찰가:
 											<c:choose>
-												<c:when test="${!empty bid}">
+												<c:when test="${not empty bid}">
 													<fmt:formatNumber maxFractionDigits="3" value="${bid}"/>(원)
 												</c:when>
 												<c:otherwise>
 													<fmt:formatNumber maxFractionDigits="3" value="${productFindDTO.price}"/>(원)
 												</c:otherwise>
 											</c:choose>
-											<img src="/template/img/product/question.png" style="vertical-align:-3px; margin-left:10px; cursor:pointer" onmouseover="document.getElementById('limit_price_desc').style.display='block'" onmouseout="document.getElementById('limit_price_desc').style.display='none'"/>
 										</div>
-										<div id="limit_price_desc" style="margin-top:-8px; margin-left:0px; padding:10px; display:none; position:absolute; border:2px solid #3baecb; background:#f6f7f8; text-align:left;line-height:1.4; z-index:10">
-											<strong>최소입찰가</strong>는 <strong>현재가 금액 단위별로 일정금액</strong>이 증가됩니다. <br><strong>최소입찰가 이상</strong>으로 입찰해 주세요.<br/><br/>
-											<div>
-												<dl height="17">
-													<dt bgcolor="#fff9f3" style="text-align:center"><strong>입찰금액 범위</strong></dt>
-													<dt bgcolor="#fff9f3" style="text-align:center"><strong>최소입찰 단위</strong></dt>
-													<br/>
-												</dl>
-												<dl>
-													<dt bgcolor="#ffffff" style="text-align:center">시작가  ~  10,000원 미만</dt>
-													<dt bgcolor="#ffffff" style="text-align:center">1,000원</dt>
-												</dl>
-												<dl>
-													<dt bgcolor="#ffffff" style="text-align:center">10,000원  ~  100,000원 미만</dt>
-													<dt bgcolor="#ffffff" style="text-align:center">5,000원</dt>
-												</dl>
-												<dl>
-													<dt bgcolor="#ffffff" style="text-align:center">100,000원  ~  500,000원 미만</dt>
-													<dd bgcolor="#ffffff" style="text-align:center">10,000원</dd>
-												</dl>
-												<dl>
-													<dt bgcolor="#ffffff" style="text-align:center">500,000원이상 ~</dt>
-													<dd bgcolor="#ffffff" style="text-align:center">50,000원</dd>
-												</dl>
-											</div>
-										</div>
+<%--										<div id="limit_price_desc" style="margin-top:-8px; margin-left:0px; padding:10px; display:none; position:absolute; border:2px solid #3baecb; background:#f6f7f8; text-align:left;line-height:1.4; z-index:10">--%>
+<%--											<strong>최소입찰가</strong>는 <strong>현재가 금액 단위별로 일정금액</strong>이 증가됩니다. <br><strong>최소입찰가 이상</strong>으로 입찰해 주세요.<br/><br/>--%>
+<%--											<div>--%>
+<%--												<dl height="17">--%>
+<%--													<dt bgcolor="#fff9f3" style="text-align:center"><strong>입찰금액 범위</strong></dt>--%>
+<%--													<dt bgcolor="#fff9f3" style="text-align:center"><strong>최소입찰 단위</strong></dt>--%>
+<%--													<br/>--%>
+<%--												</dl>--%>
+<%--												<dl>--%>
+<%--													<dt bgcolor="#ffffff" style="text-align:center">시작가  ~  10,000원 미만</dt>--%>
+<%--													<dt bgcolor="#ffffff" style="text-align:center">1,000원</dt>--%>
+<%--												</dl>--%>
+<%--												<dl>--%>
+<%--													<dt bgcolor="#ffffff" style="text-align:center">10,000원  ~  100,000원 미만</dt>--%>
+<%--													<dt bgcolor="#ffffff" style="text-align:center">5,000원</dt>--%>
+<%--												</dl>--%>
+<%--												<dl>--%>
+<%--													<dt bgcolor="#ffffff" style="text-align:center">100,000원  ~  500,000원 미만</dt>--%>
+<%--													<dd bgcolor="#ffffff" style="text-align:center">10,000원</dd>--%>
+<%--												</dl>--%>
+<%--												<dl>--%>
+<%--													<dt bgcolor="#ffffff" style="text-align:center">500,000원이상 ~</dt>--%>
+<%--													<dd bgcolor="#ffffff" style="text-align:center">50,000원</dd>--%>
+<%--												</dl>--%>
+<%--											</div>--%>
+<%--										</div>--%>
 										<div>
 											<dl>
 												<dt>입찰자</dt>
 												<dt>금액</dt>
 												<dt>입찰시간</dt>
+												<hr/>
 												<br/>
 											</dl>
 											<c:choose>
@@ -177,6 +179,10 @@
 									<input type="hidden" id="productId" value="${productId}"/>
 									<c:choose>
 										<c:when test="${productFindDTO.auctionDeadline ne null}">
+										<p style="text-align: left">
+											입찰가(원): <input type="text" id="nowBid" name="bid" placeholder="가격을 입력하세요"/>
+											<input type="hidden" id="exBid" value="${bid}"/>
+										</p>
 											<input type="submit" class="primary-btn" value="입찰하기" style="border: 0px"></a>
 										</c:when>
 										<c:otherwise>
@@ -237,71 +243,28 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="section-title related__product__title">
-					<h2>Related Product</h2>
+					<h2>연 관  상 품</h2>
 				</div>
 			</div>
 		</div>
 		<div class="row">
+			<c:forEach var="categoryDTO" items="${categoryDTO}" end="3">
 			<div class="col-lg-3 col-md-4 col-sm-6">
 				<div class="product__item">
-					<div class="product__item__pic set-bg" data-setbg="img/product/product-1.jpg">
+					<div class="product__item__pic set-bg" data-setbg="/img/product/${categoryDTO.representativeImage}">
 						<ul class="product__item__pic__hover">
-							<li><a href="#"><i class="fa fa-heart"></i></a></li>
+							<li><a href="/wish/addWish/${productId}"><i class="fa fa-heart"></i></a></li>
 							<li><a href="#"><i class="fa fa-retweet"></i></a></li>
 							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
 						</ul>
 					</div>
 					<div class="product__item__text">
-						<h6><a href="#">Crab Pool Security</a></h6>
-						<h5>$30.00</h5>
+						<h6><a href="/product/detail/${categoryDTO.productId}">${categoryDTO.subject}</a></h6>
+						<h5><fmt:formatNumber maxFractionDigits="3" value="${categoryDTO.price}"/>원</h5>
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-3 col-md-4 col-sm-6">
-				<div class="product__item">
-					<div class="product__item__pic set-bg" data-setbg="img/product/product-2.jpg">
-						<ul class="product__item__pic__hover">
-							<li><a href="#"><i class="fa fa-heart"></i></a></li>
-							<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-						</ul>
-					</div>
-					<div class="product__item__text">
-						<h6><a href="#">Crab Pool Security</a></h6>
-						<h5>$30.00</h5>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-3 col-md-4 col-sm-6">
-				<div class="product__item">
-					<div class="product__item__pic set-bg" data-setbg="img/product/product-3.jpg">
-						<ul class="product__item__pic__hover">
-							<li><a href="#"><i class="fa fa-heart"></i></a></li>
-							<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-						</ul>
-					</div>
-					<div class="product__item__text">
-						<h6><a href="#">Crab Pool Security</a></h6>
-						<h5>$30.00</h5>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-3 col-md-4 col-sm-6">
-				<div class="product__item">
-					<div class="product__item__pic set-bg" data-setbg="img/product/product-7.jpg">
-						<ul class="product__item__pic__hover">
-							<li><a href="#"><i class="fa fa-heart"></i></a></li>
-							<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-						</ul>
-					</div>
-					<div class="product__item__text">
-						<h6><a href="#">Crab Pool Security</a></h6>
-						<h5>$30.00</h5>
-					</div>
-				</div>
-			</div>
+			</c:forEach>
 		</div>
 	</div>
 </section>

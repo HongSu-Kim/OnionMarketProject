@@ -1,11 +1,14 @@
 package com.youprice.onion.entity.member;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Follow {
 
     @Id
@@ -20,5 +23,11 @@ public class Follow {
     @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name = "follow_target_id")
     private Member target; //팔로우된 회원번호 FK
+
+    @Builder
+    public Follow(Member member, Member target) {
+        this.member = member;
+        this.target = target;
+    }
 
 }

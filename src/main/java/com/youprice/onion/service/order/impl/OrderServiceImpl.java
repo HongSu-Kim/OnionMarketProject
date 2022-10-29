@@ -18,7 +18,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @RequiredArgsConstructor
@@ -61,8 +65,8 @@ public class OrderServiceImpl implements OrderService {
 			}
 		memberRepository.save(member);
 
-		// 상품상태 변경 - sold out
-		product.progressUpdate(ProductProgress.SOLDOUT);
+		// 상품상태 변경 - tradings
+		product.progressUpdate(ProductProgress.TRADINGS);
 		productRepository.save(product);
 
 		// 주문내역 생성
@@ -118,6 +122,10 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	@Transactional(readOnly = true)
 	public Page<OrderDTO> getBuyList(Long memberId, Pageable pageable) {
+
+		pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
+				pageable.getPageSize(), Sort.Direction.DESC, "id");
+
 		return orderRepository.findAllByMemberId(memberId, pageable).map(OrderDTO::new);
 	}
 
@@ -129,8 +137,8 @@ public class OrderServiceImpl implements OrderService {
 			// 주문 상태 변경 - cancel
 			order.update(OrderState.CANCEL);
 
-			// 상품 상태 변경 - tradings
-			order.getProduct().progressUpdate(ProductProgress.TRADINGS);
+			// 상품 상태 변경 - sales on
+			order.getProduct().progressUpdate(ProductProgress.SALESON);
 
 			// imp 결제시 환불
 			if (order.getImp_uid() != null){

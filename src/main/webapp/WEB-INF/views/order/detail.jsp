@@ -3,15 +3,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <meta name="_csrf" content="${_csrf.token}">
 <meta name="_csrf_header" content="${_csrf.headerName}">
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8" />
-
-	<title>detail</title>
-
-</head>
-<body>
 <section class="spad">
 	<div class="container">
 		<div class="checkout__form">

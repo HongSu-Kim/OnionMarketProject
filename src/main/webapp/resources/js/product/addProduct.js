@@ -1,10 +1,5 @@
+
 /*상품 검증*/
-
-//이미지 파일 사이즈 지정
-$.validator.addMethod('filesize', function(value, element, param) {
-    return this.optional(element) || (element.files[0].size <= param)
-}, 'File size must be less than {0} bytes');
-
 $(document).ready(function () {
     //$('#registerForm').validate(); //유효성 검사를 적용
     // validate signup form on keyup and submit
@@ -21,9 +16,6 @@ $(document).ready(function () {
         messages: {
             townId: {
                 required: "동네를 선택해주세요."
-            },
-            categoryId: {
-                required: "카테고리를 선택해주세요."
             },
             subject: {
                 required: "제목은 필수 항목입니다."
@@ -51,7 +43,7 @@ $(document).ready(function () {
 $(document).ready(function() {
     $('.btnAdd').click(function () {
         $('.addInput').append(
-            '<input type="file" name="fileList" id="fileList"><button type="button" class="btnRemove">삭제</button><br>'
+            '<input type="file" name="fileList" id="fileList"><button type="button" class="btnRemove" style="border-width: thin;">삭제</button>'
         );//input file
         $('.btnRemove').on('click',function(){//this='.btnRemove'
             $(this).prev().remove();// .prev()=input file을 가리키고 remove()실행
@@ -63,13 +55,18 @@ $(document).ready(function() {
 
 function setImageFromFile(input, expression) {
     if (input.files && input.files[0]) {
-    var reader = new FileReader();
-    reader.onload = function (e) {
-    $(expression).attr('src', e.target.result);
-};
-    reader.readAsDataURL(input.files[0]);
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $(expression).attr('src', e.target.result);
+        };
+        reader.readAsDataURL(input.files[0]);
     };
 };
+
+//이미지 파일 사이즈 지정
+$.validator.addMethod('filesize', function(value, element, param) {
+    return this.optional(element) || (element.files[0].size <= param)
+}, 'File size must be less than {0} bytes');
 
 //상품 내용 글자수 세기
 $(function() {
@@ -100,7 +97,6 @@ $("#aa").change(function (){
             //
             //
             // }
-
         }
 
     }).fail(function () {

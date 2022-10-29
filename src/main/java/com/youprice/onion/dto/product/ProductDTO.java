@@ -1,5 +1,6 @@
 package com.youprice.onion.dto.product;
 
+import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.entity.product.Product;
 import com.youprice.onion.entity.product.ProductProgress;
 import lombok.Getter;
@@ -30,6 +31,8 @@ public class ProductDTO {
     private Boolean payStatus; //페이현황
     private Boolean blindStatus; //블라인드현황
 
+	private MemberDTO memberDTO;
+
     public ProductDTO(Product product) {
 
         productId = product.getId();
@@ -48,5 +51,6 @@ public class ProductDTO {
         payStatus = product.getPayStatus();
         blindStatus = product.getBlindStatus();
 
+		memberDTO = new MemberDTO(product.getMember());
     }
 }

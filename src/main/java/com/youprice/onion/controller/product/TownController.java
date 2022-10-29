@@ -17,6 +17,7 @@ import com.youprice.onion.service.product.TownService;
 import com.youprice.onion.service.product.impl.CategoryServiceImpl;
 import com.youprice.onion.service.product.impl.CoordinateServiceImpl;
 import com.youprice.onion.service.product.impl.TownServiceImpl;
+import com.youprice.onion.util.AlertRedirect;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,13 +46,35 @@ public class TownController {
 
         if (sessionDTO == null) return "redirect:/member/login";
         MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
+        List<TownFindDTO> list = townService.townLists(memberDTO.getId());
 
-        model.addAttribute("memberDTO",memberDTO);
+        model.addAttribute("memberDTO", memberDTO);
+        model.addAttribute("list", list);
 
 
 
         return "product/town";
     }
+
+    @PostMapping("rangeProduct")
+    public String rangeProduct(Model model, @LoginUser SessionDTO sessionDTO,@RequestParam("range")String range) {
+
+        if (sessionDTO == null) return "redirect:/member/login";
+        MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
+        List<TownFindDTO> list = townService.townLists(memberDTO.getId());
+
+        model.addAttribute("memberDTO", memberDTO);
+        model.addAttribute("list", list);
+        model.addAttribute("range", range);
+
+
+
+        return "product/town";
+    }
+
+
+
+
 
 
     @GetMapping("townresult")
@@ -64,7 +87,7 @@ public class TownController {
         List<CoordinateFindDTO> Gangdong = coordinateService.FindGangdong();
         MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
 
-        model.addAttribute("memberDTO",memberDTO);
+        model.addAttribute("memberDTO", memberDTO);
 
         model.addAttribute("Gangnam", Gangnam);
         model.addAttribute("Songpa", Songpa);
@@ -78,31 +101,37 @@ public class TownController {
 
     @PostMapping("townresult")
     public String townResult(Town town, Model model, @RequestParam("wishtown") String wishtown,
-                       @LoginUser SessionDTO sessionDTO) {
+                             @LoginUser SessionDTO sessionDTO,HttpServletResponse response)throws IOException {
+        try {
+
+            List<CoordinateFindDTO> Gangnam = coordinateService.FindGangnam();
+            List<CoordinateFindDTO> Songpa = coordinateService.FindSongpa();
+            List<CoordinateFindDTO> Gangdong = coordinateService.FindGangdong();
+            MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
+
+            model.addAttribute("memberDTO", memberDTO);
+
+            model.addAttribute("Gangnam", Gangnam);
+            model.addAttribute("Songpa", Songpa);
+            model.addAttribute("Gangdong", Gangdong);
+            model.addAttribute("wishtown", wishtown);
+
+            return "product/townresult";
+
+        } catch (RuntimeException e) {
+            return  AlertRedirect.warningMessage(response, "실패 ");
+        }
 
 
-        List<CoordinateFindDTO> Gangnam = coordinateService.FindGangnam();
-        List<CoordinateFindDTO> Songpa = coordinateService.FindSongpa();
-        List<CoordinateFindDTO> Gangdong = coordinateService.FindGangdong();
-        MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
 
-        model.addAttribute("memberDTO",memberDTO);
-
-        model.addAttribute("Gangnam", Gangnam);
-        model.addAttribute("Songpa", Songpa);
-        model.addAttribute("Gangdong", Gangdong);
-        model.addAttribute("wishtown", wishtown);
-
-
-        return "product/townresult";
+      
     }
 
     @PostMapping("town")
-    public String townAdd(Model model, TownAddDTO townAddDTO , HttpServletResponse response)throws IOException {
+    public String townAdd(Model model, TownAddDTO townAddDTO, @RequestParam("townName") String townName, HttpServletResponse response) throws IOException {
 
 
-
-        townService.townAdd(townAddDTO,response);
+        townService.townAdd(townAddDTO, response, townName);
         return "redirect:/town/town";
 
 

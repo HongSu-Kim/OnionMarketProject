@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <c:set var = "cp" value = "<%=request.getContextPath()%>"/>
 <html lang="zxx">
 <head>
@@ -13,11 +14,16 @@
 	<meta name="keywords" content="Ogani, unica, creative, html">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="_csrf" content="${_csrf.token}">
+	<meta name="_csrf_header" content="${_csrf.headerName}">
 
 	<title>Onion | Template</title>
 
 	<!-- Google Font -->
 	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+	<!-- Google Material Icons -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 	<!-- Css Styles -->
 	<link rel="stylesheet" href="/template/css/bootstrap.min.css" type="text/css">
@@ -29,6 +35,8 @@
 	<link rel="stylesheet" href="/template/css/slicknav.min.css" type="text/css">
 	<link rel="stylesheet" href="/template/css/style.css" type="text/css">
 	<link rel="stylesheet" href="/css/onion.css" type="text/css">
+	<link rel="stylesheet" href="/css/chat.css" type="text/css">
+	<link rel="stylesheet" href="/css/header.css" type="text/css">
 
 	<link rel="stylesheet" href="${cp}<tiles:getAsString name = 'css1'/>"/>
 	<link rel="stylesheet" href="${cp}<tiles:getAsString name = 'css2'/>"/>
@@ -50,6 +58,12 @@
 		<tiles:insertAttribute name="footer"/>
 		<%-- FOOTER END--%>
 
+		<%-- CHAT MODAL --%>
+		<sec:authorize access="isAuthenticated()">
+			<tiles:insertAttribute name="chatModal"/>
+		</sec:authorize>
+		<%-- CHAT MODAL END--%>
+
 	</div>
 
 	<!-- Js Plugins -->
@@ -62,6 +76,10 @@
 	<script src="/template/js/owl.carousel.min.js"></script>
 	<script src="/template/js/main.js"></script>
 
+	<!-- websocket -->
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+	<script src="/js/chat.js"></script>
 	<!-- iamport.payment.js -->
 	<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
 	<!-- 주소 api -->

@@ -212,14 +212,16 @@ CREATE TABLE chatroom (
 );
 
 CREATE TABLE chat (
-	chat_id         	NUMBER          NOT NULL,
-	chatroom_id     	NUMBER          NOT NULL,
-	message         	VARCHAR2(600)   NOT NULL,
-	chat_image_name 	VARCHAR2(255)   NULL,
-	read_or_not      	VARCHAR2(10)    NOT NULL,
-	sending_time    	DATE            DEFAULT SYSDATE,
-	CONSTRAINT PK_CHAT PRIMARY KEY (chat_id),
-	CONSTRAINT FK_CHAT_CHATROOM_ID  FOREIGN KEY (chatroom_id) REFERENCES chatroom(chatroom_id)
+    chat_id         	NUMBER          NOT NULL,
+    chatroom_id     	NUMBER          NOT NULL,
+    member_id     	    NUMBER          NOT NULL,
+    message         	VARCHAR2(600)   NOT NULL,
+    chat_image_name 	VARCHAR2(255)   NULL,
+    read_or_not      	VARCHAR2(10)    NOT NULL,
+    sending_time    	DATE            DEFAULT SYSDATE,
+    CONSTRAINT PK_CHAT PRIMARY KEY (chat_id),
+    CONSTRAINT FK_CHAT_CHATROOM_ID  FOREIGN KEY (chatroom_id) REFERENCES chatroom(chatroom_id),
+    CONSTRAINT FK_CHAT_MEMBER_ID  FOREIGN KEY (member_id) REFERENCES member(member_id)
 );
 
 CREATE TABLE wish (
@@ -253,7 +255,7 @@ CREATE TABLE delivery (
 	postcode	    	CHAR(5)	        NOT NULL,
 	address         	VARCHAR2(255)   NOT NULL,
 	detail_address  	VARCHAR2(255)   NOT NULL,
-	extra_address   	VARCHAR2(255)   NOT NULL,
+	extra_address   	VARCHAR2(255)   NULL,
 	delivery_cost   	NUMBER          NOT NULL,
 	request         	VARCHAR2(255)   NULL,
 	CONSTRAINT PK_DELIVERY PRIMARY KEY (order_id),
@@ -389,7 +391,7 @@ INSERT INTO coordinate VALUES(19, '서울특별시 강남구 일원본동', '37.
 INSERT INTO coordinate VALUES(20, '서울특별시 강남구 세곡동',   '37.4643683',  '127.1043555');
 --------------------------------------------------
 INSERT INTO coordinate VALUES(21, '서울특별시 송파구 잠실본동', '37.5060716', '127.0832037');
-INSERT INTO coordinate VALUES(22, '서울특별시 송파구 잠실2동',  '37.5119488', '127.088559 ');
+INSERT INTO coordinate VALUES(22, '서울특별시 송파구 잠실2동',  '37.5119488', '127.088559');
 INSERT INTO coordinate VALUES(23, '서울특별시 송파구 잠실3동',  '37.513333',  '127.094375');
 INSERT INTO coordinate VALUES(24, '서울특별시 송파구 잠실4동',  '37.5201089', '127.1122668');
 INSERT INTO coordinate VALUES(25, '서울특별시 송파구 잠실6동',  '37.518142',  '127.10065');
@@ -416,24 +418,24 @@ INSERT INTO coordinate VALUES(45, '서울특별시 송파구 마천1동',  '37.4
 INSERT INTO coordinate VALUES(46, '서울특별시 송파구 마천2동',  '37.4968477', '127.1485193');
 INSERT INTO coordinate VALUES(47, '서울특별시 송파구 위례동',   '37.4811656', '127.1439378');
 --------------------------------------------------
-INSERT INTO Coordinate VALUES(48, '서울특별시 강동구 암사1동','37.551508','  127.132663');
-INSERT INTO Coordinate VALUES(49, '서울특별시 강동구 암사2동','37.5517481','  127.1272074');
-INSERT INTO Coordinate VALUES(50, '서울특별시 강동구 암사3동','37.5549912','  127.1408249');
-INSERT INTO Coordinate VALUES(51, '서울특별시 강동구 고덕1동','37.5572593', '127.1515382');
-INSERT INTO Coordinate VALUES(52, '서울특별시 강동구 고덕2동','37.5605',     '127.16435 ');
-INSERT INTO Coordinate VALUES(53, '서울특별시 강동구 강일동','37.5649783',  '127.173909 ');
-INSERT INTO Coordinate VALUES(54, '서울특별시 강동구 명일1동','37.5512453',  '127.1443656');
-INSERT INTO Coordinate VALUES(55, '서울특별시 강동구 명일2동','37.546366',  '127.1513427');
-INSERT INTO Coordinate VALUES(56, '서울특별시 강동구 천호1동','37.5450159', '127.1368066');
-INSERT INTO Coordinate VALUES(57, '서울특별시 강동구 천호2동','37.5435257', '127.1254351');
-INSERT INTO Coordinate VALUES(58, '서울특별시 강동구 천호3동','37.5361455',  '127.1332269');
-INSERT INTO Coordinate VALUES(59, '서울특별시 강동구 길동','37.5345598',  '127.1426791');
-INSERT INTO Coordinate VALUES(60, '서울특별시 강동구 상일1동','37.5506614', '127.1649058');
-INSERT INTO Coordinate VALUES(61, '서울특별시 강동구 상일2동','37.5499518',  '127.1758801');
-INSERT INTO Coordinate VALUES(62, '서울특별시 강동구 성내1동','37.5304417',  '127.122425');
-INSERT INTO Coordinate VALUES(63, '서울특별시 강동구 성내2동','37.532425',  '127.129563');
-INSERT INTO Coordinate VALUES(64, '서울특별시 강동구 둔촌1동','37.5333656','  127.1419851');
-INSERT INTO Coordinate VALUES(65, '서울특별시 강동구 둔촌2동','37.5332885',' 127.1419221');
+INSERT INTO Coordinate VALUES(48, '서울특별시 강동구 암사1동',  '37.551508',  '127.132663');
+INSERT INTO Coordinate VALUES(49, '서울특별시 강동구 암사2동',  '37.5517481', '127.1272074');
+INSERT INTO Coordinate VALUES(50, '서울특별시 강동구 암사3동',  '37.5549912', '127.1408249');
+INSERT INTO Coordinate VALUES(51, '서울특별시 강동구 고덕1동',  '37.5572593', '127.1515382');
+INSERT INTO Coordinate VALUES(52, '서울특별시 강동구 고덕2동',  '37.5605',    '127.16435');
+INSERT INTO Coordinate VALUES(53, '서울특별시 강동구 강일동',   '37.5649783', '127.173909');
+INSERT INTO Coordinate VALUES(54, '서울특별시 강동구 명일1동',  '37.5512453', '127.1443656');
+INSERT INTO Coordinate VALUES(55, '서울특별시 강동구 명일2동',  '37.546366',  '127.1513427');
+INSERT INTO Coordinate VALUES(56, '서울특별시 강동구 천호1동',  '37.5450159', '127.1368066');
+INSERT INTO Coordinate VALUES(57, '서울특별시 강동구 천호2동',  '37.5435257', '127.1254351');
+INSERT INTO Coordinate VALUES(58, '서울특별시 강동구 천호3동',  '37.5361455', '127.1332269');
+INSERT INTO Coordinate VALUES(59, '서울특별시 강동구 길동',     '37.5345598', '127.1426791');
+INSERT INTO Coordinate VALUES(60, '서울특별시 강동구 상일1동',  '37.5506614', '127.1649058');
+INSERT INTO Coordinate VALUES(61, '서울특별시 강동구 상일2동',  '37.5499518', '127.1758801');
+INSERT INTO Coordinate VALUES(62, '서울특별시 강동구 성내1동',  '37.5304417', '127.122425');
+INSERT INTO Coordinate VALUES(63, '서울특별시 강동구 성내2동',  '37.532425',  '127.129563');
+INSERT INTO Coordinate VALUES(64, '서울특별시 강동구 둔촌1동',  '37.5333656', '127.1419851');
+INSERT INTO Coordinate VALUES(65, '서울특별시 강동구 둔촌2동',  '37.5332885', '127.1419221');
 
 ----------------------------------------------------------------------------------------------------
 
@@ -599,6 +601,6 @@ INSERT INTO category VALUES(112,'수경식물',105);
 INSERT INTO category VALUES(113,'에어플랜트',105);
 --------------------------------------------------
 INSERT INTO category VALUES(114,'기타','');
-INSERT INTO category VALUES(115,'기타',114);
+INSERT INTO category VALUES(115,'기타상품',114);
 
 ----------------------------------------------------------------------------------------------------

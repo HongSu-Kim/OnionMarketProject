@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface TownService {
 
-    void townAdd(TownAddDTO townAddDTO, HttpServletResponse response)throws IOException;
+    void townAdd(TownAddDTO townAddDTO, HttpServletResponse response,String townName)throws IOException;
    List<TownFindDTO> townList(Long townId);
     List<TownFindDTO> townLists(Long memberId);
 }
