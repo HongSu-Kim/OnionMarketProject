@@ -176,11 +176,30 @@
 			</div>
 			<div class="col-lg-3">
 				<div class="header__cart">
-					<ul>
-						<li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-						<li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
-					</ul>
-					<div class="header__cart__price">item: <span>$150.00</span></div>
+					<sec:authorize access="isAuthenticated()">
+						<ul>
+							<li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
+	<%--						<li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>--%>
+						</ul>
+						<nav class="header__menu profile">
+							<ul>
+								<li><a href="/product/list">${sessionDTO.nickname}</a>
+									<ul class="header__menu__dropdown">
+										<li><a href="/member/mypage">마이페이지</a></li>
+										<li><a href="/review/list">나의 후기</a></li>
+										<li><a href="/wish/list">위시리스트</a></li>
+									</ul>
+								</li>
+							</ul>
+						</nav>
+					</sec:authorize>
+					<sec:authorize access="!hasRole('USER') and !hasRole('ADMIN')">
+						<div class="header__cart__price profile" style="font-weight: bold;"><a href="/member/join" style="color: black">회원가입</a></div>
+						<div class="header__cart__price profile" style="font-weight: bold;"><a href="/member/login" style="color: black">로그인</a></div>
+					</sec:authorize>
+					<sec:authorize access="isAuthenticated()">
+						<div class="header__cart__price" style="font-weight: bold;"><a href="/member/logout" style="color: black">로그아웃</a></div>
+					</sec:authorize>
 				</div>
 			</div>
 		</div>
@@ -232,7 +251,7 @@
 					<sec:authorize access="!hasRole('USER') and !hasRole('ADMIN') and !hasRole('WITHDRAWAL')">
 						<button onclick="location.href='/member/login'" class="site-btn" style="height: 50px; width: 210px; margin-left: 25px;">ONION MARKET LOGIN</button>
 					</sec:authorize>
-					<sec:authorize access="hasRole('USER') or hasRole('ADMIN')">
+					<sec:authorize access="isAuthenticated()">
 						<button onclick="location.href='/member/mypage'" class="site-btn" style="height: 50px; width: 210px; margin-left: 25px;">MY PAGE</button>
 					</sec:authorize>
 <%--					<div class="hero__search__phone">
