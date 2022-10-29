@@ -27,13 +27,14 @@ public class ChatServiceImpl implements ChatService {
     private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
 
+	// 채팅 입력
 	@Override
 	public void writeChat(ChatDTO chatDTO) {
 
 		Member member = memberRepository.findById(chatDTO.getMemberId()).orElse(null);
 		Chatroom chatroom = chatroomRepository.findById(chatDTO.getChatroomId()).orElse(null);
 
-		chatroom.setModifyDate(LocalDateTime.now());
+		chatroom.setModifyDate(chatDTO.getSendingTime());
 
 		Chat chat = new Chat(chatroom, member, chatDTO.getMessage(), chatDTO.getChatImageName());
 		chatRepository.save(chat);

@@ -52,11 +52,14 @@ public class ChatroomServiceImpl implements ChatroomService {
 	// 채팅방 
 	@Override
 	public ChatroomDTO getChatroomDTO(Long chatroomId, Pageable pageable) {
-
 		return chatroomRepository.findById(chatroomId).map(chatroom -> {
 			ChatroomDTO chatroomDTO = new ChatroomDTO(chatroom);
 
-			chatroomDTO.setChatDTOSlice(chatRepository.findByChatroomId(chatroomId, pageable).map(ChatDTO::new));
+			Slice<ChatDTO> chatDTOSlice = chatRepository.findByChatroomId(chatroomId, pageable).map(ChatDTO::new);
+			List<ChatDTO> chatDTOList = new ArrayList<>(chatDTOSlice.getContent());
+			Collections.reverse(chatDTOList);
+
+			chatroomDTO.setSlice(new SliceImpl<>(chatDTOList, chatDTOSlice.getPageable(), chatDTOSlice.hasNext()));
 			return chatroomDTO;
 		}).orElse(null);
 	}
