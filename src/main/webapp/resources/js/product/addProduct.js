@@ -21,8 +21,8 @@ $(document).ready(function () {
                 required: "제목은 필수 항목입니다."
             },
             content: {
-                required: "설명은 필수 항목입니다."
-                // minLength: "최소 글자수는 10자 이상입니다.",
+                required: "설명은 필수 항목입니다.",
+                //minLength: "최소 글자수는 10자 이상입니다.",
                 // maxLength: "최대 글자수는 250입니다."
             },
             price: {
