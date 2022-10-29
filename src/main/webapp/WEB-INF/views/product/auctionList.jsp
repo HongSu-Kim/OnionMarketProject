@@ -12,11 +12,11 @@
 <body>
 
 <!-- Featured Section Begin -->
-<section class="featured spad">
+<section class="featured__product">
 	<div class="container">
 		<div class="row featured__filter">
 			<c:forEach var="list" items="${list}">
-				<div class="col-lg-3 col-md-4 col-sm-6">
+				<div class="col-lg-3 col-md-4 col-sm-6" style="padding: 15px;">
 					<div class="featured__item">
 						<div class="featured__item__pic set-bg" data-setbg="/img/product/${list.productImageName}">
 							<ul class="featured__item__pic__hover">
@@ -26,21 +26,16 @@
 							</ul>
 							<div style="margin-top:93%;"><c:if test="${list.payStatus eq true}"><img src="/template/img/product/pay.png"></c:if></div>
 						</div>
-						<c:if test="${list.auctionDeadline ne null}">
-							<p style="font-style: italic;margin-left: 50px;">
-								<경매 진행 중인 상품>
-							</p>
-						</c:if>
 						<div class="featured__item__text">
 							<h6><a href="/product/detail/${list.productId}">${list.subject}</a></h6>
+							<c:if test="${list.auctionDeadline ne null}">
+								<p style="color: #47cd65;">
+									<경매 진행 중인 상품>
+								</p>
+							</c:if>
 							<fmt:parseDate var="uploadDate" value="${list.uploadDate}" pattern="yyyy-MM-dd'T'HH:mm"/>
-							<h5>
-								<c:choose>
-									<c:when test="${not empty list.bid}"><fmt:formatNumber maxFractionDigits="3" value="${list.bid}"/></c:when>
-									<c:when test="${empty list.bid}"><fmt:formatNumber maxFractionDigits="3" value="${list.price}"/></c:when>
-								</c:choose>
-								&nbsp;&nbsp;<fmt:formatDate value="${uploadDate}" pattern="MM/dd"/>
-							</h5>
+							<h5 style="text-align: left"><fmt:formatNumber maxFractionDigits="3" value="${list.price}"/></h5>
+							<h5 style="text-align: right"><fmt:formatDate value="${uploadDate}" pattern="MM/dd"/></h5>
 						</div>
 					</div>
 				</div>
@@ -372,11 +367,6 @@
 
 	</c:forEach>
 </div>
-
-
-<form action="/product/add">
-	<input type="submit" value=" 상품 등록하기 " class="btn2"/>
-</form>
 
 </body>
 </html>

@@ -1,10 +1,11 @@
-/*상품 검증*/
+//카테고리
 
 //이미지 파일 사이즈 지정
 $.validator.addMethod('filesize', function(value, element, param) {
     return this.optional(element) || (element.files[0].size <= param)
 }, 'File size must be less than {0} bytes');
 
+/*상품 검증*/
 $(document).ready(function () {
     //$('#registerForm').validate(); //유효성 검사를 적용
     // validate signup form on keyup and submit
@@ -51,7 +52,7 @@ $(document).ready(function () {
 $(document).ready(function() {
     $('.btnAdd').click(function () {
         $('.addInput').append(
-            '<input type="file" name="productImageName" id="productImageName"><button type="button" class="btnRemove">삭제</button><br>'
+            '<input type="file" name="productImageName" id="productImageName"><button type="button" class="btnRemove" style="border-width: thin;">삭제</button><br>'
         );//input file
         $('.btnRemove').on('click',function(){//this='.btnRemove'
             $(this).prev().remove();// .prev()=input file을 가리키고 remove()실행
