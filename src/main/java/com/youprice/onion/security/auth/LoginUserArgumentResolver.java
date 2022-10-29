@@ -28,6 +28,6 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
     //resolveArgument: 파라미터에 전달할 객체 생성
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        return session.getAttribute("member");
+        return session.getAttribute("sessionDTO");
     }
 }
