@@ -43,7 +43,7 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewRepository.findById(reviewId).map(ReviewDTO::new).orElse(null);
     }
     @Transactional
-    public void saveReview(ReviewFormDTO form, List<MultipartFile> reviewImageName) throws IOException {
+    public int saveReview(ReviewFormDTO form, List<MultipartFile> reviewImageName) throws IOException {
         Order order = orderRepository.findById(form.getOrderId()).orElse(null);
         Member member = memberRepository.findById(form.getMemberId()).orElse(null);
 
@@ -55,7 +55,6 @@ public class ReviewServiceImpl implements ReviewService {
         for(ReviewImage reviewImage : list){
             reviewImageRepository.save(reviewImage);
         }
-        /*
         int point = 0;
 
         if(save.getId() != null){
@@ -65,7 +64,7 @@ public class ReviewServiceImpl implements ReviewService {
                 point = member.addPoint(50); // 일반리뷰
             }
         }
-        return point;*/
+        return point;
     }
 
     public ReviewDTO findByUserId(String userId){

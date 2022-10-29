@@ -14,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -30,6 +32,8 @@ public class ChatServiceImpl implements ChatService {
 
 		Member member = memberRepository.findById(chatDTO.getMemberId()).orElse(null);
 		Chatroom chatroom = chatroomRepository.findById(chatDTO.getChatroomId()).orElse(null);
+
+		chatroom.setModifyDate(LocalDateTime.now());
 
 		Chat chat = new Chat(chatroom, member, chatDTO.getMessage(), chatDTO.getChatImageName());
 		chatRepository.save(chat);

@@ -15,6 +15,7 @@ public class ChatDTO {
 	private Long chatId; //채팅번호(각 채팅 문장의 번호) PK
 	private Long chatroomId; //채팅방번호 FK
 	private Long memberId;
+	private Long targetId;
 	private String memberNickname;
 	private String message; //메세지
 	private String chatImageName; //첨부이미지

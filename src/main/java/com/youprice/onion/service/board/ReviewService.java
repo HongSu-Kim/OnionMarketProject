@@ -16,7 +16,7 @@ import java.util.List;
 
 public interface ReviewService {
     ReviewDTO getReviewDTO(Long reviewId);
-    void saveReview(ReviewFormDTO form, List<MultipartFile> reviewImageName) throws IOException;
+    int saveReview(ReviewFormDTO form, List<MultipartFile> reviewImageName) throws IOException;
     ReviewDTO findByUserId(String userId);
     public ReviewDTO findReviewDTO(Long reviewId);
     MemberDTO getSalesUserName(OrderDTO orderDTO);

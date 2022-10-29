@@ -17,7 +17,7 @@ import java.util.List;
 
 @Getter
 @Entity
-@NoArgsConstructor // 기본생성자
+@NoArgsConstructor
 public class Notice{
 
     @Id
@@ -49,7 +49,6 @@ public class Notice{
                 this.noticeType = nt;
             }
         }
-        //this.noticeType = NoticeType.NOTICE;
         this.noticeSubject = noticeSubject;
         this.noticeContent = noticeContent;
         this.noticeDate = LocalDate.now();
@@ -60,7 +59,6 @@ public class Notice{
         this.id = id;
         this.noticeSubject = noticeUpdateDTO.getNoticeSubject();
         this.noticeContent = noticeUpdateDTO.getNoticeContent();
-
     }
 
 }
