@@ -54,7 +54,7 @@ td a.primary-btn,td a.primary-btn.cart-btn {
     text-transform: uppercase;
     display: inline-block;
     padding: 13px 30px 12px;
-    background: #7fad39;
+    background: #47cd65;
     border: none;
 }
 
@@ -130,8 +130,8 @@ span.comment {
 }
 
 .product__wish__item li:hover a {
-    background: #7fad39;
-    border-color: #7fad39;
+    background: #47cd65;
+    border-color: #47cd65;
 }
 
 .product__wish__item li:hover a i {
@@ -140,8 +140,8 @@ span.comment {
 }
 
 .product__wish__item li.true a {
-    background: #7fad39;
-    border-color: #7fad39;
+    background: #47cd65;
+    border-color: #47cd65;
 }
 
 .product__wish__item li.true a i {

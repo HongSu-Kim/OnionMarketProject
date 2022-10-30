@@ -1,20 +1,17 @@
 package com.youprice.onion.util;
 
-import com.youprice.onion.dto.order.OrderAddDTO;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
-import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-@Service
 @Slf4j
-public class PaymentService {
+public class PaymentUtil {
 
 	// 결제취소
-	public void paymentCancel(String imp_uid, String orderNum, int orderPayment) throws IOException {
+	public static void paymentCancel(String imp_uid, String orderNum, int orderPayment) throws IOException {
 
 		// 토큰생성
 		String access_token = getToken();
@@ -63,7 +60,7 @@ public class PaymentService {
 	}
 
 	// 토큰생성
-	private String getToken() throws IOException {
+	private static String getToken() throws IOException {
 
 		// url 설정
 		HttpURLConnection conn = null;

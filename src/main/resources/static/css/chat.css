@@ -109,10 +109,7 @@
     width:100%;
     position:relative;
     height:47px;
-    padding-top:10px;
-    padding-right:50px;
-    padding-bottom:10px;
-    padding-left:15px;
+    padding:10px 50px;
     border:none;
     resize:none;
     outline:none;
@@ -149,6 +146,9 @@
     color:#47cd65;
     width:35px;
     height:35px;
+}
+.chat-submit.img {
+    left: 10px;
 }
 .chat-logs {
     padding:15px 15px 0;
@@ -192,18 +192,26 @@
     color:#666;
     max-width:75%;
     float:left;
-    margin-left:10px;
+    margin: 0 10px 20px;
     position:relative;
-    margin-bottom:20px;
     border-radius:30px;
     word-break: break-all;
 }
 .chat-msg.self > .cm-msg-text {
     float:right;
-    margin-right:10px;
     background: #47cd65;
     color:white;
 }
+.chat-msg > img {
+    float: left;
+    margin: 0 10px 20px;
+    border-radius: 15px;
+    max-width: 235px;
+}
+.chat-msg.self > img {
+    float: right;
+}
+
 .chat-msg.date > .cm-msg-text {
     float: unset;
     margin: 10px auto 20px;
