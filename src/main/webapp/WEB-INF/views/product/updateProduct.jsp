@@ -1,28 +1,15 @@
 <%@ page import="javax.validation.constraints.NotEmpty" %>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
-<%
-	request.setCharacterEncoding("UTF-8");
-	//String cp = request.getContextPath();
-
-%>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>상품 수정</title>
-</head>
-<body>
+<meta name="_csrf" content="${_csrf.token}">
+<meta name="_csrf_header" content="${_csrf.headerName}">
 
 <!-- Checkout Section Begin -->
 <section class="checkout spad">
 	<div class="container">
 		<div class="checkout__form" style="width: 800px; margin: auto">
 			<h4>정보 수정<span style="font-size: small;color:#FF5058;margin: 0px 0px 0px 32px">*필수항목</span></h4>
-			<form action="/product/update/${dto.productId}" method="post" enctype="multipart/form-data" id="productForm">
+			<form action="/product/update/${productFindDTO.productId}" method="post" enctype="multipart/form-data" id="productForm">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 				<div class="row">
 					<div class="col-lg-12">
@@ -30,7 +17,7 @@
 							<div class="col-lg-12">
 								<div class="checkout__input">
 									<p> 제 목 <span>*</span></p>
-									<input type="text" id="subject" name="subject" value="${dto.subject}" placeholder="제목을 입력해주세요.">
+									<input type="text" id="subject" name="subject" value="${productFindDTO.subject}" placeholder="제목을 입력해주세요.">
 								</div>
 								<hr/>
 							</div>
@@ -49,39 +36,35 @@
 							<p>경매 등록</p><%--true/false로 변경--%>
 							<div>
 								경매 기간은 12시간입니다.
-								<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="auctionStatus" value="true" checked="${dto.auctionStatus}">
+								<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="auctionStatus" value="true" checked="${productFindDTO.auctionStatus}">
 								<input type="hidden" name="auctionStatus" value="false">
 								<hr/>
 							</div>
 						</div>
-
 						<div class="checkout__input">
 							<p>카테고리 선택<span>*</span></p>
-							<select>
-								<option value="" disabled="">선택하세요</option>
+							<select id="topCategory">
+								<option>선택하세요</option>
 								<c:forEach var="topCategory" items="${topCategory}">
-									<option value="${dto.categoryId}">${topCategory.categoryName}</option>
+									${productFindDTO.categoryName}
+									<option value="${topCategory.categoryName}">${topCategory.categoryName}</option>
 								</c:forEach>
 							</select>
-							<select id="categoryId" name="categoryId">
-								<option value="" disabled="">선택하세요</option>
-								<c:forEach var="subCategory" items="${subCategory}">
-									<option value="${dto.categoryId}">${subCategory.categoryName}</option>
-								</c:forEach>
-							</select>
+							<select id="subCategory" name="categoryName"></select>
+
 							<br><br><br><br><hr/>
 						</div>
 						<div class="checkout__input">
 							<p>상품 가격<span>*</span></p>
 							<div class="col-6">
-								<input type="text" id="price" name="price" value="${dto.price}" placeholder="숫자만 입력해주세요.">
+								<input type="text" id="price" name="price" value="${productFindDTO.price}" placeholder="숫자만 입력해주세요.">
 							</div>
 							<hr/>
 						</div>
 						<div class="checkout__input">
 							<p>페이 결제</p><%--true/false로 변경--%>
 							<div style="color: #aaaaaa">
-								<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="payStatus" value="true" checked="${dto.payStatus}">
+								<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="payStatus" value="true" checked="${productFindDTO.payStatus}">
 								<input type="hidden" name="payStatus" value="false">
 								안전결제 환영
 								<img src="/template/img/product/pay.png">
@@ -93,7 +76,7 @@
 							<p>설 명<span>*</span></p>
 							<div class="wrap">
 								<textarea id="content" name="content" class="wrap"
-										  placeholder="여러 장의 상품 사진과 구입 연도, 브랜드, 사용감, 하자 유무 등 구매자에게 필요한 정보를 꼭 포함해 주세요. (10자 이상)">${dto.content}</textarea>
+										  placeholder="여러 장의 상품 사진과 구입 연도, 브랜드, 사용감, 하자 유무 등 구매자에게 필요한 정보를 꼭 포함해 주세요. (10자 이상)">${productFindDTO.content}</textarea>
 								<div id="counter" align="right"/>
 							</div>
 							<hr/>
@@ -137,7 +120,3 @@
 	</div>
 </section>
 <!-- Checkout Section End -->
-
-</body>
-
-</html>

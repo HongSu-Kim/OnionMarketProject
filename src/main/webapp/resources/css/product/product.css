@@ -39,3 +39,18 @@ label.error{display:block;color:red;}
 .button {
     border-width: thin;
 }
+
+/*detail*/
+dl {
+}
+
+dt {
+    float: left;
+    margin-right: 10px;
+}
+
+dd {
+    float: left;
+    margin-right: 10px;
+}
+
