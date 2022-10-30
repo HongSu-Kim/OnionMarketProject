@@ -8,7 +8,6 @@ import com.youprice.onion.util.AlertRedirect;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -31,11 +30,9 @@ public class WishController {
 
     // 찜 목록 페이지
     @GetMapping("list")
-    public String wishList(@LoginUser SessionDTO sessionDTO, Model model, @PageableDefault Pageable pageable) {
+    public String wishList(@LoginUser SessionDTO sessionDTO, Model model,
+						   @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 		if (sessionDTO == null) return "redirect:/member/login";
-
-		pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
-				pageable.getPageSize(), Sort.Direction.DESC, "id");
 
 		Page<WishListDTO> page = wishService.getWishList(sessionDTO.getId(), pageable);
 
@@ -51,11 +48,10 @@ public class WishController {
 
 		try {
 			wishService.addWish(sessionDTO.getId(), productId);
+			return new ResponseEntity<>("찜 목록에 추가헀습니다.", HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>("상품이 존재하지 않습니다.", HttpStatus.FORBIDDEN);
 		}
-
-		return new ResponseEntity<>("찜 목록에 추가헀습니다.", HttpStatus.OK);
 	}
 
 	// 찜 추가 - get
@@ -65,17 +61,16 @@ public class WishController {
 
 		try {
 			wishService.addWish(sessionDTO.getId(), productId);
+			return AlertRedirect.warningMessage(response, "/product/detail/" + productId, "찜 목록에 추가헀습니다.");
 		} catch (Exception e) {
 			return AlertRedirect.warningMessage(response, "/", "상품이 존재하지 않습니다.");
 		}
-
-		return AlertRedirect.warningMessage(response, "/product/detail/" + productId, "찜 목록에 추가헀습니다.");
 	}
 
     // 찜 삭제 - delete
     @DeleteMapping("removeWish")
 	@ResponseBody
-    public ResponseEntity<?> removeWishDelete(@LoginUser SessionDTO sessionDTO, @RequestParam Long productId) {
+    public ResponseEntity<?> removeWish(@LoginUser SessionDTO sessionDTO, @RequestParam Long productId) {
 		if (sessionDTO == null) return new ResponseEntity<>("/member/login", HttpStatus.UNAUTHORIZED);
 
 		wishService.removeWish(sessionDTO.getId(), productId);
@@ -86,7 +81,7 @@ public class WishController {
 	// 찜 삭제 - get
 	@GetMapping("removeWish/{productId}")
 	@ResponseBody
-	public String removeWishGet(@LoginUser SessionDTO sessionDTO, @RequestParam Long productId, HttpServletResponse response) throws IOException {
+	public String removeWishGet(@LoginUser SessionDTO sessionDTO, @PathVariable Long productId, HttpServletResponse response) throws IOException {
 		if (sessionDTO == null) return "redirect:/member/login";
 
 		wishService.removeWish(sessionDTO.getId(), productId);

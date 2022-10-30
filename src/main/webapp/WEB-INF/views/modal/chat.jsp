@@ -43,7 +43,9 @@
 					</div><!--chat-log -->
 				</div>
 				<div class="chat-input-group">
+					<input type="file" class="d-none" id="chatImageName"/>
 					<input type="text" class="chat-input" id="msg" placeholder="Send a message..."/>
+					<button class="chat-submit img trigger" data-target="chatImageName"><i class="material-icons">image</i></button>
 					<button type="button" class="chat-submit" id="button-send"><i class="material-icons">send</i></button>
 				</div>
 			</div>

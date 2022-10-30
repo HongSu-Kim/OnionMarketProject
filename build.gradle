@@ -22,7 +22,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // jpa
     implementation 'org.springframework.boot:spring-boot-starter-web' // web
     implementation 'org.springframework.boot:spring-boot-starter-websocket' // websocket
-    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2' // mybatis
+//    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2' // mybatis
     compileOnly 'org.projectlombok:lombok' // lombok
     developmentOnly 'org.springframework.boot:spring-boot-devtools' // devtools
     runtimeOnly 'com.oracle.database.jdbc:ojdbc8' // ojdbc8
@@ -30,14 +30,17 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok' // lombok
     testImplementation 'org.springframework.boot:spring-boot-starter-test' // test
     implementation 'org.apache.tomcat.embed:tomcat-embed-jasper' // jsp
-    implementation 'javax.servlet:jstl' // jstl
     implementation 'org.springframework.boot:spring-boot-starter-tomcat' // jsp
+    implementation 'javax.servlet:jstl' // jstl
     implementation 'org.springframework.boot:spring-boot-starter-validation'// validation
     implementation 'org.apache.tiles:tiles-jsp:3.0.8' // tiles
 
+    // security
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security' //spring-security
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client' //oauth2
     implementation 'org.springframework.security:spring-security-taglibs' //spring-security taglibs
+
+    // mail
     implementation 'org.springframework.boot:spring-boot-starter-mail' // mail
 	implementation 'org.apache.commons:commons-email:1.5' //commons-email
 
@@ -56,6 +59,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.9.0' // gson
 }
 
+// querydsl
 clean {
     delete file('src/main/generated')
 }

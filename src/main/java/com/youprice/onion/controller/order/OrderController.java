@@ -13,12 +13,11 @@ import com.youprice.onion.service.member.MemberService;
 import com.youprice.onion.service.order.DeliveryService;
 import com.youprice.onion.service.order.OrderService;
 import com.youprice.onion.service.product.ProductService;
-import com.youprice.onion.util.PaymentService;
+import com.youprice.onion.util.PaymentUtil;
 import com.youprice.onion.util.AlertRedirect;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -42,7 +41,6 @@ public class OrderController {
 	private final DeliveryService deliveryService;
 	private final MemberService memberService;
 	private final ProductService productService;
-	private final PaymentService paymentService;
 
 	// 주문 페이지
 	@GetMapping("payment/{productId}")
@@ -51,9 +49,7 @@ public class OrderController {
 		if (sessionDTO == null) return "redirect:/member/login";
 		if (productId == null) return "redirect:/";
 
-		MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
 		ProductDTO productDTO = productService.getProductDTO(productId);
-        orderAddDTO.setOrderNum(orderService.getOrderNum());
 
 		if (productDTO == null) {
 			return AlertRedirect.warningMessage(response, "/", "상품정보가 존재하지 않습니다.");
@@ -63,6 +59,9 @@ public class OrderController {
 			return AlertRedirect.warningMessage(response, "/", productDTO.getProductProgress().getKor() + "(으)로 구매할 수 없는 상품입니다.");
 		}
 
+		MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
+		orderAddDTO.setOrderNum(orderService.getOrderNum());
+
 		model.addAttribute("memberDTO", memberDTO);
 		model.addAttribute("productDTO", productDTO);
 		model.addAttribute("orderAddDTO", orderAddDTO);
@@ -71,7 +70,7 @@ public class OrderController {
 
 	// 주문 - 양파페이 결제
 	@PostMapping("payment")
-	public String payment(@ModelAttribute OrderAddDTO orderAddDTO) throws IOException {
+	public String payment(OrderAddDTO orderAddDTO) throws IOException {
 		Long orderId = orderService.addOrder(orderAddDTO);
 		return "redirect:/order/complete/" + orderId;
 	}
@@ -88,7 +87,7 @@ public class OrderController {
 		} catch (Exception e) {
 			try {
 				log.error("데이터베이스 입력오류입니다 : " + e.toString());
-				paymentService.paymentCancel(orderAddDTO.getImp_uid(), orderAddDTO.getOrderNum(), orderAddDTO.getOrderPayment());
+				PaymentUtil.paymentCancel(orderAddDTO.getImp_uid(), orderAddDTO.getOrderNum(), orderAddDTO.getOrderPayment());
 			} catch (IOException ioe) {
 				log.error("결제 취소중 오류입니다 : " + ioe.toString());
 				return new ResponseEntity<>("결제 취소중 오류입니다\n고객센터에 문의하세요", HttpStatus.SERVICE_UNAVAILABLE);
@@ -102,16 +101,15 @@ public class OrderController {
 	public String completion(Model model, @PathVariable Long orderId) {
 		OrderDTO orderDTO = orderService.getOrderDTO(orderId);
 		model.addAttribute("orderDTO", orderDTO);
+
 		return "order/complete";
 	}
 
 	// 구매 내역 조회 페이지
 	@GetMapping("buyList")
-	public String buyList(@LoginUser SessionDTO sessionDTO, Model model, @PageableDefault Pageable pageable) {
+	public String buyList(@LoginUser SessionDTO sessionDTO, Model model,
+						  @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 		if (sessionDTO == null) return "redirect:/member/login";
-
-		pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
-				pageable.getPageSize(), Sort.Direction.DESC, "id");
 
 		Page<OrderDTO> page = orderService.getBuyList(sessionDTO.getId(), pageable);
 
@@ -140,13 +138,12 @@ public class OrderController {
 
 	// 판매 내역 조회 페이지
 	@GetMapping("sellList")
-	public String sellList(@LoginUser SessionDTO sessionDTO, Model model, @PageableDefault Pageable pageable) {
+	public String sellList(@LoginUser SessionDTO sessionDTO, Model model,
+						   @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 		if (sessionDTO == null) return "redirect:/member/login";
 
-		pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
-				pageable.getPageSize(), Sort.Direction.DESC, "id");
-
 		Page<ProductSellListDTO> page = productService.getProductSellListDTO(sessionDTO.getId(), pageable);
+		log.error(String.valueOf(page.getTotalPages()));
 
 		model.addAttribute("page", page);
 		return "order/sellList";

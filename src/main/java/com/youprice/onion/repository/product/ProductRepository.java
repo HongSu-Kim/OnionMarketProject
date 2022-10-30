@@ -49,6 +49,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 	List<Product> findByAuctionDeadlineNotNullAndBlindStatus(Boolean blindStatus);
 
 	// 판매 상품 리스트
+	@EntityGraph(attributePaths = { "orderList.delivery" })
 	Page<Product> findByMemberId(Long memberId, Pageable pageable);
 
 	// 하위 카테고리 상품 리스트
