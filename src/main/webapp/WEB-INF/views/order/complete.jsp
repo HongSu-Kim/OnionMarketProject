@@ -24,7 +24,7 @@
 									<span>${productDTO.subject}</span>
 								</td>
 								<td class="pointer" onclick="location.href='/order/detail/${orderDTO.orderId}'">
-									${orderDTO.imp_uid}
+									${orderDTO.orderNum}
 								</td>
 								<td>
 									<fmt:formatNumber type="number" maxFractionDigits="3" value="${orderDTO.orderPayment}"/>원
