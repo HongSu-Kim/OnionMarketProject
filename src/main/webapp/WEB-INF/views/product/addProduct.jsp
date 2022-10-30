@@ -11,24 +11,6 @@
 
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<style type="text/css">
-		.wrap {
-			width: 100%;
-			height: auto;
-			position: relative;
-			display: inline-block;
-		}
-		.wrap textarea {
-			width: 100%;
-			resize: none;
-			min-height: 4.5em;
-			line-height:1.6em;
-			max-height: 9em;
-		}
-
-	    input.error, textarea.error{display: inline-block; color: red;}
-		label.error{display:block;color:red;}
-	</style>
 	<title>상품 등록</title>
 </head>
 <body>
@@ -68,20 +50,15 @@
 								<input type="hidden" name="auctionStatus" value="false">
 								<hr/>
 							</div>
-							<p>
-
-
-							</p>
-							<span class="checkmark"></span>
 						</div>
 						<div class="checkout__input">
 							<p>카테고리 선택<span>*</span></p>
-<%--							<select>--%>
-<%--								<option value="" selected="" disabled="">선택하세요</option>--%>
-<%--								<c:forEach var="topCategory" items="${topCategory}">--%>
-<%--									<option>${topCategory.categoryName}</option>--%>
-<%--								</c:forEach>--%>
-<%--							</select>--%>
+							<select>
+								<option value="" selected="" disabled="">선택하세요</option>
+								<c:forEach var="topCategory" items="${topCategory}">
+									<option>${topCategory.categoryName}</option>
+								</c:forEach>
+							</select>
 							<select id="categoryId" name="categoryId">
 								<option value="">선택하세요</option>
 								<c:forEach var="subCategory" items="${subCategory}">

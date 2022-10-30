@@ -40,10 +40,10 @@ $(document).ready(function () {
     var nowBid = Number($('#nowBid').val()); //현재 입찰가
     var exBid = Number($('#exBid').val()); //이전 입찰가
     var now;
-    if(exBid == null) {
+    if(nowBid < price) {
         now = price;
     }else {
-        now = exBid+10000;
+        now = exBid+1000;
     }
 
     $('#productForm').validate({

@@ -24,12 +24,13 @@
 			<div class="col-lg-6 col-md-6">
 				<div class="product__details__pic">
 					<div class="product__details__pic__item">
-						<div>
 <%--							<img class="product__details__pic__item--large" src="img/product/${productFindDTO.representativeImage}" alt=""/>--%>
+						<ul>
+							<li class="large-image"><img alt="ttt"></li>
 						<c:forEach var="imageList" items="${productFindDTO.productImageDTOList}">
-							<img src="/img/product/${imageList.productImageName}" alt=""/>
+							<li style="display: flex"><img src="/img/product/${imageList.productImageName}" alt=""/></li>
 						</c:forEach>
-						</div>
+						</ul>
 					</div>
 				</div>
 			</div>
@@ -190,7 +191,7 @@
 										</c:otherwise>
 									</c:choose>
 									<a href="/complain/created" class="primary-btn">신고하기</a>
-									<a href="#" class="primary-btn">채팅하기</a>
+									<button type="button" class="primary-btn" onclick="createChatroom(${productId})">채팅하기</button>
 									<a href="/wish/addWish/${productId}"><div class="primary-btn"><i class="fa fa-heart wishBtn"></i>찜하기</div></a>
 								</div>
 							</div>

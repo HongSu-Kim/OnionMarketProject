@@ -1,3 +1,8 @@
+@import url(//fonts.googleapis.com/earlyaccess/hanna.css);
+.featured__product{
+    font-family: 'Hanna', sans-serif;
+
+}
 .product__add__input__file{
 
 }
@@ -7,4 +12,30 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.product__townList {
+    padding-left: 81%;
+    ;
+}
+
+.wrap {
+    width: 100%;
+    height: auto;
+    position: relative;
+    display: inline-block;
+}
+.wrap textarea {
+    width: 100%;
+    resize: none;
+    min-height: 4.5em;
+    line-height:1.6em;
+    max-height: 9em;
+}
+
+input.error, textarea.error{display: inline-block; color: red;}
+label.error{display:block;color:red;}
+
+.button {
+    border-width: thin;
 }

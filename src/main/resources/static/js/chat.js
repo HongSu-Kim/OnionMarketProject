@@ -1,198 +1,270 @@
 
-let header = $("meta[name='_csrf_header']").attr("content");
-let token = $("meta[name='_csrf']").attr("content");
+const header = $("meta[name='_csrf_header']").attr("content");
+const token = $("meta[name='_csrf']").attr("content");
 
-let memberId = $('#memberId').val()
-let memberNickname = $('#memberNickname').val()
-let stomp = Stomp.over(new SockJS("/stomp/chat"));
+const memberId = $('#memberId').val()
+const memberNickname = $('#memberNickname').val()
+const stomp = Stomp.over(new SockJS("/stomp/chat"));
 
 let chatroomId
+let targetId
+let page
+let hasNext
 
-// 리스트로 돌아가기
-$(".chat-list-btn").click(function() {;
-    $('#chatList').css('z-index', 2)
-    chatroomId = 0
-    chatroomList()
+
+// 모달 변경
+let modalChange = function (page) { // page - circle, list, room
+	switch (page){
+		case "circle" :
+			if($('#chat-circle').css("display") == 'none') {
+				$('#chat-circle').toggle('scale');
+				$('.chat-box').toggle('scale');
+			}
+			break
+		case "list" :
+			$('#chatList').css('z-index', 2)
+			if($('#chatList').css("display") == 'none') {
+				$('#chat-circle').toggle('scale');
+				$('.chat-box').toggle('scale');
+			}
+			break
+		case "room" :
+			$('#chatList').css('z-index', 1)
+			if($('#chatroom').css("display") == 'none') {
+				$('#chat-circle').toggle('scale');
+				$('.chat-box').toggle('scale');
+			}
+			break
+	}
+}
+
+
+// 채팅 출력
+let printChat = function () {
+
+	$.ajax({
+		url: "/chatroom/room/" + chatroomId + "/" + page,
+		method: "GET",
+		success: function (chatroomDTO) {
+
+			if (chatroomDTO.memberDTO.id == memberId)
+				targetId = chatroomDTO.productDTO.memberDTO.id
+			else
+				targetId = chatroomDTO.memberDTO.id
+			page = chatroomDTO.page + 1
+			hasNext = chatroomDTO.hasNext
+			$('#title').html(chatroomDTO.productDTO.subject)
+
+			let chatDTOList = chatroomDTO.chatDTOSlice.content
+			let date = ""
+			let str = ""
+			$('.date:first').remove();
+
+			for (let i = 0; i < chatDTOList.length; i++) {
+				let chatDTO = chatDTOList[i]
+
+				if (date != chatDTO.sendingTime.substring(0, 10)) {
+					date = chatDTO.sendingTime.substring(0, 10)
+
+					let parseDate = new Date(chatDTO.sendingTime)
+					let formatDate = `${parseDate.getFullYear()}년 ${parseDate.getMonth()}월 ${parseDate.getDate()}일`
+
+					str +=
+						`<div class="chat-msg date">` +
+						`   <div class="cm-msg-text">${formatDate}</div>` +
+						`</div>`
+				}
+
+				str +=
+					(chatDTO.memberId == memberId
+						? `<div class="chat-msg self">`
+						: `<div class="chat-msg user">`) +
+					`   <div class="cm-msg-text">${chatDTO.message}</div>` +
+					`   <div class="cm-msg-time">${chatDTO.sendingTime.substring(11)}</div>` +
+					`</div>`
+			}
+			$('#head').after(str)
+		},
+		error(request) {
+			if (request.status == 401) {
+				location.href = request.responseText
+			} else {
+				alert(request.status + " : " + request.responseText)
+			}
+		}
+	})
+}
+
+// 채팅방 오픈
+let openChatroom = function (num) { // num == chatroomId
+	chatroomId = num
+	page = 0
+
+	$('#msgArea').html(
+		`<div id="head"></div>` +
+		`<div id="foot"></div>`
+	)
+
+	printChat()
+	modalChange("room")
+
+	setTimeout(function () {
+		$('#msgArea').scrollTop($('#msgArea')[0].scrollHeight);
+		$('#msg').focus()
+	}, 10)
+}
+
+// 채팅 더보기
+$('#msgArea').scroll(function() {
+	let scrollTop = $(this).scrollTop();
+	if (scrollTop < 1 && hasNext == true) {
+		let view = $('.chat-msg ')
+		printChat();
+		view[0].scrollIntoView()
+	}
 })
 
+// 채팅방 리스트 출력
+let openChatroomList = function () {
+	chatroomId = 0
+
+	$.ajax({
+		url: "/chatroom/list",
+		method: "GET",
+		success: function (chatroomDTOList) {
+			$('#listArea').html("")
+
+			for (let i = 0; i < chatroomDTOList.length; i++) {
+				let chatroomDTO = chatroomDTOList[i]
+				let str =
+					`<div class="chat-room" id="chatroom${chatroomDTO.chatroomId}">` +
+					`   <span class="msg-avatar">` +
+					`       <img src="/img/product/${chatroomDTO.productDTO.representativeImage}">` +
+					`   </span>` +
+					`   <div class="cr-room-text">` +
+							chatroomDTO.productDTO.subject + `<br/>` +
+							(chatroomDTO.chatDTO != null
+								? `<span id="chatMessage${chatroomDTO.chatroomId}">${chatroomDTO.chatDTO.message}</span>`
+								: "메세지가 없습니다.") +
+					`   </div>` +
+					`<div style="border: 1px solid #ebebeb"></div>`
+				$('#listArea').append(str);
+
+				$('#chatroom' + chatroomDTO.chatroomId).click(function () {
+					openChatroom(chatroomDTO.chatroomId)
+				})
+			}
+
+		},
+		error: function (request) {
+			if (request.status == 401) {
+				location.href = request.responseText
+			} else {
+				alert(request.status + " : " + request.responseText)
+			}
+		}
+	})
+}
+
+// 채팅방 생성
+let createChatroom = function (num) { // num == productId
+	$.ajax({
+		url: "/chatroom/create",
+		method: "POST",
+		data: ({ productId: parseInt(num) }),
+		beforeSend: function (jqXHR) {
+			jqXHR.setRequestHeader(header, token);
+		},
+		success: function (chatroomId) {
+			openChatroom(chatroomId)
+		},
+		error: function (request) {
+			if (request.status == 401) {
+				location.href = request.responseText
+			} else {
+				alert(request.status + " : " + request.responseText)
+			}
+		}
+
+	})
+}
+
+
 // 채팅창 닫기
-$(".chat-close-btn").click(function() {
-    $('#chat-circle').toggle('scale');
-    $('.chat-box').toggle('scale');
+$(".chat-close-btn").click(function () {
+	modalChange("circle")
 })
 
 // 채팅방 리스트
 $('#chat-circle').click(function() {
-
-    chatroomList()
-
-    $('#chatList').css('z-index', 2)
-    $('#chat-circle').toggle('scale');
-    $('.chat-box').toggle('scale');
+	openChatroomList()
+	modalChange("list")
 })
 
-// 채팅방 리스트 출력
-function chatroomList() {
-    $.ajax({
-        url: "/chatroom/list",
-        method: "GET",
-        success: function (chatroomDTOList) {
-            $('#listArea').html("")
+// 리스트로 돌아가기
+$('.chat-list-btn').click(function() {
+	$('#chat-circle').click()
+})
 
-            for (let i = 0; i < chatroomDTOList.length; i++) {
-                let chatroomDTO = chatroomDTOList[i]
-                let str =
-                    '<div class="chat-room" onclick="chatroom(' + chatroomDTO.chatroomId + ')">' +
-                    '   <span class="msg-avatar">' +
-                    '       <img src="/img/product/' + chatroomDTO.productDTO.representativeImage + '">' +
-                    '   </span>' +
-                    '   <div class="cr-room-text">' +
-                    chatroomDTO.productDTO.subject + "<br/>" +
-                    (chatroomDTO.chatDTO != null
-                        ? "<span id='chatMessage" + chatroomDTO.chatroomId + "'>" + chatroomDTO.chatDTO.message + "</span>"
-                        : "메세지가 없습니다.") +
-                    '   </div>' +
-                    '<div style="border: 1px solid #ebebeb"></div>'
-                $('#listArea').append(str);
-            }
-
-        },
-        error: function (request) {
-            if (request.status == 401) {
-                location.href = request.responseText
-            } else {
-                alert(request.status + " : " + request.responseText)
-            }
-        }
-    })
-}
-
-// 채팅방 출력
-function chatroom(num) { // num == chatroomId
-    $('#chatList').css('z-index', 1)
-
-    chatroomId = num
-
-    $.ajax({
-        url: "/chatroom/room/" + chatroomId,
-        method: "GET",
-        success: function (chatroomDTO) {
-            $('#msgArea').html(
-                '<div id="head" class="chat-msg-padding"></div>' +
-                '<div id="foot" class="chat-msg-padding"></div>'
-            )
-
-            $('#title').html(chatroomDTO.productDTO.subject)
-
-            let chatDTOList = chatroomDTO.chatDTOSlice.content
-
-            $('#chatroomId').val(chatroomId)
-            $('#page').val(chatroomDTO.chatDTOSlice.pageNumber)
-            $('#targetId').val(chatroomDTO.memberDTO.id == memberId ? chatroomDTO.productDTO.memberDTO.id : chatroomDTO.memberDTO.id)
-
-            for (let i = 0; i < chatDTOList.length; i++) {
-                let chatDTO = chatDTOList[i]
-
-                let str =
-                    (chatDTO.memberId == memberId
-                        ? '<div class="chat-msg self">'
-                        : '<div class="chat-msg user">') +
-                    '   <div class="cm-msg-text">' + chatDTO.message + '</div>' +
-                    '</div>'
-
-                $('#head').after(str)
-            }
-            $('#msgArea').scrollTop($('#msgArea')[0].scrollHeight);
-            $('#msg').focus()
-        },
-        error(request) {
-            if (request.status == 401) {
-                location.href = request.responseText
-            } else {
-                alert(request.status + " : " + request.responseText)
-            }
-        }
-    })
-}
-
-// 채팅방 생성
-function createChatroom(num) { // num == productId
-    $.ajax({
-        url: "/chatroom/create",
-        method: "POST",
-        data: ({ productId: parseInt(num) }),
-        beforeSend: function (jqXHR) {
-            jqXHR.setRequestHeader(header, token);
-        },
-        success: function (chatroomId) {
-            $('#chatList').css('z-index', 1)
-            $('#chat-circle').toggle('scale');
-            $('.chat-box').toggle('scale');
-            chatroom(chatroomId)
-        },
-        error: function (request) {
-            if (request.status == 401) {
-                location.href = request.responseText
-            } else {
-                alert(request.status + " : " + request.responseText)
-            }
-        }
-
-    })
-}
 
 // Enter -> 메세지 전송
 $('#msg').keyup(function (event) {
-    if (event.which == 13) {
-        $('#button-send').click()
-    }
+	if (event.which == 13) {
+		$('#button-send').click()
+	}
 })
 
 // 메세지 전송
 $('#button-send').click(function() {
-    let msg = document.getElementById("msg");
+	let msg = $('#msg');
 
-    // console.log(memberId + ":" + msg.value);
-    stomp.send(
-        "/pub/chat/message",
-        {},
-        JSON.stringify({
-            chatroomId: $('#chatroomId').val(),
-            message: msg.value,
-            memberId: memberId,
-            memberNickname: memberNickname,
-            targetId: $('#targetId').val()
-        })
-    );
-    msg.value = "";
-    msg.focus()
+	stomp.send(
+		"/pub/chat/message",
+		{},
+		JSON.stringify({
+			chatroomId: chatroomId,
+			message: msg.val(),
+			memberId: memberId,
+			memberNickname: memberNickname,
+			targetId: targetId
+		})
+	);
+	msg.val("");
+	msg.focus()
 })
 
-// 메세지 출력 //2. connection이 맺어지면 실행
+// 메세지 출력
 stomp.connect({}, function () {
-    // console.log("STOMP Connection")
+	stomp.subscribe("/sub/chat/" + memberId, function (chat) {
+		let chatDTO = JSON.parse(chat.body)
 
-    //4. subscribe(path, callback)으로 메세지를 받을 수 있음
-    stomp.subscribe("/sub/chat/" + memberId, function (chat) {
-        let chatDTO = JSON.parse(chat.body)
+		// 채팅방 리스트에 있을 때
+		if (chatroomId == null) {
+			$('#chatMessage' + chatDTO.chatroomId).html(chatDTO.message)
+		}
+		// 메세지가 온 채팅방에 있을때
+		else if (chatroomId == chatDTO.chatroomId) {
+			let str =
+				(chatDTO.memberNickname == memberNickname
+					? `<div class="chat-msg self">`
+					: `<div class="chat-msg user">`) +
+					  `   <div class="cm-msg-text">${chatDTO.message}</div>` +
+					  `   <div class="cm-msg-time">${chatDTO.sendingTime.substring(11, 19)}</div>` +
+					  `</div>`
 
-        // 채팅방 리스트에 있을 때
-        if (chatroomId == null) {
-            $('#chatMessage' + chatDTO.chatroomId).html(chatDTO.message)
-        }
-        // 메세지가 온 채팅방에 있을때
-        else if (chatroomId == chatDTO.chatroomId) {
-            let str =
-                (chatDTO.memberNickname == memberNickname
-                    ? '<div class="chat-msg self">'
-                    : '<div class="chat-msg user">') +
-                      '   <div class="cm-msg-text">' + chatDTO.message + '</div>' +
-                      '</div>'
-
-            $('#foot').before(str)
-            $('#msgArea').scrollTop($('#msgArea')[0].scrollHeight)
-        }
-    })
+			$('#foot').before(str)
+			$('#msgArea').scrollTop($('#msgArea')[0].scrollHeight)
+		}
+	})
 
 })
 
+
+// 수정 필요
+// modal에서 body 스크롤 방지
+$('#chat-modal').mouseover(function () {
+	document.body.style.overflow = "hidden";
+})
+$('#chat-modal').mouseout (function () {
+	document.body.style.overflow = "auto";
+})
