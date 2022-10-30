@@ -3,14 +3,6 @@
 <meta name="_csrf" content="${_csrf.token}">
 <meta name="_csrf_header" content="${_csrf.headerName}">
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>경매 상품 리스트</title>
-</head>
-<body>
-
 <!-- Featured Section Begin -->
 <section class="featured__product">
 	<div class="container">
@@ -367,6 +359,3 @@
 
 	</c:forEach>
 </div>
-
-</body>
-</html>

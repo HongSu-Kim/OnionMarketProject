@@ -2,7 +2,6 @@ package com.youprice.onion.dto.product;
 
 import lombok.*;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Getter
@@ -15,6 +14,8 @@ public class ProductAddDTO {
     private Long townId; //동네번호
 
     private Long categoryId; //카테고리번호
+
+    private String categoryName; //카테고리이름
 
     private Long orderId; //주문번호
 

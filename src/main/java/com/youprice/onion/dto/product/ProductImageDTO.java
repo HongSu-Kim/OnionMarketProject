@@ -1,6 +1,5 @@
 package com.youprice.onion.dto.product;
 
-import com.youprice.onion.entity.product.Product;
 import com.youprice.onion.entity.product.ProductImage;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

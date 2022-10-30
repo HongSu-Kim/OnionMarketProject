@@ -1,18 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
 <meta name="_csrf" content="${_csrf.token}">
 <meta name="_csrf_header" content="${_csrf.headerName}">
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>상품 리스트</title>
-</head>
-<body>
-
 
 <!-- Featured Section Begin -->
 <section class="featured spad">
@@ -35,7 +25,7 @@
 				<div class="featured__item">
 					<div class="featured__item__pic set-bg" data-setbg="/img/product/${list.productImageName}">
 						<ul class="featured__item__pic__hover">
-<%--							<li><a href="/wish/addWish/${productId}"><i class="fa fa-heart"></i></a></li>--%>
+							<li><a href="/wish/addWish/${productId}"><i class="fa fa-heart"></i></a></li>
 							<li><a href="#"><i class="fa fa-retweet"></i></a></li>
 							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
 						</ul>
@@ -382,6 +372,3 @@
 
 	</c:forEach>
 </div>
-
-</body>
-</html>
