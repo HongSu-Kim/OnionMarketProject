@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface   ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long> {
     //상품번호로 상품 하나 조회
     @Override
     @EntityGraph(attributePaths = {"productImageList"})

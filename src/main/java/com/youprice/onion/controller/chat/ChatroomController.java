@@ -4,7 +4,6 @@ import com.youprice.onion.dto.chat.ChatroomDTO;
 import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.service.chat.ChatroomService;
-import com.youprice.onion.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +13,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +24,6 @@ import java.util.List;
 public class ChatroomController {
 
 	private final ChatroomService chatroomService;
-	private final MemberService memberService;
 
 	// 전체 채팅방 조회
 	@GetMapping("list")
@@ -40,6 +37,7 @@ public class ChatroomController {
 		return new ResponseEntity<>(chatroomDTOList, HttpStatus.OK);
 	}
 
+	// 채팅방 생성
 	@PostMapping("create")
 	@ResponseBody
 	public ResponseEntity<?> chatroomCreate(@LoginUser SessionDTO sessionDTO, @RequestParam Long productId) {
@@ -50,12 +48,12 @@ public class ChatroomController {
 		return new ResponseEntity<>(chatroomId, HttpStatus.OK);
 	}
 
-	@GetMapping("room/{chatroomId}")
+	// 채팅 내역
+	@GetMapping("room/{chatroomId}/{page}")
 	@ResponseBody
-	public ResponseEntity<?> chatroomRoom(@PathVariable Long chatroomId, @PageableDefault Pageable pageable) {
+	public ResponseEntity<?> chatroomRoom(@PathVariable Long chatroomId, @PathVariable int page, @PageableDefault Pageable pageable) {
 
-		pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
-				pageable.getPageSize(), Sort.Direction.DESC, "id");
+		pageable = PageRequest.of(page, pageable.getPageSize(), Sort.Direction.DESC, "id");
 		log.error("ChatroomController : chatroom/room/" + chatroomId);
 
 		ChatroomDTO chatroomDTO = chatroomService.getChatroomDTO(chatroomId, pageable);
