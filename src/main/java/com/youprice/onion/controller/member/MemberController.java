@@ -151,6 +151,16 @@ public class MemberController {
         return "member/mypage";
     }
 
+    @GetMapping("profile/{memberId}")
+    public String profileView(@PathVariable("memberId") Long memberId, @LoginUser SessionDTO sessionDTO, Model model) {
+        if (sessionDTO == null) return "redirect:/member/login";
+
+        MemberDTO memberDTO = memberService.getMemberDTO(memberId, sessionDTO.getId());
+
+        model.addAttribute("memberDTO", memberDTO);
+        return "member/profile";
+    }
+
     //아이디 찾기
     @GetMapping("/findId")
     public String findIdView() {
