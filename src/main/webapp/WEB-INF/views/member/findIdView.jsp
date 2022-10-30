@@ -8,16 +8,6 @@
 <head>
 
     <title>아이디 찾기</title>
-<%--
-
-    <script type="text/javascript">
-        var msg = "${msg}";
-
-        if (msg != "") {
-            alert(msg);
-        }
-    </script>
---%>
 
 </head>
 

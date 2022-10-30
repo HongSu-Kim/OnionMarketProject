@@ -3,25 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var = "cp" value = "<%=request.getContextPath()%>"/>
-<style>
-    .checkout__input input {
-        width: 100%;
-        height: 46px;
-        border: 1px solid #b7b7b7;
-        padding-left: 20px;
-        font-size: 16px;
-        color: #000000;
-        border-radius: 4px;
-    }
-
-    .alert-danger {
-        margin-top: 1px;
-        background-color: #ffffff;
-        color: red;
-        border: none;
-    }
-
-</style>
 
 <section class="spad">
     <div class="container">
@@ -31,7 +12,7 @@
                 <div class="row">
                     <div class="col-lg-3 col-md-3"></div>
                     <div class="col-lg-6 col-md-6">
-                        <h4 style="text-align: center">로그인</h4>
+                        <h4>로그인</h4>
                         <div class="checkout__input">
                             <p>아이디</p>
                             <input type="text" class="form-control" id="userId" name="userId" placeholder="아이디를 입력해주세요">
