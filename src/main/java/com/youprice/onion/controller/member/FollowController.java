@@ -7,7 +7,9 @@ import com.youprice.onion.service.member.FollowService;
 import com.youprice.onion.util.AlertRedirect;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,10 +26,13 @@ public class FollowController {
     private final FollowService followService;
 
     //팔로우 목록 페이지
-    @GetMapping("lsit")
+    @GetMapping("list")
     public String followList(@LoginUser SessionDTO sessionDTO, Model model, @PageableDefault Pageable pageable) {
         if (sessionDTO == null)
             return "redirect:/member/login";
+
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
+                pageable.getPageSize(), Sort.Direction.DESC, "id");
 
         Page<FollowListDTO> page = followService.getFollowList(sessionDTO.getId(), pageable);
 
@@ -46,7 +51,7 @@ public class FollowController {
             return AlertRedirect.warningMessage(response, "/", "회원이 존재하지 않습니다.");
         }
 
-        return AlertRedirect.warningMessage(response, "/member/detail/" + targetId, "해당 회원을 팔로우 했습니다..");
+        return AlertRedirect.warningMessage(response, "/member/profile/" + targetId, "해당 회원을 팔로우 했습니다.");
     }
 
     //팔로우 삭제
@@ -57,7 +62,7 @@ public class FollowController {
 
         followService.removeFollow(sessionDTO.getId(), targetId);
 
-        return AlertRedirect.warningMessage(response, "/member/detail/" + targetId, "해당 회원을 언팔로우 했습니다.");
+        return AlertRedirect.warningMessage(response, "/member/profile/" + targetId, "해당 회원을 언팔로우 했습니다.");
     }
 
 }

@@ -32,6 +32,9 @@ public class MemberDTO {
     private int userGrade;
     private int complaintCount;
 
+    private boolean followCheck;
+    private boolean blockCheck;
+
     public MemberDTO(Member member) {
         this.id = member.getId();
         this.role = member.getRole();
@@ -74,5 +77,7 @@ public class MemberDTO {
                 .complaintCount(complaintCount)
                 .build();
     }
+
+
 
 }

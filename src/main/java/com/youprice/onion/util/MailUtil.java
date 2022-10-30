@@ -6,13 +6,13 @@ import org.apache.commons.mail.HtmlEmail;
 
 public class MailUtil {
 
-    public void sendMail(Member member) throws Exception{
+    public static void sendMail(Member member) throws Exception{
 
         // Mail Server 설정
         String charSet = "utf-8";
         String host = "smtp.gmail.com";
-        String userId = "youpriceonion";
-        String password = "lpnfqfiidkokreis";
+        String userId = "youpriceonion"; //gmail 로그인 ID, youprice.onion.email 로 변경 예정
+        String password = "lpnfqfiidkokreis"; //gmail 로그인 앱 비밀번호
 
         // 보내는 사람 정보
         String fromEmail = "youpriceonion@gmail.com";
@@ -29,9 +29,12 @@ public class MailUtil {
         content += "로그인 후 반드시 비밀번호를 변경해 주세요!";
         content += "<p>임시 비밀번호 : ";
         content += member.getPwd() + "</p></div>";
+        content += "<div></div>";
+        content += "<a href='http://localhost:8083/member/login'>로그인 하기</a>";
 
         // 받는 사람 정보
         String toEmail = member.getEmail();
+        String toName = member.getName();
 
         // 이메일 전송
         try {
@@ -43,7 +46,7 @@ public class MailUtil {
             mail.setSmtpPort(587); // SMTP port 번호
             mail.setAuthentication(userId, password);
             mail.setStartTLSEnabled(true); // TLS 사용
-            mail.addTo(toEmail, charSet);
+            mail.addTo(toEmail, toName, charSet);
             mail.setFrom(fromEmail, fromName, charSet);
             mail.setSubject(subject);
             mail.setHtmlMsg(content);

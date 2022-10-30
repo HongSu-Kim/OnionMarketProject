@@ -4,6 +4,7 @@ import com.youprice.onion.dto.member.*;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.member.Role;
 import com.youprice.onion.repository.member.BlockRepository;
+import com.youprice.onion.repository.member.FollowRepository;
 import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.service.member.MemberService;
 import com.youprice.onion.util.MailUtil;
@@ -28,6 +29,7 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final BlockRepository blockRepository;
+    private final FollowRepository followRepository;
 
     @Value("$(file.path}")
     private String uploadFolder;
@@ -110,8 +112,7 @@ public class MemberServiceImpl implements MemberService {
         member.findPwd(tempPwd);
 
         //이메일 전송
-        MailUtil mail = new MailUtil();
-        mail.sendMail(member);
+        MailUtil.sendMail(member);
 
         //암호화된 임시 비밀번호 저장
         member.findPwd(passwordEncoder.encode(member.getPwd()));
@@ -132,6 +133,19 @@ public class MemberServiceImpl implements MemberService {
     public MemberDTO getMemberDTO(Long memberId) {
         return memberRepository.findById(memberId).map(MemberDTO::new).orElse(null);
     }
+
+    @Override
+    public MemberDTO getMemberDTO(Long memberId, Long sessionId) { //memberId: 타겟유저, sessionId: 로그인 한 유저
+        return memberRepository.findById(memberId).map(member -> {
+            MemberDTO memberDTO = new MemberDTO(member);
+
+            memberDTO.setFollowCheck(followRepository.existsByMemberIdAndTargetId(sessionId, memberId));
+            memberDTO.setBlockCheck(blockRepository.existsByMemberIdAndTargetId(sessionId, memberId));
+
+            return memberDTO;
+        }).orElse(null);
+    }
+
 /*
     //프로필사진 수정
     @Transactional

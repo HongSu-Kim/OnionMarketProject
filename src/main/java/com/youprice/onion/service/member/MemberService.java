@@ -16,6 +16,8 @@ public interface MemberService {
 
     public MemberDTO getMemberDTO(Long memberId);
 
+    public MemberDTO getMemberDTO(Long memberId, Long sessionId);
+
     public MemberDTO findId(String email);
 
     public int countId(String email);

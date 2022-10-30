@@ -9,13 +9,6 @@
 
     <title>회원 탈퇴</title>
 
-<%--    <script>
-        var msg = '${msg}';
-        if(msg === 'msg') {
-            alert("비밀번호가 일치하지 않습니다. 다시 확인해 주세요.");
-        }
-    </script>--%>
-
 </head>
 
 <body onload="document.myForm.pwd.focus();">
