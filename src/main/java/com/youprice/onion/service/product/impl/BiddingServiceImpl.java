@@ -47,12 +47,6 @@ public class BiddingServiceImpl implements BiddingService {
                 .map(biddingList -> new BiddingListDTO(biddingList))
                 .collect(Collectors.toList());
 
-        if(biddingListDTO.size()>0) {
-            int bid = biddingListDTO.get(biddingListDTO.size()-1).getBid();
-
-            model.addAttribute("bid",bid);
-        }
-
         return biddingListDTO;
     }
 
