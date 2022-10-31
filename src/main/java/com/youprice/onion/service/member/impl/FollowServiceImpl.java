@@ -1,7 +1,6 @@
 package com.youprice.onion.service.member.impl;
 
 import com.youprice.onion.dto.member.FollowDTO;
-import com.youprice.onion.dto.member.FollowListDTO;
 import com.youprice.onion.entity.member.Follow;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.repository.member.FollowRepository;
@@ -32,13 +31,6 @@ public class FollowServiceImpl implements FollowService {
 
         return followRepository.findAllByMemberId(memberId, pageable).map(FollowDTO::new);
     }
-/*    @Override
-    public Page<FollowListDTO> getFollowList(Long memberId, Pageable pageable) {
-        return followRepository.findAllByMemberId(memberId, pageable).map(follow -> {
-            int followListSize = followRepository.countByTargetId(follow.getTarget().getId());
-            return new FollowListDTO(follow, followListSize);
-        });
-    }*/
 
     //팔로우
     @Override

@@ -15,7 +15,7 @@
                         <h4>로그인</h4>
                         <div class="checkout__input">
                             <p>아이디</p>
-                            <input type="text" class="form-control" id="userId" name="userId" placeholder="아이디를 입력해주세요">
+                            <input type="text" class="form-control" id="userId" name="userId" placeholder="아이디를 입력해주세요" autofocus>
                         </div>
 
                         <div class="checkout__input">
