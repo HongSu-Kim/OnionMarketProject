@@ -3,24 +3,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="cp" value="<%=request.getContextPath()%>"/>
-<style>
-    .review-btn {
-        font-size: 14px;
-        color: #ffffff;
-        font-weight: 800;
-        text-transform: uppercase;
-        display: inline-block;
-        padding: 10px 10px 1px;
-        background: #7fad39;
-        border: none;
-    }
-</style>
+
 <section class="spad">
     <div class="row">
         <div class="container">
             <div class="section-title related-blog-title">
-                <h2>${memberDTO.nickname}님의 거래 후기 목록</h2>
+                <h2>${memberDTO.nickname}님의 받은 거래 후기 목록</h2>
             </div>
+
+            <c:if test="${empty reviewList.content}">
+                <div>등록된 후기가 없습니다.</div>
+            </c:if>
 
             <c:forEach var="dto" items="${reviewList.content }">
             <hr/><div class="col-lg-12">
@@ -35,7 +28,7 @@
                         <p style="height: 10px"><c:forEach var="i" begin="1" end="${dto.grade}"><span style="color: gold">★</span></c:forEach></p>
                     </div>
                     <div class="col-lg-3">
-                        ${dto.memberDTO.address}구매자 주소 - 시,동
+                        ${dto.memberDTO.address}
                     </div>
                     <div class="col-lg-6 text-right">
                         <time class="review-time">
@@ -64,14 +57,6 @@
             </div>
             </c:forEach>
 
-
-            <div align="center">
-                <button class="site-btn" type="button" onclick="moreList()">더보기</button>
-            </div>
         </div>
     </div>
 </section>
-
-<script >
-
-</script>

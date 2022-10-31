@@ -1,54 +1,68 @@
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%
-    request.setCharacterEncoding("UTF-8");
-    String cp = request.getContextPath();
-%>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>공지사항 작성 페이지</title>
-</head>
-<body>
-<form:errors path="noticeDTO"/>
-<form:form method="post" action="/notice/created" enctype="multipart/form-data" id="myform" modelAttribute="noticeDTO">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
+<c:set var="cp" value="<%=request.getContextPath()%>"/>
 
-    <input type="hidden" name="memberId" value="${sessionDTO.id}">
+<!-- Contact Form Begin -->
+<div class="contact-form spad">
+    <form:form method="post" action="/notice/created" enctype="multipart/form-data" modelAttribute="form">
+        <div class="container">
+            <div class="row">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                <input type="hidden" name="memberId" value="${memberDTO.id}">
 
-    <div>
-        <h1>공지사항 작성</h1>
-    </div>
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <h2>공지사항 작성</h2>
+                    </div>
+                </div>
+            </div>
 
-    <div>
-        <!--<label for="noticeType">공지 유형</label>-->
-        <select id="noticeType" name="noticeType">
-            <option selected="selected">선택해주세요</option>
-            <option value="NOTICE">공지사항</option>
-            <option value="EVENT">이벤트</option>
-        </select>
-    </div>
-    <br/>
-    <div>
-        <label for="noticeSubject">제목</label>
-        <input type="text" id="noticeSubject" name="noticeSubject"/>
-    </div>
-    <br/>
-    <div>
-        <label for="noticeContent">내용</label>
-        <input type="text" id="noticeContent" name="noticeContent"/>
-    </div>
-    <br/>
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <form:errors path="noticeSubject" cssStyle="font-weight: bold; color: #e95050" />
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <form:errors path="noticeType" cssClass="field-error" cssStyle="font-weight: bold; color: #e95050"/></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <form:input type="text" path="noticeSubject" placeholder="제목을 입력해주세요" cssStyle="height: 42px"/>
+                </div>
 
-    <label class="fileButton" for="noticeImage"><p id="fileFont">사진/동영상 첨부하기</p></label>
-    <input type="file" id="noticeImage" name="noticeImageName" multiple="multiple" style="display: none"/>
+                <div class="col-lg-6">
+                    <form:select id="noticeType" path="noticeType" name="noticeType" cssClass="nice-select wide">
+                        <form:option selected="selected" value="">유형을 선택해주세요</form:option>
+                        <form:option value="NOTICE">NOTICE</form:option>
+                        <form:option value="QNA">QNA</form:option>
+                    </form:select>
+                </div>
 
-    <div>
-        <button type="submit">등록하기</button>
-        <button type="button" onclick="location.href='/notice/list'">취소</button>
-    </div>
-</form:form>
-</body>
-</html>
+                <form:errors path="noticeContent" cssClass="field-error" cssStyle="margin-left: 15px; font-weight: bold; color: #e95050" />
+                <div class="col-lg-12 text-center">
+                    <form:textarea path="noticeContent" style="height: 400px"
+                                   placeholder="공지사항을 작성해주세요"></form:textarea>
+                </div>
+
+                <div style="margin-left: 15px">
+                    <div class="shoping__cart__btns">
+                        <label class="primary-btn cart-btn" for="noticeImage">사진 첨부하기</label>
+                        <input type="file" id="noticeImage" name="noticeImageName" multiple="multiple"
+                               style="display: none" onchange="setDetailImage(event);"/>
+                        <div id="images_container"></div>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-12 text-center">
+                    <button type="submit" class="site-btn">등록하기</button>
+                    <button type="button" class="site-btn" onclick="location.href='/notice/list'"
+                            style="background-color: #b2b2b2">취소
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form:form>
+</div>
+<!-- Contact Form End -->
