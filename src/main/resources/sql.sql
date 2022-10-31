@@ -215,7 +215,7 @@ CREATE TABLE chat (
     chat_id         	NUMBER          NOT NULL,
     chatroom_id     	NUMBER          NOT NULL,
     member_id     	    NUMBER          NOT NULL,
-    message         	VARCHAR2(600)   NOT NULL,
+    message         	VARCHAR2(600)   NULL,
     chat_image_name 	VARCHAR2(255)   NULL,
     read_or_not      	VARCHAR2(10)    NOT NULL,
     sending_time    	DATE            DEFAULT SYSDATE,
@@ -604,3 +604,5 @@ INSERT INTO category VALUES(114,'기타','');
 INSERT INTO category VALUES(115,'기타상품',114);
 
 ----------------------------------------------------------------------------------------------------
+
+commit;

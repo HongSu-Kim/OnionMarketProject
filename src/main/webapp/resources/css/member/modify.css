@@ -1,0 +1,64 @@
+.site-btn-post {
+    font-size: 8px;
+    color: #ffffff;
+    font-weight: 800;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 5px 10px 5px;
+    background: #47cd65;
+    border: none;
+}
+
+.site-btn {
+    font-size: 14px;
+    color: #ffffff;
+    font-weight: 800;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 13px 30px 12px;
+    background: #47cd65;
+    border: none;
+}
+
+.checkout__input input {
+    width: 100%;
+    height: 46px;
+    border: 1px solid #b7b7b7;
+    padding-left: 20px;
+    font-size: 16px;
+    color: #000000;
+    border-radius: 4px;
+}
+
+.alert-success {
+    margin-top: 1px;
+    background-color: #ffffff;
+    color: #17b93a;
+    border: none;
+}
+.alert-danger {
+    margin-top: 1px;
+    background-color: #ffffff;
+    color: red;
+    border: none;
+}
+
+.checkout__input.pwdCheck {
+    margin-top: 5px;
+}
+
+.form-control.address {
+    margin-top: 5px;
+}
+
+.site-btn.complete {
+    margin-left: 291px;
+}
+
+span {
+    color: #ff0000;
+}
+
+h4 {
+    text-align: center;
+}

@@ -2,21 +2,21 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<section class="spad">
+<div class="container">
+	<div id="body">
 
-	<div class="container">
-		<div id="body">
+		<!-- chat btn -->
+		<div id="chat-circle" class="btn btn-raised">
+			<div id="chat-overlay"></div>
+			<i class="fa fa-solid fa-comment"></i>
+		</div>
 
-			<!-- chat btn -->
-			<div id="chat-circle" class="btn btn-raised">
-				<div id="chat-overlay"></div>
-				<i class="fa fa-solid fa-comment"></i>
-			</div>
+		<div id="chat-modal">
 
 			<!-- chat list -->
 			<div class="chat-box" id="chatList">
-				<input type="hidden" id="memberId" value="${member.id}"/>
-				<input type="hidden" id="memberNickname" value="${member.nickname}"/>
+				<input type="hidden" id="memberId" value="${sessionDTO.id}"/>
+				<input type="hidden" id="memberNickname" value="${sessionDTO.nickname}"/>
 
 				<div class="chat-box-header">
 					채팅
@@ -31,9 +31,6 @@
 
 			<!-- chat room -->
 			<div class="chat-box" id="chatroom">
-				<input type="hidden" id="chatroomId"/>
-				<input type="hidden" id="page"/>
-				<input type="hidden" id="targetId"/>
 
 				<div class="chat-box-header">
 					<span class="chat-box-toggle left chat-list-btn"><i class="material-icons">arrow_back</i></span>
@@ -43,17 +40,17 @@
 				<div class="chat-box-body">
 					<div class="chat-box-overlay"></div>
 					<div class="chat-logs" id="msgArea">
-						<div id="head" class="chat-msg-padding"></div>
-						<div id="foot" class="chat-msg-padding"></div>
 					</div><!--chat-log -->
 				</div>
 				<div class="chat-input-group">
+					<input type="file" class="d-none" id="chatImageName"/>
 					<input type="text" class="chat-input" id="msg" placeholder="Send a message..."/>
+					<button class="chat-submit img trigger" data-target="chatImageName"><i class="material-icons">image</i></button>
 					<button type="button" class="chat-submit" id="button-send"><i class="material-icons">send</i></button>
 				</div>
 			</div>
 
 		</div>
-	</div>
 
-</section>
+	</div>
+</div>

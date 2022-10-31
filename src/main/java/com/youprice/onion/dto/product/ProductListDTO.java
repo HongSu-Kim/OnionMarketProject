@@ -1,6 +1,5 @@
 package com.youprice.onion.dto.product;
 
-import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.entity.product.Product;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ProductListDTO {
 
-    private Long productId; //
+    private Long productId;
     private String subject; //제목
     private String content; //내용
     private int price; //상품가격

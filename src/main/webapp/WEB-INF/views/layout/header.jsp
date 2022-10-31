@@ -152,10 +152,9 @@
 						<sec:authorize access="hasRole('ROLE_USER')">
 							<li><a href="/member/mypage">마이페이지</a>
 								<ul class="header__menu__dropdown">
-									<li><a href="/member/mypage">My Page</a></li>
+									<li><a href="/member/mypage">마이페이지</a></li>
 									<li><a href="/town/town">동네 설정</a></li>
 									<li><a href="/keyword/keyword">키워드 설정</a></li>
-									<li><a href="/member/logout">Logout</a></li>
 								</ul>
 							</li>
 						</sec:authorize>
@@ -167,7 +166,6 @@
 									<li><a href="/tag/tag">태그 관리</a></li>
 									<li><a href="/prohibitionkeyword/prohibitionkeyword">금지어 관리</a></li>
 									<li><a href="/category/category"> 카테고리 관리 </a></li>
-									<li><a href="/member/logout">Logout</a></li>
 								</ul>
 							</li>
 						</sec:authorize>
@@ -183,8 +181,8 @@
 						</ul>
 						<nav class="header__menu profile">
 							<ul>
-								<li><a href="/product/list">${sessionDTO.nickname}</a>
-									<ul class="header__menu__dropdown">
+								<li><a href="/product/list" class="header__nickname">${sessionDTO.nickname}</a>
+									<ul class="header__menu__dropdown nickname">
 										<li><a href="/member/mypage">마이페이지</a></li>
 										<li><a href="/review/list">나의 후기</a></li>
 										<li><a href="/wish/list">위시리스트</a></li>
@@ -194,11 +192,11 @@
 						</nav>
 					</sec:authorize>
 					<sec:authorize access="!hasRole('USER') and !hasRole('ADMIN')">
-						<div class="header__cart__price profile" style="font-weight: bold;"><a href="/member/join" style="color: black">회원가입</a></div>
-						<div class="header__cart__price profile" style="font-weight: bold;"><a href="/member/login" style="color: black">로그인</a></div>
+						<div class="header__cart__price profile"><a href="/member/join" class="header__cart__price profile">회원가입</a></div>
+						<div class="header__cart__price profile"><a href="/member/login" class="header__cart__price profile">로그인</a></div>
 					</sec:authorize>
 					<sec:authorize access="isAuthenticated()">
-						<div class="header__cart__price" style="font-weight: bold;"><a href="/member/logout" style="color: black">로그아웃</a></div>
+						<div class="header__cart__price profile"><a href="/member/logout" class="header__cart__price profile">로그아웃</a></div>
 					</sec:authorize>
 				</div>
 			</div>
@@ -249,10 +247,10 @@
 						</form:form>
 					</div>
 					<sec:authorize access="!hasRole('USER') and !hasRole('ADMIN') and !hasRole('WITHDRAWAL')">
-						<button onclick="location.href='/member/login'" class="site-btn" style="height: 50px; width: 210px; margin-left: 25px;">ONION MARKET LOGIN</button>
+						<button onclick="location.href='/member/login'" class="site-btn mypage">ONION MARKET 로그인</button>
 					</sec:authorize>
 					<sec:authorize access="isAuthenticated()">
-						<button onclick="location.href='/member/mypage'" class="site-btn" style="height: 50px; width: 210px; margin-left: 25px;">MY PAGE</button>
+						<button onclick="location.href='/member/mypage'" class="site-btn mypage">마이페이지</button>
 					</sec:authorize>
 <%--					<div class="hero__search__phone">
 						<div class="hero__search__phone__icon">

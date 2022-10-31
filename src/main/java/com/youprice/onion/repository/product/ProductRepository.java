@@ -9,9 +9,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.product.SearchRequirements;
-import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.entity.product.Product;
 import com.youprice.onion.entity.product.ProductProgress;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +29,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface   ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long> {
     //상품번호로 상품 하나 조회
     @Override
     @EntityGraph(attributePaths = {"productImageList"})
@@ -49,6 +47,7 @@ public interface   ProductRepository extends JpaRepository<Product, Long> {
 	List<Product> findByAuctionDeadlineNotNullAndBlindStatus(Boolean blindStatus);
 
 	// 판매 상품 리스트
+	@EntityGraph(attributePaths = { "orderList.delivery" })
 	Page<Product> findByMemberId(Long memberId, Pageable pageable);
 
 	// 하위 카테고리 상품 리스트

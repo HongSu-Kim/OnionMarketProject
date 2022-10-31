@@ -1,43 +1,29 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
 <meta name="_csrf" content="${_csrf.token}">
 <meta name="_csrf_header" content="${_csrf.headerName}">
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>상품 리스트</title>
-</head>
-<body>
-
-
-<div>
-	<c:if test="${townList ne null}">
-	<p>현재동네</p>
-			<select onchange="if(this.value) location.href=(this.value);">
-				<c:forEach var="townList" items="${townList}">
-					<option value="/product/list">${townList.townName}</option>
-				</c:forEach>
-					<option value="/town/town">내 동네 설정하기</option>
-			</select>
-	</c:if>
-</div>
 <!-- Featured Section Begin -->
 <section class="featured spad">
 	<div class="container">
+		<div class="product__townList">
+			<c:if test="${townList ne null}">
+			<p>내 동네</p>
+					<select onchange="if(this.value) location.href=(this.value);">
+						<c:forEach var="townList" items="${townList}">
+							<option value="/product/list">${townList.townName}</option>
+						</c:forEach>
+							<option value="/town/town">내 동네 설정하기</option>
+					</select>
+			</c:if>
+		</div>
+		<br/><br/>
 		<div class="row featured__filter">
 			<c:forEach var="list" items="${list}">
 			<div class="col-lg-3 col-md-4 col-sm-6" style="padding: 15px;">
 				<div class="featured__item">
 					<div class="featured__item__pic set-bg" data-setbg="/img/product/${list.productImageName}">
-						<c:if test="${list.auctionDeadline ne null}">
-							<h5 style="color: #47cd65;margin: 0px 0px 0px 50px">
-								<경매 진행 중인 상품>
-							</h5>
-						</c:if>
 						<ul class="featured__item__pic__hover">
 							<li><a href="/wish/addWish/${productId}"><i class="fa fa-heart"></i></a></li>
 							<li><a href="#"><i class="fa fa-retweet"></i></a></li>
@@ -47,6 +33,11 @@
 					</div>
 					<div class="featured__item__text">
 						<h6><a href="/product/detail/${list.productId}">${list.subject}</a></h6>
+						<c:if test="${list.auctionDeadline ne null}">
+							<p style="color: #47cd65;">
+								<경매 진행 중인 상품>
+							</p>
+						</c:if>
 						<fmt:parseDate var="uploadDate" value="${list.uploadDate}" pattern="yyyy-MM-dd'T'HH:mm"/>
 						<h5 style="text-align: left"><fmt:formatNumber maxFractionDigits="3" value="${list.price}"/></h5>
 						<h5 style="text-align: right"><fmt:formatDate value="${uploadDate}" pattern="MM/dd"/></h5>
@@ -381,11 +372,3 @@
 
 	</c:forEach>
 </div>
-
-
-<form action="/product/add">
-	<input type="submit" value=" 상품 등록하기 " class="btn2"/>
-</form>
-
-</body>
-</html>

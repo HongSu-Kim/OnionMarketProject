@@ -18,6 +18,8 @@ public class FollowDTO {
         followId = follow.getId();
         memberDTO = new MemberDTO(follow.getMember());
         targetDTO = new MemberDTO(follow.getTarget());
+
+        memberDTO = new MemberDTO(follow.getMember());
     }
 
 }

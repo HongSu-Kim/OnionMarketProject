@@ -3,35 +3,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<%
-	request.setCharacterEncoding("UTF-8");
-%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<meta name="_csrf" content="${_csrf.token}">
+<meta name="_csrf_header" content="${_csrf.headerName}">
 
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<style type="text/css">
-		.wrap {
-			width: 100%;
-			height: auto;
-			position: relative;
-			display: inline-block;
-		}
-		.wrap textarea {
-			width: 100%;
-			resize: none;
-			min-height: 4.5em;
-			line-height:1.6em;
-			max-height: 9em;
-		}
-
-	    input.error, textarea.error{display: inline-block; color: red;}
-		label.error{display:block;color:red;}
-	</style>
-	<title>상품 등록</title>
-</head>
-<body>
 <!-- Checkout Section Begin -->
 <section class="checkout spad">
 	<div class="container">
@@ -68,26 +42,18 @@
 								<input type="hidden" name="auctionStatus" value="false">
 								<hr/>
 							</div>
-							<p>
-
-
-							</p>
-							<span class="checkmark"></span>
 						</div>
 						<div class="checkout__input">
 							<p>카테고리 선택<span>*</span></p>
-<%--							<select>--%>
-<%--								<option value="" selected="" disabled="">선택하세요</option>--%>
-<%--								<c:forEach var="topCategory" items="${topCategory}">--%>
-<%--									<option>${topCategory.categoryName}</option>--%>
-<%--								</c:forEach>--%>
-<%--							</select>--%>
-							<select id="categoryId" name="categoryId">
-								<option value="">선택하세요</option>
-								<c:forEach var="subCategory" items="${subCategory}">
-									<option value="${subCategory.id}">${subCategory.categoryName}</option>
+							<select id="topCategory">
+								<option>선택하세요</option>
+								<c:forEach var="topCategory" items="${topCategory}">
+									${productFindDTO.categoryName}
+									<option value="${topCategory.categoryName}">${topCategory.categoryName}</option>
 								</c:forEach>
 							</select>
+							<select id="subCategory" name="categoryName"></select>
+
 							<br><br><br><hr/>
 						</div>
 						<div class="checkout__input">
@@ -151,7 +117,4 @@
 	</div>
 </section>
 <!-- Checkout Section End -->
-
-</body>
-</html>
 

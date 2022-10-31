@@ -4,6 +4,7 @@ import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.product.*;
 import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.security.auth.LoginUser;
+import com.youprice.onion.service.board.ReviewService;
 import com.youprice.onion.service.member.ProhibitionKeywordService;
 import com.youprice.onion.service.product.*;
 import com.youprice.onion.util.AlertRedirect;
@@ -33,6 +34,7 @@ public class ProductController {
     private final CategoryService categoryService;
     private final ProductImageService productImageService;
     private final BiddingService biddingService;
+    private final ReviewService reviewService;
     private final ProhibitionKeywordService prohibitionKeywordService;
 
     @GetMapping("add")//상픔 등록 주소
@@ -73,12 +75,11 @@ public class ProductController {
                 return "product/addProduct";
             }
         }
-        if (productAddDTO.getCategoryId()==null) {
+        if (productAddDTO.getCategoryName()==null) {
             AlertRedirect.warningMessage(response,"/product/add", "카테고리를 선택해주세요.");
 
             return "redirect:/product/addProduct";
         }
-
         /*세션아이디로 멤버아이디 set*/
         productAddDTO.setMemberId(userSession.getId());
         /*상품 등록*/
@@ -98,49 +99,59 @@ public class ProductController {
         /*상품조회*/
         ProductFindDTO productFindDTO = productService.getProductFindDTO(productId);
         /*리뷰 조회*/
-//        Double reviewAvg = reviewService.avgGrade(productFindDTO.getMemberId());
-        /*입찰 리스트 조회*/
+        Double reviewAvg = null;
+//        if (reviewService.avgGrade(productFindDTO.getMemberId()) != 0) {
+//            reviewAvg = reviewService.avgGrade(productFindDTO.getMemberId());
+//        }
+        /*입찰 리스트 조회 및 마지막 입찰가 조회*/
         List<BiddingListDTO> biddingList = biddingService.getBiddingList(productId, model);
-        /*카테고리 상품 추천*/
-        List<ProductFindDTO> categoryDTO = productService.getProductSubCategory(productId,productFindDTO.getCategoryId());
+        if(biddingList.size()>0) {
+            int bid = biddingList.get(0).getBid();
 
-        System.out.println("productFindDTO = " + productFindDTO.getAuctionDeadline());
+            model.addAttribute("bid",bid);
+        }
+
+        /*동일 카테고리 추천상품 조회*/
+        List<ProductFindDTO> categoryDTO = productService.getProductSubCategory(productId,productFindDTO.getCategoryId());
 
         model.addAttribute("userSession",userSession);
         model.addAttribute("productId",productId);
         model.addAttribute("productFindDTO",productFindDTO);
-//        model.addAttribute("reviewAvg",reviewAvg);
+        model.addAttribute("reviewAvg",reviewAvg);
         model.addAttribute("biddingList",biddingList);
         model.addAttribute("categoryDTO",categoryDTO);
 
         return "product/detail";
     }
-    @GetMapping("/bid/{productId}")//상품 입찰 주소
-    public String bidProduct(@PathVariable("productId") Long productId, @LoginUser SessionDTO userSession,
-                             BiddingAddDTO biddingAddDTO, HttpServletResponse response,Model model) throws Exception{
+    @PostMapping("bid")//상품 입찰 주소
+    public String bidProduct(@LoginUser SessionDTO userSession, BiddingAddDTO biddingAddDTO,
+                             HttpServletResponse response, Model model) throws Exception{
 
         //Session이 없을 경우 로그인 처리
         if(userSession == null){
             AlertRedirect.warningMessage(response,"/member/login", "로그인이 필요합니다.");
             return "redirect:/member/login";
         }
-        biddingAddDTO.setMemberId(userSession.getId());
-        biddingAddDTO.setProductId(productId);
 
+        biddingAddDTO.setMemberId(userSession.getId());
+        Long productId = biddingAddDTO.getProductId();
         /*입찰 목록 생성*/
         biddingService.bidProduct(biddingAddDTO);
 
         model.addAttribute("productId",productId);
+        model.addAttribute("bid",biddingAddDTO.getBid());
 
         return "redirect:/product/detail/"+productId;
     }
     //상품 리스트 주소
     @GetMapping(value = "list")
-    public String list(@LoginUser SessionDTO userSession, Model model, @PageableDefault Pageable pageable) throws Exception {
+    public String list(@LoginUser SessionDTO userSession, Model model,
+                       @PageableDefault Pageable pageable) throws Exception {
 
         /*세션아이디로 동네 조회*/
         List<Long> coordinateList = null;
         List<TownFindDTO> townList = null;
+
         if(userSession!=null){
 
             townList= townService.townLists(userSession.getId());
@@ -148,17 +159,18 @@ public class ProductController {
                     .stream()
                     .map(TownFindDTO::getCoordinateId)
                     .collect(Collectors.toList());
-
         }
-
         SearchRequirements searchRequirements = SearchRequirements.builder()
                 .coordinateIdList(coordinateList)
                 .build();
 
+        System.out.println("동네이름 = " + searchRequirements.getCoordinateId());
         searchRequirements.setPageable(PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
                 pageable.getPageSize(),Sort.Direction.DESC, "uploadDate"));
 
         List<ProductListDTO> list = productService.getProductListDTO(searchRequirements).getContent();
+
+        System.out.println("list = " + list.size());
 
         model.addAttribute("list",list);
         model.addAttribute("townList",townList);
@@ -320,6 +332,7 @@ public class ProductController {
         ProductFindDTO productFindDTO = productService.getProductFindDTO(productId);
         List<ProductImageDTO> imageList = productImageService.getProductImage(productId);
 
+        System.out.println("productFindDTO.getCategoryName() = " + productFindDTO.getCategoryName());
         /*카테고리 조회*/
         List<Category> topCategory = categoryService.findTopCategory();
         List<Category> subCategory = categoryService.findSubCategory();
@@ -328,7 +341,7 @@ public class ProductController {
         model.addAttribute("townList", townList);
         model.addAttribute("topCategory", topCategory);
         model.addAttribute("subCategory", subCategory);
-        model.addAttribute("dto",productFindDTO);
+        model.addAttribute("productFindDTO",productFindDTO);
         model.addAttribute("productId",productId);
 
         return "product/updateProduct";

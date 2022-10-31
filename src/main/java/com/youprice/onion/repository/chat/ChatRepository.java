@@ -14,7 +14,12 @@ import java.util.Optional;
 public interface ChatRepository extends JpaRepository<Chat, Long> {
 	Slice<Chat> findByChatroomId(Long chatroomId, Pageable pageable);
 
-	@Query(value = "select c1.* from (select c.* from Chat c join Chatroom cr on c.chatroom_id = cr.chatroom_id where cr.chatroom_id = :chatroomId order by c.chat_id desc) c1 where rownum = 1", nativeQuery = true)
+	@Query(value = "select c0.* from (" +
+					"	select c.* from Chat c " +
+					"	join Chatroom cr on c.chatroom_id = cr.chatroom_id " +
+					"	where cr.chatroom_id = :chatroomId order by c.chat_id desc) c0 " +
+					"where rownum = 1",
+			nativeQuery = true)
 	Optional<Chat> findOneByChatroomId(@Param("chatroomId") Long chatroomId);
 
 

@@ -4,32 +4,21 @@
 <meta name="_csrf" content="${_csrf.token}">
 <meta name="_csrf_header" content="${_csrf.headerName}">
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-	<style>
-		dl { }
-		dt { float: left; margin-right: 10px;}
-		dd { float: left; margin-right: 10px;}
-	</style>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>상품 정보</title>
-</head>
-<body>
 <!-- Product Details Section Begin -->
-<form action="/product/bid/${productId}" method="get" enctype="multipart/form-data" id="productForm">
+<form action="/product/bid" method="post" id="productForm">
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 <section class="product-details spad">
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-6 col-md-6">
 				<div class="product__details__pic">
 					<div class="product__details__pic__item">
-						<div>
 <%--							<img class="product__details__pic__item--large" src="img/product/${productFindDTO.representativeImage}" alt=""/>--%>
-						<c:forEach var="imageList" items="${productFindDTO.productImageDTOList}">
-							<img src="/img/product/${imageList.productImageName}" alt=""/>
-						</c:forEach>
-						</div>
+						<ul>
+							<c:forEach var="imageList" items="${productFindDTO.productImageDTOList}">
+							<li style="display: flex"><img src="/img/product/${imageList.productImageName}" alt=""/></li>
+							</c:forEach>
+						</ul>
 					</div>
 				</div>
 			</div>
@@ -60,7 +49,7 @@
 								<fmt:parseDate var="deadline" value="${productFindDTO.auctionDeadline}" pattern="yyyy-MM-dd'T'HH:mm"/>
 								<input type="hidden" id="dead" value="${productFindDTO.auctionDeadline}"/>
 								<p class="time-title">경매 마감까지 남은 시간</p>
-								<div class="time" >
+								<div class="time">
 									<span id="d-day-hour"></span>
 									<span class="col">:</span>
 									<span id="d-day-min"></span>
@@ -71,7 +60,7 @@
 									<div>
 										현재가:
 										<c:choose>
-											<c:when test="${!empty bid}"><fmt:formatNumber maxFractionDigits="3" value="${bid}"/>원</c:when>
+											<c:when test="${not empty bid}"><fmt:formatNumber maxFractionDigits="3" value="${bid}"/>원</c:when>
 											<c:otherwise><fmt:formatNumber maxFractionDigits="3" value="${productFindDTO.price}"/>원</c:otherwise>
 										</c:choose>
 									</div>
@@ -93,33 +82,8 @@
 													<fmt:formatNumber maxFractionDigits="3" value="${productFindDTO.price}"/>(원)
 												</c:otherwise>
 											</c:choose>
+											<input type="hidden" id="exBid" value="${bid}"/>
 										</div>
-<%--										<div id="limit_price_desc" style="margin-top:-8px; margin-left:0px; padding:10px; display:none; position:absolute; border:2px solid #3baecb; background:#f6f7f8; text-align:left;line-height:1.4; z-index:10">--%>
-<%--											<strong>최소입찰가</strong>는 <strong>현재가 금액 단위별로 일정금액</strong>이 증가됩니다. <br><strong>최소입찰가 이상</strong>으로 입찰해 주세요.<br/><br/>--%>
-<%--											<div>--%>
-<%--												<dl height="17">--%>
-<%--													<dt bgcolor="#fff9f3" style="text-align:center"><strong>입찰금액 범위</strong></dt>--%>
-<%--													<dt bgcolor="#fff9f3" style="text-align:center"><strong>최소입찰 단위</strong></dt>--%>
-<%--													<br/>--%>
-<%--												</dl>--%>
-<%--												<dl>--%>
-<%--													<dt bgcolor="#ffffff" style="text-align:center">시작가  ~  10,000원 미만</dt>--%>
-<%--													<dt bgcolor="#ffffff" style="text-align:center">1,000원</dt>--%>
-<%--												</dl>--%>
-<%--												<dl>--%>
-<%--													<dt bgcolor="#ffffff" style="text-align:center">10,000원  ~  100,000원 미만</dt>--%>
-<%--													<dt bgcolor="#ffffff" style="text-align:center">5,000원</dt>--%>
-<%--												</dl>--%>
-<%--												<dl>--%>
-<%--													<dt bgcolor="#ffffff" style="text-align:center">100,000원  ~  500,000원 미만</dt>--%>
-<%--													<dd bgcolor="#ffffff" style="text-align:center">10,000원</dd>--%>
-<%--												</dl>--%>
-<%--												<dl>--%>
-<%--													<dt bgcolor="#ffffff" style="text-align:center">500,000원이상 ~</dt>--%>
-<%--													<dd bgcolor="#ffffff" style="text-align:center">50,000원</dd>--%>
-<%--												</dl>--%>
-<%--											</div>--%>
-<%--										</div>--%>
 										<div>
 											<dl>
 												<dt>입찰자</dt>
@@ -176,21 +140,20 @@
 							<div class="product__item">
 								<div class="product__item__text">
 									<input type="hidden" id="wishId" value="1"/>
-									<input type="hidden" id="productId" value="${productId}"/>
 									<c:choose>
 										<c:when test="${productFindDTO.auctionDeadline ne null}">
 										<p style="text-align: left">
-											입찰가(원): <input type="text" id="nowBid" name="bid" placeholder="가격을 입력하세요"/>
-											<input type="hidden" id="exBid" value="${bid}"/>
+											입찰가(원): <input type="text" name="bid" placeholder="가격을 입력하세요"/>
 										</p>
 											<input type="submit" class="primary-btn" value="입찰하기" style="border: 0px"></a>
+
 										</c:when>
 										<c:otherwise>
 											<a href="/order/payment/${productId}" class="primary-btn">구매하기</a>
 										</c:otherwise>
 									</c:choose>
-									<a href="/complain/created" class="primary-btn">신고하기</a>
-									<a href="#" class="primary-btn">채팅하기</a>
+									<a href="/complain/created/${productId}" class="primary-btn">신고하기</a>
+									<button type="button" class="primary-btn" onclick="createChatroom(${productId})">채팅하기</button>
 									<a href="/wish/addWish/${productId}"><div class="primary-btn"><i class="fa fa-heart wishBtn"></i>찜하기</div></a>
 								</div>
 							</div>
@@ -198,7 +161,7 @@
 					</c:choose>
 					<ul>
 						<li><b>Availability</b> <span>${productFindDTO.productProgress}</span></li>
-						<li><b>Shipping</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li>
+						<li><b>Payment</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li>
 						<li><b>Share on</b>
 							<div class="share">
 								<a href="#"><i class="fa fa-facebook"></i></a>
@@ -269,5 +232,3 @@
 	</div>
 </section>
 <!-- Related Product Section End -->
-</body>
-</html>

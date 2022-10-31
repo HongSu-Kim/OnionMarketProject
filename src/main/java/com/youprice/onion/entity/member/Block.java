@@ -2,11 +2,13 @@ package com.youprice.onion.entity.member;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Block {
 
     @Id
@@ -28,7 +30,4 @@ public class Block {
         this.target = target;
     }
 
-    public Block() {
-
-    }
 }

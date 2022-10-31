@@ -1,6 +1,6 @@
 
-let header = $("meta[name='_csrf_header']").attr("content");
-let token = $("meta[name='_csrf']").attr("content");
+// let header = $("meta[name='_csrf_header']").attr("content");
+// let token = $("meta[name='_csrf']").attr("content");
 
 $(function () {
     if ($('#mode').val() == 'update') {
@@ -9,7 +9,7 @@ $(function () {
 })
 
 // update mode
-function update() {
+let update = function () {
     $('#recipient').attr("readonly", false)
     $('#deliveryTel').attr("readonly", false)
     $('#postcode').attr("readonly", false)
@@ -26,7 +26,7 @@ function update() {
 }
 
 // update save
-function save() {
+let save = function () {
     $.ajax({
         url: "/order/update",
         method: "POST",

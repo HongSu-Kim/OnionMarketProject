@@ -35,11 +35,6 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 	private final ProductRepository.Querydsl productRepositoryQuerydsl;
     private final ProductImageRepository productImageRepository;
-    private final OrderService orderService;
-
-    private final ProhibitionKeywordRepositoy prohibitionKeywordRepositoy;
-
-    private final static String COOKIE = "alreadyViewCookie";
 
 	@Override
 	public Page<ProductListDTO> getProductListDTO(SearchRequirements searchRequirements) {
@@ -53,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
 
         Member member = memberRepository.findById(productAddDTO.getMemberId()).orElse(null);
         Town town = townRepositoy.findById(productAddDTO.getTownId()).orElse(null);
-        Category category = categoryRepository.findById(productAddDTO.getCategoryId()).orElse(null);
+        Category category = categoryRepository.findByCategoryName(productAddDTO.getCategoryName()).orElse(null);
 
         //대표이미지 설정
         productAddDTO.setRepresentativeImage(getImageName()+fileList.get(0).getOriginalFilename());
@@ -82,42 +77,39 @@ public class ProductServiceImpl implements ProductService {
         Town town = townRepositoy.findById(updateDTO.getTownId()).orElse(null);
 
         //수정한 카테고리번호
-        Category category = categoryRepository.findById(updateDTO.getCategoryId()).orElse(null);
+        Category category = categoryRepository.findByCategoryName(updateDTO.getCategoryName()).orElse(null);
         //리턴처리해줘야함
+
+        Product product = productRepository.findById(productId).orElse(null);
 
         //대표이미지 설정
         updateDTO.setRepresentativeImage(getImageName()+updateDTO.getProductImageName().get(0).getOriginalFilename());
 
-        Product product = productRepository.findById(productId).orElse(null);
         product.updateProduct(productId, town, category, updateDTO);
 
-        productRepository.save(product);
+        Long updateProductId = productRepository.save(product).getId();
         //상품 이미지 수정
         //반복으로 지우고 저장
         String path = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\product";
 
-        //조회한 값
-        List<ProductImage> imageList = updateImage(productId, updateDTO.getProductImageName());
-        for(ProductImage image : imageList){
-            
-            List<ProductImage> productImageList = productImageRepository.findByProductId(productId);
-            for (ProductImage productImage : productImageList){
+        List<ProductImage> oldImageList = product.getProductImageList();
 
-                productImageRepository.delete(productImage);
+        for (ProductImage oldImage : oldImageList) {
 
-                File file = new File(path+"\\"+productImage.getProductImageName());
-                if (file.exists()) {
-                    file.delete();
-                }
+            productImageRepository.delete(oldImage);
+
+            File file = new File(path+"\\"+oldImage.getProductImageName());
+            if (file.exists()) {
+                file.delete();
             }
-
-            image.updateImage(image.getId(), product, image.getProductImageName());
-
-            productImageRepository.save(image);
-
+        }
+        //조회한 값
+        List<ProductImage> imageList = productImages(productId, updateDTO.getProductImageName());
+        for(ProductImage newImage : imageList){
+            productImageRepository.save(newImage);
         }
 
-        return productRepository.save(product).getId();
+        return updateProductId;
     }
 
 	// 상품상태 수정

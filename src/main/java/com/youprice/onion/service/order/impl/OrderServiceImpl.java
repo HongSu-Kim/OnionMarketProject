@@ -13,23 +13,19 @@ import com.youprice.onion.repository.order.DeliveryRepository;
 import com.youprice.onion.repository.order.OrderRepository;
 import com.youprice.onion.repository.product.ProductRepository;
 import com.youprice.onion.service.order.OrderService;
-import com.youprice.onion.util.PaymentService;
+import com.youprice.onion.util.PaymentUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 @RequiredArgsConstructor
@@ -42,7 +38,6 @@ public class OrderServiceImpl implements OrderService {
 	private final DeliveryRepository deliveryRepository;
 	private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
-	private final PaymentService paymentService;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -143,7 +138,7 @@ public class OrderServiceImpl implements OrderService {
 			// imp 결제시 환불
 			if (order.getImp_uid() != null){
 				try {
-					paymentService.paymentCancel(order.getImp_uid(), order.getOrderNum(), order.getOrderPayment());
+					PaymentUtil.paymentCancel(order.getImp_uid(), order.getOrderNum(), order.getOrderPayment());
 				} catch (IOException ioe) {
 					log.error("결제 취소중 오류입니다 : " + ioe.toString());
 					throw new RuntimeException();
