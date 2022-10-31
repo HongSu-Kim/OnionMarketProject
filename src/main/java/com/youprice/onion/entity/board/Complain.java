@@ -32,7 +32,7 @@ public class Complain {
     private String complainContent; // 신고내용
     private String status; // 처리상태
 
-    public Complain(Member member, Product product, Chatroom chatroom, String complainType,
+    public Complain(Member member, Product product, String complainType,
                                                 String complainContent, String status) {
         this.member = member;
         this.product = product;
