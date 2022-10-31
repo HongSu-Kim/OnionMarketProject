@@ -16,7 +16,7 @@
                     <h4>회원가입</h4>
                         <div class="checkout__input">
                             <p>아이디<span>*</span></p>
-                            <input type="text" name="userId" value="${memberJoinDTO.userId}" placeholder="아이디를 입력해 주세요."/>
+                            <input type="text" name="userId" value="${memberJoinDTO.userId}" placeholder="아이디를 입력해 주세요." autofocus/>
                             <span id="valid_userId">${valid_userId}</span>
                         </div>
                         <div class="checkout__input">

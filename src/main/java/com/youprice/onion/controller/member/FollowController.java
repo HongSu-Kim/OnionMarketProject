@@ -29,7 +29,8 @@ public class FollowController {
     //팔로우 목록 페이지
     @GetMapping("list")
     public String followList(@LoginUser SessionDTO sessionDTO, Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        if (sessionDTO == null) return "redirect:/member/login";
+        if (sessionDTO == null)
+            return "redirect:/member/login";
 
         Page<FollowDTO> page = followService.getFollowList(sessionDTO.getId(), pageable);
 

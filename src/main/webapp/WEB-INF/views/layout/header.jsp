@@ -181,7 +181,7 @@
 						</ul>
 						<nav class="header__menu profile">
 							<ul>
-								<li><a href="/product/list" class="header__nickname">${sessionDTO.nickname}</a>
+								<li><a href="/member/mypage" class="header__nickname">${sessionDTO.nickname}</a>
 									<ul class="header__menu__dropdown nickname">
 										<li><a href="/member/mypage">마이페이지</a></li>
 										<li><a href="/review/mylist/${sessionDTO.id}">나의 후기</a></li>
