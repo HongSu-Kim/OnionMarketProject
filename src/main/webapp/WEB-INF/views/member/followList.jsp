@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <section class="spad">
 	<div class="container">
-		<div class="buyList">
+		<div class="followList">
 
 			<!-- Follow List -->
 			<div class="row">
@@ -13,183 +13,45 @@
 						<table>
 							<thead>
 							<tr>
-								<th>상품정보</th>
-								<th>주문번호</th>
-								<th>결제금액</th>
-								<th>주문날짜</th>
-								<th>주문상태</th>
+								<th>프로필 사진</th>
+								<th>닉네임</th>
+								<th>평점</th>
+								<th>팔로우 상태</th>
 							</tr>
 							</thead>
 							<tbody>
 
-							<!-- 주문 없음 -->
+							<!-- 팔로잉 없음 -->
 							<c:if test="${empty page.content}">
 								<tr>
 									<td colspan="5"class="text-center">팔로잉한 회원이 없습니다.</td>
 								</tr>
 							</c:if>
 
-							<!-- 주문 정보 -->
-										<div class="people-nearby">
-
-											<div class="nearby-user">
-												<div class="row">
-													<div class="col-md-2 col-sm-2">
-														<img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="user" class="profile-photo-lg">
-													</div>
-													<div class="col-md-7 col-sm-7">
-														<h5><a href="#" class="profile-link">Sophia Page</a></h5>
-														<p>Software Engineer</p>
-														<p class="text-muted">500m away</p>
-													</div>
-													<div class="col-md-3 col-sm-3">
-														<button class="btn btn-primary pull-right">Add Friend</button>
-													</div>
-												</div>
-											</div>
-											<div class="nearby-user">
-												<div class="row">
-													<div class="col-md-2 col-sm-2">
-														<img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="user" class="profile-photo-lg">
-													</div>
-													<div class="col-md-7 col-sm-7">
-														<h5><a href="#" class="profile-link">Emma Johnson</a></h5>
-														<p>Model at Fashion</p>
-														<p class="text-muted">800m away</p>
-													</div>
-													<div class="col-md-3 col-sm-3">
-														<button class="btn btn-primary pull-right">Add Friend</button>
-													</div>
-												</div>
-											</div>
-											<div class="nearby-user">
-												<div class="row">
-													<div class="col-md-2 col-sm-2">
-														<img src="https://bootdey.com/img/Content/avatar/avatar5.png" alt="user" class="profile-photo-lg">
-													</div>
-													<div class="col-md-7 col-sm-7">
-														<h5><a href="#" class="profile-link">Nora Wilson</a></h5>
-														<p>Writer at Newspaper</p>
-														<p class="text-muted">2.5km away</p>
-													</div>
-													<div class="col-md-3 col-sm-3">
-														<button class="btn btn-primary pull-right">Add Friend</button>
-													</div>
-												</div>
-											</div>
-											<div class="nearby-user">
-												<div class="row">
-													<div class="col-md-2 col-sm-2">
-														<img src="https://bootdey.com/img/Content/avatar/avatar4.png" alt="user" class="profile-photo-lg">
-													</div>
-													<div class="col-md-7 col-sm-7">
-														<h5><a href="#" class="profile-link">Diana Amber</a></h5>
-														<p>Student</p>
-														<p class="text-muted">700m away</p>
-													</div>
-													<div class="col-md-3 col-sm-3">
-														<button class="btn btn-primary pull-right">Add Friend</button>
-													</div>
-												</div>
-											</div>
-											<div class="nearby-user">
-												<div class="row">
-													<div class="col-md-2 col-sm-2">
-														<img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="user" class="profile-photo-lg">
-													</div>
-													<div class="col-md-7 col-sm-7">
-														<h5><a href="#" class="profile-link">Addison Thomas</a></h5>
-														<p>Barber at Fashion</p>
-														<p class="text-muted">1.5km away</p>
-													</div>
-													<div class="col-md-3 col-sm-3">
-														<button class="btn btn-primary pull-right">Add Friend</button>
-													</div>
-												</div>
-											</div>
-											<div class="nearby-user">
-												<div class="row">
-													<div class="col-md-2 col-sm-2">
-														<img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="user" class="profile-photo-lg">
-													</div>
-													<div class="col-md-7 col-sm-7">
-														<h5><a href="#" class="profile-link">Jonathon Thompson</a></h5>
-														<p>Fashion Designer</p>
-														<p class="text-muted">2km away</p>
-													</div>
-													<div class="col-md-3 col-sm-3">
-														<button class="btn btn-primary pull-right">Add Friend</button>
-													</div>
-												</div>
-											</div>
-											<div class="nearby-user">
-												<div class="row">
-													<div class="col-md-2 col-sm-2">
-														<img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="user" class="profile-photo-lg">
-													</div>
-													<div class="col-md-7 col-sm-7">
-														<h5><a href="#" class="profile-link">Olivia Steward</a></h5>
-														<p>Creative Director</p>
-														<p class="text-muted">2km away</p>
-													</div>
-													<div class="col-md-3 col-sm-3">
-														<button class="btn btn-primary pull-right">Add Friend</button>
-													</div>
-												</div>
-											</div>
-											<div class="nearby-user">
-												<div class="row">
-													<div class="col-md-2 col-sm-2">
-														<img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="user" class="profile-photo-lg">
-													</div>
-													<div class="col-md-7 col-sm-7">
-														<h5><a href="#" class="profile-link">Elena Foster</a></h5>
-														<p>Executive Officer</p>
-														<p class="text-muted">4km away</p>
-													</div>
-													<div class="col-md-3 col-sm-3">
-														<button class="btn btn-primary pull-right">Add Friend</button>
-													</div>
-												</div>
-											</div>
-											<div class="nearby-user">
-												<div class="row">
-													<div class="col-md-2 col-sm-2">
-														<img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="user" class="profile-photo-lg">
-													</div>
-													<div class="col-md-7 col-sm-7">
-														<h5><a href="#" class="profile-link">Brian Walton</a></h5>
-														<p>Designer at Designer</p>
-														<p class="text-muted">3km away</p>
-													</div>
-													<div class="col-md-3 col-sm-3">
-														<button class="btn btn-primary pull-right">Add Friend</button>
-													</div>
-												</div>
-											</div>
-											<div class="nearby-user">
-												<div class="row">
-													<div class="col-md-2 col-sm-2">
-														<img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="user" class="profile-photo-lg">
-													</div>
-													<div class="col-md-7 col-sm-7">
-														<h5><a href="#" class="profile-link">Cris Haris</a></h5>
-														<p>General Manager at Manager</p>
-														<p class="text-muted">1km away</p>
-													</div>
-													<div class="col-md-3 col-sm-3">
-														<button class="btn btn-primary pull-right">Add Friend</button>
-													</div>
-												</div>
-											</div>
-										</div>
-
+							<!-- 팔로잉 정보 -->
+							<c:forEach var="followDTO" items="${page.content}">
+								<tr>
+									<td class="text-align-left pointer" onclick="location.href='/member/profile/${followDTO.targetDTO.id}'">
+										<img src="#" class="list-img">
+									</td>
+									<td><a href="/member/profile/${followDTO.targetDTO.id}">${followDTO.targetDTO.nickname}</a></td>
+									<td>${followDTO.targetDTO.userGrade}</td>
+									<td>
+										<c:if test="${!followDTO.targetDTO.followCheck}">
+											<button type="button" onclick="location.href='/follow/removeFollow/${followDTO.targetDTO.id}'">팔로잉</button>
+										</c:if>
+										<c:if test="${followDTO.targetDTO.followCheck}">
+											<button type="button" onclick="location.href='/follow/addFollow/${followDTO.targetDTO.id}'">언팔로우</button>
+										</c:if>
+									</td>
+								</tr>
+							</c:forEach>
 							</tbody>
 						</table>
 					</div>
 				</div>
 			</div>
-			<!-- Buy List End -->
+			<!-- Follow List End -->
 
 			<!-- List Paging -->
 			<div class="row">
