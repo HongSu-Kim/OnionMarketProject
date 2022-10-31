@@ -5,6 +5,8 @@ import com.youprice.onion.dto.board.InquiryFormDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
+
 public interface InquiryService {
     InquiryDTO findInquiryDTO(Long inquiryId);
     Long saveInquiry(InquiryFormDTO inquiryFormDTO);
@@ -14,4 +16,6 @@ public interface InquiryService {
     Page<InquiryDTO> findAll(Pageable pageable);
     Page<InquiryDTO> MemberReviewList(Long memberId, Pageable pageable);
     Page<InquiryDTO> getSearchList(String field, String word, Pageable pageable);
+
+    Page<InquiryDTO> getPeriodSearch(String dt_fr, String dt_to, Long memberId, Pageable pageable);
 }
