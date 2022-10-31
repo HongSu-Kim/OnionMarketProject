@@ -144,7 +144,7 @@ public class Member {
 
     public int addPoint(int point){
         this.point += point;
-        return this.point;
+        return point;
     }
     public Member addComplainCount(){
         this.complaintCount += 1;

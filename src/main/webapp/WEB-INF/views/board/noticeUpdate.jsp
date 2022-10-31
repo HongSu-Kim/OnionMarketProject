@@ -1,51 +1,91 @@
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%
-    request.setCharacterEncoding("UTF-8");
-    String cp = request.getContextPath();
-%>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Onion Market</title>
-</head>
-<body>
-    <br/>
-    <div>
-    <h1>공지사항 수정</h1>
-    </div>
-    <br/>
-    <br/>
-    <form:form method="post" action="/notice/update/${noticeDTO.noticeId}" enctype="multipart/form-data" modelAttribute="noticeUpdateDTO">
-    <div>
-        <table border="1" align="center">
-            <tr>
-                <td colspan="3"><input type="text" name="noticeSubject" placeholder="${noticeDTO.noticeSubject}"></td>
-            </tr>
-            <tr>
-                <td colspan="3"><input type="textarea" name="noticeContent" placeholder="${noticeDTO.noticeContent}"></td>
-            </tr>
-            <div>
-                <c:forEach items="${noticeDTO.noticeImageList}" var="noticeImageDTO">
-                <tr>
-                    <td> <img src="/images/notice/${noticeImageDTO.noticeImageName}" width="150" height="150"/> </td>
-                    <td>${noticeImageDTO.noticeImageName}</td>
-                    <td><input type="button" onclick="location.href='/notice/image/delete/${noticeImageDTO.id}/${noticeDTO.noticeId}'" value="삭제"></td>
-                </tr>
-                </c:forEach>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
+<c:set var="cp" value="<%=request.getContextPath()%>"/>
+
+<!-- Contact Form Begin -->
+<section class="contact-form spad">
+    <form:form method="post" action="/notice/update/${noticeDTO.noticeId}" enctype="multipart/form-data"
+               modelAttribute="form">
+        <div class="container">
+            <div class="row">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                <input type="hidden" name="memberId" value="${memberDTO.id}">
+
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <h2>공지사항 수정</h2>
+                    </div>
+                </div>
             </div>
-        </table>
-    </div>
-        <div>
-            <label class="fileButton" for="noticeImage"><p id="fileFont">이미지 첨부하기</p></label>
-            <input type="file" id="noticeImage" name="noticeImageName" multiple="multiple" style="display: none"/>
+
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <form:errors path="noticeSubject" cssStyle="font-weight: bold; color: #e95050"/>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <form:errors path="noticeType" cssClass="field-error"
+                                 cssStyle="font-weight: bold; color: #e95050"/></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <input type="text" id="noticeSubject" name="noticeSubject"
+                           value="${form.noticeSubject == null ? noticeDTO.noticeSubject : form.noticeSubject}"
+                           class="form-control" style="height: 42px">
+                </div>
+
+                <div class="col-lg-6">
+                    <form:select id="noticeType" path="noticeType" name="noticeType" cssClass="nice-select wide">
+                        <form:option selected="selected"
+                                     value="${noticeDTO.noticeType}">${noticeDTO.noticeType}</form:option>
+                        <form:option value="NOTICE">NOTICE</form:option>
+                        <form:option value="QNA">QNA</form:option>
+                    </form:select>
+                </div>
+
+                <form:errors path="noticeContent" cssClass="field-error"
+                             cssStyle="margin-left: 15px; font-weight: bold; color: #e95050"/>
+                <div class="col-lg-12 text-center">
+                    <textarea name="noticeContent"
+                              style="height: 300px">${form.noticeContent == null ? noticeDTO.noticeContent : form.noticeContent}</textarea>
+                </div>
+
+                <div style="margin-left: 15px">
+                    <div class="shoping__cart__btns">
+                        <div>
+                            <label class="primary-btn cart-btn" for="noticeImage"
+                                   style="height: 50px; margin-left: 5px"><p
+                                    style="line-height: 20px; width: 80px; font-weight: bold">사진 첨부</p></label>
+                            <input type="file" id="noticeImage" name="noticeImageName" multiple="multiple"
+                                   class="upload-hidden" style="display: none;" onchange="setDetailImage(event);"/>
+                        </div>
+
+                        <div id="images_container" style="margin-bottom: 10px"></div>
+
+                        <div class="d-flex" style="margin-left: 10px">
+                            <c:forEach items="${noticeDTO.noticeImageList}" var="noticeImageDTO">
+                                <div>
+                                    <img src="/img/notice/${noticeImageDTO.noticeImageName}" width="130" height="130"/><br/>
+                                    <input type="button" style="width: 130px"
+                                           onclick="location.href='/notice/image/delete/${noticeImageDTO.id}/${noticeDTO.noticeId}'"
+                                           value="삭제"><br/></div>
+                            </c:forEach>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-12 text-center">
+                    <button type="submit" class="site-btn">수정하기</button>
+                    <button type="button" class="site-btn" onclick="location.href='/notice/list'"
+                            style="background-color: #b2b2b2">취소
+                    </button>
+                </div>
+
+            </div>
         </div>
-    <div>
-        <button type="submit">수정완료</button>
-        <button type="button" onclick="location.href='/notice/list'">취소</button>
-    </div>
     </form:form>
-</body>
-</html>
+</section>
+<!-- Contact Form End -->
+

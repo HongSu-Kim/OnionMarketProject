@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.NoSuchElementException;
 
 @Service
@@ -60,13 +62,13 @@ public class InquiryServiceImpl implements InquiryService {
     }
     // 특정회원의 문의내역
     public Page<InquiryDTO> MemberReviewList(Long memberId, Pageable pageable){
-        return inquiryRepository.findAllByMember_Id(memberId, pageable).map(InquiryDTO::new);
+        return inquiryRepository.findAllByMember_Id(memberId,pageable).map(InquiryDTO::new);
     }
 
     // 검색
     public Page<InquiryDTO> getSearchList(String field, String word, Pageable pageable){
         if(field.equals("name")) {
-            return inquiryRepository.findAllByMember_NameContaining(word, pageable).map(InquiryDTO::new);
+            return inquiryRepository.findAllByMember_NicknameContaining(word, pageable).map(InquiryDTO::new);
         } else if(field.equals("all")){
             return inquiryRepository.findAllByInquirySubjectContaining(word, pageable).map(InquiryDTO::new);
         } else {
@@ -74,6 +76,18 @@ public class InquiryServiceImpl implements InquiryService {
         }
     }
 
+    public Page<InquiryDTO> getPeriodSearch(String dt_fr, String dt_to, Long memberId, Pageable pageable){
 
+        String from = dt_fr.replace(".", "-");
+        String to = dt_to.replace(".", "-");
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate fromDate = LocalDate.parse(from, dateTimeFormatter);
+        LocalDate toDate = LocalDate.parse(to, dateTimeFormatter);
+
+        System.out.println("from = " + from);
+
+        return inquiryRepository.findAllByInquiryDateBetweenAndMember_Id(fromDate, toDate, memberId, pageable).map(InquiryDTO::new);
+    }
 
 }
