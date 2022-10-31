@@ -27,10 +27,6 @@ public class Complain {
     @JoinColumn(name = "product_id")
     private Product product; // 상품번호 FK
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chatroom_id")
-    private Chatroom chatroom; // 채팅방번호 FK
-
     private String complainType; // 신고유형
     private LocalDateTime complainDate; //신고일자
     private String complainContent; // 신고내용
@@ -40,7 +36,6 @@ public class Complain {
                                                 String complainContent, String status) {
         this.member = member;
         this.product = product;
-        this.chatroom = chatroom;
         this.complainType = complainType;
         this.complainDate = LocalDateTime.now();
         this.complainContent = complainContent;
