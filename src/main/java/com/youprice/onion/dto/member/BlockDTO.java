@@ -18,6 +18,8 @@ public class BlockDTO {
         blockId = block.getId();
         memberDTO = new MemberDTO(block.getMember());
         targetDTO = new MemberDTO(block.getTarget());
+
+        memberDTO = new MemberDTO(block.getMember());
     }
 
 }

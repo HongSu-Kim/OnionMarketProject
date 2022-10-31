@@ -4,9 +4,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <section class="spad">
 	<div class="container">
-		<div class="followList">
+		<div class="blockList">
 
-			<!-- Follow List -->
+			<!-- Block List -->
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="shoping__cart__table">
@@ -16,32 +16,32 @@
 								<th>프로필 사진</th>
 								<th>닉네임</th>
 								<th>평점</th>
-								<th>팔로우 상태</th>
+								<th>차단 상태</th>
 							</tr>
 							</thead>
 							<tbody>
 
-							<!-- 팔로잉 없음 -->
+							<!-- 차단한 회원 없음 -->
 							<c:if test="${empty page.content}">
 								<tr>
-									<td colspan="5"class="text-center">팔로잉한 회원이 없습니다.</td>
+									<td colspan="5"class="text-center">차단한 회원이 없습니다.</td>
 								</tr>
 							</c:if>
 
-							<!-- 팔로잉 정보 -->
-							<c:forEach var="followDTO" items="${page.content}">
+							<!-- 차단 정보 -->
+							<c:forEach var="blockDTO" items="${page.content}">
 								<tr>
-									<td class="text-align-left pointer" onclick="location.href='/member/profile/${followDTO.targetDTO.id}'">
+									<td class="text-align-left pointer" onclick="location.href='/member/profile/${blockDTO.targetDTO.id}'">
 										<img src="#" class="list-img">
 									</td>
-									<td><a href="/member/profile/${followDTO.targetDTO.id}">${followDTO.targetDTO.nickname}</a></td>
-									<td>${followDTO.targetDTO.userGrade}</td>
+									<td><a href="/member/profile/${blockDTO.targetDTO.id}">${blockDTO.targetDTO.nickname}</a></td>
+									<td>${blockDTO.targetDTO.userGrade}</td>
 									<td>
-										<c:if test="${!followDTO.targetDTO.followCheck}">
-											<button type="button" onclick="location.href='/follow/removeFollow/${followDTO.targetDTO.id}'">팔로잉</button>
+										<c:if test="${!blockDTO.targetDTO.blockCheck}">
+											<button type="button" onclick="location.href='/block/removeBlock/${blockDTO.targetDTO.id}'">차단해제</button>
 										</c:if>
-										<c:if test="${followDTO.targetDTO.followCheck}">
-											<button type="button" onclick="location.href='/follow/addFollow/${followDTO.targetDTO.id}'">언팔로우</button>
+										<c:if test="${blockDTO.targetDTO.blockCheck}">
+											<button type="button" onclick="location.href='/block/addBlock/${blockDTO.targetDTO.id}'">차단</button>
 										</c:if>
 									</td>
 								</tr>
@@ -51,7 +51,7 @@
 					</div>
 				</div>
 			</div>
-			<!-- Follow List End -->
+			<!-- Block List End -->
 
 			<!-- List Paging -->
 			<div class="row">

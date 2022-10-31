@@ -1,5 +1,6 @@
 package com.youprice.onion.controller.member;
 
+import com.youprice.onion.dto.member.FollowDTO;
 import com.youprice.onion.dto.member.FollowListDTO;
 import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.security.auth.LoginUser;
@@ -27,14 +28,11 @@ public class FollowController {
 
     //팔로우 목록 페이지
     @GetMapping("list")
-    public String followList(@LoginUser SessionDTO sessionDTO, Model model, @PageableDefault Pageable pageable) {
+    public String followList(@LoginUser SessionDTO sessionDTO, Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         if (sessionDTO == null)
             return "redirect:/member/login";
 
-        pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
-                pageable.getPageSize(), Sort.Direction.DESC, "id");
-
-        Page<FollowListDTO> page = followService.getFollowList(sessionDTO.getId(), pageable);
+        Page<FollowDTO> page = followService.getFollowList(sessionDTO.getId(), pageable);
 
         model.addAttribute("page", page);
         return "member/followList";
@@ -51,18 +49,20 @@ public class FollowController {
             return AlertRedirect.warningMessage(response, "/", "회원이 존재하지 않습니다.");
         }
 
-        return AlertRedirect.warningMessage(response, "/member/profile/" + targetId, "해당 회원을 팔로우 했습니다.");
+        return AlertRedirect.warningMessage(response, "/follow/list/", "해당 회원을 팔로우 했습니다.");
+//        return AlertRedirect.warningMessage(response, "/member/profile/" + targetId, "해당 회원을 팔로우 했습니다.");
     }
 
     //팔로우 삭제
     @GetMapping("removeFollow/{targetId}")
     @ResponseBody
-    public String removeFollowGet(@LoginUser SessionDTO sessionDTO, @RequestParam Long targetId, HttpServletResponse response) throws IOException {
+    public String removeFollowGet(@LoginUser SessionDTO sessionDTO, @PathVariable Long targetId, HttpServletResponse response) throws IOException {
         if (sessionDTO == null) return "redirect:/member/login";
 
         followService.removeFollow(sessionDTO.getId(), targetId);
 
-        return AlertRedirect.warningMessage(response, "/member/profile/" + targetId, "해당 회원을 언팔로우 했습니다.");
+        return AlertRedirect.warningMessage(response, "/follow/list/", "해당 회원을 언팔로우 했습니다.");
+//        return AlertRedirect.warningMessage(response, "/member/profile/" + targetId, "해당 회원을 언팔로우 했습니다.");
     }
 
 }
