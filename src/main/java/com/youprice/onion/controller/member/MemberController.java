@@ -157,6 +157,10 @@ public class MemberController {
 
         MemberDTO memberDTO = memberService.getMemberDTO(memberId, sessionDTO.getId());
 
+        if (sessionDTO.getId() == memberDTO.getId()) {
+            return "redirect:/member/mypage";
+        }
+
         model.addAttribute("memberDTO", memberDTO);
         return "member/profile";
     }
