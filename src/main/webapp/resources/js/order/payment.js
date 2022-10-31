@@ -3,8 +3,8 @@ $(function () {
 	const IMP = window.IMP;
 	IMP.init("imp88641673");
 
-	let header = $("meta[name='_csrf_header']").attr("content");
-	let token = $("meta[name='_csrf']").attr("content");
+	// let header = $("meta[name='_csrf_header']").attr("content");
+	// let token = $("meta[name='_csrf']").attr("content");
 
 	// 배송 받기
 	$('#delivery-true').click(function () {
