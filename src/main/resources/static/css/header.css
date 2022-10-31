@@ -6,4 +6,17 @@
 
 .header__cart__price.profile {
     margin-left: 15px;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+}
+
+.site-btn.mypage {
+    height: 50px;
+    width: 210px;
+    margin-left: 25px;
+}
+
+.header__nickname {
+    text-align: right;
 }

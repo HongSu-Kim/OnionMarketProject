@@ -40,6 +40,7 @@ public class ChatroomServiceImpl implements ChatroomService {
 		return chatroomRepository.findAllByMemberIdOrderByModifyDate(memberId).stream().map(chatroom -> {
 			ChatroomDTO chatroomDTO = new ChatroomDTO(chatroom);
 
+			// 가장 최근 채팅 정보
 			chatRepository.findOneByChatroomId(chatroomDTO.getChatroomId()).map(chat -> {
 				chatroomDTO.setChatDTO(new ChatDTO(chat));
 				return chat;
@@ -55,11 +56,15 @@ public class ChatroomServiceImpl implements ChatroomService {
 		return chatroomRepository.findById(chatroomId).map(chatroom -> {
 			ChatroomDTO chatroomDTO = new ChatroomDTO(chatroom);
 
+//			// 채팅 내역 - pageable
+//			chatroomDTO.setSlice(chatRepository.findByChatroomId(chatroomId, pageable).map(ChatDTO::new));
+
+			// 채팅 내역 순서 반대로 반환
 			Slice<ChatDTO> chatDTOSlice = chatRepository.findByChatroomId(chatroomId, pageable).map(ChatDTO::new);
 			List<ChatDTO> chatDTOList = new ArrayList<>(chatDTOSlice.getContent());
 			Collections.reverse(chatDTOList);
-
 			chatroomDTO.setSlice(new SliceImpl<>(chatDTOList, chatDTOSlice.getPageable(), chatDTOSlice.hasNext()));
+
 			return chatroomDTO;
 		}).orElse(null);
 	}
@@ -67,16 +72,17 @@ public class ChatroomServiceImpl implements ChatroomService {
 	// 채팅방 생성
 	@Override
 	public Long createChatroom(Long memberId, Long productId) {
-		// 채팅방이 이미 존재하면 아이디 반환
+		// 채팅방이 이미 존재하면 채팅방아이디 반환
 		Chatroom chatroom = chatroomRepository.findByMemberIdAndProductId(memberId, productId).orElse(null);
 		if (chatroom != null) {
 			return chatroom.getId();
 		}
 
+		// 채팅방 생성
 		Member member = memberRepository.findById(memberId).orElse(null);
 		Product product = productRepository.findById(productId).orElse(null);
-
 		chatroom = new Chatroom(member, product);
+		
 		return chatroomRepository.save(chatroom).getId();
 	}
 }

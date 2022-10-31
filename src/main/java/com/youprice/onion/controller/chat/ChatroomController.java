@@ -30,7 +30,6 @@ public class ChatroomController {
 	@ResponseBody
 	public ResponseEntity<?> chatroomList(@LoginUser SessionDTO sessionDTO) {
 		if (sessionDTO == null) return new ResponseEntity<>("/member/login", HttpStatus.UNAUTHORIZED);
-		log.error("ChatroomController : chatroom/list");
 
 		List<ChatroomDTO> chatroomDTOList = chatroomService.getChatroomDTOList(sessionDTO.getId());
 
@@ -42,22 +41,18 @@ public class ChatroomController {
 	@ResponseBody
 	public ResponseEntity<?> chatroomCreate(@LoginUser SessionDTO sessionDTO, @RequestParam Long productId) {
 		if (sessionDTO == null) return new ResponseEntity<>("/member/login", HttpStatus.UNAUTHORIZED);
-		log.error("ChatroomController : chatroom/create");
 
 		Long chatroomId = chatroomService.createChatroom(sessionDTO.getId(), productId);
 		return new ResponseEntity<>(chatroomId, HttpStatus.OK);
 	}
 
 	// 채팅 내역
-	@GetMapping("room/{chatroomId}/{page}")
+	@GetMapping("room/{chatroomId}")
 	@ResponseBody
-	public ResponseEntity<?> chatroomRoom(@PathVariable Long chatroomId, @PathVariable int page, @PageableDefault Pageable pageable) {
-
-		pageable = PageRequest.of(page, pageable.getPageSize(), Sort.Direction.DESC, "id");
-		log.error("ChatroomController : chatroom/room/" + chatroomId);
+	public ResponseEntity<?> chatroomRoom(@PathVariable Long chatroomId,
+										  @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
 		ChatroomDTO chatroomDTO = chatroomService.getChatroomDTO(chatroomId, pageable);
-		log.error("ChatroomController : chatroom/room/" + chatroomDTO.getChatroomId());
 
 		return new ResponseEntity<>(chatroomDTO, HttpStatus.OK);
 	}
