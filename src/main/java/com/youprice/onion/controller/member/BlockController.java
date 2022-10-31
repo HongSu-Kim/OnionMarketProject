@@ -52,7 +52,7 @@ public class BlockController {
     //팔로우 삭제
     @GetMapping("removeBlock/{targetId}")
     @ResponseBody
-    public String removeBlockGet(@LoginUser SessionDTO sessionDTO, @RequestParam Long targetId, HttpServletResponse response) throws IOException {
+    public String removeBlockGet(@LoginUser SessionDTO sessionDTO, @PathVariable Long targetId, HttpServletResponse response) throws IOException {
         if (sessionDTO == null) return "redirect:/member/login";
 
         blockService.removeBlock(sessionDTO.getId(), targetId);
