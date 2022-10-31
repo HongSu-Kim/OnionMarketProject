@@ -6,5 +6,4 @@ import java.util.List;
 
 public interface ReviewImageService {
     List<ReviewImageDTO> findByReviewId(Long reviewId);
-    void deleteImage(Long imageId);
 }

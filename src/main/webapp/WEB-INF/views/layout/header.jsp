@@ -137,7 +137,6 @@
 							<ul class="header__menu__dropdown">
 								<li><a href="/notice/list">Notice List</a></li>
 								<li><a href="/inquiry/list">Inquiry List</a></li>
-								<li><a href="/review/list">Review List</a></li>
 								<li><a href="#">Temp4</a></li>
 							</ul>
 						</li>
@@ -166,6 +165,7 @@
 									<li><a href="/tag/tag">태그 관리</a></li>
 									<li><a href="/prohibitionkeyword/prohibitionkeyword">금지어 관리</a></li>
 									<li><a href="/category/category"> 카테고리 관리 </a></li>
+									<li><a href="/complain/list"> 신고 관리 </a></li>
 								</ul>
 							</li>
 						</sec:authorize>
@@ -184,7 +184,7 @@
 								<li><a href="/product/list" class="header__nickname">${sessionDTO.nickname}</a>
 									<ul class="header__menu__dropdown nickname">
 										<li><a href="/member/mypage">마이페이지</a></li>
-										<li><a href="/review/list">나의 후기</a></li>
+										<li><a href="/review/mylist/${sessionDTO.id}">나의 후기</a></li>
 										<li><a href="/wish/list">위시리스트</a></li>
 									</ul>
 								</li>

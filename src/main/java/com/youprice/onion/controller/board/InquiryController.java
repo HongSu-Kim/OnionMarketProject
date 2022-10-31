@@ -1,6 +1,5 @@
 package com.youprice.onion.controller.board;
 
-import com.youprice.onion.dto.board.AnswerDTO;
 import com.youprice.onion.dto.board.InquiryDTO;
 import com.youprice.onion.dto.board.InquiryFormDTO;
 import com.youprice.onion.dto.member.MemberDTO;
@@ -22,7 +21,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,32 +28,31 @@ import java.util.List;
 public class InquiryController {
 
     private final InquiryService inquiryService;
-    private final AnswerService answerService;
     private final MemberService memberService;
     private final ProhibitionKeywordService prohibitionKeywordService;
 
-    // 저장
     @GetMapping("/created")
-    public String inquiryForm(Model model, @LoginUser SessionDTO sessionDTO){
-        if(sessionDTO != null){
+    public String inquiryForm(@ModelAttribute("form") InquiryFormDTO form, Model model,
+                              @LoginUser SessionDTO sessionDTO) {
+        if (sessionDTO != null) {
             MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
             model.addAttribute("memberDTO", memberDTO);
-        } else {
-            return "member/login";
-        }
+        } else return "redirect:/member/login";
+
         return "board/inquiryForm";
     }
+
     @PostMapping("/created")
     public String createInquiry(@Valid @ModelAttribute("form") InquiryFormDTO form, BindingResult bindingResult,
-                                @LoginUser SessionDTO sessionDTO, Model model){
+                                @LoginUser SessionDTO sessionDTO, Model model) {
         if (bindingResult.hasErrors()) {
-            if(sessionDTO != null){
+            if (sessionDTO != null) {
                 MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
                 model.addAttribute("memberDTO", memberDTO);
-            }
+            } else return "redirect:/member/login";
             return "board/inquiryForm";
         }
-        if(prohibitionKeywordService.ProhibitionKeywordFind(form.getInquirySubject()) ) { //금지키워가있으면 true
+        if (prohibitionKeywordService.ProhibitionKeywordFind(form.getInquirySubject())) { //금지키워가있으면 true
             bindingResult.addError(new FieldError("form", "inquirySubject", "금지어입니다 다시입력!"));
         }
 
@@ -69,20 +66,20 @@ public class InquiryController {
                         @RequestParam(required = false, defaultValue = "") String field,
                         @RequestParam(required = false, defaultValue = "") String word,
                         @LoginUser SessionDTO sessionDTO, Model model) {
-        if(sessionDTO != null){
+        if (sessionDTO != null) {
             MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
             model.addAttribute("memberDTO", memberDTO);
         }
 
         Page<InquiryDTO> questionlist = inquiryService.findAll(pageable);
-        if(word.length() != 0) {
-            questionlist = inquiryService.getSearchList(field,word, pageable);
+        if (word.length() != 0) {
+            questionlist = inquiryService.getSearchList(field, word, pageable);
         }
 
         int pageNumber = questionlist.getPageable().getPageNumber();
         int totalPages = questionlist.getTotalPages();
         int pageBlock = 5;
-        int startBlockPage = ((pageNumber)/pageBlock)*pageBlock + 1;
+        int startBlockPage = ((pageNumber) / pageBlock) * pageBlock + 1;
         int endBlockPage = startBlockPage + pageBlock - 1;
         endBlockPage = totalPages < endBlockPage ? totalPages : endBlockPage;
 
@@ -92,12 +89,37 @@ public class InquiryController {
 
         return "board/inquiryList";
     }
+
     // 나의 문의 목록
     @GetMapping("/myList/{memberId}")
     public String myList(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
-                         @PathVariable Long memberId, Model model){
+                         @PathVariable Long memberId, Model model,
+                         @RequestParam(required = false, defaultValue = "") String dt_fr,
+                         @RequestParam(required = false, defaultValue = "") String dt_to,
+                         @RequestParam(required = false, defaultValue = "") String page) {
+
         Page<InquiryDTO> questionlist = inquiryService.MemberReviewList(memberId, pageable);
+
+        if (dt_fr.length() != 0) {
+            questionlist = inquiryService.getPeriodSearch(dt_fr, dt_to, memberId, pageable);
+        }
+
+        int pageNumber = questionlist.getPageable().getPageNumber();
+        int totalPages = questionlist.getTotalPages();
+        int pageBlock = 5;
+        int startBlockPage = ((pageNumber) / pageBlock) * pageBlock + 1;
+        int endBlockPage = startBlockPage + pageBlock - 1;
+        endBlockPage = totalPages < endBlockPage ? totalPages : endBlockPage;
+
+        model.addAttribute("startBlockPage", startBlockPage);
+        model.addAttribute("endBlockPage", endBlockPage);
         model.addAttribute("questionlist", questionlist);
+        model.addAttribute("memberId", memberId);
+
+        if(dt_fr.length() != 0){
+            //return "redirect:/inquiry/myList/"+memberId+"?page=" + page;
+            return "review/created/1";
+        }
         return "board/myInquiry";
     }
 
@@ -106,11 +128,12 @@ public class InquiryController {
     public String article(@PathVariable long id, Model model,
                           @RequestParam(required = false, defaultValue = "") String field,
                           @RequestParam(required = false, defaultValue = "") String word,
-                          @LoginUser SessionDTO sessionDTO){
-        if(sessionDTO != null){
+                          @LoginUser SessionDTO sessionDTO) {
+        if (sessionDTO != null) {
             MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
             model.addAttribute("memberDTO", memberDTO);
-        } else { return "member/login";}
+        } else return "member/login";
+
         InquiryDTO inquiryDTO = inquiryService.findInquiryDTO(id);
 
         model.addAttribute("inquiryDTO", inquiryDTO);
@@ -119,31 +142,31 @@ public class InquiryController {
 
         return "board/inquiryArticle";
     }
+
     // 수정 화면
     @GetMapping("/update/{id}")
-    public String updateForm(@PathVariable Long id, @LoginUser SessionDTO sessionDTO, Model model){
-        if(sessionDTO != null){
+    public String updateForm(@PathVariable Long id, @LoginUser SessionDTO sessionDTO, Model model,
+                             @ModelAttribute("form") InquiryFormDTO form) {
+        if (sessionDTO != null) {
             MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
             model.addAttribute("memberDTO", memberDTO);
-        } else {
-            return "member/login";
-        }
-        InquiryDTO inquiryDTO = inquiryService.findInquiryDTO(id);
+        } else return "member/login";
 
-        model.addAttribute("inquiryDTO",inquiryDTO);
+        InquiryDTO inquiryDTO = inquiryService.findInquiryDTO(id);
+        model.addAttribute("inquiryDTO", inquiryDTO);
+
         return "board/inquiryUpdate";
     }
+
     // 수정
     @PostMapping("/update/{id}")
-    public String update(@PathVariable("id") Long id,@Valid @ModelAttribute("form") InquiryFormDTO form,
-                         BindingResult bindingResult, @LoginUser SessionDTO sessionDTO, Model model){
+    public String update(@PathVariable("id") Long id, @Valid @ModelAttribute("form") InquiryFormDTO form,
+                         BindingResult bindingResult, @LoginUser SessionDTO sessionDTO, Model model) {
         InquiryDTO inquiryDTO = inquiryService.findInquiryDTO(id);
 
-        if(bindingResult.hasErrors()){
-            if(sessionDTO != null){
-                MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
-                model.addAttribute("memberDTO", memberDTO);
-            }
+        if (bindingResult.hasErrors()) {
+            MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
+            model.addAttribute("memberDTO", memberDTO);
             model.addAttribute("inquiryDTO", inquiryDTO);
             return "board/inquiryUpdate";
         }
@@ -153,7 +176,7 @@ public class InquiryController {
 
     // 삭제
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable("id") Long id){
+    public String delete(@PathVariable("id") Long id) {
 
         InquiryDTO inquiryDTO = inquiryService.findInquiryDTO(id);
         inquiryService.deleteInquiry(inquiryDTO);

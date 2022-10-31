@@ -14,9 +14,6 @@
             <br/>
 
             <div>
-                <div class="inquiryArticle">
-                    <p>문의내용</p>
-                </div>
                 <!-- 질문영역 -->
                 <div class="qna-question">
 
@@ -62,14 +59,14 @@
                             <span>
                                 <c:if test="${memberDTO.role eq 'ADMIN'}">
                                     <div style="float:right;">
-                                        <button type="submit" onclick="location.href='/answer/created/${inquiryDTO.inquiryId}'"
+                                        <button type="submit"
+                                                onclick="location.href='/answer/created/${inquiryDTO.inquiryId}'"
                                                 class="site-btn-answer">답변 작성
                                         </button>
                                     </div>
                                 </c:if>
                             </span>
                         </div>
-
 
 
                     </div>
@@ -94,18 +91,17 @@
 
                                                 <div style="float: right; margin-right: 20px">
                                                     <c:if test="${memberDTO.role == 'ADMIN'}">
-                                                        <button type="submit" onclick="location.href='/answer/update/${dto.answerId}'"
+                                                        <button type="submit"
+                                                                onclick="location.href='/answer/update/${dto.answerId}'"
                                                                 class="adminbutton">수정
                                                         </button>
-                                                        <button type="submit" onclick="location.href='/answer/delete/${dto.answerId}'"
+                                                        <button type="submit"
+                                                                onclick="location.href='/answer/delete/${dto.answerId}'"
                                                                 class="adminbutton" style="background-color: #7e828f">삭제
                                                         </button>
                                                     </c:if>
                                                 </div>
                                             </div>
-
-
-
                                         </div>
 
                                         <div class="qna-answer-content">
@@ -115,7 +111,8 @@
                                         <div class="qna-answer-dateline">
                                         <span class="answer-date-left">
                                             <span class="answer-date">
-                                                <fmt:parseDate value="${dto.answerDate}" var="dateFmt" pattern="yyyy-MM-dd'T'HH:mm:ss"/>
+                                                <fmt:parseDate value="${dto.answerDate}" var="dateFmt"
+                                                               pattern="yyyy-MM-dd'T'HH:mm:ss"/>
                                                 <fmt:formatDate value="${dateFmt}" pattern="YYYY-MM-dd HH:mm"/>
                                             </span>
                                         </span>
@@ -130,8 +127,14 @@
                     </div>
                 </div>
 
-
             </div>
+        </div>
+
+        <div align="center" style="margin-top: 20px">
+            <button type="submit"
+                    onclick="location.href='/inquiry/list?field=${param.field}&word=${param.word}&page=${param.page}'"
+                    class="site-btn-answer">목록으로
+            </button>
         </div>
     </div>
 </section>

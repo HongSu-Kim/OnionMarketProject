@@ -1,87 +1,91 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
-<c:set var = "cp" value = "<%=request.getContextPath()%>"/>
-<%
-    request.setCharacterEncoding("UTF-8");
-    String cp = request.getContextPath();
-%>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Onion Market</title>
-</head>
-<body>
-<div>
-<h2>공지사항</h2>
-</div>
-<br/>
-    <!-- 검색
-    <form action="/notice/list" method="GET">
-        <select name="field" id="field">
-            <option selected="selected">전체</option>
-            <option value="NOTICE">공지사항</option>
-            <option value="QNA">QnA</option>
-            <option value="EVENT">이벤트</option>
-        </select>
+<c:set var="cp" value="<%=request.getContextPath()%>"/>
 
-        <input type="text" id="searchBox" name="word"/>
-        <button type="submit">검색</button>
-    </form>
-    -->
+<!-- Shoping Cart Section Begin -->
+<section class="shoping-cart spad">
+    <div class="container" style="width: 1000px; margin-top: 20px">
+        <div class="section-title">
+            <h3 style="font-weight: bold">공지사항</h3>
+        </div>
 
-    <!-- 리스트 -->
-    <div>
-        <table class="table" border="1">
+        <!-- 검색 -->
+        <form action="/notice/list" class="d-flex" method="GET" style="margin-top: 10px; margin-bottom: 5px">
+            <div class="col-lg-8">
+                <div style="height: 45px">
+                    <input type="text" name="word" class="searchIn" placeholder="검색할 단어를 입력하세요">
+                    <button class="site-btn" type="submit" style="height: 44px;">
+                        <span class="icon_search"></span></button>
+                </div>
+            </div>
 
-            <tr>
-                <td>No</td>
-                <th>글제목</th>
-                <th>작성자</th>
-                <th>등록일</th>
-                <th>조회수</th>
-            </tr>
+            <c:if test="${memberDTO.role == 'ADMIN'}">
+                <div class="col-lg-4">
+                    <div style="text-align: center; float: right">
+                        <a href="/notice/created" class="site-btn">공지 등록</a>
+                    </div>
+                </div>
+            </c:if>
+        </form>
+        <hr style="background-color: #47cd65; height: 1px"/>
+        <!-- 검색 끝 -->
 
-            <c:forEach var="dto" items="${noticelist.content }">
-            <tr>
-                <td>${noticelist.totalElements - (noticelist.number * noticelist.size) - noticelist.content.indexOf(dto)}</td>
-                <td><a href="/notice/article/${dto.noticeId}">${dto.noticeSubject}</a></td>
-                <td>운영자</td>
-                <td>${dto.noticeDate}</td>
-                <td>${dto.hitCount}</td>
-            </tr>
-            </c:forEach>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__cart__table">
+                    <table>
+                        <colgroup>
+                            <col style="width:5%">
+                            <col style="width:55%">
+                            <col style="width:10%">
+                            <col style="width:20%">
+                            <col style="width:15%">
+                        </colgroup>
 
-        </table>
+                        <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>제목</th>
+                            <th>작성자</th>
+                            <th>등록일</th>
+                            <th>조회수</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:if test="${empty noticelist.content}">
+                            <tr>
+                                <td colspan="5">등록된 공지가 없습니다.</td>
+                            </tr>
+                        </c:if>
+
+                        <c:forEach var="dto" items="${noticelist.content }">
+                            <tr>
+                                <td>${noticelist.totalElements - (noticelist.number * noticelist.size) - noticelist.content.indexOf(dto)}</td>
+                                <td><a href="/notice/article/${dto.noticeId}">${dto.noticeSubject}</a></td>
+                                <td>${dto.memberDTO.userId}</td>
+                                <td>${dto.noticeDate}</td>
+                                <td>${dto.hitCount}</td>
+                            </tr>
+                        </c:forEach>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <!-- 검색 -->
-    <form action="/notice/list" method="GET">
-        <input type="text" id="searchBox" name="word"/>
-        <input type="submit" value="검색">
-    </form>
-
-    <!-- 등록버튼 -->
-    <div align="right">
-
-        <!-- 운영진일때만 버튼 보이게 설정 -->
-        <button class="button"><a href="/notice/created">등록</a></button>
-
-    </div>
-
 
     <!-- 페이징 -->
     <div class="text-xs-center">
-        <ul class="pagination justify-content-center">
-
+        <ul class="product__pagination text-center">
             <!-- 이전 -->
             <c:choose>
                 <c:when test="${noticelist.first}"></c:when>
                 <c:otherwise>
-                    <li class="page-item"><a class="page-link" href="/notice/list/?field=${field}&word=${word}&page=0">처음으로</a></li>
-                    <li class="page-item"><a class="page-link" href="/notice/list/?field=${field}&word=${word}&page=${noticelist.number-1}">◀</a></li>
+                    <%--                    <a href="/notice/list/?field=${field}&word=${word}&page=0">처음으로</a>--%>
+                    <a href="/notice/list/?field=${field}&word=${word}&page=${noticelist.number-1}">◀</a>
                 </c:otherwise>
             </c:choose>
 
@@ -89,10 +93,10 @@
             <c:forEach begin="${startBlockPage}" end="${endBlockPage}" var="i">
                 <c:choose>
                     <c:when test="${noticelist.pageable.pageNumber+1 == i}">
-                        <li class="page-item disabled"><a class="page-link" href="/notice/list/?field=${param.field}&word=${param.word}&page=${i-1}">${i}</a></li>
+                        <a href="/notice/list/?field=${param.field}&word=${param.word}&page=${i-1}">${i}</a>
                     </c:when>
                     <c:otherwise>
-                        <li class="page-item"><a class="page-link" href="/notice/list/?field=${param.field}&word=${param.word}&page=${i-1}">${i}</a></li>
+                        <a href="/notice/list/?field=${param.field}&word=${param.word}&page=${i-1}">${i}</a>
                     </c:otherwise>
                 </c:choose>
             </c:forEach>
@@ -101,13 +105,11 @@
             <c:choose>
                 <c:when test="${noticelist.last}"></c:when>
                 <c:otherwise>
-                    <li class="page-item "><a class="page-link" href="/notice/list/?field=${param.field}&word=${param.word}&page=${noticelist.number+1}">▶</a></li>
-                    <li class="page-item "><a class="page-link" href="/notice/list/?field=${param.field}&word=${param.word}&page=${noticelist.totalPages-1}">끝으로</a></li>
+                    <a href="/notice/list/?field=${param.field}&word=${param.word}&page=${noticelist.number+1}">▶</a>
+                    <%--                    <a href="/notice/list/?field=${param.field}&word=${param.word}&page=${noticelist.totalPages-1}">끝으로</a>--%>
                 </c:otherwise>
             </c:choose>
         </ul>
     </div>
     <!-- 페이징 끝 -->
-
-</body>
-</html>
+</section>

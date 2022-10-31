@@ -40,7 +40,7 @@ public class AnswerServiceImpl implements AnswerService {
 
         Answer saveAnswer = answerRepository.save(answer);
         if(saveAnswer != null){
-            inquiry.modifyStatus("답변완료");
+            inquiry.modifyStatus("complete");
         }
         return answer.getId();
     }

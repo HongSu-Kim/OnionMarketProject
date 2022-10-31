@@ -1,9 +1,11 @@
 package com.youprice.onion.service.board.impl;
 
 import com.youprice.onion.dto.board.NoticeDTO;
+import com.youprice.onion.dto.board.NoticeFormDTO;
 import com.youprice.onion.dto.board.NoticeUpdateDTO;
 import com.youprice.onion.entity.board.Notice;
 import com.youprice.onion.entity.board.NoticeImage;
+import com.youprice.onion.entity.board.NoticeType;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.repository.board.NoticeImageRepository;
 import com.youprice.onion.repository.board.NoticeRepository;
@@ -22,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-
 @Service
 @RequiredArgsConstructor
 public class NoticeServiceImpl implements NoticeService {
@@ -31,10 +32,11 @@ public class NoticeServiceImpl implements NoticeService {
     private final MemberRepository memberRepository;
     private final NoticeImageRepository noticeImageRepository;
 
-    public Long saveNotice(NoticeDTO noticeDTO, List<MultipartFile> noticeImageName) throws IOException {
+    @Transactional
+    public Long saveNotice(NoticeFormDTO form, List<MultipartFile> noticeImageName) throws IOException {
 
-        Member member = memberRepository.findById(noticeDTO.getMemberId()).orElse(null);
-        Notice notice = new Notice(member, noticeDTO.getNoticeType(), noticeDTO.getNoticeSubject(), noticeDTO.getNoticeContent());
+        Member member = memberRepository.findById(form.getMemberId()).orElse(null);
+        Notice notice = new Notice(member, form.getNoticeType(), form.getNoticeSubject(), form.getNoticeContent());
 
         Notice save = noticeRepository.save(notice);
         Long noticeId = save.getId();
@@ -51,26 +53,25 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     public Page<NoticeDTO> searchNotice( String word, Pageable pageable){
-        return noticeRepository.findAllByNoticeSubjectContaining(word, pageable).map(NoticeDTO::new);
+        return noticeRepository.findAllByNoticeSubjectContainingAndNoticeTypeLike(word, NoticeType.NOTICE, pageable).map(NoticeDTO::new);
     }
 
     @Transactional
     public void update(Long noticeId, NoticeUpdateDTO noticeUpdateDTO) throws IOException {
         Notice notice = noticeRepository.findById(noticeId).orElseThrow(() -> new IllegalArgumentException("수정이 불가합니다"));
         Long id = notice.getId();
-        notice.updateNotice(id, noticeUpdateDTO);
+        Notice update = notice.updateNotice(id, noticeUpdateDTO);
 
         List<NoticeImage> list = storeImages(noticeId, noticeUpdateDTO.getNoticeImageName());
         for(NoticeImage noticeImage : list){
             noticeImageRepository.save(noticeImage);
         }
-
-        noticeRepository.save(notice);
+        noticeRepository.save(update);
     }
 
-    @Override
-    public void delete(Long id) {
-        noticeRepository.deleteById(id);
+    @Transactional
+    public void delete(Long noticeId) {
+        noticeRepository.deleteById(noticeId);
     }
 
     @Override
@@ -78,14 +79,12 @@ public class NoticeServiceImpl implements NoticeService {
         Page<NoticeDTO> list = noticeRepository.findAll(pageable).map(NoticeDTO::new);
         return list;
     }
-
-    public String filePath(){
-        String filePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\Images\\notice";
-        return filePath;
+    public Page<NoticeDTO> findTypeNotice(Pageable pageable){
+        return noticeRepository.findAllByNoticeTypeLikeOrderById(NoticeType.NOTICE, pageable).map(NoticeDTO::new);
     }
 
     public String storePath(MultipartFile multipartFile) throws IOException{
-        String filePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\Images\\notice";
+        String filePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\notice";
 
         if(multipartFile.isEmpty()){
             return null;
@@ -115,11 +114,12 @@ public class NoticeServiceImpl implements NoticeService {
         }
         return storeImageList;
     }
-
+    @Transactional
     public int updateView(Long id){
         return noticeRepository.updateView(id);
     } //조회수 상승
 
+    @Transactional
     public void imageDelete(Long imageId){
         NoticeImage noticeImage = noticeImageRepository.findById(imageId).orElse(null);
         noticeImageRepository.delete(noticeImage);

@@ -10,6 +10,7 @@ let chatroomId
 let targetId
 let page
 let hasNext
+let lastDate
 
 // data-target
 $('.trigger').click(function () {
@@ -20,7 +21,7 @@ $('.trigger').click(function () {
 
 // 모달 변경
 let modalChange = function (page) { // page - circle, list, room
-	switch (page){
+	switch (page) {
 		case "circle" :
 			if($('#chat-circle').css("display") == 'none') {
 				$('#chat-circle').toggle('scale');
@@ -66,6 +67,12 @@ let printChat = function () {
 			let str = ""
 			$('.date:first').remove();
 
+			if (chatDTOList.length == 0) {
+
+			} else if (page == 1){
+				lastDate = chatDTOList[chatDTOList.length - 1].sendingTime.substring(0, 10)
+			}
+
 			for (let i = 0; i < chatDTOList.length; i++) {
 				let chatDTO = chatDTOList[i]
 
@@ -73,7 +80,7 @@ let printChat = function () {
 					date = chatDTO.sendingTime.substring(0, 10)
 
 					let parseDate = new Date(chatDTO.sendingTime)
-					let formatDate = `${parseDate.getFullYear()}년 ${parseDate.getMonth()}월 ${parseDate.getDate()}일`
+					let formatDate = `${parseDate.getFullYear()}년 ${parseDate.getMonth() + 1}월 ${parseDate.getDate()}일`
 
 					str +=
 						`<div class="chat-msg date">` +
@@ -95,6 +102,7 @@ let printChat = function () {
 	})
 }
 
+// 채팅 템플릿
 let chatTemplate = function (chatDTO) {
 
 	let str = ""
@@ -113,7 +121,7 @@ let chatTemplate = function (chatDTO) {
 			? `<div class="chat-msg self">`
 			: `<div class="chat-msg user">`) +
 		`   ${content}` +
-		`   <div class="cm-msg-time">${chatDTO.sendingTime.substring(11)}</div>` +
+		`   <div class="cm-msg-time">${chatDTO.sendingTime.substring(11, 19)}</div>` +
 		`</div>`
 
 	return str
@@ -315,7 +323,24 @@ stomp.connect({}, function () {
 		}
 		// 메세지가 온 채팅방에 있을때
 		else if (chatroomId == chatDTO.chatroomId) {
-			$('#foot').before(chatTemplate(chatDTO))
+			let str = ""
+
+			alert(lastDate)
+			if (lastDate != chatDTO.sendingTime.substring(0, 10)) {
+				lastDate = chatDTO.sendingTime.substring(0, 10)
+				alert(lastDate)
+
+				let parseDate = new Date(chatDTO.sendingTime)
+				let formatDate = `${parseDate.getFullYear()}년 ${parseDate.getMonth() + 1}월 ${parseDate.getDate()}일`
+
+				str +=
+					`<div class="chat-msg date">` +
+					`   <div class="cm-msg-text">${formatDate}</div>` +
+					`</div>`
+			}
+
+			str += chatTemplate(chatDTO);
+			$('#foot').before(str)
 			$('#msgArea').scrollTop($('#msgArea')[0].scrollHeight)
 		}
 	})

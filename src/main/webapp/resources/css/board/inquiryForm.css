@@ -1,0 +1,16 @@
+.field-error {
+    border-color: #f07682;
+    color: #dc3545;
+    font-weight: bold;
+}
+.detailSelect {
+    display: none;
+}
+#secretBox {
+    zoom: 1;
+    width: 20px;
+    height: 20px;
+}
+.inquiryline {
+    border-bottom: 2px solid #47CD65;
+}
