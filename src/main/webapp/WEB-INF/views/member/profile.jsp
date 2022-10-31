@@ -8,13 +8,17 @@
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span class="font-weight-bold">Edogaru</span><span class="text-black-50">edogaru@mail.com.my</span><span> </span></div>
+                <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                    <img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
+                    <span class="font-weight-bold">${memberDTO.nickname}</span>
+                    <span> </span>
+                </div>
                 <div>
                     <c:if test="${!memberDTO.followCheck}">
                         <button type="button" onclick="location.href='/follow/addFollow/${memberDTO.id}'">팔로우</button>
                     </c:if>
                     <c:if test="${memberDTO.followCheck}">
-                        <button type="button" onclick="location.href='/follow/removeFollow/${memberDTO.id}'">언팔로우</button>
+                        <button type="button" onclick="location.href='/follow/removeFollow/${memberDTO.id}'">팔로잉</button>
                     </c:if>
                     <c:if test="${!memberDTO.blockCheck}">
                        <button type="button" onclick="location.href='/block/addBlock/${memberDTO.id}'">차단</button>
@@ -22,6 +26,7 @@
                     <c:if test="${memberDTO.blockCheck}">
                        <button type="button" onclick="location.href='/block/removeBlock/${memberDTO.id}'">차단해제</button>
                     </c:if>
+                        <button type="button" onclick="location.href='#'">판매 리스트</button>
                 </div>
             </div>
             <div class="col-md-6">
