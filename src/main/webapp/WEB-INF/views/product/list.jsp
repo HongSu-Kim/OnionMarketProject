@@ -25,7 +25,7 @@
 				<div class="featured__item">
 					<div class="featured__item__pic set-bg" data-setbg="/img/product/${list.productImageName}">
 						<ul class="featured__item__pic__hover">
-							<li><a href="/wish/addWish/${productId}"><i class="fa fa-heart"></i></a></li>
+							<li><a href="/wish/addWish/${list.productId}"><i class="fa fa-heart"></i></a></li>
 							<li><a href="#"><i class="fa fa-retweet"></i></a></li>
 							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
 						</ul>
@@ -47,6 +47,36 @@
 			</c:forEach>
 		</div>
 	</div>
+	<!-- List Paging -->
+	<div class="row">
+		<div class="col-lg-12">
+
+			<!-- 페이징 -->
+			<c:if test="${!empty page.content && page.totalPages != 1}">
+				<input type="hidden" id="pageNumber" value="${page.number + 1}"/>
+				<div class="product__pagination text-center">
+					<c:set var="size" value="${page.pageable.pageSize}"/><%-- 12 --%>
+					<fmt:parseNumber var="pageNumber" integerOnly="true" value="${page.number / size}"/><%-- 현재페이지 : 0 ~ --%>
+					<c:set var="startNumber" value="${pageNumber * size}"/><%-- 0 * size ~ --%>
+					<c:set var="endNumber" value="${page.totalPages > (pageNumber + 1) * size ? (pageNumber + 1) * size - 1 : page.totalPages - 1}"/>
+
+					<c:if test="${page.totalPages > size && page.number + 1 > size}">
+						<a href="?page=0"><<</a>
+						<a href="?page=${startNumber - 1}"><</a>
+					</c:if>
+					<c:forEach var="currentNumber" begin="${startNumber}" end="${endNumber}">
+						<a href="?page=${currentNumber}">${currentNumber + 1}</a>
+					</c:forEach>
+					<c:if test="${page.totalPages - 1 > endNumber}">
+						<a href="?page=${endNumber + 1}">></a>
+						<a href="?page=${page.totalPages - 1}">>></a>
+					</c:if>
+				</div>
+			</c:if>
+
+		</div>
+	</div>
+	<!-- List Paging End -->
 </section>
 <!-- Featured Section End -->
 
