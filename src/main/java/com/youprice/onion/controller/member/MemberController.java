@@ -19,6 +19,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -120,6 +121,18 @@ public class MemberController {
             model.addAttribute("memberDTO", memberDTO);
         }
         return "member/modify";
+    }
+
+    //프로필 사진 수정
+    @GetMapping("/modifyProfileImg")
+    public String modifyProfileImgView() {
+        return "member/modifyProfileImg";
+    }
+
+    @PostMapping("modifyProfileImg")
+    public String modifyProfileImg(@LoginUser SessionDTO sessionDTO, MultipartFile profileImg) throws IOException {
+        memberService.modifyProfileImg(sessionDTO.getId(), profileImg);
+        return "redirect:/member/mypage";
     }
 
     //회원정보 수정 전 비밀번호 확인 페이지
