@@ -3,11 +3,12 @@ package com.youprice.onion.service.member;
 import com.youprice.onion.dto.member.*;
 import org.springframework.validation.Errors;
 
+import java.io.IOException;
 import java.util.Map;
 
 public interface MemberService {
 
-    public Long saveMember(MemberJoinDTO memberJoinDTO);
+    public Long saveMember(MemberJoinDTO memberJoinDTO) throws IOException;
 
     public Map<String, String> validateHandling(Errors errors);
 

@@ -3,6 +3,7 @@ package com.youprice.onion.entity.member;
 import com.youprice.onion.entity.board.Complain;
 import com.youprice.onion.entity.board.Inquiry;
 import com.youprice.onion.entity.board.Notice;
+import com.youprice.onion.entity.board.Review;
 import com.youprice.onion.entity.chat.Chat;
 import com.youprice.onion.entity.chat.Chatroom;
 import com.youprice.onion.entity.order.Order;
@@ -36,7 +37,7 @@ public class Member {
     private String name; //이름
     private String nickname; //닉네임
     private LocalDate birth; //생일
-    private String tel; //전화번호
+    private String tel; //휴대폰번호
 
     @Embedded
     private Address address; //주소
@@ -88,8 +89,8 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Wish> wishList = new ArrayList<>(); //찜-회원번호 FK
 
-//    @OneToMany(mappedBy = "member")
-//    private List<Review> reviewList = new ArrayList<>(); //리뷰-회원번호 FK
+    @OneToMany(mappedBy = "member")
+    private List<Review> reviewList = new ArrayList<>(); //리뷰-회원번호 FK
 
     @Builder
     public Member(Long id, Role role, String userId, String pwd, String name, String nickname, LocalDate birth, String tel, String postcode, String address, String detailAddress, String extraAddress, String email, String memberImageName, int cash, int point, int userGrade, int complaintCount) {
@@ -112,12 +113,15 @@ public class Member {
     }
 
     //회원정보 수정
-    public void modify(String pwd, String nickname, String tel, String postcode, String address, String detailAddress, String extraAddress, String email, String memberImageName) {
+    public void modify(String pwd, String nickname, String tel, String postcode, String address, String detailAddress, String extraAddress, String email) {
         this.pwd = pwd;
         this.nickname = nickname;
         this.tel = tel;
         this.address = new Address(postcode, address, detailAddress, extraAddress);
         this.email = email;
+    }
+
+    public void modifyProfileImg(String memberImageName) {
         this.memberImageName = memberImageName;
     }
 
