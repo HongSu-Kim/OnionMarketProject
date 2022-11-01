@@ -65,6 +65,7 @@ public class NoticeController {
             model.addAttribute("memberDTO", memberDTO);
         }
         Page<NoticeDTO> noticelist = noticeService.findTypeNotice(pageable);
+        List<NoticeDTO> qnaList = noticeService.findTypeQna();
 
         if (word.length() != 0) {
             noticelist = noticeService.searchNotice(word, pageable);
@@ -80,8 +81,9 @@ public class NoticeController {
         model.addAttribute("startBlockPage", startBlockPage);
         model.addAttribute("endBlockPage", endBlockPage);
         model.addAttribute("noticelist", noticelist);
+        model.addAttribute("qnaList", qnaList);
 
-        return "board/noticeList";
+        return "board/boardMain";
     }
 
     @GetMapping("/article/{id}")
