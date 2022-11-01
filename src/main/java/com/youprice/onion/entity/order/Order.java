@@ -51,13 +51,13 @@ public class Order {
 
 
 	// 주문 생성
-    public Order(Member member, Product product, String orderNum, String imp_uid, int orderPayment) {
+    public Order(Member member, Product product, String orderNum, String imp_uid, int orderPayment, OrderState orderState) {
 		this.member = member;
 		this.product = product;
 		this.orderNum = orderNum;
 		this.imp_uid = imp_uid;
         this.orderPayment = orderPayment;
-        this.orderState = OrderState.ORDER;
+        this.orderState = orderState;
         this.orderDate = LocalDateTime.now();
     }
 

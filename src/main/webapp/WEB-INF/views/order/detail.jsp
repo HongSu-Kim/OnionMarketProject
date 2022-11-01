@@ -6,6 +6,12 @@
 <section class="spad">
 	<div class="container">
 		<div class="checkout__form">
+
+			<div class="section-title">
+				<h3 style="font-weight: bold">주문 정보</h3>
+			</div>
+			<hr class="section-hr">
+
 			<!-- product -->
 			<div class="row">
 				<div class="col-lg-12">

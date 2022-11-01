@@ -1,7 +1,4 @@
 
-// let header = $("meta[name='_csrf_header']").attr("content");
-// let token = $("meta[name='_csrf']").attr("content");
-
 // 채팅 버튼
 $(function () {
 	$('.chatroomBtn').click(function () {

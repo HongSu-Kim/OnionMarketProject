@@ -3,6 +3,9 @@ package com.youprice.onion.repository.product;
 import static com.youprice.onion.entity.product.QCategory.*;
 import static com.youprice.onion.entity.product.QProduct.*;
 import static com.youprice.onion.entity.product.QTown.*;
+import static com.youprice.onion.entity.order.QOrder.*;
+import static com.youprice.onion.entity.order.QDelivery.*;
+import static com.youprice.onion.entity.board.QReview.*;
 
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
@@ -47,8 +50,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 	List<Product> findByAuctionDeadlineNotNullAndBlindStatus(Boolean blindStatus);
 
 	// 판매 상품 리스트
-	@EntityGraph(attributePaths = { "orderList.delivery" })
-	Page<Product> findByMemberId(Long memberId, Pageable pageable);
+//	@EntityGraph(attributePaths = { "orderList.delivery" })
+//	Page<Product> findByMemberId(Long memberId, Pageable pageable);
 
 	//개인 판매 상품 리스트
 	Page<Product> findAllByMemberIdAndProductProgressIn(Long memberId, ProductProgress[] productProgressList, Pageable pageable);
@@ -101,11 +104,42 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 							blindStatusEq(searchRequirements.getBlindStatus()),
 							searchValueContains(searchRequirements.getSearchValue()),
 							coordinateIdListIn(searchRequirements.getCoordinateIdList())
-
 					)
 					.fetchOne();
 
 			return new PageImpl<>(content, searchRequirements.getPageable(), count);
+		}
+
+		// 판매 상품 리스트
+		public Page<Product> findByMemberId(Long memberId, ProductProgress productProgress, Pageable pageable) {
+
+			List<Product> content = queryFactory
+					.selectDistinct(product)
+					.from(product)
+					.leftJoin(product.orderList, order).fetchJoin()
+					.leftJoin(order.delivery, delivery).fetchJoin()
+					.leftJoin(order.reviewList, review).on(review.member.id.eq(memberId))
+					.where(
+							memberIdEq(memberId),
+							productProgressEq(productProgress)
+					)
+					.orderBy(orderBy(pageable))
+					.offset(pageable.getOffset())
+					.limit(pageable.getPageSize())
+					.fetch();
+
+			Long count = queryFactory
+					.selectDistinct(product.count())
+					.from(product)
+					.leftJoin(product.orderList, order)
+					.leftJoin(order.reviewList, review).on(review.member.id.eq(memberId))
+					.where(
+							memberIdEq(memberId),
+							productProgressEq(productProgress)
+					)
+					.fetchOne();
+
+			return new PageImpl<>(content, pageable, count);
 		}
 
 		private OrderSpecifier<?> orderBy(Pageable pageable) {
