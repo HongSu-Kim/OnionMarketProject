@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -81,6 +82,10 @@ public class NoticeServiceImpl implements NoticeService {
     }
     public Page<NoticeDTO> findTypeNotice(Pageable pageable){
         return noticeRepository.findAllByNoticeTypeLikeOrderById(NoticeType.NOTICE, pageable).map(NoticeDTO::new);
+    }
+    public List<NoticeDTO> findTypeQna(){
+    return noticeRepository.findAllByNoticeTypeLikeOrderByIdDesc(NoticeType.QNA)
+            .stream().map(NoticeDTO::new).collect(Collectors.toList());
     }
 
     public String storePath(MultipartFile multipartFile) throws IOException{

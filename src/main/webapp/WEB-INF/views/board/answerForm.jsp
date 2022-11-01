@@ -69,6 +69,7 @@
                     <c:otherwise>
                         <form:form method="post" action="/answer/update/${answerDTO.answerId}"
                                    modelAttribute="answerFormDTO">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                             <input type="hidden" name="memberId" value="${memberDTO.id}">
                             <input type="hidden" name="inquiryId" value="${answerDTO.answerId}">
 

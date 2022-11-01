@@ -19,13 +19,14 @@ public interface NoticeService {
     void update(Long noticeId, NoticeUpdateDTO noticeUpdateDTO) throws IOException;
     void delete(Long id);
 
-    Page<NoticeDTO> findAllNotice(Pageable pageable);
     Page<NoticeDTO> findTypeNotice(Pageable pageable);
+    List<NoticeDTO> findTypeQna();
+
 
     List<NoticeImage> storeImages(Long noticeId, List<MultipartFile> multipartFiles) throws IOException;
     String storePath(MultipartFile multipartFile) throws IOException;
 
-    public int updateView(Long id);
+    int updateView(Long id);
 
     void imageDelete(Long imageId);
 
