@@ -85,9 +85,7 @@ public class InquiryServiceImpl implements InquiryService {
         LocalDate fromDate = LocalDate.parse(from, dateTimeFormatter);
         LocalDate toDate = LocalDate.parse(to, dateTimeFormatter);
 
-        System.out.println("from = " + from);
-
-        return inquiryRepository.findAllByInquiryDateBetweenAndMember_Id(fromDate, toDate, memberId, pageable).map(InquiryDTO::new);
+        return inquiryRepository.findPeriod(fromDate, toDate, memberId, pageable).map(InquiryDTO::new);
     }
 
 }
