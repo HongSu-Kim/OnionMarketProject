@@ -6,6 +6,11 @@
 	<div class="container">
 		<div class="buyList">
 
+			<div class="section-title">
+				<h3 style="font-weight: bold">구매 목록</h3>
+			</div>
+			<hr class="section-hr">
+
 			<!-- Buy List -->
 			<div class="row">
 				<div class="col-lg-12">
@@ -31,15 +36,16 @@
 
 								<!-- 주문 정보 -->
 								<c:forEach var="orderDTO" items="${page.content}">
+									<c:set var="productDTO" value="${orderDTO.productDTO}"/>
 									<tr>
-										<td class="text-align-left pointer" onclick="location.href='/product/detail/${orderDTO.productDTO.productId}'">
-											<img src="/img/product/${orderDTO.productDTO.representativeImage}" class="list-img">
-											<span>${orderDTO.productDTO.subject}</span>
+										<td class="text-align-left pointer" onclick="location.href='/product/detail/${productDTO.productId}'">
+											<img src="/img/product/${productDTO.representativeImage}" class="list-img">
+											<span>${productDTO.subject}</span>
 										</td>
 										<td class="pointer" onclick="location.href='/order/detail/${orderDTO.orderId}'">
 											${orderDTO.orderNum}
 										</td>
-										<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${orderDTO.orderPayment}"/></td>
+										<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${orderDTO.orderPayment}"/>원</td>
 										<td>
 											<fmt:parseDate var="orderDate" value="${orderDTO.orderDate}" pattern="yyyy-MM-dd'T'HH:mm"/>
 											<fmt:formatDate value="${orderDate}" pattern="yyyy/MM/dd"/>
@@ -58,7 +64,12 @@
 													<a href="/order/detail/${orderDTO.orderId}" class="primary-btn">주문확인</a>
 												</c:if>
 												<c:if test="${orderDTO.orderState eq 'COMPLETE'}">
-													<a href="/review/created/${orderDTO.orderId}" class="primary-btn">구매후기등록</a>
+													<c:if test="${empty orderDTO.reviewId}">
+														<a href="/review/created/${orderDTO.orderId}" class="primary-btn">판매후기등록</a>
+													</c:if>
+													<c:if test="${!empty orderDTO.reviewId}">
+														<a href="/review/update/${sessionDTO.id}/${orderDTO.reviewId}" class="primary-btn">판매후기수정</a>
+													</c:if>
 												</c:if>
 											</p>
 										</td>

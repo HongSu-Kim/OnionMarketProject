@@ -108,7 +108,7 @@ public class OrderController {
 	// 구매 내역 조회 페이지
 	@GetMapping("buyList")
 	public String buyList(@LoginUser SessionDTO sessionDTO, Model model,
-						  @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+						  @PageableDefault(sort = "order_id", direction = Sort.Direction.DESC) Pageable pageable) {
 		if (sessionDTO == null) return "redirect:/member/login";
 
 		Page<OrderDTO> page = orderService.getBuyList(sessionDTO.getId(), pageable);
@@ -137,14 +137,15 @@ public class OrderController {
 	}
 
 	// 판매 내역 조회 페이지
-	@GetMapping("sellList")
-	public String sellList(@LoginUser SessionDTO sessionDTO, Model model,
+	@GetMapping({ "sellList", "sellList/" })
+	public String sellList(@LoginUser SessionDTO sessionDTO, Model model, ProductProgress productProgress,
 						   @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 		if (sessionDTO == null) return "redirect:/member/login";
 
-		Page<ProductSellListDTO> page = productService.getProductSellListDTO(sessionDTO.getId(), pageable);
-		log.error(String.valueOf(page.getTotalPages()));
 
+		Page<ProductSellListDTO> page = productService.getProductSellListDTO(sessionDTO.getId(), productProgress, pageable);
+
+		model.addAttribute("productProgress", productProgress);
 		model.addAttribute("page", page);
 		return "order/sellList";
 	}
@@ -178,6 +179,14 @@ public class OrderController {
 		} catch (Exception e) {
 			return new ResponseEntity<>(e, HttpStatus.SERVICE_UNAVAILABLE);
 		}
+	}
+
+	@GetMapping("orderComplete/{productId}/{memberId}/{page}")
+	public String orderComplete(@PathVariable Long productId, @PathVariable Long memberId, @PathVariable int page) {
+
+		orderService.orderComplete(productId, memberId);
+
+		return "redirect:/order/sellList?page=" + page;
 	}
 
 }

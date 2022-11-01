@@ -17,9 +17,7 @@ import com.youprice.onion.util.PaymentUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,11 +51,12 @@ public class OrderServiceImpl implements OrderService {
 		Product product = productRepository.findById(orderAddDTO.getProductId()).orElse(null);
 
 		// 양파페이 결제
-		if (orderAddDTO.getImp_uid() == null)
-			if (member.subCash(orderAddDTO.getOrderPayment()) < 0){
+		if (orderAddDTO.getImp_uid() == null) {
+			if (member.subCash(orderAddDTO.getOrderPayment()) < 0) {
 				log.error("양파페이 부족");
 				throw new RuntimeException();
 			}
+		}
 		memberRepository.save(member);
 
 		// 상품상태 변경 - tradings
@@ -65,7 +64,7 @@ public class OrderServiceImpl implements OrderService {
 		productRepository.save(product);
 
 		// 주문내역 생성
-		Order order = new Order(member, product, orderAddDTO.getOrderNum(), orderAddDTO.getImp_uid(), orderAddDTO.getOrderPayment());
+		Order order = new Order(member, product, orderAddDTO.getOrderNum(), orderAddDTO.getImp_uid(), orderAddDTO.getOrderPayment(), OrderState.ORDER);
 		Long orderId = orderRepository.save(order).getId();
 
 		// 배송정보 생성
@@ -117,11 +116,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	@Transactional(readOnly = true)
 	public Page<OrderDTO> getBuyList(Long memberId, Pageable pageable) {
-
-		pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
-				pageable.getPageSize(), Sort.Direction.DESC, "id");
-
-		return orderRepository.findAllByMemberId(memberId, pageable).map(OrderDTO::new);
+		return orderRepository.findDistinctByMemberId(memberId, pageable).map(OrderDTO::new);
 	}
 
 	// 주문 취소
@@ -151,6 +146,21 @@ public class OrderServiceImpl implements OrderService {
 			
 			return order;
 		}).orElse(null);
+	}
+
+	@Override
+	public void orderComplete(Long productId, Long memberId) {
+
+		Member member = memberRepository.findById(memberId).orElse(null);
+		Product product = productRepository.findById(productId).orElse(null);
+
+		// 상품상태 변경 - tradings
+		product.progressUpdate(ProductProgress.SOLDOUT);
+		productRepository.save(product);
+
+		// 주문내역 생성
+		Order order = new Order(member, product, getOrderNum(), null, product.getPrice(), OrderState.COMPLETE);
+		orderRepository.save(order);
 	}
 
 }

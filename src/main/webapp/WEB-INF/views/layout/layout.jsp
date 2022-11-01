@@ -35,8 +35,8 @@
 	<link rel="stylesheet" href="/template/css/slicknav.min.css" type="text/css">
 	<link rel="stylesheet" href="/template/css/style.css" type="text/css">
 	<link rel="stylesheet" href="/css/onion.css" type="text/css">
-	<link rel="stylesheet" href="/css/chat.css" type="text/css">
 	<link rel="stylesheet" href="/css/header.css" type="text/css">
+	<link rel="stylesheet" href="/css/chat.css" type="text/css">
 
 	<link rel="stylesheet" href="${cp}<tiles:getAsString name = 'css1'/>"/>
 	<link rel="stylesheet" href="${cp}<tiles:getAsString name = 'css2'/>"/>
