@@ -1,0 +1,147 @@
+.n-hidden, .n-radio-tab input { /*기간설정박스*/
+    display: block;
+    position: absolute;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    clip: rect(0 0 0 0);
+}
+.n-radio-tab {
+    padding-right: 1px;
+}
+.n-radio-tab input + label { /*기간영역*/
+    display: inline-block;
+    min-width: 76px;
+    border: 2px solid #f1f1f1;
+    color: #777777;
+    font-size: 14px;
+    line-height: 40px;
+    height: 42px;
+    float: left;
+    text-align: center;
+    vertical-align: top;
+    position: relative;
+    cursor: pointer;
+}
+.n-radio-tab input:checked + label {
+    border-color: #000000;
+    color: #000000;
+    z-index: 1;
+}
+.n-input {
+    height: 40px;
+    padding: 5px 6px;
+    border: 1px solid #e5e5e5;
+    background-color: #ffffff;
+    box-sizing: border-box;
+    font-size: 14px;
+    line-height: 20px;
+}
+.n-datepicker .n-input,
+.vdp-datepicker .n-input {
+    width: 100%;
+}
+.n-section-title {
+    border-bottom: 3px solid #47CD65;
+    padding-bottom: 10px;
+    margin-top: 200px;
+    line-height: 1.5;
+    font-size: 20px;
+    position: relative;
+}
+.n-section-title .tit {
+    display: inline-block;
+    font-size: 20pt;
+    font-weight: bolder;
+}
+.n-section-title + .n-table-filter {
+    margin-top: 250px;
+}
+.n-table-filter {
+    margin: 10px 0 10px 0;
+}
+.n-table-filter .n-radio-tab,
+.n-table-filter .n-datepicker,
+.n-table-filter .n-select {
+    display: block;
+    float: left;
+    margin-right: 8px;
+    height: 40px;
+}
+.n-table-filter .n-datepicker {
+    width: 120px;
+}
+.n-table-filter .n-datepicker.sb {
+    margin-right: 10px;
+}
+.n-table-filter .n-select {
+    width: 130px;
+}
+
+/*테이블전체*/
+.n-table {
+    width: 100%;
+    line-height: 1.5;
+    border-collapse: collapse;
+    table-layout: fixed;
+    background-color: #ffffff;
+}
+.n-table strong,
+.n-table span {
+    vertical-align: middle;
+}
+/* th */
+.n-table.table-col {
+    border-top: 2px solid #000000;
+}
+.table-row th {
+    height: 45px;
+    text-align: center;
+    background-color: #47CD65;
+    font-size: 16px;
+    vertical-align: middle;
+}  /* th끝 */
+.table-row > col{
+    text-align: center;
+    margin-left: 30px;
+}
+
+.n-table.table-col tr.is-active td,
+.n-table.table-col tr:hover td,
+.n-table.table-col tr:hover + tr.more td { /*항목에 마우스를 올릴때*/
+    background-color: #b1dfbb;
+    color: white;
+    font-weight: bold;
+}
+.table-row td {
+    height: 70px;
+    text-align: center;
+    font-weight: bold;
+    box-sizing: border-box;
+    border-bottom: 1px solid #b3b7bb;
+    word-break: break-all;
+}
+.n-table.table-col td > a {
+    display: inline-block;
+    word-break: break-all;
+}
+.n-table-none {
+    height: 400px;
+    text-align: center;
+    border-bottom: 1px solid #f5f5f5;
+}
+.n-table-none:before {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+.n-table-none > span {
+    display: inline-block;
+    line-height: 1.5;
+    font-size: 14px;
+    color: #777777;
+    line-height: 21px;
+    vertical-align: middle;
+}
