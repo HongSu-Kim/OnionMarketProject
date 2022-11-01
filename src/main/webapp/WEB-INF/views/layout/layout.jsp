@@ -86,6 +86,8 @@
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<!-- validation -->
 	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.0/jquery.validate.min.js" ></script>
+	<!-- fontawosome icon -->
+	<script src="https://kit.fontawesome.com/9d2f11d6fb.js" crossOrigin="anonymous"></script>
 
 	<script src="${cp}<tiles:getAsString name = 'js1'/>"></script>
 	<script src="${cp}<tiles:getAsString name = 'js2'/>"></script>

@@ -9,7 +9,6 @@ function remainedTime() {
 
     var st = start.getTime(); // 현재의 시간
     var et = end.getTime(); // 경매기한
-
     if(st<et){ //현재시간이 경매기한보다 이르면 경매기한까지의 남은 시간을 구한다.
         sec = parseInt(et - st)/1000;
         hour = parseInt(sec/60/60);
@@ -38,8 +37,7 @@ $(document).ready(function () {
     var price = Number($('#nowPrice').val()); //시작가
     var exBid = Number($('#exBid').val()); //이전 입찰가
     var now; //최소 입찰가
-    
-    if(exBid == null) {
+    if(exBid == 0) {
         now = price-1;
     }else if(exBid >= price) {
         now = exBid+1000;

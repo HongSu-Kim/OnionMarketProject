@@ -50,6 +50,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 	@EntityGraph(attributePaths = { "orderList.delivery" })
 	Page<Product> findByMemberId(Long memberId, Pageable pageable);
 
+	//개인 판매 상품 리스트
+	Page<Product> findAllByMemberIdAndProductProgressIn(Long memberId, ProductProgress[] productProgressList, Pageable pageable);
+
 	// 하위 카테고리 상품 리스트
 	List<Product> findByCategoryId(Long categoryId);
 
