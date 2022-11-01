@@ -43,14 +43,19 @@
     border: none;
 }
 
+.checkout__input.pwdCheck {
+    margin-top: 5px;
+}
+
+.rounded-circle.mt-2.preview {
+    width: 150px;
+    margin-bottom: 10px;
+}
+
 span {
     color: #ff0000;
 }
 
 h4 {
     text-align: center;
-}
-
-.checkout__input.pwdCheck {
-    margin-top: 5px;
 }
