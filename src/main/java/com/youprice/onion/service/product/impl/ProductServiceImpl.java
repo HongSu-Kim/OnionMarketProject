@@ -38,6 +38,23 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Page<ProductListDTO> getProductListDTO(SearchRequirements searchRequirements) {
+        List<ProductListDTO> blindList = getAuctionList(false);
+
+        LocalDateTime now = LocalDateTime.now();
+
+        for(ProductListDTO blindDTO : blindList) {
+
+            Product product = productRepository.findById(blindDTO.getProductId()).orElse(null);
+
+            if(blindDTO.getAuctionDeadline().isBefore(now)){
+
+                blindDTO.setBlindStatus(true);
+
+                product.updateAuctionProduct(blindDTO);
+
+                productRepository.save(product);
+            }
+        }
 		return productRepositoryQuerydsl.findAllBySearchRequirements(searchRequirements).map(ProductListDTO::new);
 	}
 
@@ -154,27 +171,6 @@ public class ProductServiceImpl implements ProductService {
         return subCategoryProduct;
     }
 
-    //상품 전체 조회
-    @Override
-    public List<ProductListDTO> getProductList(Boolean blindStatus) {
-        return productRepository.findByBlindStatus(false)
-                .stream()
-                .map(product -> new ProductListDTO(product))
-                .collect(Collectors.toList());
-    }
-
-    //동네 상품 전체 조회
-    @Override
-    public List<ProductListDTO> getProductList(Long coordinateId,Boolean blindStatus) {
-
-        List<ProductListDTO> list = productRepository.findByBlindStatus(false)
-                .stream()
-                .filter(gpl -> gpl.getTown().getCoordinate().getId()==coordinateId)
-                .map(product -> new ProductListDTO(product))
-                .collect(Collectors.toList());
-
-        return list;
-    }
     //전체 경매 상품 조회
     @Override
     public List<ProductListDTO> getAuctionList(Boolean blindStatus) {
@@ -205,22 +201,6 @@ public class ProductServiceImpl implements ProductService {
 
     //이미지리스트
     private List<ProductImage> productImages(Long productId, List<MultipartFile> fileList) throws Exception {
-        List<ProductImage> productImageList = new ArrayList<>();
-        Product product = productRepository.findById(productId).orElse(null);
-
-        for (MultipartFile file : fileList) {
-
-            if (!file.isEmpty()) {
-                String productImageName = saveFile(file);
-                ProductImage image = new ProductImage(product, productImageName);
-
-                productImageList.add(image);
-            }
-        }
-        return productImageList;
-    }
-    //이미지 수정
-    private List<ProductImage> updateImage(Long productId, List<MultipartFile> fileList) throws Exception {
         List<ProductImage> productImageList = new ArrayList<>();
         Product product = productRepository.findById(productId).orElse(null);
 
@@ -313,10 +293,18 @@ public class ProductServiceImpl implements ProductService {
     public CategoryFindDTO findCategoryId(Long categoryId) {
         return categoryRepository.findById(categoryId).map(CategoryFindDTO::new).orElse(null);
     }
-
+    //유저 판매 상품 목록
     @Override
     public Page<ProductSellListDTO> getProductSellListDTO(Long memberId, Pageable pageable) {
       return productRepository.findByMemberId(memberId, pageable).map(ProductSellListDTO::new);
+    }
+    //개인 유저 상품 리스트
+    @Override
+    public Page<ProductListDTO> getPersonalList(Long memberId, Pageable pageable) {
+        ProductProgress[] productProgressList = ProductProgress.class.getEnumConstants();
+
+        return productRepository.findAllByMemberIdAndProductProgressIn(memberId,productProgressList, pageable)
+                .map(ProductListDTO::new);
     }
 
 }

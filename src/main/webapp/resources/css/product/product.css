@@ -1,8 +1,4 @@
-@import url(//fonts.googleapis.com/earlyaccess/hanna.css);
-.featured__product{
-    font-family: 'Hanna', sans-serif;
 
-}
 .product__add__input__file{
 
 }
@@ -39,18 +35,65 @@ label.error{display:block;color:red;}
 .button {
     border-width: thin;
 }
+/*update*/
+.imageList {
+    display: flex;
+    justify-content: space-between;
+}
+.btnRemove{
+    border-width: thin;
+}
+
 
 /*detail*/
+.board {
+
+
+}
+
+.primary-btn {
+    display: inline-block;
+    font-size: 14px;
+    border: 0px;
+    padding: 10px 28px 10px;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-weight: 700;
+    background: #47cd65;
+    letter-spacing: 2px;
+}
+
 dl {
+    display: flex;
+    justify-content: space-around;
 }
-
 dt {
-    float: left;
-    margin-right: 10px;
-}
 
+}
 dd {
-    float: left;
-    margin-right: 10px;
+    text-align: center;
 }
 
+.auction__time__price {
+    display: flex;
+    justify-content: space-between;
+
+    font-size: 28px;
+}
+.now__price {
+    font-size: 30px;
+    color: #dd2222;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+.time > span {
+    color: #47cd65;
+}
+
+.tr {
+
+}
+
+.product__item__text > p {
+    text-align: left;
+}

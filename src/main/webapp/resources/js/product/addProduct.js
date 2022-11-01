@@ -139,23 +139,25 @@ $(function() {
 });
 
 //상위카테고리를 클릭할시 해당 하위카테고리 조회
-$("#aa").change(function (){
+$("#category").change(function (){
 
     $.ajax({
-        url: "/product/aa",
+        url: "/product/category",
         method: "GET",
-        data:({ categoryId :$("#aa").val()}   ),
+        data:({ categoryId :$("#category").val()}   ),
         datatype : "json",
         success: function (subCategory){
 
-            // for(var i = 0; i < subCategory.size; i++) {
-            //     $("#aa").append('<option value="'+ subCategory.get(i).getId() +'">'  + subCategory.get(i).getCategoryName() + '</option>')
-            //
-            //
-            //
-            //
-            //
-            // }
+            for(var i = 0; i < subCategory.length; i++) {
+                let option = $('<option value="' + subCategory.get[i].getId() + '">' + subCategory.get[i].getCategoryName() + '</option>')
+
+                $("#category").append(option)
+
+
+
+
+
+            }
         }
 
     }).fail(function () {

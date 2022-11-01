@@ -9,6 +9,7 @@ import com.youprice.onion.service.member.ProhibitionKeywordService;
 import com.youprice.onion.service.product.*;
 import com.youprice.onion.util.AlertRedirect;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -100,7 +101,7 @@ public class ProductController {
         ProductFindDTO productFindDTO = productService.getProductFindDTO(productId);
         /*리뷰 조회*/
         Double reviewAvg = null;
-//        if (reviewService.avgGrade(productFindDTO.getMemberId()) != 0) {
+//        if (reviewService.avgGrade(productFindDTO.getMemberId()) > 0) {
 //            reviewAvg = reviewService.avgGrade(productFindDTO.getMemberId());
 //        }
         /*입찰 리스트 조회 및 마지막 입찰가 조회*/
@@ -146,7 +147,7 @@ public class ProductController {
     //상품 리스트 주소
     @GetMapping(value = "list")
     public String list(@LoginUser SessionDTO userSession, Model model,
-                       @PageableDefault Pageable pageable) throws Exception {
+                       @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
 
         /*세션아이디로 동네 조회*/
         List<Long> coordinateList = null;
@@ -161,35 +162,37 @@ public class ProductController {
                     .collect(Collectors.toList());
         }
         SearchRequirements searchRequirements = SearchRequirements.builder()
+                .blindStatus(false)
                 .coordinateIdList(coordinateList)
                 .build();
 
-        System.out.println("동네이름 = " + searchRequirements.getCoordinateId());
         searchRequirements.setPageable(PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
-                pageable.getPageSize(),Sort.Direction.DESC, "uploadDate"));
+                pageable.getPageSize(),Sort.Direction.DESC, "id"));
 
         List<ProductListDTO> list = productService.getProductListDTO(searchRequirements).getContent();
-
-        System.out.println("list = " + list.size());
+        Page<ProductListDTO> page = productService.getProductListDTO(searchRequirements);
 
         model.addAttribute("list",list);
+        model.addAttribute("page",page);
         model.addAttribute("townList",townList);
         return "product/list";//상품 리스트 메인 화면페이지
     }
 
     //상품 전체 리스트 주소
     @GetMapping("allList")
-    public String allList(Model model,@PageableDefault Pageable pageable) {
+    public String allList(Model model, @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
         SearchRequirements searchRequirements = SearchRequirements.builder()
                 .blindStatus(false)
                 .build();
 
         searchRequirements.setPageable(PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
-                pageable.getPageSize(),Sort.Direction.DESC, "uploadDate"));
+                pageable.getPageSize(),Sort.Direction.DESC, "id"));
         List<ProductListDTO> list = productService.getProductListDTO(searchRequirements).getContent();
+        Page<ProductListDTO> page = productService.getProductListDTO(searchRequirements);
 
         model.addAttribute("list", list);
+        model.addAttribute("page",page);
         return "product/list";
     }
 
@@ -317,6 +320,13 @@ public class ProductController {
         return  "product/list";
     }
 
+    @GetMapping("/personalList/{memberId}")
+    public String productList(@PathVariable Long memberId, Model model, @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<ProductListDTO> page = productService.getPersonalList(memberId, pageable);
+        model.addAttribute("list", page.getContent());
+        return "product/list";
+    }
+
     @GetMapping("/update/{productId}")//상품 업데이트 주소
     public String update(Model model, @PathVariable("productId") Long productId, @LoginUser SessionDTO userSession, HttpServletResponse response) throws IOException {
 
@@ -332,7 +342,6 @@ public class ProductController {
         ProductFindDTO productFindDTO = productService.getProductFindDTO(productId);
         List<ProductImageDTO> imageList = productImageService.getProductImage(productId);
 
-        System.out.println("productFindDTO.getCategoryName() = " + productFindDTO.getCategoryName());
         /*카테고리 조회*/
         List<Category> topCategory = categoryService.findTopCategory();
         List<Category> subCategory = categoryService.findSubCategory();
