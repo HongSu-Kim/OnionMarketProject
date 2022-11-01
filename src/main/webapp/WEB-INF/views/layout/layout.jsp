@@ -35,8 +35,8 @@
 	<link rel="stylesheet" href="/template/css/slicknav.min.css" type="text/css">
 	<link rel="stylesheet" href="/template/css/style.css" type="text/css">
 	<link rel="stylesheet" href="/css/onion.css" type="text/css">
-	<link rel="stylesheet" href="/css/chat.css" type="text/css">
 	<link rel="stylesheet" href="/css/header.css" type="text/css">
+	<link rel="stylesheet" href="/css/chat.css" type="text/css">
 
 	<link rel="stylesheet" href="${cp}<tiles:getAsString name = 'css1'/>"/>
 	<link rel="stylesheet" href="${cp}<tiles:getAsString name = 'css2'/>"/>
@@ -86,6 +86,8 @@
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<!-- validation -->
 	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.0/jquery.validate.min.js" ></script>
+	<!-- fontawosome icon -->
+	<script src="https://kit.fontawesome.com/9d2f11d6fb.js" crossOrigin="anonymous"></script>
 
 	<script src="${cp}<tiles:getAsString name = 'js1'/>"></script>
 	<script src="${cp}<tiles:getAsString name = 'js2'/>"></script>

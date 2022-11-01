@@ -8,7 +8,7 @@
 <section class="spad">
     <div class="container">
         <div class="checkout__form">
-            <form:form action="/member/joinProc" method="post" name="myForm" modelAttribute="memberJoinDTO">
+            <form:form action="/member/joinProc" method="post" name="myForm" modelAttribute="memberJoinDTO" enctype="multipart/form-data">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                 <div class="row">
                     <div class="col-lg-3 col-md-3"></div>
@@ -62,6 +62,11 @@
                             <p>이메일<span>*</span></p>
                             <input type="text" name="email" value="${memberJoinDTO.email}" placeholder="이메일을 입력해 주세요."/>
                             <span id="valid_email">${valid_email}</span>
+                        </div>
+                        <div class="checkout__input">
+                            <p>프로필</p>
+                            <img class="rounded-circle mt-2 preview" id="preview"/>
+                            <input type="file" name="profileImg" onchange="readURL(this);"/>
                         </div>
                         <button type="submit" id="submit" class="site-btn">가입하기</button>
                         <button type="button" class="site-btn" onclick="location.href='/member/login'">돌아가기</button>

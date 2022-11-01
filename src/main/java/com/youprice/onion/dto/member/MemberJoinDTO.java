@@ -4,6 +4,7 @@ import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.member.Role;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
@@ -62,6 +63,7 @@ public class MemberJoinDTO { //회원가입 할 때 필요한 DTO (MemberDTO)에
     private String email;
 
     private String memberImageName;
+    private MultipartFile profileImg;
 
     public Member toEntity() { //DTO -> Entity
         return Member.builder()
@@ -78,7 +80,7 @@ public class MemberJoinDTO { //회원가입 할 때 필요한 DTO (MemberDTO)에
                 .detailAddress(detailAddress)
                 .extraAddress(extraAddress)
                 .email(email)
-                .memberImageName(memberImageName)
+                .memberImageName(memberImageName == null ? "null.png" : memberImageName)
                 .build();
     }
 }

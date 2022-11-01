@@ -15,6 +15,9 @@ public interface WishRepository extends JpaRepository<Wish, Long> {
 	// 각 상품의 찜 개수
 	int countByProductId(Long productId);
 
+	// 헤더 부분 각 회원의 찜 갯수
+	int countByMemberId(Long memberId);
+
 	// 찜 리스트
 	@EntityGraph(attributePaths = {"product.member", "product.town.coordinate"})
 	Page<Wish> findAllByMemberId(Long memberId, Pageable pageable);

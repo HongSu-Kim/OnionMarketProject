@@ -36,7 +36,7 @@
 							<p>경매 등록</p><%--true/false로 변경--%>
 							<div>
 								경매 기간은 12시간입니다.
-								<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="auctionStatus" value="true" checked="${productFindDTO.auctionStatus}">
+								<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="auctionStatus" value="true">
 								<input type="hidden" name="auctionStatus" value="false">
 								<hr/>
 							</div>
@@ -88,13 +88,9 @@
 								<div class="checkout__input">
 									<div class='addInput'>
 										<p>상품 이미지<span>*</span></p>
-										<c:forEach var="imageList" items="${imageList}">
-										<input type="file" name="productImageName" id="fileList" value="${imageList.productImageName}">
-<%--										<label for="fileList">${imageList.productImageName}</label>--%>
-										<button type="button" class="btnRemove">삭제</button><br>
-										</c:forEach>
+										<input type="file" name="fileList" id="fileList">
 									</div>
-									<button type="button" class="btnAdd">이미지 추가</button>
+									<button type="button" class="btnAdd" style="border-width: thin;">이미지 추가</button>
 								</div>
 							</div>
 							<div class="col-lg-8">

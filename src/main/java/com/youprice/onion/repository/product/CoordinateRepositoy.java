@@ -23,6 +23,11 @@ public interface CoordinateRepositoy extends JpaRepository<Coordinate,Long> {
 
  // Coordinate findAllById(String townName);
 
+    Coordinate findByLatitude(Long coordinateId);
+    Coordinate findByLongitude(Long coordinateId);
+
+   Coordinate findAllById(Object coordinateId);
+
 
     @Repository
     @RequiredArgsConstructor
