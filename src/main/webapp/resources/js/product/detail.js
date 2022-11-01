@@ -9,14 +9,12 @@ function remainedTime() {
 
     var st = start.getTime(); // 현재의 시간
     var et = end.getTime(); // 경매기한
-
     if(st<et){ //현재시간이 경매기한보다 이르면 경매기한까지의 남은 시간을 구한다.
-        sec = parseInt(et-st)/1000;
+        sec = parseInt(et - st)/1000;
         hour = parseInt(sec/60/60);
         sec = (sec - (hour*60*60));
         min = parseInt(sec/60);
         sec = parseInt(sec-(min*60));
-
         if(hour<10){hour="0"+hour;}
         if(min<10){min="0"+min;}
         if(sec<10){sec="0"+sec;}
@@ -34,31 +32,14 @@ function remainedTime() {
 }
 setInterval(remainedTime,1000);
 
-// $(document).ready(function () {
-//     if($("#nowBid").val()==$("#nowPrice").val()) {
-//         $("#bid").val()>=$("#nowPrice").val();
-//     }else {
-//         if($("#nowBid").val()<10000){
-//             min($("#nowBid").val()+1000)
-//         }else if($("#nowBid").val()<100000){
-//             min($("#nowBid").val()+5000)
-//         }else if($("#nowBid").val()<500000){
-//             min($("#nowBid").val()+10000)
-//         }else {
-//             min($("#nowBid").val()+50000)
-//         }
-//     }
-// });
-
 $(document).ready(function () {
 
     var price = Number($('#nowPrice').val()); //시작가
-    var nowBid = Number($('#nowBid').val()); //현재 입찰가
     var exBid = Number($('#exBid').val()); //이전 입찰가
-    var now;
-    if(exBid == null) {
-        now = price;
-    }else {
+    var now; //최소 입찰가
+    if(exBid == 0) {
+        now = price-1;
+    }else if(exBid >= price) {
         now = exBid+1000;
     }
 

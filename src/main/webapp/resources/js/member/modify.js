@@ -71,7 +71,7 @@ const main = {
                     window.location.href = "/member/mypage";
                 },
                 error: function (e) {
-                    alert(e.responseText);
+                    alert("error!!!!!!");
                 }
 
             }).done(function () {
@@ -88,6 +88,19 @@ const main = {
 };
 
 main.init();
+
+//프로필 미리보기
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('preview').src = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        document.getElementById('preview').src = "";
+    }
+}
 
 // 주소
 function sample6_execDaumPostcode() {

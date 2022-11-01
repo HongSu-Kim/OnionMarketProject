@@ -20,6 +20,8 @@ public class WishListDTO {
 	private int viewCount; //조회수
 	private Boolean payStatus; //페이현황
 	private String representativeImage; //이미지파일이름
+	@Setter
+	private Long chatroomId;
 	private int chatroomListSize;
 	private int wishListSize;
 

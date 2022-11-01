@@ -1,6 +1,7 @@
 package com.youprice.onion.service.order.impl;
 
 import com.youprice.onion.dto.order.WishListDTO;
+import com.youprice.onion.entity.chat.Chatroom;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.order.Wish;
 import com.youprice.onion.entity.product.Product;
@@ -38,9 +39,18 @@ public class WishServiceImpl implements WishService {
 				pageable.getPageSize(), Sort.Direction.DESC, "id");
 
 		return wishRepository.findAllByMemberId(memberId, pageable).map(wish -> {
+
 			int chatroomListSize = chatroomRepository.countByProductId(wish.getProduct().getId());
 			int wishListSize = wishRepository.countByProductId(wish.getProduct().getId());
-			return new WishListDTO(wish, chatroomListSize, wishListSize);
+
+			WishListDTO wishListDTO = new WishListDTO(wish, chatroomListSize, wishListSize);
+
+			Chatroom chatroom = chatroomRepository.findByMemberIdAndProductId(memberId, wish.getProduct().getId()).orElse(null);
+			if (chatroom != null) {
+				wishListDTO.setChatroomId(chatroom.getId());
+			}
+
+			return wishListDTO;
 		});
 	}
 

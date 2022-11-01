@@ -212,14 +212,16 @@ CREATE TABLE chatroom (
 );
 
 CREATE TABLE chat (
-	chat_id         	NUMBER          NOT NULL,
-	chatroom_id     	NUMBER          NOT NULL,
-	message         	VARCHAR2(600)   NOT NULL,
-	chat_image_name 	VARCHAR2(255)   NULL,
-	read_or_not      	VARCHAR2(10)    NOT NULL,
-	sending_time    	DATE            DEFAULT SYSDATE,
-	CONSTRAINT PK_CHAT PRIMARY KEY (chat_id),
-	CONSTRAINT FK_CHAT_CHATROOM_ID  FOREIGN KEY (chatroom_id) REFERENCES chatroom(chatroom_id)
+    chat_id         	NUMBER          NOT NULL,
+    chatroom_id     	NUMBER          NOT NULL,
+    member_id     	    NUMBER          NOT NULL,
+    message         	VARCHAR2(600)   NULL,
+    chat_image_name 	VARCHAR2(255)   NULL,
+    read_or_not      	VARCHAR2(10)    NOT NULL,
+    sending_time    	DATE            DEFAULT SYSDATE,
+    CONSTRAINT PK_CHAT PRIMARY KEY (chat_id),
+    CONSTRAINT FK_CHAT_CHATROOM_ID  FOREIGN KEY (chatroom_id) REFERENCES chatroom(chatroom_id),
+    CONSTRAINT FK_CHAT_MEMBER_ID  FOREIGN KEY (member_id) REFERENCES member(member_id)
 );
 
 CREATE TABLE wish (
@@ -264,15 +266,13 @@ CREATE TABLE complain (
 	complain_id         NUMBER          NOT NULL,
 	member_id       	NUMBER          NOT NULL,
 	product_id          NUMBER          NULL,
-	chatroom_id         NUMBER          NULL,
-	complain_type       VARCHAR2(20)	NOT NULL,
+	complain_type       VARCHAR2(100)	NOT NULL,
 	complain_date       DATE            DEFAULT SYSDATE,
 	complain_content    VARCHAR2(255)	NOT NULL,
-	status              VARCHAR2(10)	DEFAULT 'wait',
+	status              VARCHAR2(20)	DEFAULT 'wait',
 	CONSTRAINT PK_COMPLAIN PRIMARY KEY (complain_id),
 	CONSTRAINT FK_COMPLAIN_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id),
-	CONSTRAINT FK_COMPLAIN_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id),
-	CONSTRAINT FK_COMPLAIN_CHATROOM_ID FOREIGN KEY (chatroom_id) REFERENCES chatroom(chatroom_id)
+	CONSTRAINT FK_COMPLAIN_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id)
 );
 
 CREATE TABLE review (
@@ -299,12 +299,12 @@ CREATE TABLE review_image(
 CREATE TABLE inquiry (
 	inquiry_id	    	NUMBER	        NOT NULL,
 	member_id	    	NUMBER	        NOT NULL,
-	inquiry_type        VARCHAR2(30)	NOT NULL,
-	detail_type         VARCHAR2(30)	NOT NULL,
+	inquiry_type        VARCHAR2(50)	NOT NULL,
+	detail_type         VARCHAR2(50)	NOT NULL,
 	inquiry_subject     VARCHAR2(50)	NOT NULL,
 	inquiry_content     VARCHAR2(255)	NOT NULL,
 	inquiry_date    	DATE            DEFAULT SYSDATE,
-	status          	VARCHAR2(10)	DEFAULT 'wait',
+	status          	VARCHAR2(20)	DEFAULT 'wait',
 	secret              CHAR(1)         CONSTRAINT review_image_secret_CK check ( secret = '0' or secret = '1'),
 	CONSTRAINT PK_INQUIRY PRIMARY KEY (inquiry_id),
 	CONSTRAINT FK_INQUIRY_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id)
@@ -602,3 +602,5 @@ INSERT INTO category VALUES(114,'기타','');
 INSERT INTO category VALUES(115,'기타상품',114);
 
 ----------------------------------------------------------------------------------------------------
+
+commit;

@@ -1,21 +1,20 @@
 package com.youprice.onion.dto.board;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Getter
 @Setter
 public class NoticeUpdateDTO {
-
-    private String noticeSubject; //공지제목
-    private String noticeContent; //공지내용
-
+    @NotEmpty(message = "유형을 선택해주세요")
+    private String noticeType;
+    @NotEmpty(message = "제목을 입력해주세요")
+    private String noticeSubject;
+    @NotEmpty(message = "내용을 작성해주세요")
+    private String noticeContent;
     private List<MultipartFile> noticeImageName;
-
-
-
 }

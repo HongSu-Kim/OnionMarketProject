@@ -3,36 +3,39 @@
 <meta name="_csrf" content="${_csrf.token}">
 <meta name="_csrf_header" content="${_csrf.headerName}">
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>경매 상품 리스트</title>
-</head>
-<body>
-
-
-<div>
-	<h3><경매 상품 리스트입니다></h3><br/>
-	<c:forEach var="list" items="${list}">
-
-		<a href="/product/detail/${list.productId}">
-			제목: ${list.subject}<br/><br/>
-		</a>
-		<img src="/img/product/${list.productImageName}"/><br/>
-		<c:if test="${list.auctionDeadline ne null}">
-			<p style="font-style: italic">
-				<경매 진행 중인 상품>
-			</p>
-		</c:if>
-		상품가격: ${list.price}
-		<%--      <p>등록일: ${list.uploadDate}</p><br/>--%>
-		<br/><br/><br/>
-
-	</c:forEach>
-</div>
-
-
+<!-- Featured Section Begin -->
+<section class="featured__product">
+	<div class="container">
+		<div class="row featured__filter">
+			<c:forEach var="list" items="${list}">
+				<div class="col-lg-3 col-md-4 col-sm-6" style="padding: 15px;">
+					<div class="featured__item">
+						<div class="featured__item__pic set-bg" data-setbg="/img/product/${list.productImageName}">
+							<ul class="featured__item__pic__hover">
+								<li><a href="/wish/addWish/${productId}"><i class="fa fa-heart"></i></a></li>
+								<li><a href="#"><i class="fa fa-retweet"></i></a></li>
+								<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+							</ul>
+							<div style="margin-top:93%;"><c:if test="${list.payStatus eq true}"><img src="/template/img/product/pay.png"></c:if></div>
+						</div>
+						<div class="featured__item__text">
+							<h6><a href="/product/detail/${list.productId}">${list.subject}</a></h6>
+							<c:if test="${list.auctionDeadline ne null}">
+								<p style="color: #47cd65;">
+									<경매 진행 중인 상품>
+								</p>
+							</c:if>
+							<fmt:parseDate var="uploadDate" value="${list.uploadDate}" pattern="yyyy-MM-dd'T'HH:mm"/>
+							<h5 style="text-align: left"><fmt:formatNumber maxFractionDigits="3" value="${list.price}"/></h5>
+							<h5 style="text-align: right"><fmt:formatDate value="${uploadDate}" pattern="MM/dd"/></h5>
+						</div>
+					</div>
+				</div>
+			</c:forEach>
+		</div>
+	</div>
+</section>
+<!-- Featured Section End -->
 
 <div>
 
@@ -356,11 +359,3 @@
 
 	</c:forEach>
 </div>
-
-
-<form action="/product/add">
-	<input type="submit" value=" 상품 등록하기 " class="btn2"/>
-</form>
-
-</body>
-</html>

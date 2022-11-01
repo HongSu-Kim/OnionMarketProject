@@ -4,8 +4,10 @@ import com.youprice.onion.dto.member.*;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.member.Role;
 import com.youprice.onion.repository.member.BlockRepository;
+import com.youprice.onion.repository.member.FollowRepository;
 import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.service.member.MemberService;
+import com.youprice.onion.util.ImageUtil;
 import com.youprice.onion.util.MailUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 
 @Slf4j
@@ -28,6 +32,7 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final BlockRepository blockRepository;
+    private final FollowRepository followRepository;
 
     @Value("$(file.path}")
     private String uploadFolder;
@@ -38,7 +43,10 @@ public class MemberServiceImpl implements MemberService {
     //회원가입
     @Transactional
     @Override
-    public Long saveMember(MemberJoinDTO memberJoinDTO) {
+    public Long saveMember(MemberJoinDTO memberJoinDTO) throws IOException {
+
+        memberJoinDTO.setMemberImageName(ImageUtil.store(memberJoinDTO.getProfileImg(), "member"));
+
         memberJoinDTO.setPwd(passwordEncoder.encode(memberJoinDTO.getPwd())); //패스워드 암호화 저장
         return memberRepository.save(memberJoinDTO.toEntity()).getId();
     }
@@ -76,8 +84,17 @@ public class MemberServiceImpl implements MemberService {
             throw new IllegalArgumentException("이미 존재하는 닉네임 입니다. 다시 입력해 주세요.");
         } else {
             String encPwd = passwordEncoder.encode(memberModifyDTO.getPwd());
-            findById.modify(encPwd, memberModifyDTO.getNickname(), memberModifyDTO.getTel(), memberModifyDTO.getPostcode(), memberModifyDTO.getAddress(), memberModifyDTO.getDetailAddress(), memberModifyDTO.getExtraAddress(), memberModifyDTO.getEmail(), memberModifyDTO.getMemberImageName());
+            findById.modify(encPwd, memberModifyDTO.getNickname(), memberModifyDTO.getTel(), memberModifyDTO.getPostcode(),
+                    memberModifyDTO.getAddress(), memberModifyDTO.getDetailAddress(), memberModifyDTO.getExtraAddress(), memberModifyDTO.getEmail());
         }
+    }
+
+    //프로필
+    @Override
+    public void modifyProfileImg(Long memberId, MultipartFile profileImg) throws IOException {
+        Member member = memberRepository.findById(memberId).orElse(null);
+        member.modifyProfileImg(ImageUtil.store(profileImg, "member"));
+        memberRepository.save(member);
     }
 
     //아이디 찾기
@@ -110,8 +127,7 @@ public class MemberServiceImpl implements MemberService {
         member.findPwd(tempPwd);
 
         //이메일 전송
-        MailUtil mail = new MailUtil();
-        mail.sendMail(member);
+        MailUtil.sendMail(member);
 
         //암호화된 임시 비밀번호 저장
         member.findPwd(passwordEncoder.encode(member.getPwd()));
@@ -132,6 +148,19 @@ public class MemberServiceImpl implements MemberService {
     public MemberDTO getMemberDTO(Long memberId) {
         return memberRepository.findById(memberId).map(MemberDTO::new).orElse(null);
     }
+
+    @Override
+    public MemberDTO getMemberDTO(Long memberId, Long sessionId) { //memberId: 타겟유저, sessionId: 로그인 한 유저
+        return memberRepository.findById(memberId).map(member -> {
+            MemberDTO memberDTO = new MemberDTO(member);
+
+            memberDTO.setFollowCheck(followRepository.existsByMemberIdAndTargetId(sessionId, memberId));
+            memberDTO.setBlockCheck(blockRepository.existsByMemberIdAndTargetId(sessionId, memberId));
+
+            return memberDTO;
+        }).orElse(null);
+    }
+
 /*
     //프로필사진 수정
     @Transactional

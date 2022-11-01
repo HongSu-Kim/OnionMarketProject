@@ -17,8 +17,10 @@ public class ProductFindDTO {
 
     private Long productId;
     private Long memberId; //Member FK
+    private String nickname; //member nickname
     private Long townId; //Town FK
     private Long categoryId; //Category FK
+    private String categoryName; //Category이름
     private String subject; //제목
     private String content; //내용
     private int price; //상품가격
@@ -26,6 +28,7 @@ public class ProductFindDTO {
     private LocalDateTime uploadDate; //등록시간
     private LocalDateTime updateDate; //수정일
     private LocalDateTime auctionDeadline; //경매기한
+    private Boolean auctionStatus; //경매현황
     private int viewCount; //조회수
     private ProductProgress productProgress; //판매상태 SALESON,RESERVED,TRADINGS,SOLDOUT 판매중,예약중,거래중,판매완료
     private Boolean payStatus; //페이현황
@@ -36,8 +39,10 @@ public class ProductFindDTO {
 
         productId = product.getId();
         memberId = product.getMember().getId();
+        nickname = product.getMember().getNickname();
         townId = product.getTown().getId();
         categoryId = product.getCategory().getId();
+        categoryName = product.getCategory().getCategoryName();
         subject = product.getSubject();
         content = product.getContent();
         price = product.getPrice();
@@ -45,6 +50,9 @@ public class ProductFindDTO {
         uploadDate = product.getUploadDate();
         updateDate = product.getUpdateDate();
         auctionDeadline = product.getAuctionDeadline();
+        if(product.getAuctionDeadline()!=null){
+            auctionStatus = true;
+        }else auctionStatus = false;
         viewCount = product.getViewCount();
         productProgress = product.getProductProgress();
         payStatus = product.getPayStatus();

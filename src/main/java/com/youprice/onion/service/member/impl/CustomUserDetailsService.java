@@ -1,5 +1,6 @@
 package com.youprice.onion.service.member.impl;
 
+import com.youprice.onion.repository.order.WishRepository;
 import com.youprice.onion.security.auth.CustomUserDetails;
 import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.entity.member.Member;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpSession;
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
+    private final WishRepository wishRepository;
     private final HttpSession session;
 
     @Override //userId가 DB에 있는지 확인
@@ -29,7 +31,8 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("탈퇴한 회원입니다.");
         }
 
-        session.setAttribute("member", new SessionDTO(member));
+        session.setAttribute("sessionDTO", new SessionDTO(member));
+        session.setAttribute("wishCount", wishRepository.countByMemberId(member.getId()));
 
         //시큐리티 세션에 유저 정보 저장
         return new CustomUserDetails(member);

@@ -6,7 +6,7 @@
 
 <style>
     .n-section-title {
-        border-bottom: 3px solid #7fad39;
+        border-bottom: 3px solid #47CD65;
         padding-bottom: 10px;
         margin-top: 200px;
         line-height: 1.5;
@@ -32,17 +32,15 @@
         color: black;
     }
     .textArea {
-        border: 2px solid #7fad39;
+        border: 2px solid #47CD65;
         margin-left: 10px;
     }
-    .qna-container{
-        margin-bottom: 30px;
-    }
+
 </style>
 
 <section class="hero hero-normal">
     <div class="container" style="width: 800px;">
-        <div class="qna-container">
+        <div class="qna-container" style="margin-bottom: 30px">
             <div class="n-section-title">
                 <c:if test="${answerDTO == null}">
                     <h1 class="tit">답변 작성하기</h1>

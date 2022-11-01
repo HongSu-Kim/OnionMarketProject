@@ -1,23 +1,18 @@
 package com.youprice.onion.entity.board;
 
-import com.youprice.onion.dto.board.NoticeDTO;
 import com.youprice.onion.dto.board.NoticeUpdateDTO;
 import com.youprice.onion.entity.member.Member;
-import com.youprice.onion.entity.order.OrderState;
-import com.youprice.onion.entity.product.Product;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 @Entity
-@NoArgsConstructor // 기본생성자
+@NoArgsConstructor
 public class Notice{
 
     @Id
@@ -49,18 +44,22 @@ public class Notice{
                 this.noticeType = nt;
             }
         }
-        //this.noticeType = NoticeType.NOTICE;
         this.noticeSubject = noticeSubject;
         this.noticeContent = noticeContent;
         this.noticeDate = LocalDate.now();
         this.hitCount = 0;
     }
 
-    public void updateNotice(Long id, NoticeUpdateDTO noticeUpdateDTO){
+    public Notice updateNotice(Long id, NoticeUpdateDTO noticeUpdateDTO){
         this.id = id;
+        for(NoticeType nt : NoticeType.class.getEnumConstants()){
+            if(nt.name().equals(noticeUpdateDTO.getNoticeType())){
+                this.noticeType = nt;
+            }
+        }
         this.noticeSubject = noticeUpdateDTO.getNoticeSubject();
         this.noticeContent = noticeUpdateDTO.getNoticeContent();
-
+        return this;
     }
 
 }

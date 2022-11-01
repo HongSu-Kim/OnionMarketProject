@@ -35,14 +35,26 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 	private final ProductRepository.Querydsl productRepositoryQuerydsl;
     private final ProductImageRepository productImageRepository;
-    private final OrderService orderService;
-
-    private final ProhibitionKeywordRepositoy prohibitionKeywordRepositoy;
-
-    private final static String COOKIE = "alreadyViewCookie";
 
 	@Override
 	public Page<ProductListDTO> getProductListDTO(SearchRequirements searchRequirements) {
+        List<ProductListDTO> blindList = getAuctionList(false);
+
+        LocalDateTime now = LocalDateTime.now();
+
+        for(ProductListDTO blindDTO : blindList) {
+
+            Product product = productRepository.findById(blindDTO.getProductId()).orElse(null);
+
+            if(blindDTO.getAuctionDeadline().isBefore(now)){
+
+                blindDTO.setBlindStatus(true);
+
+                product.updateAuctionProduct(blindDTO);
+
+                productRepository.save(product);
+            }
+        }
 		return productRepositoryQuerydsl.findAllBySearchRequirements(searchRequirements).map(ProductListDTO::new);
 	}
 
@@ -53,7 +65,7 @@ public class ProductServiceImpl implements ProductService {
 
         Member member = memberRepository.findById(productAddDTO.getMemberId()).orElse(null);
         Town town = townRepositoy.findById(productAddDTO.getTownId()).orElse(null);
-        Category category = categoryRepository.findById(productAddDTO.getCategoryId()).orElse(null);
+        Category category = categoryRepository.findByCategoryName(productAddDTO.getCategoryName()).orElse(null);
 
         //대표이미지 설정
         productAddDTO.setRepresentativeImage(getImageName()+fileList.get(0).getOriginalFilename());
@@ -82,49 +94,49 @@ public class ProductServiceImpl implements ProductService {
         Town town = townRepositoy.findById(updateDTO.getTownId()).orElse(null);
 
         //수정한 카테고리번호
-        Category category = categoryRepository.findById(updateDTO.getCategoryId()).orElse(null);
+        Category category = categoryRepository.findByCategoryName(updateDTO.getCategoryName()).orElse(null);
         //리턴처리해줘야함
+
+        Product product = productRepository.findById(productId).orElse(null);
 
         //대표이미지 설정
         updateDTO.setRepresentativeImage(getImageName()+updateDTO.getProductImageName().get(0).getOriginalFilename());
 
-        Product product = productRepository.findById(productId).orElse(null);
         product.updateProduct(productId, town, category, updateDTO);
 
-        productRepository.save(product);
+        Long updateProductId = productRepository.save(product).getId();
         //상품 이미지 수정
         //반복으로 지우고 저장
         String path = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\product";
 
-        //조회한 값
-        List<ProductImage> imageList = updateImage(productId, updateDTO.getProductImageName());
-        for(ProductImage image : imageList){
-            
-            List<ProductImage> productImageList = productImageRepository.findByProductId(productId);
-            for (ProductImage productImage : productImageList){
+        List<ProductImage> oldImageList = product.getProductImageList();
 
-                productImageRepository.delete(productImage);
+        for (ProductImage oldImage : oldImageList) {
 
-                File file = new File(path+"\\"+productImage.getProductImageName());
-                if (file.exists()) {
-                    file.delete();
-                }
+            productImageRepository.delete(oldImage);
+
+            File file = new File(path+"\\"+oldImage.getProductImageName());
+            if (file.exists()) {
+                file.delete();
             }
-
-            image.updateImage(image.getId(), product, image.getProductImageName());
-
-            productImageRepository.save(image);
-
+        }
+        //조회한 값
+        List<ProductImage> imageList = productImages(productId, updateDTO.getProductImageName());
+        for(ProductImage newImage : imageList){
+            productImageRepository.save(newImage);
         }
 
-        return productRepository.save(product).getId();
+        return updateProductId;
     }
 
 	// 상품상태 수정
 	@Override
 	@Transactional
 	public void progressUpdate(Long productId, String productProgress) {
-		productRepository.findById(productId).map(product -> product.progressUpdate(productProgress)).orElse(null);
+		productRepository.findById(productId).map(product -> {
+			product.progressUpdate(productProgress);
+			return productRepository.save(product);
+		}).orElse(null);
 	}
 
 	//상품 삭제(DB삭제가 아닌 조회불가상태로 변경)
@@ -159,27 +171,6 @@ public class ProductServiceImpl implements ProductService {
         return subCategoryProduct;
     }
 
-    //상품 전체 조회
-    @Override
-    public List<ProductListDTO> getProductList(Boolean blindStatus) {
-        return productRepository.findByBlindStatus(false)
-                .stream()
-                .map(product -> new ProductListDTO(product))
-                .collect(Collectors.toList());
-    }
-
-    //동네 상품 전체 조회
-    @Override
-    public List<ProductListDTO> getProductList(Long coordinateId,Boolean blindStatus) {
-
-        List<ProductListDTO> list = productRepository.findByBlindStatus(false)
-                .stream()
-                .filter(gpl -> gpl.getTown().getCoordinate().getId()==coordinateId)
-                .map(product -> new ProductListDTO(product))
-                .collect(Collectors.toList());
-
-        return list;
-    }
     //전체 경매 상품 조회
     @Override
     public List<ProductListDTO> getAuctionList(Boolean blindStatus) {
@@ -210,22 +201,6 @@ public class ProductServiceImpl implements ProductService {
 
     //이미지리스트
     private List<ProductImage> productImages(Long productId, List<MultipartFile> fileList) throws Exception {
-        List<ProductImage> productImageList = new ArrayList<>();
-        Product product = productRepository.findById(productId).orElse(null);
-
-        for (MultipartFile file : fileList) {
-
-            if (!file.isEmpty()) {
-                String productImageName = saveFile(file);
-                ProductImage image = new ProductImage(product, productImageName);
-
-                productImageList.add(image);
-            }
-        }
-        return productImageList;
-    }
-    //이미지 수정
-    private List<ProductImage> updateImage(Long productId, List<MultipartFile> fileList) throws Exception {
         List<ProductImage> productImageList = new ArrayList<>();
         Product product = productRepository.findById(productId).orElse(null);
 
@@ -318,10 +293,18 @@ public class ProductServiceImpl implements ProductService {
     public CategoryFindDTO findCategoryId(Long categoryId) {
         return categoryRepository.findById(categoryId).map(CategoryFindDTO::new).orElse(null);
     }
-
+    //유저 판매 상품 목록
     @Override
     public Page<ProductSellListDTO> getProductSellListDTO(Long memberId, Pageable pageable) {
       return productRepository.findByMemberId(memberId, pageable).map(ProductSellListDTO::new);
+    }
+    //개인 유저 상품 리스트
+    @Override
+    public Page<ProductListDTO> getPersonalList(Long memberId, Pageable pageable) {
+        ProductProgress[] productProgressList = ProductProgress.class.getEnumConstants();
+
+        return productRepository.findAllByMemberIdAndProductProgressIn(memberId,productProgressList, pageable)
+                .map(ProductListDTO::new);
     }
 
 }

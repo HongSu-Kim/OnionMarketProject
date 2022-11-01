@@ -4,6 +4,7 @@ import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.member.Role;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
@@ -20,12 +21,12 @@ public class MemberJoinDTO { //회원가입 할 때 필요한 DTO (MemberDTO)에
     private Role role;
 
     @NotBlank(message = "필수 정보입니다.")
-    @Pattern(regexp = "^[a-z0-9]{5,20}$", message = "아이디는 5~20자리 영어 소문자와 숫자만 사용해 주세요.")
+    @Pattern(regexp = "^[a-z0-9]{5,20}$", message = "5~20자리 영어 소문자와 숫자만 사용해 주세요.")
     private String userId;
 
     @NotBlank(message = "필수 정보입니다.")
 //    @Pattern(regexp = "(?=.*[a-z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,20}", message = "비밀번호는 8~20자 영문 소문자, 숫자, 특수문자를 사용하세요.")
-    @Pattern(regexp = "(?=.*[a-z])(?=.*[0-9]).{4,20}", message = "비밀번호는 4~20자리 영문 소문자, 숫자를 사용해 주세요.")
+    @Pattern(regexp = "(?=.*[a-z])(?=.*[0-9]).{4,20}", message = "4~20자리 영문 소문자, 숫자를 사용해 주세요.")
     private String pwd;
 
     @NotBlank(message = "필수 정보입니다.")
@@ -33,11 +34,11 @@ public class MemberJoinDTO { //회원가입 할 때 필요한 DTO (MemberDTO)에
 
     @NotBlank(message = "필수 정보입니다.")
     @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9-_]{2,10}$", message = "닉네임은 특수문자를 제외한 2~10 자리여야 합니다.")
-    @Size(min = 2, max = 15, message = "2~15자 이내의 닉네임을 입력해 주세요.")
+    @Size(min = 2, max = 15, message = "2~15자 이내로 입력해 주세요.")
     private String nickname;
 
     @NotNull(message = "필수 정보입니다.")
-    @PastOrPresent(message = "생년월일은 과거 또는 현재의 날짜여야 합니다.")
+    @PastOrPresent(message = "과거 또는 현재의 날짜여야 합니다.")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birth;
 
@@ -62,6 +63,7 @@ public class MemberJoinDTO { //회원가입 할 때 필요한 DTO (MemberDTO)에
     private String email;
 
     private String memberImageName;
+    private MultipartFile profileImg;
 
     public Member toEntity() { //DTO -> Entity
         return Member.builder()
@@ -78,7 +80,7 @@ public class MemberJoinDTO { //회원가입 할 때 필요한 DTO (MemberDTO)에
                 .detailAddress(detailAddress)
                 .extraAddress(extraAddress)
                 .email(email)
-                .memberImageName(memberImageName)
+                .memberImageName(memberImageName == null ? "null.png" : memberImageName)
                 .build();
     }
 }

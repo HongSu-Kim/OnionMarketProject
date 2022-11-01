@@ -10,9 +10,9 @@
 					</div>
 					<ul>
 						<li>(Team)youprice</li>
-						<li>주소 : </li>
-						<li>번호 : </li>
-						<li>이메일 : </li>
+						<li>주소 : 서울특별시 강남구 테헤란로 124 4층 (역삼동, 삼원타워) </li>
+						<li>번호 : 02-6255-8002</li>
+						<li>이메일 : admin@itwill.co.kr</li>
 					</ul>
 				</div>
 			</div>

@@ -4,10 +4,12 @@ import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.product.*;
 import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.security.auth.LoginUser;
+import com.youprice.onion.service.board.ReviewService;
 import com.youprice.onion.service.member.ProhibitionKeywordService;
 import com.youprice.onion.service.product.*;
 import com.youprice.onion.util.AlertRedirect;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -33,6 +35,7 @@ public class ProductController {
     private final CategoryService categoryService;
     private final ProductImageService productImageService;
     private final BiddingService biddingService;
+    private final ReviewService reviewService;
     private final ProhibitionKeywordService prohibitionKeywordService;
 
     @GetMapping("add")//상픔 등록 주소
@@ -73,12 +76,11 @@ public class ProductController {
                 return "product/addProduct";
             }
         }
-        if (productAddDTO.getCategoryId()==null) {
+        if (productAddDTO.getCategoryName()==null) {
             AlertRedirect.warningMessage(response,"/product/add", "카테고리를 선택해주세요.");
 
             return "redirect:/product/addProduct";
         }
-
         /*세션아이디로 멤버아이디 set*/
         productAddDTO.setMemberId(userSession.getId());
         /*상품 등록*/
@@ -98,83 +100,98 @@ public class ProductController {
         /*상품조회*/
         ProductFindDTO productFindDTO = productService.getProductFindDTO(productId);
         /*리뷰 조회*/
-//        Double reviewAvg = reviewService.avgGrade(productFindDTO.getMemberId());
-        /*입찰 리스트 조회*/
+        Double reviewAvg = null;
+//        if (reviewService.avgGrade(productFindDTO.getMemberId()) > 0) {
+//            reviewAvg = reviewService.avgGrade(productFindDTO.getMemberId());
+//        }
+        /*입찰 리스트 조회 및 마지막 입찰가 조회*/
         List<BiddingListDTO> biddingList = biddingService.getBiddingList(productId, model);
-        /*카테고리 상품 추천*/
-        List<ProductFindDTO> categoryDTO = productService.getProductSubCategory(productId,productFindDTO.getCategoryId());
+        if(biddingList.size()>0) {
+            int bid = biddingList.get(0).getBid();
 
-        System.out.println("productFindDTO = " + productFindDTO.getAuctionDeadline());
+            model.addAttribute("bid",bid);
+        }
+
+        /*동일 카테고리 추천상품 조회*/
+        List<ProductFindDTO> categoryDTO = productService.getProductSubCategory(productId,productFindDTO.getCategoryId());
 
         model.addAttribute("userSession",userSession);
         model.addAttribute("productId",productId);
         model.addAttribute("productFindDTO",productFindDTO);
-//        model.addAttribute("reviewAvg",reviewAvg);
+        model.addAttribute("reviewAvg",reviewAvg);
         model.addAttribute("biddingList",biddingList);
         model.addAttribute("categoryDTO",categoryDTO);
 
         return "product/detail";
     }
-    @GetMapping("/bid/{productId}")//상품 입찰 주소
-    public String bidProduct(@PathVariable("productId") Long productId, @LoginUser SessionDTO userSession,
-                             BiddingAddDTO biddingAddDTO, HttpServletResponse response,Model model) throws Exception{
+    @PostMapping("bid")//상품 입찰 주소
+    public String bidProduct(@LoginUser SessionDTO userSession, BiddingAddDTO biddingAddDTO,
+                             HttpServletResponse response, Model model) throws Exception{
 
         //Session이 없을 경우 로그인 처리
         if(userSession == null){
             AlertRedirect.warningMessage(response,"/member/login", "로그인이 필요합니다.");
             return "redirect:/member/login";
         }
-        biddingAddDTO.setMemberId(userSession.getId());
-        biddingAddDTO.setProductId(productId);
 
+        biddingAddDTO.setMemberId(userSession.getId());
+        Long productId = biddingAddDTO.getProductId();
         /*입찰 목록 생성*/
         biddingService.bidProduct(biddingAddDTO);
 
         model.addAttribute("productId",productId);
+        model.addAttribute("bid",biddingAddDTO.getBid());
 
         return "redirect:/product/detail/"+productId;
     }
-
-    @GetMapping(value = "list") //상품 리스트 주소
-    public String list(@LoginUser SessionDTO userSession, Model model, @PageableDefault Pageable pageable) throws Exception {
+    //상품 리스트 주소
+    @GetMapping(value = "list")
+    public String list(@LoginUser SessionDTO userSession, Model model,
+                       @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
 
         /*세션아이디로 동네 조회*/
         List<Long> coordinateList = null;
+        List<TownFindDTO> townList = null;
 
         if(userSession!=null){
+
+            townList= townService.townLists(userSession.getId());
             coordinateList = townService.townLists(userSession.getId())
                     .stream()
                     .map(TownFindDTO::getCoordinateId)
                     .collect(Collectors.toList());
-
         }
-
         SearchRequirements searchRequirements = SearchRequirements.builder()
+                .blindStatus(false)
                 .coordinateIdList(coordinateList)
                 .build();
 
         searchRequirements.setPageable(PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
-                pageable.getPageSize(),Sort.Direction.DESC, "uploadDate"));
+                pageable.getPageSize(),Sort.Direction.DESC, "id"));
 
-        List<ProductListDTO> list = productService.getProductListDTO(searchRequirements).getContent();
+        Page<ProductListDTO> page = productService.getProductListDTO(searchRequirements);
 
-        model.addAttribute("list",list);
-
+        model.addAttribute("page",page);
+        model.addAttribute("list",page.getContent());
+        model.addAttribute("townList",townList);
         return "product/list";//상품 리스트 메인 화면페이지
     }
 
-    @GetMapping("all")
-    public String allList(Model model,@PageableDefault Pageable pageable) {
+    //상품 전체 리스트 주소
+    @GetMapping("allList")
+    public String allList(Model model, @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
         SearchRequirements searchRequirements = SearchRequirements.builder()
                 .blindStatus(false)
                 .build();
 
         searchRequirements.setPageable(PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
-                pageable.getPageSize(),Sort.Direction.DESC, "uploadDate"));
-        List<ProductListDTO> list = productService.getProductListDTO(searchRequirements).getContent();
+                pageable.getPageSize(),Sort.Direction.DESC, "id"));
 
-        model.addAttribute("list", list);
+        Page<ProductListDTO> page = productService.getProductListDTO(searchRequirements);
+
+        model.addAttribute("page",page);
+        model.addAttribute("list",page.getContent());
         return "product/list";
     }
 
@@ -191,115 +208,46 @@ public class ProductController {
     @GetMapping(value = "main/category")//상품 카테고리별 화면 주소
     public String main(Model model,@RequestParam("categoryId") int categoryId ) throws Exception {
 
-        if (categoryId == 1) {
-            List<ProductListDTO> categoryList1 = productService.getProductCategoryList(1L, 8L);
-            model.addAttribute("categoryList1", categoryList1);
-            return "product/list";
+        switch (categoryId) {
+            case 1: List<ProductListDTO> categoryList1 = productService.getProductCategoryList(1L, 8L);
+                model.addAttribute("list",categoryList1);break;
+            case 9: List<ProductListDTO> categoryList2 = productService.getProductCategoryList(9L, 11L);
+                model.addAttribute("list",categoryList2);break;
+            case 12: List<ProductListDTO> categoryList3 = productService.getProductCategoryList(12L, 16L);
+                model.addAttribute("list",categoryList3);break;
+            case 17: List<ProductListDTO> categoryList4 = productService.getProductCategoryList(17L, 26L);
+                model.addAttribute("list",categoryList4);break;
+            case 27: List<ProductListDTO> categoryList5 = productService.getProductCategoryList(27L, 41L);
+                model.addAttribute("list",categoryList5);break;
+            case 42: List<ProductListDTO> categoryList6 = productService.getProductCategoryList(42L, 56L);
+                model.addAttribute("list",categoryList6);break;
+            case 57: List<ProductListDTO> categoryList7 = productService.getProductCategoryList(57L, 60L);
+                model.addAttribute("list",categoryList7);break;
+            case 61: List<ProductListDTO> categoryList8 = productService.getProductCategoryList(61L, 70L);
+                model.addAttribute("list",categoryList8);break;
+            case 71: List<ProductListDTO> categoryList9 = productService.getProductCategoryList(71L, 85L);
+                model.addAttribute("list",categoryList9);break;
+            case 86: List<ProductListDTO> categoryList10 = productService.getProductCategoryList(86L, 89L);
+                model.addAttribute("list",categoryList10);break;
+            case 90: List<ProductListDTO> categoryList11 = productService.getProductCategoryList(90L, 95L);
+                model.addAttribute("list",categoryList11);break;
+            case 96: List<ProductListDTO> categoryList12 = productService.getProductCategoryList(96L, 104L);
+                model.addAttribute("list",categoryList12);break;
+            case 105: List<ProductListDTO> categoryList13 = productService.getProductCategoryList(105L, 113L);
+                model.addAttribute("list",categoryList13);break;
+            case 114: List<ProductListDTO> categoryList14 = productService.getProductCategoryList(114L, 115L);
+                model.addAttribute("list",categoryList14);break;
         }
 
+        return "product/list";
 
-        if (categoryId == 9) {
-            List<ProductListDTO> categoryList2 = productService.getProductCategoryList(9L, 11L);
-            model.addAttribute("categoryList2", categoryList2);
+    }
 
-            return "product/list";
-        }
-
-        if (categoryId == 12) {
-            List<ProductListDTO> categoryList3 = productService.getProductCategoryList(12L, 16L);
-            model.addAttribute("categoryList3", categoryList3);
-
-            return "product/list";
-        }
-
-
-        if (categoryId == 17) {
-            List<ProductListDTO> categoryList4 = productService.getProductCategoryList(17L, 26L);
-            model.addAttribute("categoryList4", categoryList4);
-
-            return "product/list";
-        }
-
-
-        if (categoryId == 27) {
-            List<ProductListDTO> categoryList5 = productService.getProductCategoryList(27L, 41L);
-            model.addAttribute("categoryList5", categoryList5);
-
-            return "product/list";
-        }
-
-
-        if (categoryId == 42) {
-            List<ProductListDTO> categoryList6 = productService.getProductCategoryList(42L, 56L);
-            model.addAttribute("categoryList6", categoryList6);
-
-            return "product/list";
-        }
-
-
-        if (categoryId == 57) {
-            List<ProductListDTO> categoryList7 = productService.getProductCategoryList(57L, 60L);
-            model.addAttribute("categoryList7", categoryList7);
-
-            return "product/list";
-        }
-
-
-        if (categoryId == 61) {
-            List<ProductListDTO> categoryList8 = productService.getProductCategoryList(61L, 70L);
-            model.addAttribute("categoryList8", categoryList8);
-
-            return "product/list";
-        }
-
-
-        if (categoryId == 71) {
-            List<ProductListDTO> categoryList9 = productService.getProductCategoryList(71L, 85L);
-            model.addAttribute("categoryList9", categoryList9);
-
-            return "product/list";
-        }
-
-
-        if (categoryId == 86) {
-            List<ProductListDTO> categoryList10 = productService.getProductCategoryList(86L, 89L);
-            model.addAttribute("categoryList10", categoryList10);
-
-            return "product/list";
-        }
-
-
-        if (categoryId == 90) {
-            List<ProductListDTO> categoryList11 = productService.getProductCategoryList(90L, 95L);
-            model.addAttribute("categoryList11", categoryList11);
-
-            return "product/list";
-        }
-
-        if (categoryId == 96) {
-            List<ProductListDTO> categoryList12 = productService.getProductCategoryList(96L, 104L);
-            model.addAttribute("categoryList12", categoryList12);
-
-            return "product/list";
-        }
-
-        if (categoryId == 105) {
-            List<ProductListDTO> categoryList13 = productService.getProductCategoryList(105L, 113L);
-            model.addAttribute("categoryList13", categoryList13);
-
-            return "product/list";
-        }
-
-
-        if (categoryId == 114) {
-            List<ProductListDTO> categoryList14 = productService.getProductCategoryList(114L, 115L);
-            model.addAttribute("categoryList14", categoryList14);
-
-            return "product/list";
-        }
-
-
-        return  "product/list";
+    @GetMapping("/personalList/{memberId}")
+    public String productList(@PathVariable Long memberId, Model model, @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<ProductListDTO> page = productService.getPersonalList(memberId, pageable);
+        model.addAttribute("list", page.getContent());
+        return "product/list";
     }
 
     @GetMapping("/update/{productId}")//상품 업데이트 주소
@@ -325,17 +273,17 @@ public class ProductController {
         model.addAttribute("townList", townList);
         model.addAttribute("topCategory", topCategory);
         model.addAttribute("subCategory", subCategory);
-        model.addAttribute("dto",productFindDTO);
+        model.addAttribute("productFindDTO",productFindDTO);
         model.addAttribute("productId",productId);
 
         return "product/updateProduct";
     }
 
 	// 상품상태 수정
-	@GetMapping("progressUpdate/{productId}/{productProgress}")
-	public String progressUpdate(@PathVariable Long productId, @PathVariable String productProgress) {
+	@GetMapping("progressUpdate/{productId}/{productProgress}/{pageNumber}")
+	public String progressUpdate(@PathVariable Long productId, @PathVariable String productProgress, @PathVariable int pageNumber) {
 		productService.progressUpdate(productId, productProgress);
-		return "redirect:/order/sellList";
+		return "redirect:/order/sellList?page=" + pageNumber;
 	}
 
     @PostMapping("/update/{productId}")//실제 상품 업데이트 주소

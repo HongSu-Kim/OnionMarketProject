@@ -31,7 +31,7 @@
 								<!-- 주문 정보 -->
 								<c:forEach var="productDTO" items="${page.content}">
 									<tr>
-										<td class="text-align-left pointer" onclick="location.href='/product/Detail/${productDTO.productId}';">
+										<td class="text-align-left pointer" onclick="location.href='/product/detail/${productDTO.productId}';">
 											<img src="/img/product/${productDTO.representativeImage}" class="list-img">
 											<span>${productDTO.subject}</span>
 										</td>
@@ -43,17 +43,17 @@
 										<td>
 											<p>${productDTO.productProgress.kor}</p>
 											<p>
-												<c:if test="${productDTO.productProgress eq 'TRADINGS'}">
-													<a onclick="confirm('상태를 예약중으로 변경하시겠습니까?') ? location.href='/product/progressUpdate/${productDTO.productId}/RESERVED' : false"
-														 class="primary-btn">예약중</a>
-													<a onclick="confirm('상태를 판매완료로 변경하시겠습니까?') ? location.href='/product/progressUpdate/${productDTO.productId}/SOLDOUT' : false"
-														 class="primary-btn">판매완료</a>
+												<input type="hidden" id="productId" value="${productDTO.productId}"/>
+												<c:if test="${productDTO.productProgress eq 'SALESON'}">
+													<a class="primary-btn progressUpdate">예약중</a>
+													<a class="primary-btn progressUpdate">판매완료</a>
 												</c:if>
 												<c:if test="${productDTO.productProgress eq 'RESERVED'}">
-													<a onclick="confirm('상태를 거래중으로 변경하시겠습니까?') ? location.href='/product/progressUpdate/${productDTO.productId}/TRADINGS' : false"
-														 class="primary-btn">거래중</a>
-													<a onclick="confirm('상태를 판매완료로 변경하시겠습니까?') ? location.href='/product/progressUpdate/${productDTO.productId}/SOLDOUT' : false"
-														 class="primary-btn">판매완료</a>
+													<a class="primary-btn progressUpdate">판매중</a>
+													<a class="primary-btn progressUpdate">판매완료</a>
+												</c:if>
+												<c:if test="${productDTO.productProgress eq 'TRADINGS'}">
+													<a class="primary-btn progressUpdate">판매완료</a>
 												</c:if>
 												<c:if test="${productDTO.productProgress eq 'SOLDOUT'}">
 													<a href="/review/created/${productDTO.orderId}" class="primary-btn">판매후기등록</a>
@@ -76,21 +76,23 @@
 
 					<!-- 페이징 -->
 					<c:if test="${!empty page.content && page.totalPages != 1}">
+						<input type="hidden" id="pageNumber" value="${page.number + 1}"/>
 						<div class="product__pagination text-center">
-							<c:set var="size" value="${page.pageable.pageSize}"/>
-							<fmt:parseNumber var="pages" integerOnly="true" value="${page.number / size}"/>
-							<c:set var="startNumber" value="${pages * size + 1}"/>
-							<c:set var="endNumber" value="${page.totalPages > (pages + 1) * size ? (pages + 1) * size : page.totalPages}"/>
+							<c:set var="size" value="${page.pageable.pageSize}"/><%-- 10 --%>
+							<fmt:parseNumber var="pageNumber" integerOnly="true" value="${page.number / size}"/><%-- 현재페이지 : 0 ~ --%>
+							<c:set var="startNumber" value="${pageNumber * size}"/><%-- 0 * size ~ --%>
+							<c:set var="endNumber" value="${page.totalPages > (pageNumber + 1) * size ? (pageNumber + 1) * size - 1 : page.totalPages - 1}"/>
+
 							<c:if test="${page.totalPages > size && page.number + 1 > size}">
-								<a href="?page=1"><<</a>
+								<a href="?page=0"><<</a>
 								<a href="?page=${startNumber - 1}"><</a>
 							</c:if>
 							<c:forEach var="currentNumber" begin="${startNumber}" end="${endNumber}">
-								<a href="?page=${currentNumber}">${currentNumber}</a>
+								<a href="?page=${currentNumber}">${currentNumber + 1}</a>
 							</c:forEach>
-							<c:if test="${page.totalPages > endNumber}">
+							<c:if test="${page.totalPages - 1 > endNumber}">
 								<a href="?page=${endNumber + 1}">></a>
-								<a href="?page=${page.totalPages}">>></a>
+								<a href="?page=${page.totalPages - 1}">>></a>
 							</c:if>
 						</div>
 					</c:if>

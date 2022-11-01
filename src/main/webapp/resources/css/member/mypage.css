@@ -1,0 +1,21 @@
+ul.list_modify {
+    list-style: none;
+    padding-left: 0px;
+    text-align: left;
+}
+
+a {
+    color: #47cd65;
+}
+
+.site-btn-modify {
+    font-size: 14px;
+    color: #ffffff;
+    font-weight: 800;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 5px 10px 5px;
+    background: #47cd65;
+    border: none;
+    margin-bottom: 5px;
+}
