@@ -56,7 +56,7 @@ public class SearchController {
                 searchService.searchupdatecount(searchName);
             List<ProductListDTO> searchList = productService.getSearchList(searchName, searchName);
 
-            model.addAttribute("searchList", searchList);
+            model.addAttribute("list", searchList);
 
             return "product/list";
 

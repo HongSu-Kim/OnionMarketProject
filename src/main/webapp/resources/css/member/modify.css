@@ -55,6 +55,11 @@
     margin-left: 291px;
 }
 
+.rounded-circle.mt-2.preview {
+    width: 150px;
+    margin-bottom: 10px;
+}
+
 span {
     color: #ff0000;
 }

@@ -5,7 +5,7 @@ import com.youprice.onion.dto.product.CategoryFindDTO;
 import com.youprice.onion.dto.product.CategoryUpdateDTO;
 import com.youprice.onion.entity.product.Category;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.annotations.Delete;
+//import org.apache.ibatis.annotations.Delete;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

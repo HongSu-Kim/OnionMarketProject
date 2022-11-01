@@ -7,6 +7,7 @@ import com.youprice.onion.repository.member.BlockRepository;
 import com.youprice.onion.repository.member.FollowRepository;
 import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.service.member.MemberService;
+import com.youprice.onion.util.ImageUtil;
 import com.youprice.onion.util.MailUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 
 @Slf4j
@@ -40,7 +43,10 @@ public class MemberServiceImpl implements MemberService {
     //회원가입
     @Transactional
     @Override
-    public Long saveMember(MemberJoinDTO memberJoinDTO) {
+    public Long saveMember(MemberJoinDTO memberJoinDTO) throws IOException {
+
+        memberJoinDTO.setMemberImageName(ImageUtil.store(memberJoinDTO.getProfileImg(), "member"));
+
         memberJoinDTO.setPwd(passwordEncoder.encode(memberJoinDTO.getPwd())); //패스워드 암호화 저장
         return memberRepository.save(memberJoinDTO.toEntity()).getId();
     }
@@ -78,8 +84,17 @@ public class MemberServiceImpl implements MemberService {
             throw new IllegalArgumentException("이미 존재하는 닉네임 입니다. 다시 입력해 주세요.");
         } else {
             String encPwd = passwordEncoder.encode(memberModifyDTO.getPwd());
-            findById.modify(encPwd, memberModifyDTO.getNickname(), memberModifyDTO.getTel(), memberModifyDTO.getPostcode(), memberModifyDTO.getAddress(), memberModifyDTO.getDetailAddress(), memberModifyDTO.getExtraAddress(), memberModifyDTO.getEmail(), memberModifyDTO.getMemberImageName());
+            findById.modify(encPwd, memberModifyDTO.getNickname(), memberModifyDTO.getTel(), memberModifyDTO.getPostcode(),
+                    memberModifyDTO.getAddress(), memberModifyDTO.getDetailAddress(), memberModifyDTO.getExtraAddress(), memberModifyDTO.getEmail());
         }
+    }
+
+    //프로필
+    @Override
+    public void modifyProfileImg(Long memberId, MultipartFile profileImg) throws IOException {
+        Member member = memberRepository.findById(memberId).orElse(null);
+        member.modifyProfileImg(ImageUtil.store(profileImg, "member"));
+        memberRepository.save(member);
     }
 
     //아이디 찾기

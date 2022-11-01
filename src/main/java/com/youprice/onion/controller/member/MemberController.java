@@ -19,14 +19,17 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Controller
 @RequiredArgsConstructor
@@ -68,7 +71,7 @@ public class MemberController {
 
     //회원가입
     @PostMapping("/joinProc")
-    public String joinProc(@Valid MemberJoinDTO memberJoinDTO, Errors errors, Model model, BindingResult bindingResult) {
+    public String joinProc(@Valid MemberJoinDTO memberJoinDTO, Errors errors, Model model, BindingResult bindingResult) throws IOException {
 
         if (prohibitionKeywordService.ProhibitionKeywordFind(memberJoinDTO.getNickname())) { //금지키워가있으면 true
             bindingResult.addError(new FieldError("memberJoinDTO", "nickname", "적합하지 않은 단어가 포함되어 있습니다."));
@@ -120,6 +123,18 @@ public class MemberController {
         return "member/modify";
     }
 
+    //프로필 사진 수정
+    @GetMapping("/modifyProfileImg")
+    public String modifyProfileImgView() {
+        return "member/modifyProfileImg";
+    }
+
+    @PostMapping("modifyProfileImg")
+    public String modifyProfileImg(@LoginUser SessionDTO sessionDTO, MultipartFile profileImg) throws IOException {
+        memberService.modifyProfileImg(sessionDTO.getId(), profileImg);
+        return "redirect:/member/mypage";
+    }
+
     //회원정보 수정 전 비밀번호 확인 페이지
     @GetMapping("/preModify")
     public String preModifyView() {
@@ -143,10 +158,11 @@ public class MemberController {
     //마이페이지
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/mypage")
-    public String mypageView(@LoginUser SessionDTO sessionDTO, Model model) {
+    public String mypageView(@LoginUser SessionDTO sessionDTO,  Model model) {
+        MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
+
         if (sessionDTO != null) {
-            model.addAttribute("session", sessionDTO.getId());
-            model.addAttribute("sessionDTO", sessionDTO);
+            model.addAttribute("memberDTO", memberDTO);
         }
         return "member/mypage";
     }
@@ -157,6 +173,9 @@ public class MemberController {
 
         MemberDTO memberDTO = memberService.getMemberDTO(memberId, sessionDTO.getId());
 
+        if (Objects.equals(sessionDTO.getId(), memberDTO.getId())) {
+            return "redirect:/member/mypage";
+        }
         model.addAttribute("memberDTO", memberDTO);
         return "member/profile";
     }

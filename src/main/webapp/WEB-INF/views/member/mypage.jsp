@@ -10,16 +10,17 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                    <img class="rounded-circle mt-5" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
+                    <img class="rounded-circle mt-5" src="/img/member/${memberDTO.memberImageName}">
                     <span class="font-weight-bold">${sessionDTO.userId}</span>
                     <span class="text-black-50">${sessionDTO.nickname}</span>
                 </div>
                 <div>
                     <span>
                         <ul class="list_modify">
-                            <li><button type="button" onclick="location.href='#'" class="site-btn-modify">사진변경</button></li>
+                            <li><button type="button" onclick="location.href='/member/modifyProfileImg'" class="site-btn-modify">사진변경</button></li>
                             <li><button type="button" onclick="location.href='/member/preModify'" class="site-btn-modify">회원정보 수정</button></li>
-                            <li><button type="button" onclick="location.href='/member/preModify'" class="site-btn-modify">비밀번호 수정</button></li>
+                            <li><button type="button" onclick="location.href='/follow/list'" class="site-btn-modify">팔로우 리스트</button></li>
+                            <li><button type="button" onclick="location.href='/block/list'" class="site-btn-modify">차단 리스트</button></li>
                             <li><button type="button" onclick="location.href='/member/withdraw'" class="site-btn-modify">회원탈퇴</button></li>
                         </ul>
                     </span>
@@ -31,19 +32,19 @@
                         <h4 class="text-right">프로필</h4>
                     </div>
                     <div class="row mt-3">
-                        <div class="col-md-12"><label class="labels">Name</label><input type="text" class="form-control" placeholder="first name" value=""></div>
-                        <div class="col-md-12"><label class="labels">Mobile Number</label><input type="text" class="form-control" placeholder="enter phone number" value=""></div>
-                        <div class="col-md-12"><label class="labels">Address Line 1</label><input type="text" class="form-control" placeholder="enter address line 1" value=""></div>
-                        <div class="col-md-12"><label class="labels">Address Line 2</label><input type="text" class="form-control" placeholder="enter address line 2" value=""></div>
-                        <div class="col-md-12"><label class="labels">Postcode</label><input type="text" class="form-control" placeholder="enter address line 2" value=""></div>
-                        <div class="col-md-12"><label class="labels">State</label><input type="text" class="form-control" placeholder="enter address line 2" value=""></div>
-                        <div class="col-md-12"><label class="labels">Area</label><input type="text" class="form-control" placeholder="enter address line 2" value=""></div>
-                        <div class="col-md-12"><label class="labels">Email ID</label><input type="text" class="form-control" placeholder="enter email id" value=""></div>
-                        <div class="col-md-12"><label class="labels">Education</label><input type="text" class="form-control" placeholder="education" value=""></div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-md-6"><label class="labels">Country</label><input type="text" class="form-control" placeholder="country" value=""></div>
-                        <div class="col-md-6"><label class="labels">State/Region</label><input type="text" class="form-control" value="" placeholder="state"></div>
+                        <div class="col-md-12"><label class="labels">아이디</label><input type="text" class="form-control" value="${sessionDTO.userId}"></div>
+                        <div class="col-md-12"><label class="labels">닉네임</label><input type="text" class="form-control" value="${sessionDTO.nickname}"></div>
+                        <div class="col-md-12"><label class="labels">이름</label><input type="text" class="form-control" value="${memberDTO.name}"></div>
+                        <div class="col-md-12"><label class="labels">생년월일</label><br><span>${memberDTO.birth}</span></div>
+                        <div class="col-md-12"><label class="labels">휴대폰 번호</label><input type="text" class="form-control" value="${memberDTO.tel}"></div>
+                        <div class="col-md-12"><label class="labels">우편번호</label><input type="text" class="form-control" value="${memberDTO.postcode}"></div>
+                        <div class="col-md-12"><label class="labels">주소</label><input type="text" class="form-control" value="${memberDTO.address}"></div>
+                        <div class="col-md-12"><label class="labels">상세주소</label><input type="text" class="form-control" value="${memberDTO.detailAddress}"></div>
+                        <div class="col-md-12"><label class="labels">참고사항</label><input type="text" class="form-control" value="${memberDTO.extraAddress}"></div>
+                        <div class="col-md-12"><label class="labels">이메일</label><input type="text" class="form-control" value="${memberDTO.email}"></div>
+                        <div class="col-md-12"><label class="labels">양파페이</label><input type="text" class="form-control" value="${memberDTO.cash}"></div>
+                        <div class="col-md-12"><label class="labels">포인트</label><input type="text" class="form-control" value="${memberDTO.point}"></div>
+                        <div class="col-md-12"><label class="labels">평점</label><input type="text" class="form-control" value=""></div>
                     </div>
                         <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button" onclick="location.href='/'">돌아가기</button></div>
                 </div>

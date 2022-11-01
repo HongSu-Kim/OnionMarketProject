@@ -31,7 +31,7 @@ public class BiddingServiceImpl implements BiddingService {
     @Override
     @Transactional
     public Long bidProduct(BiddingAddDTO biddingAddDTO) {
-
+        System.out.println("ProductId() = " + biddingAddDTO.getProductId());
         Product product = productRepository.findById(biddingAddDTO.getProductId()).orElse(null);
         Member member = memberRepository.findById(biddingAddDTO.getMemberId()).orElse(null);
 
