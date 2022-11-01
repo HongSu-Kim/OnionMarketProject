@@ -1,0 +1,345 @@
+.content-section-short {
+    position: relative;
+    padding: 60px 3%;
+    background-color: #fefefe;
+}
+
+.plus {
+    opacity: 0.5;
+}
+
+.faq-content {
+    overflow: hidden;
+    margin-top: -2px;
+    background-color: #f7f8f9;
+    border-radius: 30px;
+}
+
+.faq-paragraph {
+    margin-left: 25px;
+    margin-bottom: 0px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: #7e828f;
+    font-size: 18px;
+    line-height: 1.5;
+    letter-spacing: -0.25px;
+}
+
+.container-flex {
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+.top-main-section {
+    background-color: #FBFFF2;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    min-height: 60px;
+    padding: 50px;
+    -webkit-justify-content: center;
+    align-items: center;
+}
+.top-main-section > div > h2 {
+    font-weight: bold;
+}
+.second-tab{
+    border: 2px solid #1e7e34;
+    text-align: center;
+    margin: 10px;
+}
+.second-tab > h4{
+    font-weight: bold;
+    margin-top: 30px;
+}
+.service-content {
+    margin: 20px;
+}
+.createQna{
+    text-align: center;
+    color: #6AB963;
+    font-weight: bold;
+}
+
+/*공지*/
+#myPage {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+#myPage > ul > li > a {
+    color: black;
+}
+.linkcolor > td > a{
+    color: #155724;
+    align-items: flex-start;
+}
+.searchIn{
+    display: inline; !important;
+    width: 250px;
+    height: 42px;
+    border: 1px solid #b9bbbe;
+    border-radius: 20px;
+    padding-left: 20px;
+}
+
+.section-title h3 {
+    color: #1c1c1c;
+    font-weight: 700;
+    position: relative;
+}
+.section-title h3:after {
+    position: absolute;
+    left: 0;
+    bottom: -15px;
+    right: 0;
+    height: 4px;
+    width: 170px;
+    background: #47cd65;
+    content: "";
+    margin: 0 auto;
+}
+.secretColor{
+    color: black;
+}
+.secretColor:hover{
+    color: #47cd65;
+}
+.alignTitle{
+    text-align: left;
+}
+
+/*질문모음*/
+.content-section-short {
+    position: relative;
+    padding: 60px 3%;
+    background-color: #ffffff;
+}
+.content-section-short {
+    padding-top: 20px;
+    padding-bottom: 100px;
+}
+
+.container-tight {
+    width: 100%;
+    max-width: 1000px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.w-tabs:after {
+    clear: both
+}
+
+.w-tabs {
+    position: relative
+}
+
+.w-tabs:before, .w-tabs:after {
+    content: " ";
+    display: table;
+    grid-column-start: 1;
+    grid-row-start: 1;
+    grid-column-end: 2;
+    grid-row-end: 2
+}
+w-tab-menu {
+    position: relative
+}
+
+.tab-link-round {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    min-height: 52px;
+
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgba(97, 114, 131, 0.2);
+    border-radius: 20px;
+    background-color: #47cd65;
+    font-size: 20px;
+    font-weight: bolder;
+    color: #ffffff;
+}
+
+.tab-link-round.w--current { /**/
+    border-color: rgba(97, 114, 131, 0.2);
+    border-radius: 20px;
+    background-color: #e4606d;
+    background-position: 0px 0px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: #fff;
+}
+
+.tab-link-round {
+    margin-bottom: 10px;
+}
+
+.tab-link-round {
+    width: 40%;
+    text-align: center;
+    white-space: nowrap;
+}
+.tab-menu-round { /*탭전체영역*/
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    margin-bottom: 30px;
+    justify-content: center;
+}
+.tab-link-round { /*탭목록 크기*/
+    width: 300px;
+    margin: 5px;
+    text-align: center;
+}
+
+w-inline-block {
+    max-width: 100%;
+    display: inline-block
+}
+
+w-tab-link {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    text-decoration: none;
+    text-align: left;
+    cursor: pointer;
+    color: #222222;
+}
+
+.w-tab-link.w--current {
+    background-color: #86E57F
+}
+
+.w-tab-link:focus {
+    outline: 0
+}
+
+.w-tab-content {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    margin-bottom: 40px;
+    margin-left: 10px;
+}
+
+.w-tab-pane {
+    position: relative;
+    display: none
+}
+
+.w--tab-active {
+    display: block
+}
+
+@media screen and (max-width: 479px) {
+    .w-tab-link {
+        display: block
+    }
+}
+@keyframes spin {
+    0% {
+        transform: rotate(0deg)
+    }
+    100% {
+        transform: rotate(360deg)
+    }
+}
+
+.faq-question-wrap {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.faq-question-bar {
+    border-radius: 10px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding-top: 20px;
+    padding-right: 15px;
+    padding-bottom: 20px;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    color: black;
+    background-color: #ffffff;
+    font-size: 12px;
+    font-weight: bold;
+    text-decoration: none;
+}
+.question-title {
+    margin-left: 20px;
+    color: rgba(0,0,0,0.9);
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.adminbutton{
+    background-color: #47cd65;
+    cursor: pointer;
+    border: 0;
+    outline: 0;
+    border-radius: 10px;
+    width: 50px;
+    height: 30px;
+    color: white;
+    font-weight: bold;
+    font-size: 10pt;
+    margin-bottom: 10px;
+}
+
+/*상단*/
+.MainBanner_1 { /*배경*/
+    overflow: hidden;
+    border-radius: 30px;
+    height: 150px;
+    background-image: -webkit-linear-gradient(347deg, #00de63 23%, #1ec8eb);
+    background-image: linear-gradient(103deg, #00de63 23%, #1ec8eb);
+    color: #fff;
+    text-align: center;
+    margin-bottom: 7px;
+}
+
+.MainBanner_1 .MainBanner_2 { /*글자*/
+    display: -webkit-flex;
+    display: -moz-box;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-flex-direction: column;
+    -moz-box-orient: vertical;
+    -moz-box-direction: normal;
+    flex-direction: column;
+    height: 100%;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    -moz-box-pack: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 20pt;
+}
+

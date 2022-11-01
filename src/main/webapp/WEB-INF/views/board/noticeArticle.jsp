@@ -41,10 +41,14 @@
             </div>
         </div>
 
+
         <div align="center">
-            <button class="site-btn" onclick="location.href='/notice/update/${id}'">수정하기</button>
-            <button class="site-btn" onclick="location.href='/notice/delete/${id}'">삭제</button>
+            <c:if test="${memberDTO.role == 'ADMIN'}">
+                <button class="site-btn" onclick="location.href='/notice/update/${id}'">수정하기</button>
+                <button class="site-btn" onclick="location.href='/notice/delete/${id}'">삭제</button>
+            </c:if>
             <button class="site-btn" onclick="location.href='/notice/list'">돌아가기</button>
         </div>
+
     </div>
 </section>

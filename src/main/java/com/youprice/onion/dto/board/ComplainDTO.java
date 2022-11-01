@@ -5,7 +5,7 @@ import com.youprice.onion.entity.board.Complain;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 @Getter @Setter
 public class ComplainDTO {
 
@@ -13,7 +13,7 @@ public class ComplainDTO {
     private Long memberId; // 회원번호 FK
     private Long productId; // 상품번호 FK
     private String complainType; // 신고유형
-    private LocalDateTime complainDate; //신고일자
+    private LocalDate complainDate; //신고일자
     private String complainContent; // 신고내용
     private String status; // 처리상태
 
