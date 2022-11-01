@@ -266,15 +266,13 @@ CREATE TABLE complain (
 	complain_id         NUMBER          NOT NULL,
 	member_id       	NUMBER          NOT NULL,
 	product_id          NUMBER          NULL,
-	chatroom_id         NUMBER          NULL,
-	complain_type       VARCHAR2(50)	NOT NULL,
+	complain_type       VARCHAR2(100)	NOT NULL,
 	complain_date       DATE            DEFAULT SYSDATE,
 	complain_content    VARCHAR2(255)	NOT NULL,
 	status              VARCHAR2(20)	DEFAULT 'wait',
 	CONSTRAINT PK_COMPLAIN PRIMARY KEY (complain_id),
 	CONSTRAINT FK_COMPLAIN_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id),
-	CONSTRAINT FK_COMPLAIN_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id),
-	CONSTRAINT FK_COMPLAIN_CHATROOM_ID FOREIGN KEY (chatroom_id) REFERENCES chatroom(chatroom_id)
+	CONSTRAINT FK_COMPLAIN_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id)
 );
 
 CREATE TABLE review (
