@@ -27,7 +27,7 @@
 				<div class="product__details__text">
 					<h3>${productFindDTO.subject}</h3>
 					<div>
-						<span>판매자: <a href="/product/personalList/${productFindDTO.memberId}">${productFindDTO.nickname}</a></span>
+						<span>판매자: <a href="/member/profile/${productFindDTO.memberId}">${productFindDTO.nickname}</a></span>
 					</div>
 					<div class="product__details__rating">
 						<c:choose>
