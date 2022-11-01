@@ -32,7 +32,7 @@
 							<c:forEach var="blockDTO" items="${page.content}">
 								<tr>
 									<td class="text-align-left pointer" onclick="location.href='/member/profile/${blockDTO.targetDTO.id}'">
-										<img src="#" class="list-img">
+										<img src="/img/member/${blockDTO.targetDTO.memberImageName}" class="list-img">
 									</td>
 									<td><a href="/member/profile/${blockDTO.targetDTO.id}">${blockDTO.targetDTO.nickname}</a></td>
 									<td>${blockDTO.targetDTO.userGrade}</td>

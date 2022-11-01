@@ -13,6 +13,7 @@
 						<table>
 							<thead>
 							<tr>
+								<th>프로필 사진</th>
 								<th>닉네임</th>
 								<th>평점</th>
 								<th>판매중인 물품</th>
@@ -31,6 +32,9 @@
 							<!-- 팔로잉 정보 -->
 							<c:forEach var="followDTO" items="${page.content}">
 								<tr>
+									<td class="text-align-left pointer" onclick="window.open('/img/member/${followDTO.targetDTO.memberImageName}', 'Profile', 'width=600, height=800, location=no, status=no, scrollbars=yes');">
+										<img src="/img/member/${followDTO.targetDTO.memberImageName}" class="list-img profile">
+									</td>
 									<td><a href="/member/profile/${followDTO.targetDTO.id}">${followDTO.targetDTO.nickname}</a></td>
 									<td>${followDTO.targetDTO.userGrade}</td>
 									<td><a href="/product/personalList/${followDTO.targetDTO.id}">보러 가기</a></td>

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.*;
@@ -86,6 +87,14 @@ public class MemberServiceImpl implements MemberService {
             findById.modify(encPwd, memberModifyDTO.getNickname(), memberModifyDTO.getTel(), memberModifyDTO.getPostcode(),
                     memberModifyDTO.getAddress(), memberModifyDTO.getDetailAddress(), memberModifyDTO.getExtraAddress(), memberModifyDTO.getEmail());
         }
+    }
+
+    //프로필
+    @Override
+    public void modifyProfileImg(Long memberId, MultipartFile profileImg) throws IOException {
+        Member member = memberRepository.findById(memberId).orElse(null);
+        member.modifyProfileImg(ImageUtil.store(profileImg, "member"));
+        memberRepository.save(member);
     }
 
     //아이디 찾기
