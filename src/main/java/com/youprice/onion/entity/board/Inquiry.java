@@ -33,7 +33,6 @@ public class Inquiry {
     private String inquirySubject; // 문의제목
     private String inquiryContent; // 문의내용
     private LocalDate inquiryDate; // 문의등록일
-    @ColumnDefault("'답변대기'")
     private String status; // 답변상태
     private boolean secret; // 비밀글 여부
 

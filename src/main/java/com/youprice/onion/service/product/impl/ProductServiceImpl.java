@@ -133,10 +133,8 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	@Transactional
 	public void progressUpdate(Long productId, String productProgress) {
-		productRepository.findById(productId).map(product -> {
-			product.progressUpdate(productProgress);
-			return productRepository.save(product);
-		}).orElse(null);
+		Product product = productRepository.findById(productId).orElse(null);
+		product.progressUpdate(ProductProgress.valueOf(productProgress));
 	}
 
 	//상품 삭제(DB삭제가 아닌 조회불가상태로 변경)
@@ -295,8 +293,8 @@ public class ProductServiceImpl implements ProductService {
     }
     //유저 판매 상품 목록
     @Override
-    public Page<ProductSellListDTO> getProductSellListDTO(Long memberId, Pageable pageable) {
-      return productRepository.findByMemberId(memberId, pageable).map(ProductSellListDTO::new);
+    public Page<ProductSellListDTO> getProductSellListDTO(Long memberId, ProductProgress productProgress, Pageable pageable) {
+      return productRepositoryQuerydsl.findByMemberId(memberId, productProgress, pageable).map(ProductSellListDTO::new);
     }
     //개인 유저 상품 리스트
     @Override

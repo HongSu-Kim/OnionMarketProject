@@ -3,14 +3,75 @@
     color: #dc3545;
     font-weight: bold;
 }
+
 .detailSelect {
     display: none;
 }
+
 #secretBox {
     zoom: 1;
     width: 20px;
     height: 20px;
 }
+
 .inquiryline {
     border-bottom: 2px solid #47CD65;
+}
+
+
+/*개인정보 수집*/
+.css-kd8yp0 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    max-width: 1060px;
+    padding: 16px 20px;
+    border-radius: 4px;
+    background: #f7f8fa;
+    margin-left: 20px;
+}
+
+@media (min-width: 768px) {
+    .css-kd8yp0 {
+        padding: 20px;
+    }
+}
+
+@media (min-width: 768px) {
+    .css-kd8yp0 {
+        padding: 20px;
+    }
+}
+
+.css-478t8i {
+    width: 100%;
+    margin-top: 8px;
+    padding-left: 26px;
+    font-size: 12px;
+    color: #656e75;
+    line-height: 1.5;
+}
+
+.css-478t8i em {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.css-1wv9oay {
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+}
+.checkTitle{
+    margin-left: 10px;
+    line-height: 18px;
 }

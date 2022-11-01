@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -136,7 +137,13 @@ public class MemberServiceImpl implements MemberService {
         return new MemberDTO(member);
     }
 
-    @Transactional
+	@Override
+	@Transactional(readOnly = true)
+	public List<MemberDTO> getChatMemberList(Long memberId) {
+		return memberRepository.findAllChatMember(memberId).stream().map(MemberDTO::new).collect(Collectors.toList());
+	}
+
+	@Transactional
     @Override
     public void withdraw(String userId) {
         Member member = memberRepository.findByUserId(userId).orElse(null);

@@ -158,3 +158,24 @@ span.comment {
     color: #000000;
     transform: rotate(360deg);
 }
+
+.section-title h3 {
+    color: #1c1c1c;
+    font-weight: 700;
+    position: relative;
+}
+
+.section-title h3:after {
+    position: absolute;
+    left: 0;
+    bottom: -15px;
+    right: 0;
+    height: 4px;
+    width: 170px;
+    background: #47cd65;
+    content: "";
+    margin: 0 auto;
+}
+.section-hr {
+    background-color: #47cd65; height: 1px
+}
