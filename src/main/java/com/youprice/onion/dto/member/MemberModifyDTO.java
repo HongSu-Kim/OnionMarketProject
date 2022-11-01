@@ -4,6 +4,7 @@ import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.member.Role;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
@@ -62,5 +63,6 @@ public class MemberModifyDTO { //회원가입 할 때 필요한 DTO (MemberDTO)�
     private String email;
 
     private String memberImageName;
+    private MultipartFile profileImg;
 
 }

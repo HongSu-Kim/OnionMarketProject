@@ -7,7 +7,7 @@
 <section class="spad">
     <div class="container">
         <div class="checkout__form">
-            <form>
+            <form enctype="multipart/form-data">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                 <div class="row">
                     <div class="col-lg-3 col-md-3"></div>
