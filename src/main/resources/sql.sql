@@ -116,14 +116,18 @@ CREATE TABLE coordinate (
 	CONSTRAINT PK_COORDINATE PRIMARY KEY (coordinate_id)
 );
 
-CREATE TABLE town (
-	town_id             NUMBER        	NOT NULL,
-	member_id           NUMBER        	NOT NULL,
-	coordinate_id       NUMBER        	NOT NULL,
-	CONSTRAINT PK_TOWN PRIMARY KEY (town_id),
-	CONSTRAINT FK_TOWN_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id),
-	CONSTRAINT FK_TOWN_COORDINATE_ID FOREIGN KEY (coordinate_id) REFERENCES coordinate(coordinate_id)
+CREATE TABLE town
+(
+    town_id       NUMBER NOT NULL,
+    member_id     NUMBER NOT NULL,
+    coordinate_id NUMBER NOT NULL,
+    wish_distance NUMBER NULL,
+
+    CONSTRAINT PK_TOWN PRIMARY KEY (town_id),
+    CONSTRAINT FK_TOWN_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member (member_id),
+    CONSTRAINT FK_TOWN_COORDINATE_ID FOREIGN KEY (coordinate_id) REFERENCES coordinate (coordinate_id)
 );
+
 
 CREATE TABLE category (
     category_id     	NUMBER          NOT NULL,
@@ -437,25 +441,25 @@ INSERT INTO Coordinate VALUES(65, '서울특별시 강동구 둔촌2동',  '37.5
 
 ----------------------------------------------------------------------------------------------------
 
-INSERT INTO town VALUES(1, 1, 1);
-INSERT INTO town VALUES(2, 1, 2);
-INSERT INTO town VALUES(3, 1, 3);
-INSERT INTO town VALUES(4, 1, 4);
-INSERT INTO town VALUES(5, 1, 5);
-INSERT INTO town VALUES(6, 1, 6);
-INSERT INTO town VALUES(7, 1, 7);
-INSERT INTO town VALUES(8, 1, 8);
-INSERT INTO town VALUES(9, 1, 9);
-INSERT INTO town VALUES(10, 1, 10);
-INSERT INTO town VALUES(11, 1, 11);
-INSERT INTO town VALUES(12, 1, 12);
-INSERT INTO town VALUES(13, 1, 13);
-INSERT INTO town VALUES(14, 1, 14);
-INSERT INTO town VALUES(15, 1, 15);
-INSERT INTO town VALUES(16, 1, 16);
-INSERT INTO town VALUES(17, 1, 17);
-INSERT INTO town VALUES(18, 1, 18);
-INSERT INTO town VALUES(19, 1, 19);
+INSERT INTO town VALUES(1, 1, 1,'');
+INSERT INTO town VALUES(2, 1, 2,'');
+INSERT INTO town VALUES(3, 1, 3,'');
+INSERT INTO town VALUES(4, 1, 4,'');
+INSERT INTO town VALUES(5, 1, 5,'');
+INSERT INTO town VALUES(6, 1, 6,'');
+INSERT INTO town VALUES(7, 1, 7,'');
+INSERT INTO town VALUES(8, 1, 8,'');
+INSERT INTO town VALUES(9, 1, 9,'');
+INSERT INTO town VALUES(10, 1, 10,'');
+INSERT INTO town VALUES(11, 1, 11,'');
+INSERT INTO town VALUES(12, 1, 12,'');
+INSERT INTO town VALUES(13, 1, 13,'');
+INSERT INTO town VALUES(14, 1, 14,'');
+INSERT INTO town VALUES(15, 1, 15,'');
+INSERT INTO town VALUES(16, 1, 16,'');
+INSERT INTO town VALUES(17, 1, 17,'');
+INSERT INTO town VALUES(18, 1, 18,'');
+INSERT INTO town VALUES(19, 1, 19,'');
 
 ----------------------------------------------------------------------------------------------------
 
