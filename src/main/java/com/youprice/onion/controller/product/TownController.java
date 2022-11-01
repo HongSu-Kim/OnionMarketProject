@@ -48,16 +48,17 @@ public class TownController {
         MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
         List<TownFindDTO> list = townService.townLists(memberDTO.getId());
 
+
         model.addAttribute("memberDTO", memberDTO);
         model.addAttribute("list", list);
-
 
 
         return "product/town";
     }
 
     @PostMapping("rangeProduct")
-    public String rangeProduct(Model model, @LoginUser SessionDTO sessionDTO,@RequestParam("range")String range) {
+    public String rangeProduct(Model model, @LoginUser SessionDTO sessionDTO,@RequestParam("range")String range
+                            ,@RequestParam("townName")String townName) {
 
         if (sessionDTO == null) return "redirect:/member/login";
         MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
@@ -66,6 +67,9 @@ public class TownController {
         model.addAttribute("memberDTO", memberDTO);
         model.addAttribute("list", list);
         model.addAttribute("range", range);
+
+        System.out.println(range); //거리범위
+        System.out.println(townName); //동네이름
 
 
 
@@ -124,7 +128,7 @@ public class TownController {
 
 
 
-      
+
     }
 
     @PostMapping("town")

@@ -17,9 +17,9 @@ public class TownFindDTO {
 
     private String townName; //동네이름
 
-    private String latitude; //위도
+    private Double latitude; //위도
 
-    private String longitude; //경도
+    private Double longitude; //경도
 
 
     private Long memberId; //회원번호 FK
@@ -33,6 +33,7 @@ public class TownFindDTO {
         latitude = town.getCoordinate().getLatitude(); //위도
         longitude= town.getCoordinate().getLongitude(); //경도
         townName = town.getCoordinate().getTownName(); //동네이름
+
 
     }
 
