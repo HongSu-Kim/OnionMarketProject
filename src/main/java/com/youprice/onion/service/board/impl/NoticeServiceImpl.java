@@ -75,11 +75,6 @@ public class NoticeServiceImpl implements NoticeService {
         noticeRepository.deleteById(noticeId);
     }
 
-    @Override
-    public Page<NoticeDTO> findAllNotice(Pageable pageable) {
-        Page<NoticeDTO> list = noticeRepository.findAll(pageable).map(NoticeDTO::new);
-        return list;
-    }
     public Page<NoticeDTO> findTypeNotice(Pageable pageable){
         return noticeRepository.findAllByNoticeTypeLikeOrderById(NoticeType.NOTICE, pageable).map(NoticeDTO::new);
     }
