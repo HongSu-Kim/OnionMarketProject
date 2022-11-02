@@ -64,6 +64,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     //제목과 내용으로 검색한 리스트 조회
     List<Product> findBySubjectContainingOrContentContaining(String subject,String content);
 
+	List<Product> findAllById(Object productId);
+
 	boolean existsBySubject(String subject);
 
 	@Repository
@@ -170,7 +172,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 			return searchValue == null ? null : product.subject.contains(searchValue).or(product.content.contains(searchValue));
 		}
 		private BooleanExpression coordinateIdListIn(List<Long> coordinateIdList){
-			return coordinateIdList == null || coordinateIdList.size()==0 ? null : product.town.id.in(coordinateIdList);
+			return coordinateIdList == null || coordinateIdList.size()==0 ? null : product.town.coordinate.id.in(coordinateIdList);
 		}
 	}
 }
