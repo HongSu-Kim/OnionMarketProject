@@ -12,41 +12,177 @@
     <title>게 시 판</title>
 
 
+    <style>
+        #modal.modal-overlay {
+            width: 100%;
+            height: 100%;
+            position: center;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+
+        }
+
+        #modal .modal-window {
+            /*overflow-y: auto;*/
+
+            width: 800px;
+            height: 600px;
+            position: relative;
+            top: -40px;
+            padding: 10px;
+            border-radius: 25px;
+            background-color: whitesmoke;
+            border: 1px black;
+
+            box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+
+
+        }
+
+        #modal .title {
+            padding-left: 10px;
+            display: inline;
+
+            color: black;
+        }
+
+        #modal .title h2 {
+            display: inline;
+        }
+
+        #modal .close-area {
+            display: inline;
+            float: right;
+            padding-right: 10px;
+            cursor: pointer;
+
+            color: white;
+        }
+
+        #modal .content {
+            margin-top: 20px;
+            padding: 10px;
+            text-shadow: 1px 1px 2px gray;
+            color: black;
+        }
+
+        a {
+            color: black;
+            text-decoration-line: none;
+            text-decoration: none;
+
+        }
+
+        a:link {
+            color: red;
+            text-decoration: none;
+        }
+
+        a:visited {
+            color: black;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+
+        p {
+            color: black;
+            border-top: 1px solid #d7d7d7;
+            border-left: 1px solid #e0e0e0;
+            border-right: 1px solid #e0e0e0;
+            border-bottom: 0 none;
+
+        }
+
+        input {
+            width: 100%;
+            height: 46px;
+            font-size: 16px;
+            color: #6f6f6f;
+            padding-left: 15px;
+            border: 1px solid #e1e1e1;
+            border-radius: 20px;
+
+
+        }
+
+        button {
+
+            font-size: 16px;
+            color: #6f6f6f;
+            padding-left: 15px;
+            border: 10px solid #e1e1e1;
+
+
+        }
+    </style>
 </head>
 <body>
 
 
-        </div>
-    </div>
-</nav>
-<br/><br/><br/><br/>
-
-
-
-      <strong><금지키워드 리스트> </strong>
-
-
 
             <form:form action="" method="post">
-               <br/>
-                <select name="updatekeyword">
-                    <c:forEach var="prohibitionKeywordFindDTOList" items="${prohibitionKeywordFindDTOList}">
-                    <option selected value="${prohibitionKeywordFindDTOList.prohibitionKeywordName}">
-                            ${prohibitionKeywordFindDTOList.prohibitionKeywordName}
-                        </option>
+
+      <div style=background-color:white;">
+          <div id="container">
+
+          </div>
+
+
+          <div id="modal" class="modal-overlay">
+              <div class="modal-window">
+                  <div class="title">
+                      <div style="text-align: right">
+
+                          <a href="/prohibitionkeyword/prohibitionkeyword">뒤로가기</a>
+                      </div>
+                      <div style="text-align: center">
+                          <select  name="updatekeyword">
+                              <c:forEach var="prohibitionKeywordFindDTOList" items="${prohibitionKeywordFindDTOList}">
+
+                                  <option selected value="${prohibitionKeywordFindDTOList.prohibitionKeywordName}" >
+                                          ${prohibitionKeywordFindDTOList.prohibitionKeywordName}
+
+                                  </option>
 
 
 
-                </c:forEach>
+                              </c:forEach>
 
 
-                </select>
+                          </select>
 
-                <input type="text" name="prohibitionKeywordName"/>
-                <input type="submit" value="금지 키워드 수정"/>
+
+                          <div style="text-align: center; margin-right:100px;"><h3>금지 키워드 수정</h3></div>
+
+                  </div>
+              <br/> <input type="text" name="prohibitionKeywordName"/>
+
+
+                  <br/> <br/>
+                <input type="submit" value="금지 키워드 수정" style="background-color: #47cd65; color: white"/>
 
                 </form:form>
-<br/><br/>
+                <br/>
+
+                  <div style="text-align: center">
+                    [금지키워드 리스트]<br/>
+                  <c:forEach var="prohibitionKeywordFindDTOList" items="${prohibitionKeywordFindDTOList}">
+                      ${prohibitionKeywordFindDTOList.prohibitionKeywordName} <br/>
+                  </c:forEach>
+
+              </div>
+          </div>
+      </div>
+
 
 
 </body>

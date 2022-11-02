@@ -5,7 +5,7 @@
     text-transform: uppercase;
     display: inline-block;
     padding: 5px 10px 5px;
-    background: #47cd65;
+    background: #90C8AC;
     border: none;
 }
 
@@ -16,7 +16,7 @@
     text-transform: uppercase;
     display: inline-block;
     padding: 13px 30px 12px;
-    background: #47cd65;
+    background: #90C8AC;
     border: none;
 }
 
@@ -33,7 +33,7 @@
 .alert-success {
     margin-top: 1px;
     background-color: #ffffff;
-    color: #17b93a;
+    color: #90C8AC;
     border: none;
 }
 .alert-danger {

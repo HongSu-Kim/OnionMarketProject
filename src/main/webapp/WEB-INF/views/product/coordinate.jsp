@@ -1,19 +1,36 @@
 <%@ page import="javax.validation.constraints.NotEmpty" %>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<c:set var = "cp" value = "<%=request.getContextPath()%>"/>
+<c:set var="cp" value="<%=request.getContextPath()%>"/>
 
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=yjm3h9nu79&submodules=geocoder"></script>
-    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <script type="text/javascript"
+            src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=yjm3h9nu79&submodules=geocoder"></script>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
+
+    <style>
+        input {
+            width: 13%;
+            height: 40px;
+            font-size: 16px;
+            padding-left: 15px;
+            border: 1px solid #e1e1e1;
+
+            color: black;
+            background-color: white;
+
+        }
+    </style>
+
 
     <script type="text/javascript">
 
@@ -27,72 +44,65 @@
     </script>
 
 
-
 </head>
 
-<body>
-<div class="search">
+<body><br/>
+<div style=" text-align:center ">
+
     <input id="address" name="" type="text" placeholder="검색할 주소">
-    <input id="submit" type="button" value="주소검색">
-
-        <a href="/coordinate/coordinate">
-        <input type="submit" value="다시입력"/>
-        </a>
 
 
+    <input id="submit" type="button" value="주소검색" style=" width: 5%; height: 40px;">
 
-</div>
-<div id="map" style="width:1000px;height:500px;"></div>
-
-<div>
-    <table>
-        <thead>
-        <tr>
-            <th>주소</th>
-            <th>위도</th>
-            <th>경도</th>
-        </tr>
-        </thead>
-
-
-    </table>
+    <a href="/coordinate/coordinate">
+        <input type="submit" value="다시입력" style="width: 5%; height: 40px;"/>
+    </a>
 </div>
 
-<strong> <form id="townName">
+<div style=" text-align:left ">
 
-</form></strong>
-
-<strong><form id="Latitude">
-</form></strong>
-
-    <strong><form id="Longitude">
-</form></strong>
+<div id="townName" ></div>
 
 
+<div id="Latitude"></div>
+
+
+<div id="Longitude"></div>
+
+</div>
+
+<br/>
+
+<div id="map" style="width:1800px;height:500px; margin: 0 auto;  "></div>
+
+<br/><br/>
 
 
 <form:form action="" method="post">
 
-    동네입력<input type="text" name="townName">
-    위도입력<input type="text" name="latitude">
-    경도입력<input type="text" name="longitude">
+    <div style=" text-align:center ">
 
-    <input type="submit" value="주소등록" />
+        동네입력<input type="text" name="townName">
+        위도입력<input type="text" name="latitude">
+        경도입력<input type="text" name="longitude">
+
+        <input type="submit" value="주소등록"  style="width: 5%; height: 40px;"/>
+    </div>
 </form:form>
 
-
-
+<br/><br/><br/><br/>
 
 </body>
 <script>
     //지도를 그려주는 함수 실행
 
     selectMapList();
+
     //검색한 주소의 정보를 insertAddress 함수로 넘겨준다.
     function searchAddressToCoordinate(address) {
         naver.maps.Service.geocode({
             query: address
-        }, function(status, response) {
+        }, function (status, response) {
             if (status === naver.maps.Service.Status.ERROR) {
                 return alert('Something Wrong!');
             }
@@ -118,29 +128,28 @@
     }
 
     // 주소 검색의 이벤트
-    $('#address').on('keydown', function(e) {
+    $('#address').on('keydown', function (e) {
         var keyCode = e.which;
         if (keyCode === 16) { // Enter Key
             searchAddressToCoordinate($('#address').val());
         }
     });
-    $('#submit').on('click', function(e) {
+    $('#submit').on('click', function (e) {
         e.preventDefault();
         searchAddressToCoordinate($('#address').val());
     });
     naver.maps.Event.once(map, 'init_stylemap', initGeocoder);
 
 
-
     //검색정보를 테이블로 작성해주고, 지도에 마커를 찍어준다.
     function insertAddress(address, latitude, longitude) {
         var townName = "";
-        var Longitude ="";
-        var Latitude ="";
+        var Longitude = "";
+        var Latitude = "";
 
 
         townName += address
-        Longitude +=latitude
+        Longitude += latitude
         Latitude += longitude
 
 

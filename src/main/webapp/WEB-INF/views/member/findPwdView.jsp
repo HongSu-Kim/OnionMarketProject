@@ -3,39 +3,27 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var = "cp" value = "<%=request.getContextPath()%>"/>
-<!DOCTYPE html>
-<html>
-<head>
 
-    <title>비밀번호 찾기</title>
-
-</head>
-
-<body>
-
-    <div class="posts_list">
-        <h1 class="h4 text-gray-900 mb-2">입력된 정보로 임시 비밀번호가 발송됩니다.</h1>
+<section class="spad">
+    <div class="container">
+        <div class="checkout__form">
+            <form action="/member/findPwd" method="post">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                <div class="row">
+                    <div class="col-lg-3 col-md-3"></div>
+                    <div class="col-lg-6 col-md-6">
+                        <h4>비밀번호 찾기</h4>
+                        <div class="checkout__input">
+                            <p>이메일</p>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="회원가입 시 등록한 이메일 주소를 입력해 주세요." autofocus>
+                        </div>
+                        <button class="site-btn find">확인</button>
+                        <a href="/member/login" class="site-btn find">로그인</a>
+                        <a href="/member/join" role="button" class="site-btn find">회원가입</a>
+                        <a href="/member/findId" role="button" class="site-btn find">아이디 찾기</a>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-
-    <form:form action="/member/findPwd" method="post">
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-
-            <div class="form-group">
-                <label>이메일</label>
-                <input type="email" id="email" name="email" class="form-control" placeholder="이메일을 입력해주세요"/>
-            </div>
-            <button type="submit" id="pwdFind" class="btn btn-primary bi bi-lock-fill">확인</button>
-        <hr/>
-        <a href="/member/login" class="btn btn-primary bi bi-lock-fill">로그인</a>
-        <a href="/member/findId" class="btn btn-primary bi bi-lock-fill">아이디 찾기</a>
-        <a href="/member/join" class="btn btn-primary bi bi-lock-fill">회원가입</a>
-        </form:form>
-
-    <hr>
-    <div class="text-center">
-        <a class="small" href="#">메인페이지</a>
-    </div>
-
-</body>
-
-</html>
+</section>

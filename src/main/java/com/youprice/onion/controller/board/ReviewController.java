@@ -5,7 +5,6 @@ import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.order.OrderDTO;
 import com.youprice.onion.security.auth.LoginUser;
-import com.youprice.onion.service.board.ReviewImageService;
 import com.youprice.onion.service.board.ReviewService;
 import com.youprice.onion.service.member.MemberService;
 import com.youprice.onion.service.order.OrderService;
@@ -64,9 +63,9 @@ public class ReviewController {
         int point = reviewService.saveReview(form, reviewImageName);
 
         if(point != 0) {
-            return AlertRedirect.warningMessage(response, "/member/mypage", point + "포인트가 적립되었습니다.");
+            return AlertRedirect.warningMessage(response, "/member/home", point + "포인트가 적립되었습니다.");
         }
-        return "redirect:/member/home";
+        return "redirect:/";
     }
 
     // 특정회원이 받은 후기 목록
@@ -93,7 +92,7 @@ public class ReviewController {
     // 내가 작성한 후기 목록
     @GetMapping("/mylist/{memberId}")
     public String myReviewList(@PathVariable Long memberId, Model model, @LoginUser SessionDTO sessionDTO,
-                                 @PageableDefault(size = 7) Pageable pageable) {
+                                 @PageableDefault(size = 5) Pageable pageable) {
         Page<ReviewDTO> reviewList = reviewService.myReviewList(memberId, pageable);
 
         if(sessionDTO == null) return "redirect:/member/login";

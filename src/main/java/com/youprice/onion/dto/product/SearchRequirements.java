@@ -22,4 +22,6 @@ public class SearchRequirements {
 	private Boolean blindStatus;//블라인드현황
 	private String searchValue;//검색어
 	private List<Long> coordinateIdList;//지역PK목록
+	private Long productId; //범위설정 해당 상품번호
+
 }

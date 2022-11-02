@@ -110,7 +110,7 @@
 		<div class="row">
 			<div class="col-lg-3">
 				<div class="header__logo">
-					<a href="/"><img src="/template/img/logo.png" alt=""></a>
+					<a href="/"><img src="/template/img/logo2.png" alt=""></a>
 				</div>
 			</div>
 			<div class="col-lg-6">
@@ -162,7 +162,6 @@
 								<ul class="header__menu__dropdown">
 									<li><a onclick="confirm('크롤링') ? location.href='/crawling' : false">crawling</a></li>
 									<li><a href="/coordinate/coordinate">지역 관리</a></li>
-									<li><a href="/tag/tag">태그 관리</a></li>
 									<li><a href="/prohibitionkeyword/prohibitionkeyword">금지어 관리</a></li>
 									<li><a href="/category/category"> 카테고리 관리 </a></li>
 									<li><a href="/complain/list"> 신고 관리 </a></li>
@@ -176,11 +175,12 @@
 				<div class="header__cart">
 					<sec:authorize access="isAuthenticated()">
 						<ul>
-							<li><a href="#"><i class="fa fa-heart"></i> <span>${wishCount}</span></a></li>
+							<li><a href="/wish/list"><i class="fa fa-heart"></i> <span>${wishCount}</span></a></li>
 	<%--						<li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>--%>
 						</ul>
 						<nav class="header__menu profile">
 							<ul>
+								<li><img src="/img/member/${memberDTO.memberImageName}" class="header-img profile"></li>
 								<li><a href="/member/mypage" class="header__nickname">${sessionDTO.nickname}</a>
 									<ul class="header__menu__dropdown nickname">
 										<li><a href="/member/mypage">마이페이지</a></li>

@@ -1,6 +1,7 @@
 package com.youprice.onion.repository.order;
 
 import com.youprice.onion.entity.order.Order;
+import com.youprice.onion.entity.order.OrderState;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +16,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
 	// 주문 내역 조회 - detail
 //	@EntityGraph(attributePaths = { "member", "delivery", "product", "reviewList" })
-	@Query(value = "select distinct o.* " +
+	@Query(value = "select distinct * " +
 					"from Orders o " +
 					"join Member m " +
 					"	on o.member_id = m.member_id " +
@@ -36,7 +37,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 	
 	// 구매 내역 조회 - list
 //	@EntityGraph(attributePaths = { "member", "delivery", "product", "reviewList" })
-	@Query(value = "select distinct o.* " +
+	@Query(value = "select distinct * " +
 					"from Orders o " +
 					"join Member m " +
 					"	on o.member_id = m.member_id " +
@@ -51,4 +52,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 			nativeQuery = true)
 	Page<Order> findDistinctByMemberId(@Param("memberId") Long memberId, Pageable pageable);
 
+	// 거래중인 order
+	Optional<Order> findByProductIdAndOrderState(Long productId, OrderState orderState);
 }
