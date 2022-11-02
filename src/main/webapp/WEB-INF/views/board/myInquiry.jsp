@@ -169,5 +169,5 @@
             <a href="/inquiry/created" class="site-btn">1:1 문의하기</a>
         </div>
     </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
 </section>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>

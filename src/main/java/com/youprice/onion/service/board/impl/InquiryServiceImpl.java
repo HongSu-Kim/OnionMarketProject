@@ -76,6 +76,7 @@ public class InquiryServiceImpl implements InquiryService {
         }
     }
 
+    // 회원 1명의 전체 문의 기간 검색
     public Page<InquiryDTO> getPeriodSearch(String dt_fr, String dt_to, Long memberId, Pageable pageable){
 
         String from = dt_fr.replace(".", "-");
@@ -88,4 +89,37 @@ public class InquiryServiceImpl implements InquiryService {
         return inquiryRepository.findPeriod(fromDate, toDate, memberId, pageable).map(InquiryDTO::new);
     }
 
+    // 모든 문의 기간 검색
+    public Page<InquiryDTO> allListByPeriod(String dt_fr, String dt_to, Pageable pageable){
+
+        String from = dt_fr.replace(".", "-");
+        String to = dt_to.replace(".", "-");
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate fromDate = LocalDate.parse(from, dateTimeFormatter);
+        LocalDate toDate = LocalDate.parse(to, dateTimeFormatter);
+
+        return inquiryRepository.findAllByPeriod(fromDate, toDate, pageable).map(InquiryDTO::new);
+    }
+
+    // 모든 문의 기간+단어 검색
+    public Page<InquiryDTO> allListSearch(String dt_fr, String dt_to, String field, String word, Pageable pageable){
+        String from = dt_fr.replace(".", "-");
+        String to = dt_to.replace(".", "-");
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate fromDate = LocalDate.parse(from, dateTimeFormatter);
+        LocalDate toDate = LocalDate.parse(to, dateTimeFormatter);
+
+        if(field.equals("name")) {
+            System.out.println("1번째가되냐 = " + fromDate);
+            return inquiryRepository.searchNamePeriod(fromDate, toDate, word, pageable).map(InquiryDTO::new);
+        } else if(field.equals("all")){
+            System.out.println("2번째가되냐 = " + toDate);
+            return inquiryRepository.searchAllByPeriod(fromDate, toDate, word, pageable).map(InquiryDTO::new);
+        } else {
+            System.out.println("3번째가되냐 = " + field);
+            return inquiryRepository.searchTypePeriod(fromDate, toDate, field, word, pageable).map(InquiryDTO::new);
+        }
+    }
 }

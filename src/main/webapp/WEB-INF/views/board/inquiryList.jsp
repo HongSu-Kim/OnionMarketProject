@@ -4,14 +4,50 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <c:set var="cp" value="<%=request.getContextPath()%>"/>
 
-<section class="shoping-cart spad">
-    <div class="container" style="width: 1000px; margin-top: 20px">
+
+<%--<section class="hero hero-normal">--%>
+<section class="hero-normal" style="margin-top: 200px">
+    <div class="container" style="width: 1000px;">
         <div class="section-title">
-            <h3>1:1 문의 게시판</h3>
+            <h3 style="margin-left: 100px">1:1 문의 게시판
+                <div style="float: right;">
+                    <a href="/inquiry/created" class="site-btn" style="height: 43px; ">1:1 문의하기</a>
+                </div>
+            </h3>
+
         </div>
-        <!-- 검색 -->
-        <form action="/inquiry/list" class="d-flex" method="GET" style="margin-top: 10px; margin-bottom: 5px">
-            <div class="col-lg-8">
+
+        <form name="searchForm" id="searchForm" method="get" action="/inquiry/list">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+
+            <div class="n-table-filter">
+                <div class="n-radio-tab">
+                    <input type="checkbox" id="radioTabGuide0" checked onClick="setPeriod(this,'1week');">
+                    <label for="radioTabGuide0">1주일</label>
+
+                    <input type="checkbox" id="radioTabGuide1" onClick="setPeriod(this,'1month');">
+                    <label for="radioTabGuide1">1개월</label>
+
+                    <input type="checkbox" id="radioTabGuide2" onClick="setPeriod(this,'3month');">
+                    <label for="radioTabGuide2">3개월</label>
+                </div>
+
+                <div class="n-datepicker sb">
+                    <input type="text" class="n-input" name="dt_fr" value="" id="testDatepicker1"
+                           onblur="checkDateFormat(this);">
+                </div>
+                <div class="n-datepicker">
+                    <input type="text" class="n-input" name="dt_to" value="" id="testDatepicker2"
+                           onblur="checkDateFormat(this);">
+                </div>
+
+                <div style="text-align: right">
+                    <button type="button" class="site-btn" onclick="search();">조회</button>
+                </div>
+            </div>
+
+
+            <div class="d-flex" style="width: 970px">
                 <select name="field" style="width: 130px;">
                     <option selected="selected" value="all">전체</option>
                     <option value="name">작성자</option>
@@ -20,102 +56,97 @@
                     <option value="기타서비스">[문의유형]기타서비스</option>
                 </select>
 
-                <div style="height: 45px">
+                <div style="height: 45px; margin-bottom: 10px">
                     <input type="text" name="word" class="searchIn" placeholder="검색할 단어를 입력하세요">
-                    <button class="site-btn" type="submit" style="height: 43px;">
+                    <button class="site-btn" type="button" onclick="searchWord();" style="height: 43px;">
                         <span class="icon_search"></span></button>
                 </div>
             </div>
-
-            <div class="col-lg-4">
-                <div style="text-align: center; float: right">
-                    <a href="/inquiry/created" class="site-btn">1:1 문의하기</a>
-                </div>
-            </div>
         </form>
-        <hr style="background-color: #47cd65; height: 1px"/>
-        <!-- 검색 끝 -->
+        <!-- 검색 -->
 
-        <div class="shoping__cart__table">
-            <table>
-                <colgroup>
-                    <col style="width:5%">
-                    <col style="width:25%">
-                    <col style="width:35%">
-                    <col style="width:15%">
-                    <col style="width:10%">
-                    <col style="width:10%">
-                </colgroup>
 
-                <thead>
-                <tr>
-                    <th>No</th>
-                    <th>문의유형</th>
-                    <th>문의글</th>
-                    <th>등록일</th>
-                    <th>작성자</th>
-                    <th>답변상태</th>
-                </tr>
-                </thead>
+        <table class="n-table table-col table-row">
+            <colgroup>
+                <col style="width:10%">
+                <col style="width:28%">
+                <col style="width:40%">
+                <col style="width:20%">
+                <col style="width:16%">
+            </colgroup>
 
-                <!-- list띄우기 -->
-                <tbody>
-                <c:if test="${empty questionlist.content}">
-                    <tr><td colspan="5">등록된 문의가 없습니다.</td></tr>
-                </c:if>
+            <thead>
+            <tr>
+                <th>No</th>
+                <th>문의유형</th>
+                <th>문의글</th>
+                <th>등록일</th>
+                <th>답변상태</th>
+            </tr>
+            </thead>
 
-                <c:forEach var="dto" items="${questionlist.content }">
-                    <tr>
-                        <td>${questionlist.totalElements - (questionlist.number * questionlist.size) - questionlist.content.indexOf(dto)}</td>
-                        <td>${dto.inquiryType}/${dto.detailType}</td>
+            <!-- list띄우기 -->
+            <tbody>
+            <c:choose>
+                <c:when test="${questionlist.size == 0}">
+                    문의가 없습니다.
+                </c:when>
 
-                        <!-- 비밀글 표시 -->
-                        <c:if test="${dto.secret == true}">
-                            <c:choose>
-                                <%-- <c:when test="${dto.member.userId eq member.userid || member.role eq '[ROLE_ADMIN, ROLE_USER]'}"> --%>
-                                <c:when test="${dto.memberId eq sessionDTO.id || sessionDTO.role eq 'ADMIN'}">
-                                    <%--|| sessionDTO.role eq 'ROLE_ADMIN'--%>
-                                    <!-- 작성자이거나 관리자일 때 볼 수 있는 링크 -->
-                                    <td>Q <a
-                                            href="/inquiry/article/${dto.inquiryId}?field=${param.field}&word=${param.word}&page=${param.page}">
-                                        <c:out value="${dto.inquirySubject}"/><c:if
-                                            test="${dto.answer.size() != 0}">[${dto.answer.size()}]</c:if>
-                                    </a></td>
-                                </c:when>
+                <c:otherwise>
+                    <c:forEach var="dto" items="${questionlist.content }">
+                        <tr>
+                            <td>${questionlist.totalElements - (questionlist.number * questionlist.size) - questionlist.content.indexOf(dto)}</td>
+                            <td>${dto.inquiryType}/${dto.detailType}</td>
 
-                                <c:otherwise>
-                                    <td class="text-secondary"><i class="icofont-lock"></i>
-                                        🔒<c:out value="${dto.inquirySubject}"/><c:if
+                            <!-- 비밀글 표시 -->
+                            <c:if test="${dto.secret == true}">
+                                <c:choose>
+                                    <%-- <c:when test="${dto.member.userId eq member.userid || member.role eq '[ROLE_ADMIN, ROLE_USER]'}"> --%>
+                                    <c:when test="${dto.memberId eq sessionDTO.id || sessionDTO.role eq 'ADMIN'}">
+                                        <%--|| sessionDTO.role eq 'ROLE_ADMIN'--%>
+                                        <!-- 작성자이거나 관리자일 때 볼 수 있는 링크 -->
+                                        <td>Q <a
+                                                href="/inquiry/article/${dto.inquiryId}?field=${param.field}&word=${param.word}&page=${param.page}">
+                                            <c:out value="${dto.inquirySubject}"/><c:if
                                                 test="${dto.answer.size() != 0}">[${dto.answer.size()}]</c:if>
-                                    </td>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:if>
+                                        </a></td>
+                                    </c:when>
 
-                        <c:if test="${dto.secret == false}">
+                                    <c:otherwise>
+                                        <td class="text-secondary"><i class="icofont-lock"></i>
+                                            🔒<c:out value="${dto.inquirySubject}"/><c:if
+                                                    test="${dto.answer.size() != 0}">[${dto.answer.size()}]</c:if>
+                                        </td>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:if>
+
+                            <c:if test="${dto.secret == false}">
+                                <td>
+                                    <a href="/inquiry/article/${dto.inquiryId}?field=${param.field}&word=${param.word}&page=${param.page}"
+                                       class="secretColor">
+                                        Q ${dto.inquirySubject}
+                                        <c:if test="${dto.answer.size() != 0}">[${dto.answer.size()}]</c:if>
+                                    </a>
+                                </td>
+                            </c:if>
+
+                            <td>${dto.inquiryDate}</td>
                             <td>
-                                <a href="/inquiry/article/${dto.inquiryId}?field=${param.field}&word=${param.word}&page=${param.page}" class="secretColor">
-                                    Q ${dto.inquirySubject}
-                                    <c:if test="${dto.answer.size() != 0}">[${dto.answer.size()}]</c:if>
-                                </a>
+                                <c:if test="${dto.status == 'complete'}">
+                                    <span style="color: #00c73c">complete</span>
+                                </c:if>
+                                <c:if test="${dto.status == 'wait'}">
+                                    <span style="color: #7e828f">wait</span>
+                                </c:if>
                             </td>
-                        </c:if>
+                        </tr>
+                    </c:forEach>
 
-                        <td>${dto.inquiryDate}</td>
-                        <td>${dto.memberDTO.nickname}</td>
-                        <td>
-                            <c:if test="${dto.status == 'complete'}">
-                                <span style="color: #00c73c">답변완료</span>
-                            </c:if>
-                            <c:if test="${dto.status == 'wait'}">
-                                <span style="color: #7e828f">답변대기</span>
-                            </c:if>
-                        </td>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
-        </div>
+                </c:otherwise>
+            </c:choose>
+            </tbody>
+        </table>
 
         <div class="n-table-none">
             <c:if test="${questionlist == null}"><span>등록된 1:1문의가 없습니다.</span></c:if>
@@ -128,7 +159,7 @@
                 <c:choose>
                     <c:when test="${questionlist.first}"></c:when>
                     <c:otherwise>
-<%--                        <a href="/inquiry/list/?field=${param.field}&word=${param.word}&page=0">처음</a>--%>
+                        <%--                        <a href="/inquiry/list/?field=${param.field}&word=${param.word}&page=0">처음</a>--%>
                         <a href="/inquiry/list/?field=${param.field}&word=${param.word}&page=${questionlist.number-1}">◀</a>
 
                     </c:otherwise>
@@ -151,10 +182,11 @@
                     <c:when test="${questionlist.last}"></c:when>
                     <c:otherwise>
                         <a href="/inquiry/list/?field=${param.field}&word=${param.word}&page=${questionlist.number+1}">▶</a>
-<%--                        <a href="/inquiry/list/?field=${param.field}&word=${param.word}&page=${questionlist.totalPages-1}">끝</a>--%>
+                        <%--                        <a href="/inquiry/list/?field=${param.field}&word=${param.word}&page=${questionlist.totalPages-1}">끝</a>--%>
                     </c:otherwise>
                 </c:choose>
             </ul>
+
         </div>
     </div>
 </section>

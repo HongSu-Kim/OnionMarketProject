@@ -64,15 +64,21 @@ public class InquiryController {
     public String lists(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(required = false, defaultValue = "") String field,
                         @RequestParam(required = false, defaultValue = "") String word,
+                        @RequestParam(required = false, defaultValue = "") String dt_fr,
+                        @RequestParam(required = false, defaultValue = "") String dt_to,
                         @LoginUser SessionDTO sessionDTO, Model model) {
         if (sessionDTO != null) {
             MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
             model.addAttribute("memberDTO", memberDTO);
         }
-
         Page<InquiryDTO> questionlist = inquiryService.findAll(pageable);
-        if (word.length() != 0) {
+
+        if (word.length() != 0 && dt_fr.equals("")) {
             questionlist = inquiryService.getSearchList(field, word, pageable);
+        } else if(word.length() == 0 && !dt_fr.equals("")){
+            questionlist = inquiryService.allListByPeriod(dt_fr, dt_to, pageable);
+        } else if(word.length() != 0 && !dt_fr.equals("")){
+            questionlist = inquiryService.allListSearch(dt_fr, dt_to, field, word, pageable);
         }
 
         int pageNumber = questionlist.getPageable().getPageNumber();
