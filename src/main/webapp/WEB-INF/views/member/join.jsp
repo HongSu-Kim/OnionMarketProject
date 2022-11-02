@@ -35,7 +35,7 @@
                         </div>
                         <div class="checkout__input">
                             <p>닉네임<span>*</span></p>
-                            <input type="text" name="nickname" value="${memberJoinDTO.nickname}" placeholder="닉네임을 입력해 주세요."/>
+                            <input type="text" name="nickname" id="nickname" value="${memberJoinDTO.nickname}" placeholder="닉네임을 입력해 주세요."/>
                             <span id="valid_nickname">${valid_nickname}</span>
                         </div>
                         <div class="checkout__input">
