@@ -20,3 +20,12 @@
 .header__nickname {
     text-align: right;
 }
+
+.header-img.profile {
+    width: 30px;
+    height: 30px;
+}
+
+.header__logo {
+    text-align: center;
+}

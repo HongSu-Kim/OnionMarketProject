@@ -6,7 +6,7 @@
 			<div class="col-lg-3 col-md-6 col-sm-6">
 				<div class="footer__about">
 					<div class="footer__about__logo">
-						<a href="https://technext.github.io/ogani/index.html" target="_blank"><img src="/template/img/logo.png" alt=""></a>
+						<a href="https://technext.github.io/ogani/index.html" target="_blank"><img src="/template/img/logo2.png" alt=""></a>
 					</div>
 					<ul>
 						<li>(Team)youprice</li>
@@ -18,7 +18,7 @@
 			</div>
 			<div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
 				<div class="footer__widget">
-					<h6>github</h6>
+					<h6>GitHub</h6>
 					<ul>
 						<li><a href="https://github.com/HongSu-Kim">HongSu-Kim</a></li>
 						<li><a href="https://github.com/choi-jay-hyeok">Choi-Jay Hyeok</a></li>
