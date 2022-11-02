@@ -13,12 +13,9 @@ import java.util.List;
 
 public interface TownService {
 
-    void townAdd(TownAddDTO townAddDTO, HttpServletResponse response,String townName)throws IOException;
+    void townAdd(TownAddDTO townAddDTO, HttpServletResponse response, String townName) throws IOException;
 
-  void townRangeSearch(String townName, Double range, Model model, HttpSession session,
-                                 HttpServletRequest request, Long memberId, SearchRequirements searchRequirements);
+    List<TownFindDTO> townList(Long townId);
 
-  void  townRangeSearchGet(Model mode, HttpServletRequest request, MemberDTO memberDTO,HttpSession session,Object coordinateId,Double range);
-   List<TownFindDTO> townList(Long townId);
     List<TownFindDTO> townLists(Long memberId);
 }
