@@ -36,12 +36,12 @@ public class ProductServiceImpl implements ProductService {
     private final TownRepositoy townRepositoy;
     private final CategoryRepositoy categoryRepository;
     private final ProductRepository productRepository;
-	private final ProductRepository.Querydsl productRepositoryQuerydsl;
+    private final ProductRepository.Querydsl productRepositoryQuerydsl;
     private final ProductImageRepository productImageRepository;
-	private final OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
 
-	@Override
-	public Page<ProductListDTO> getProductListDTO(SearchRequirements searchRequirements) {
+    @Override
+    public Page<ProductListDTO> getProductListDTO(SearchRequirements searchRequirements) {
         List<ProductListDTO> blindList = getAuctionList(false);
 
         LocalDateTime now = LocalDateTime.now();
@@ -59,8 +59,10 @@ public class ProductServiceImpl implements ProductService {
                 productRepository.save(product);
             }
         }
-		return productRepositoryQuerydsl.findAllBySearchRequirements(searchRequirements).map(ProductListDTO::new);
-	}
+        return productRepositoryQuerydsl.findAllBySearchRequirements(searchRequirements).map(ProductListDTO::new);
+    }
+
+
 
     //상품 등록
     @Override
@@ -132,24 +134,24 @@ public class ProductServiceImpl implements ProductService {
         return updateProductId;
     }
 
-	// 상품상태 수정
-	@Override
-	@Transactional
-	public void progressUpdate(Long productId, String progress) {
-		Product product = productRepository.findById(productId).orElse(null);
-		Order order = orderRepository.findByProductIdAndOrderState(productId, OrderState.ORDER).orElse(null);
-		ProductProgress productProgress = ProductProgress.valueOf(progress);
+    // 상품상태 수정
+    @Override
+    @Transactional
+    public void progressUpdate(Long productId, String progress) {
+        Product product = productRepository.findById(productId).orElse(null);
+        Order order = orderRepository.findByProductIdAndOrderState(productId, OrderState.ORDER).orElse(null);
+        ProductProgress productProgress = ProductProgress.valueOf(progress);
 
-		// 상품상태 수정
-		product.progressUpdate(productProgress);
-		
-		// 주문 상태 수정
-		if (productProgress == ProductProgress.SOLDOUT && order != null) {
-			order.setOrderState(OrderState.COMPLETE);
-		}
-	}
+        // 상품상태 수정
+        product.progressUpdate(productProgress);
 
-	//상품 삭제(DB삭제가 아닌 조회불가상태로 변경)
+        // 주문 상태 수정
+        if (productProgress == ProductProgress.SOLDOUT && order != null) {
+            order.setOrderState(OrderState.COMPLETE);
+        }
+    }
+
+    //상품 삭제(DB삭제가 아닌 조회불가상태로 변경)
     @Override
     @Transactional
     public void deleteProduct(Long productId) throws Exception {
@@ -306,7 +308,7 @@ public class ProductServiceImpl implements ProductService {
     //유저 판매 상품 목록
     @Override
     public Page<ProductSellListDTO> getProductSellListDTO(Long memberId, ProductProgress productProgress, Pageable pageable) {
-      return productRepositoryQuerydsl.findByMemberId(memberId, productProgress, pageable).map(ProductSellListDTO::new);
+        return productRepositoryQuerydsl.findByMemberId(memberId, productProgress, pageable).map(ProductSellListDTO::new);
     }
     //개인 유저 상품 리스트
     @Override

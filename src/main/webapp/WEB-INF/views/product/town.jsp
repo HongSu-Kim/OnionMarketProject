@@ -285,7 +285,7 @@
                        <input type="range" name="range" id="range" min="0" max="10" step="1" value="0" data-rangeslider
                         class="seek-bar"/>
                         </div>
-                        <input type="hidden" name="townName" id="coordinateId" style="width: 15%;"/>
+                        <input type="text" name="townName" id="coordinateId" style="width: 15%;"/>
 
                         <input type="hidden" name="memberId" value="${memberDTO.id}">
 
@@ -361,10 +361,10 @@
             var selector = '[data-rangeslider]';
             var $element = $(selector);
 
-            // For ie8 support
+
             var textContent = ('textContent' in document) ? 'textContent' : 'innerText';
 
-            // Example functionality to demonstrate a value feedback
+
             function valueOutput(element) {
                 var value = element.value + "km";
                 var output = element.parentNode.getElementsByTagName('output')[0] || element.parentNode.parentNode.getElementsByTagName('output')[0];
@@ -375,7 +375,7 @@
                 valueOutput(e.target);
             });
 
-            // Example functionality to demonstrate disabled functionality
+
             $document.on('click', '#js-example-disabled button[data-behaviour="toggle"]', function (e) {
                 var $inputRange = $(selector, e.target.parentNode);
 
@@ -387,7 +387,7 @@
                 $inputRange.rangeslider('update');
             });
 
-            // Example functionality to demonstrate programmatic value changes
+
             $document.on('click', '#js-example-change-value button', function (e) {
                 var $inputRange = $(selector, e.target.parentNode);
                 var value = $('input[type="number"]', e.target.parentNode)[0].value + "km";
@@ -395,7 +395,7 @@
                 $inputRange.val(value).change();
             });
 
-            // Example functionality to demonstrate programmatic attribute changes
+
             $document.on('click', '#js-example-change-attributes button', function (e) {
                 var $inputRange = $(selector, e.target.parentNode);
                 var attributes = {
@@ -408,7 +408,7 @@
                 $inputRange.rangeslider('update', true);
             });
 
-            // Example functionality to demonstrate destroy functionality
+
             $document
                 .on('click', '#js-example-destroy button[data-behaviour="destroy"]', function (e) {
                     $(selector, e.target.parentNode).rangeslider('destroy');
@@ -417,17 +417,17 @@
                     $(selector, e.target.parentNode).rangeslider({polyfill: false});
                 });
 
-            // Example functionality to test initialisation on hidden elements
+
             $document
                 .on('click', '#js-example-hidden button[data-behaviour="toggle"]', function (e) {
                     var $container = $(e.target.previousElementSibling);
                     $container.toggle();
                 });
 
-            // Basic rangeslider initialization
+
             $element.rangeslider({
 
-                // Deactivate the feature detection
+
                 polyfill: false,
 
                 // Callback function
