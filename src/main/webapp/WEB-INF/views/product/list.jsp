@@ -23,11 +23,13 @@
 			<c:forEach var="list" items="${list}">
 			<div class="col-lg-3 col-md-4 col-sm-6" style="padding: 15px;">
 				<div class="featured__item">
-					<div class="featured__item__pic set-bg" data-setbg="/img/product/${list.productImageName}">
+					<div class="featured__item__pic set-bg" data-setbg="/img/product/${list.productImageName}" onclick="location.href='/product/detail/${list.productId}';">
 						<ul class="featured__item__pic__hover">
-							<li><a href="/wish/addWish/${list.productId}"><i class="fa fa-heart"></i></a></li>
-							<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+							<input type="hidden" id="productId" value="${list.productId}"/>
+<%--							<li class="wishBtn true"><a><i class="fa fa-heart"></i></a></li>--%>
+							<li class="wishBtn true"><a href="/wish/addWish/${list.productId}"><i class="fa fa-heart"></i></a></li>
+							<li><a href="#"><i class="fa fa-solid fa-comment" onclick="createChatroom(${list.productId})"></i></a></li>
+							<li><a href="/order/payment/${list.productId}"><i class="fa fa-shopping-cart"></i></a></li>
 						</ul>
 						<div style="margin-top:93%;"><c:if test="${list.payStatus eq true}"><img src="/template/img/product/pay.png"></c:if></div>
 					</div>

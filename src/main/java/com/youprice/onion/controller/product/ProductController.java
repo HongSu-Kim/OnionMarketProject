@@ -1,9 +1,9 @@
 package com.youprice.onion.controller.product;
 
-import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.product.*;
 import com.youprice.onion.entity.product.Category;
+import com.youprice.onion.entity.product.ProductProgress;
 import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.service.board.ReviewService;
 import com.youprice.onion.service.member.MemberService;
@@ -16,7 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,9 +24,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -100,13 +97,18 @@ public class ProductController {
     }
 
     @GetMapping("/detail/{productId}")//상품 상세페이지 주소
-    public String detail(@PathVariable("productId") Long productId, @LoginUser SessionDTO userSession, Model model)
-            throws Exception{
+    public String detail(@PathVariable("productId") Long productId, @LoginUser SessionDTO userSession, Model model,
+                         HttpServletResponse response) throws Exception{
 
         /*조회수 증가*/
         productService.updateView(productId);
-        /*상품조회*/
+        /*상품조회 및 접근 제한*/
         ProductFindDTO productFindDTO = productService.getProductFindDTO(productId);
+        if(productFindDTO.getProductProgress()== ProductProgress.BLIND) {
+            AlertRedirect.warningMessage(response,"/product/list", "신고된 상품입니다.");
+
+            return "redirect:/product/addProduct";
+        }
         /*리뷰 조회*/
         Double reviewAvg = null;
 //        if (reviewService.avgGrade(productFindDTO.getMemberId()) > 0) {
