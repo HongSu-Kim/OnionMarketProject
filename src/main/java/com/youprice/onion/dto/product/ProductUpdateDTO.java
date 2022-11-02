@@ -16,7 +16,6 @@ public class ProductUpdateDTO {
     private Long townId; //동네번호
 
     private Long categoryId; //카테고리번호
-    private String categoryName; //카테고리이름
 
     private String subject; //제목
     private String content; //내용

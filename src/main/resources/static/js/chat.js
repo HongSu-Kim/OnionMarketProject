@@ -142,7 +142,7 @@ let openChatroom = function (num) { // num == chatroomId
 	setTimeout(function () {
 		$('#msgArea').scrollTop($('#msgArea')[0].scrollHeight);
 		$('#msg').focus()
-	}, 25)
+	}, 50)
 }
 
 // 채팅 더보기
@@ -258,20 +258,22 @@ $('#msg').keyup(function (event) {
 
 // 메세지 전송
 $('#button-send').click(function() {
-	let msg = $('#msg');
+	let $msg = $('#msg');
 
 	let data = {
 		chatroomId: chatroomId,
-		message: msg.val(),
+		message: $msg.val(),
 		memberId: memberId,
 		memberNickname: memberNickname,
 		targetId: targetId
 	}
 
-	stomp.send("/pub/chat/message", {}, JSON.stringify(data));
+	if($msg.val().trim() != "") {
+		stomp.send("/pub/chat/message", {}, JSON.stringify(data));
+	}
 
-	msg.val("");
-	msg.focus()
+	$msg.val("");
+	$msg.focus()
 })
 
 // 이미지 전송
@@ -295,7 +297,6 @@ $('#chatImageName').change(function () {
 			jqXHR.setRequestHeader(header, token);
 		},
 		success: function (chatDTO) {
-			alert("success")
 			stomp.send("/pub/chat/image", {}, JSON.stringify(chatDTO));
 		},
 		error: function () {
@@ -333,6 +334,12 @@ stomp.connect({}, function () {
 
 			$('#foot').before(str)
 			$('#msgArea').scrollTop($('#msgArea')[0].scrollHeight)
+
+			// if (chatDTO.message == null && chatDTO.chatImageName == null) {
+			// 	setTimeout(function () {
+			// 		stomp.send("/pub/chat/image", {}, JSON.stringify(chatDTO));
+			// 	}, 3000)
+			// }
 		}
 	})
 

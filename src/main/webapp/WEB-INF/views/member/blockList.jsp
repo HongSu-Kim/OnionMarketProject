@@ -31,17 +31,17 @@
 							<!-- 차단 정보 -->
 							<c:forEach var="blockDTO" items="${page.content}">
 								<tr>
-									<td class="text-align-left pointer" onclick="location.href='/member/profile/${blockDTO.targetDTO.id}'">
-										<img src="/img/member/${blockDTO.targetDTO.memberImageName}" class="list-img">
+									<td class="text-align-left pointer" onclick="window.open('/img/member/${blockDTO.targetDTO.memberImageName}', 'Profile', 'width=600, height=800, location=no, status=no, scrollbars=yes');">
+										<img src="/img/member/${blockDTO.targetDTO.memberImageName}" class="list-img profile">
 									</td>
 									<td><a href="/member/profile/${blockDTO.targetDTO.id}">${blockDTO.targetDTO.nickname}</a></td>
 									<td>${blockDTO.targetDTO.userGrade}</td>
 									<td>
 										<c:if test="${!blockDTO.targetDTO.blockCheck}">
-											<button type="button" onclick="location.href='/block/removeBlock/${blockDTO.targetDTO.id}'">차단해제</button>
+											<button type="button" class="site-btn" onclick="location.href='/block/removeBlock/${blockDTO.targetDTO.id}'">차단해제</button>
 										</c:if>
 										<c:if test="${blockDTO.targetDTO.blockCheck}">
-											<button type="button" onclick="location.href='/block/addBlock/${blockDTO.targetDTO.id}'">차단</button>
+											<button type="button" class="site-btn" onclick="location.href='/block/addBlock/${blockDTO.targetDTO.id}'">차단</button>
 										</c:if>
 									</td>
 								</tr>

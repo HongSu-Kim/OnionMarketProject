@@ -44,13 +44,16 @@
 						<div class="checkout__input">
 							<p>카테고리 선택<span>*</span></p>
 							<select id="topCategory">
-								<option>선택하세요</option>
+								<option value="${productFindDTO.categoryParentId}">${productFindDTO.categoryParentName}</option>
+								<option value="">선택하세요</option>
 								<c:forEach var="topCategory" items="${topCategory}">
-									${productFindDTO.categoryName}
-									<option value="${topCategory.categoryName}">${topCategory.categoryName}</option>
+									<option value="${topCategory.id}">${topCategory.categoryName}</option>
 								</c:forEach>
+								</select>
+							<select id="subCategory" name="categoryId">
+								<option value="${productFindDTO.categoryId}">${productFindDTO.categoryName}</option>
 							</select>
-							<select id="subCategory" name="categoryName"></select>
+
 
 							<br><br><br><br><hr/>
 						</div>
@@ -88,7 +91,7 @@
 								<div class="checkout__input">
 									<div class='addInput'>
 										<p>상품 이미지<span>*</span></p>
-										<input type="file" name="fileList" id="fileList">
+										<input type="file" name="productImageName" id="fileList">
 									</div>
 									<button type="button" class="btnAdd" style="border-width: thin;">이미지 추가</button>
 								</div>
