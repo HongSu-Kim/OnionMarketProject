@@ -104,6 +104,7 @@ public class MemberController {
     @GetMapping("/login")
     public String login(@RequestParam(value = "error", required = false) String error,
                         @RequestParam(value = "exception", required = false) String exception, Model model) {
+
         model.addAttribute("error", error);
         model.addAttribute("exception", exception); //error와 exception을 model에 담아서 넘겨줌
         return "member/login";
@@ -146,15 +147,15 @@ public class MemberController {
 
     //security 비밀번호를 CustomUserDetails에서 받아옴
     @PostMapping("/preModify")
-    public String PreModify(Authentication auth, @RequestParam("preModifypwd") String preModifypwd, RedirectAttributes rttr) {
+    public String PreModify(Authentication auth, @RequestParam("preModifypwd") String preModifypwd, HttpServletResponse response) throws IOException {
         CustomUserDetails customUserDetails = (CustomUserDetails) auth.getPrincipal();
         String pwd = customUserDetails.getPassword();
         if(passwordEncoder.matches(preModifypwd, pwd)) {
             return "redirect:/member/modify";
         }
         else {
-            rttr.addFlashAttribute("msg", "msg");
-            return "redirect:/member/preModify";
+            AlertRedirect.warningMessage(response, "비밀번호가 일치하지 않습니다. 다시 확인해 주세요");
+            return null;
         }
     }
 
