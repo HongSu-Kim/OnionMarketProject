@@ -10,6 +10,29 @@
 .n-radio-tab {
     padding-right: 1px;
 }
+.n-radio-tab:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+.n-table-filter .n-radio-tab,
+.n-table-filter .n-datepicker,
+.n-table-filter .n-select {
+    display: block;
+    float: left;
+    margin-right: 20px;
+}
+.n-hidden, .n-radio-tab input, .n-check,
+.n-radio {
+    display: block;
+    position: absolute;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    clip: rect(0 0 0 0);
+}
+
 .n-radio-tab input + label { /*기간영역*/
     display: inline-block;
     min-width: 76px;
@@ -25,7 +48,7 @@
     cursor: pointer;
 }
 .n-radio-tab input:checked + label {
-    border-color: #000000;
+    border-color: #b1b1b1;
     color: #000000;
     z-index: 1;
 }
