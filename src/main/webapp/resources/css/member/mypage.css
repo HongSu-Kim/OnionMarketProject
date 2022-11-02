@@ -1,11 +1,11 @@
 ul.list_modify {
     list-style: none;
     padding-left: 0px;
-    text-align: left;
+    text-align: center;
 }
 
 a {
-    color: #47cd65;
+    color: #90C8AC;
 }
 
 .site-btn-modify {
@@ -15,7 +15,23 @@ a {
     text-transform: uppercase;
     display: inline-block;
     padding: 5px 10px 5px;
-    background: #47cd65;
+    background: #90C8AC;
     border: none;
     margin-bottom: 5px;
+    width: 120px;
+    height: 40px;
+}
+
+.checkout__input input {
+    width: 100%;
+    height: 46px;
+    border: 1px solid #b7b7b7;
+    padding-left: 20px;
+    font-size: 16px;
+    color: #000000;
+    border-radius: 4px;
+}
+
+input:read-only {
+    background-color: white;
 }

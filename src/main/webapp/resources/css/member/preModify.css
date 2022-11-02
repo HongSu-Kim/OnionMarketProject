@@ -1,0 +1,13 @@
+.site-btn-modify {
+    font-size: 14px;
+    color: #ffffff;
+    font-weight: 800;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 5px 10px 5px;
+    background: #90C8AC;
+    border: none;
+    margin-bottom: 5px;
+    width: 120px;
+    height: 40px;
+}

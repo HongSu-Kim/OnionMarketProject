@@ -14,19 +14,23 @@
                     <span> </span>
                 </div>
                 <div>
-                    <c:if test="${!memberDTO.followCheck}">
-                        <button type="button" onclick="location.href='/follow/addFollow/${memberDTO.id}'">팔로우</button>
-                    </c:if>
-                    <c:if test="${memberDTO.followCheck}">
-                        <button type="button" onclick="location.href='/follow/removeFollow/${memberDTO.id}'">팔로잉</button>
-                    </c:if>
-                    <c:if test="${!memberDTO.blockCheck}">
-                       <button type="button" onclick="location.href='/block/addBlock/${memberDTO.id}'">차단</button>
-                    </c:if>
-                    <c:if test="${memberDTO.blockCheck}">
-                       <button type="button" onclick="location.href='/block/removeBlock/${memberDTO.id}'">차단해제</button>
-                    </c:if>
-                        <button type="button" onclick="location.href='/product/personalList/${memberDTO.id}'">판매 리스트</button>
+                    <span>
+                        <ul class="list_modify">
+                            <c:if test="${!memberDTO.followCheck}">
+                                <li><button type="button" class="site-btn-modify" onclick="location.href='/follow/addFollow/${memberDTO.id}'">팔로우</button></li>
+                            </c:if>
+                            <c:if test="${memberDTO.followCheck}">
+                                <li><button type="button" class="site-btn-modify"  onclick="location.href='/follow/removeFollow/${memberDTO.id}'">팔로잉</button></li>
+                            </c:if>
+                            <c:if test="${!memberDTO.blockCheck}">
+                                <li><button type="button" class="site-btn-modify"  onclick="location.href='/block/addBlock/${memberDTO.id}'">차단하기</button></li>
+                            </c:if>
+                            <c:if test="${memberDTO.blockCheck}">
+                                <li><button type="button" class="site-btn-modify"  onclick="location.href='/block/removeBlock/${memberDTO.id}'">차단해제</button></li>
+                            </c:if>
+                                <li><button type="button" class="site-btn-modify"  onclick="location.href='/product/personalList/${memberDTO.id}'">판매 리스트</button></li>
+                        </ul>
+                    </span>
                 </div>
             </div>
             <div class="col-md-6">
@@ -34,24 +38,22 @@
                     <div class="d-flex justify-content-between align-item s-center mb-3">
                         <h4 class="text-right">프로필</h4>
                     </div>
-                    <div class="row mt-2">
-                        <div class="col-md-12"><label class="labels">Name</label><input type="text" class="form-control" placeholder="first name" value=""></div>
+                    <div class="col-lg-12 col-md-12">
+                        <div class="checkout__input"><label class="labels">아이디</label><input type="text" class="form-control" value="${memberDTO.userId}" readonly="readonly"></div>
+                        <div class="checkout__input"><label class="labels">닉네임</label><input type="text" class="form-control" value="${memberDTO.nickname}" readonly="readonly"></div>
+                        <div class="checkout__input"><label class="labels">이름</label><input type="text" class="form-control" value="${memberDTO.name}" readonly="readonly"></div>
+                        <div class="checkout__input"><label class="labels">생년월일</label><input type="date" class="form-control" value="${memberDTO.birth}" readonly="readonly"></div>
+                        <div class="checkout__input"><label class="labels">휴대폰 번호</label><input type="text" class="form-control" value="${memberDTO.tel}" readonly="readonly"></div>
+                        <div class="checkout__input"><label class="labels">우편번호</label><input type="text" class="form-control" value="${memberDTO.postcode}" readonly="readonly"></div>
+                        <div class="checkout__input"><label class="labels">주소</label><input type="text" class="form-control" value="${memberDTO.address}" readonly="readonly"></div>
+                        <div class="checkout__input"><label class="labels">상세주소</label><input type="text" class="form-control" value="${memberDTO.detailAddress}" readonly="readonly"></div>
+                        <div class="checkout__input"><label class="labels">참고사항</label><input type="text" class="form-control" value="${memberDTO.extraAddress}" readonly="readonly"></div>
+                        <div class="checkout__input"><label class="labels">이메일</label><input type="text" class="form-control" value="${memberDTO.email}" readonly="readonly"></div>
+                        <div class="checkout__input"><label class="labels">양파페이</label><input type="text" class="form-control" value="${memberDTO.cash}" readonly="readonly"></div>
+                        <div class="checkout__input"><label class="labels">포인트</label><input type="text" class="form-control" value="${memberDTO.point}" readonly="readonly"></div>
+                        <div class="checkout__input"><label class="labels">평점</label><input type="text" class="form-control" value="${memberDTO.userGrade}" readonly="readonly"></div>
                     </div>
-                    <div class="row mt-3">
-                        <div class="col-md-12"><label class="labels">Mobile Number</label><input type="text" class="form-control" placeholder="enter phone number" value=""></div>
-                        <div class="col-md-12"><label class="labels">Address Line 1</label><input type="text" class="form-control" placeholder="enter address line 1" value=""></div>
-                        <div class="col-md-12"><label class="labels">Address Line 2</label><input type="text" class="form-control" placeholder="enter address line 2" value=""></div>
-                        <div class="col-md-12"><label class="labels">Postcode</label><input type="text" class="form-control" placeholder="enter address line 2" value=""></div>
-                        <div class="col-md-12"><label class="labels">State</label><input type="text" class="form-control" placeholder="enter address line 2" value=""></div>
-                        <div class="col-md-12"><label class="labels">Area</label><input type="text" class="form-control" placeholder="enter address line 2" value=""></div>
-                        <div class="col-md-12"><label class="labels">Email ID</label><input type="text" class="form-control" placeholder="enter email id" value=""></div>
-                        <div class="col-md-12"><label class="labels">Education</label><input type="text" class="form-control" placeholder="education" value=""></div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-md-6"><label class="labels">Country</label><input type="text" class="form-control" placeholder="country" value=""></div>
-                        <div class="col-md-6"><label class="labels">State/Region</label><input type="text" class="form-control" value="" placeholder="state"></div>
-                    </div>
-<%--                    <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button">Save Profile</button></div>--%>
+                        <div class="mt-5 text-center"><button class="site-btn-modify" type="button" onclick="location.href='/'">홈으로</button></div>
                 </div>
             </div>
         </div>

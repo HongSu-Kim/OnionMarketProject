@@ -31,8 +31,8 @@
 							<!-- 차단 정보 -->
 							<c:forEach var="blockDTO" items="${page.content}">
 								<tr>
-									<td class="text-align-left pointer" onclick="location.href='/member/profile/${blockDTO.targetDTO.id}'">
-										<img src="/img/member/${blockDTO.targetDTO.memberImageName}" class="list-img">
+									<td class="text-align-left pointer" onclick="window.open('/img/member/${blockDTO.targetDTO.memberImageName}', 'Profile', 'width=600, height=800, location=no, status=no, scrollbars=yes');">
+										<img src="/img/member/${blockDTO.targetDTO.memberImageName}" class="list-img profile">
 									</td>
 									<td><a href="/member/profile/${blockDTO.targetDTO.id}">${blockDTO.targetDTO.nickname}</a></td>
 									<td>${blockDTO.targetDTO.userGrade}</td>
