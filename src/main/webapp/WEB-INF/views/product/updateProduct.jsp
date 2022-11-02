@@ -1,4 +1,3 @@
-<%@ page import="javax.validation.constraints.NotEmpty" %>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <meta name="_csrf" content="${_csrf.token}">
@@ -23,7 +22,7 @@
 							</div>
 						</div>
 						<div class="checkout__input">
-							<p>거래 지역<span>*</span></p><%--townList foreach로 설정--%>
+							<p>거래 지역<span>*</span></p>
 							<label for="townId">
 								<c:forEach var="townList" items="${townList}">
 									<p>${townList.townName}<input type="radio" style="width: 15px;height: 15px; margin-left:6px" id="townId" name="townId" value="${townList.id}" checked="${townList.id}"></p>
@@ -33,7 +32,7 @@
 							<hr/>
 						</div>
 						<div class="checkout__input">
-							<p>경매 등록</p><%--true/false로 변경--%>
+							<p>경매 등록</p>
 							<div>
 								경매 기간은 12시간입니다.
 								<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="auctionStatus" value="true">
@@ -64,7 +63,7 @@
 							<hr/>
 						</div>
 						<div class="checkout__input">
-							<p>페이 결제</p><%--true/false로 변경--%>
+							<p>페이 결제</p>
 							<div style="color: #aaaaaa">
 								<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="payStatus" value="true" checked="${productFindDTO.payStatus}">
 								<input type="hidden" name="payStatus" value="false">
