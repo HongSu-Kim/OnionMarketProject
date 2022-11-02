@@ -4,7 +4,6 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <c:set var="cp" value="<%=request.getContextPath()%>"/>
 
-<!-- Contact Form Begin -->
 <section class="contact-form spad">
     <form:form method="post" action="/notice/update/${noticeDTO.noticeId}" enctype="multipart/form-data"
                modelAttribute="form">

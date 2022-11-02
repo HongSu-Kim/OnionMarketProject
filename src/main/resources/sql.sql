@@ -618,5 +618,4 @@ INSERT INTO notice VALUES (107, 1, 'QNA', '유해 게시물 정의 - 음란성 �
 
 
 
-
 commit;

@@ -157,14 +157,17 @@
     table-layout: fixed;
     background-color: #ffffff;
 }
+
 .n-table strong,
 .n-table span {
     vertical-align: middle;
 }
+
 /* th */
 .n-table.table-col {
     border-top: 2px solid #000000;
 }
+
 .table-row th {
     height: 45px;
     text-align: center;

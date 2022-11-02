@@ -152,5 +152,4 @@ public class ReviewController {
         reviewService.deleteReview(reviewId);
         return "redirect:/review/mylist/{memberId}";
     }
-
 }

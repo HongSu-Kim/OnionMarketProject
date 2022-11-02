@@ -33,7 +33,6 @@
                         </div>
                     </div>
 
-
                     <!-- 사진 첨부 -->
                     <label class="fileButton" for="reviewImageName"><p id="fileFont">사진/동영상 첨부하기</p></label>
                     <input type="file" id="reviewImageName" name="reviewImageName" multiple="multiple"

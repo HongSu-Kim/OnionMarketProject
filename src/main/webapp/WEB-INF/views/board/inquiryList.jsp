@@ -83,6 +83,7 @@
             </tr>
             </thead>
 
+
             <!-- list띄우기 -->
             <tbody>
             <c:choose>

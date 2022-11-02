@@ -60,7 +60,6 @@
                     </div>
                     <p id="review_span"><span>상품과 무관한 사진/동영상을 첨부한 리뷰는 통보없이 삭제 및 적립 혜택이 회수됩니다.</span></p><br/>
 
-
                     <div class="row form-group">
                         <div class="col-md-12">
                             <label class="text-black" style="font-size: 22pt; font-weight: bold"

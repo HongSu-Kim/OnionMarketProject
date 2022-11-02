@@ -29,6 +29,7 @@ function inquirysend() {
     }
 
 }
+
 $(document).ready(function () {
     //$('#registerForm').validate(); //유효성 검사를 적용
     // validate signup form on keyup and submit
