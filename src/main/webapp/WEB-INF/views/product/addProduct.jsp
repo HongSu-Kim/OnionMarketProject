@@ -45,7 +45,7 @@
 						</div>
 						<div class="checkout__input">
 							<p>카테고리 선택<span>*</span></p>
-							<select id="topCategory">
+							<select id="topCategory" name="topCategory">
 								<option>선택하세요</option>
 								<c:forEach var="topCategory" items="${topCategory}">
 									<option value="${topCategory.id}">${topCategory.categoryName}</option>
