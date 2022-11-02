@@ -34,7 +34,7 @@ public class ProductRangeDTO {
 
     private Double longitude; //경도
 
-    private Double wishDistance;
+    private Double wishDistance; //원하는 거리범위
 
     public ProductRangeDTO(Product product) {
 

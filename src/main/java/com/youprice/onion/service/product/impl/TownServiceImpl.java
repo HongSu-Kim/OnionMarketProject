@@ -12,10 +12,16 @@ import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.repository.product.CoordinateRepositoy;
 import com.youprice.onion.repository.product.ProductRepository;
 import com.youprice.onion.repository.product.TownRepositoy;
+import com.youprice.onion.service.product.ProductService;
 import com.youprice.onion.service.product.TownService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -24,13 +30,18 @@ import org.w3c.dom.ranges.Range;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.awt.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.channels.SeekableByteChannel;
 import java.util.*;
+import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class TownServiceImpl implements TownService {
 
     private final TownRepositoy townRepositoy;
@@ -41,6 +52,7 @@ public class TownServiceImpl implements TownService {
     private final MemberRepository memberRepositoy;
 
     private final ProductRepository productRepository;
+    private final ProductService productService;
 
 
     @Override
@@ -158,18 +170,25 @@ public class TownServiceImpl implements TownService {
         return;
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public void townRangeSearch(String townName, Double range, Model model, HttpSession session,HttpServletRequest request,Long memberId) {
+    public void townRangeSearch(String townName, Double range, Model model, HttpSession session,HttpServletRequest request,
+                                Long memberId,SearchRequirements searchRequirements) {
         Town town = new Town();
+        List<Product>product= new ArrayList<>();
+
+
+
+
         List<ProductDTO> productDTO = new ArrayList<>();
         List<Object> productDTO1 = new ArrayList<>();
         List<Object> productDTO2 = new ArrayList<>();
-        List<ProductRangeDTO> productRangeDTOList = new ArrayList<>();
+        List<ProductListDTO> productRangeDTOList = new ArrayList<>();
         List<Long> productDTO3 = new ArrayList<>();
 
         Coordinate coordinate = coordinaterepositoy.findTownNumber(townName);
         Long coordinateId=coordinate.getId();
-         System.out.println(coordinate.getId());
+
 
         Member member = memberRepositoy.findById(memberId).orElse(null);
 
@@ -179,7 +198,10 @@ public class TownServiceImpl implements TownService {
                 .collect(Collectors.toList());
 
 
+
+
         for (int i = 0; i < productDTO.size(); i++) {
+
 
             double resultX1 = coordinate.getLatitude();
             double resultX2 = productDTO.get(i).getLatitude();
@@ -193,13 +215,18 @@ public class TownServiceImpl implements TownService {
 
             double Distance = Math.round(Math.sqrt(Math.pow(DistanceX, 2) + Math.pow(DistanceY, 2)));
 
-
             if (Distance <= range) {
 
 
                 productRangeDTOList = productRepository.findAllById(productDTO.get(i).getProductId())
-                        .stream().map(ProductRangeDTO::new)
+                        .stream().map(ProductListDTO::new)
                         .collect(Collectors.toList());
+
+
+
+
+
+
 
                 productDTO1.add(0, productRangeDTOList.get(0).getProductId());
 
@@ -208,9 +235,10 @@ public class TownServiceImpl implements TownService {
                 productDTO1.add(2, productRangeDTOList.get(0).getPrice());
 
 
-                productDTO2.add(0, productRangeDTOList.get(0).getRepresentativeImage());
-                productDTO2.add(1, productRangeDTOList.get(0).getRepresentativeImage());
-                productDTO2.add(2, productRangeDTOList.get(0).getRepresentativeImage());
+//                productDTO2.add(0, productRangeDTOList.get(0).getRepresentativeImage());
+//                productDTO2.add(1, productRangeDTOList.get(0).getRepresentativeImage());
+//                productDTO2.add(2, productRangeDTOList.get(0).getRepresentativeImage());
+
             } else
 
 
@@ -220,6 +248,8 @@ public class TownServiceImpl implements TownService {
 
         request.setAttribute("rangeProduct",productDTO1);
         request.setAttribute("rangeProduct2",productDTO2);
+
+
 //        session.setAttribute("coordinate", coordinate);
 //        session.setAttribute("range", range);
       // session.setAttribute("rangeProduct2", productDTO2);
@@ -231,12 +261,31 @@ public class TownServiceImpl implements TownService {
         model.addAttribute("range", range);
         model.addAttribute("rangeProduct", productDTO1);
         model.addAttribute("rangeProduct2", productDTO2);
+//        System.out.println("1상품번혼느 시발"+productRangeDTOList);
+
+        System.out.println("나와라 1");
+
+            System.out.println("나와라 제발2");
+          //  System.out.println("번호는2"+productRangeDTOList.get(i).getProductId());
+           // System.out.println("상품번호는"+productRangeDTOList.get(i).getProductId());
+               // session.setAttribute("productRangeDTOList",productRangeDTOList.get(i).getProductId());
+         //productService.getProductRangeListDTO(searchRequirements,2125L);
+
+          //  System.out.println("번호는3"+productRangeDTOList.get(i).getProductId());
+            System.out.println("나와라 제발3");
+
+
+
+
+
+
 
 
 
 
         townrepositoy.updatWishDistance(range,coordinate,member);
-    return;
+      //  ProductListDTO productListDTO =(ProductListDTO) productRangeDTOList;
+    return ;
     }
 
 
