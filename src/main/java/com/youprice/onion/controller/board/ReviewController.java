@@ -50,8 +50,8 @@ public class ReviewController {
 
     @PostMapping("/created/{orderId}")
     public String created(@Valid @ModelAttribute("form") ReviewFormDTO form, BindingResult bindingResult, @PathVariable("orderId") Long orderId,
-                          Model model, HttpServletResponse response,
-                          @RequestParam("reviewImageName") List<MultipartFile> reviewImageName) throws IOException {
+                                @RequestParam("reviewImageName") List<MultipartFile> reviewImageName,
+                                    Model model, HttpServletResponse response) throws IOException {
         MemberDTO salesDTO = memberService.getMemberDTO(form.getSalesId());
         OrderDTO orderDTO = orderService.getOrderDTO(orderId);
 

@@ -106,7 +106,6 @@
                     </div>
                 </div>
 
-
                 <div class="css-kd8yp0">
                     <div class="d-flex" style="height: 30px">
                         <input type="checkbox" name="agreement" id="agreement" style="width: 20px; height: 20px" required value="false"/>

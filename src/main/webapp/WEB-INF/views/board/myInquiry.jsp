@@ -3,8 +3,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 
-
-<%--<section class="hero hero-normal">--%>
 <section class="mypage-cont mypage-counsel">
     <div class="container" style="width: 1000px;">
         <div class="n-section-title">

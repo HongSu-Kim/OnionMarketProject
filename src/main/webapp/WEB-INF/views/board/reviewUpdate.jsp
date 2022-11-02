@@ -35,8 +35,8 @@
 
 
                     <!-- 사진 첨부 -->
-                    <label class="fileButton" for="reviewImg"><p id="fileFont">사진/동영상 첨부하기</p></label>
-                    <input type="file" id="reviewImg" name="reviewImageName" multiple="multiple"
+                    <label class="fileButton" for="reviewImageName"><p id="fileFont">사진/동영상 첨부하기</p></label>
+                    <input type="file" id="reviewImageName" name="reviewImageName" multiple="multiple"
                            onchange="setDetailImage(event);" style="display: none"/>
                         <!-- 사진 미리보기 -->
                             <div style="display: flex">

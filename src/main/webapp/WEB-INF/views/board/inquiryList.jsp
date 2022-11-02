@@ -3,8 +3,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 
-
-<%--<section class="hero hero-normal">--%>
 <section class="hero-normal" style="margin-top: 200px">
     <div class="container" style="width: 1000px;">
         <div class="section-title">
@@ -67,7 +65,7 @@
         <table class="n-table table-col table-row">
             <colgroup>
                 <col style="width:10%">
-                <col style="width:40%">
+                <col style="width:43%">
                 <col style="width:40%">
                 <col style="width:10%">
                 <col style="width:20%">
@@ -96,7 +94,7 @@
                     <c:forEach var="dto" items="${questionlist.content }">
                         <tr>
                             <td><a style="margin-left: 30px;">${questionlist.totalElements - (questionlist.number * questionlist.size) - questionlist.content.indexOf(dto)}</a></td>
-                            <td><a style="margin-left: 65px;">${dto.inquiryType}/${dto.detailType}</a></td>
+                            <td><a style="margin-left: 75px;">${dto.inquiryType}/${dto.detailType}</a></td>
 
                             <!-- 비밀글 표시 -->
                             <c:if test="${dto.secret == true}">

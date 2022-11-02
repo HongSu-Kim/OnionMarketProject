@@ -54,10 +54,10 @@
                 <div style="margin-left: 15px">
                     <div class="shoping__cart__btns">
                         <div>
-                            <label class="primary-btn cart-btn" for="noticeImage"
+                            <label class="primary-btn cart-btn" for="noticeImageName"
                                    style="height: 50px; margin-left: 5px"><p
                                     style="line-height: 20px; width: 80px; font-weight: bold">사진 첨부</p></label>
-                            <input type="file" id="noticeImage" name="noticeImageName" multiple="multiple"
+                            <input type="file" id="noticeImageName" name="noticeImageName" multiple="multiple"
                                    class="upload-hidden" style="display: none;" onchange="setDetailImage(event);"/>
                         </div>
 
