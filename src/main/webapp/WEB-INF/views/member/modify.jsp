@@ -22,7 +22,7 @@
                             <p>비밀번호<span>*</span></p>
                             <input type="password" name="pwd" id="pwd" placeholder="수정할 비밀번호를 입력해주세요"/>
                             <span id="valid_pwd">${valid_pwd}</span>
-                            <input type="password" name="pwdCheck" id="pwdCheck" placeholder="비밀번호를 입력해주세요" class="checkout__input pwdCheck"/>
+                            <input type="password" name="pwdCheck" id="pwdCheck" placeholder="비밀번호 재확인" class="checkout__input pwdCheck"/>
 
                             <div class="alert alert-success" id="alert-success" >비밀번호가 일치합니다.</div>
                             <div class="alert alert-danger" id="alert-danger" >비밀번호가 일치하지 않습니다.</div>

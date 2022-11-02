@@ -23,7 +23,7 @@
                             <p>비밀번호<span>*</span></p>
                             <input type="password" name="pwd" id="pwd" placeholder="비밀번호를 입력해 주세요."/>
                             <span id="valid_pwd">${valid_pwd}</span>
-                            <input type="password" name="pwdCheck" id="pwdCheck" placeholder="비밀번호를 입력해 주세요." class="checkout__input pwdCheck"/>
+                            <input type="password" name="pwdCheck" id="pwdCheck" placeholder="비밀번호 재확인" class="checkout__input pwdCheck"/>
 
                             <div class="alert alert-success" id="alert-success" >비밀번호가 일치합니다.</div>
                             <div class="alert alert-danger" id="alert-danger" >비밀번호가 일치하지 않습니다.</div>
@@ -50,11 +50,11 @@
                         </div>
                         <div class="checkout__input">
                             <p>주소<span>*</span> <button type="button" id="postcodeBtn" class="site-btn-post" onclick="sample6_execDaumPostcode()">우편번호 찾기</button></p>
-                            <input type="text" name="postcode" id="postcode" value="${memberJoinDTO.postcode}" class="checkout__input__add" placeholder="우편번호를 입력해 주세요." readonly="readonly"/>
+                            <input type="text" name="postcode" id="postcode" value="${memberJoinDTO.postcode}" class="address" placeholder="우편번호를 입력해 주세요." readonly="readonly"/>
                             <span id="valid_postcode">${valid_postcode}</span>
-                            <input type="text" name="address" id="address" value="${memberJoinDTO.address}" class="checkout__input__add" placeholder="주소를 입력해 주세요." readonly="readonly"/>
+                            <input type="text" name="address" id="address" value="${memberJoinDTO.address}" class="address" placeholder="주소를 입력해 주세요." readonly="readonly"/>
                             <span id="valid_address">${valid_address}</span>
-                            <input type="text" name="detailAddress" id="detailAddress" value="${memberJoinDTO.detailAddress}" class="checkout__input__add" placeholder="상세주소를 입력해 주세요."/>
+                            <input type="text" name="detailAddress" id="detailAddress" value="${memberJoinDTO.detailAddress}" class="address" placeholder="상세주소를 입력해 주세요."/>
                             <span id="valid_detailAddress">${valid_detailAddress}</span>
                             <input type="text" name="extraAddress" id="extraAddress" value="${memberJoinDTO.extraAddress}" placeholder="참고항목을 입력해 주세요." readonly="readonly"/>
                         </div>
