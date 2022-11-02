@@ -92,7 +92,7 @@ public class ReviewController {
     // 내가 작성한 후기 목록
     @GetMapping("/mylist/{memberId}")
     public String myReviewList(@PathVariable Long memberId, Model model, @LoginUser SessionDTO sessionDTO,
-                                 @PageableDefault(size = 7) Pageable pageable) {
+                                 @PageableDefault(size = 5) Pageable pageable) {
         Page<ReviewDTO> reviewList = reviewService.myReviewList(memberId, pageable);
 
         if(sessionDTO == null) return "redirect:/member/login";

@@ -112,14 +112,12 @@ public class InquiryServiceImpl implements InquiryService {
         LocalDate toDate = LocalDate.parse(to, dateTimeFormatter);
 
         if(field.equals("name")) {
-            System.out.println("1번째가되냐 = " + fromDate);
             return inquiryRepository.searchNamePeriod(fromDate, toDate, word, pageable).map(InquiryDTO::new);
         } else if(field.equals("all")){
-            System.out.println("2번째가되냐 = " + toDate);
             return inquiryRepository.searchAllByPeriod(fromDate, toDate, word, pageable).map(InquiryDTO::new);
         } else {
-            System.out.println("3번째가되냐 = " + field);
             return inquiryRepository.searchTypePeriod(fromDate, toDate, field, word, pageable).map(InquiryDTO::new);
         }
     }
+
 }
