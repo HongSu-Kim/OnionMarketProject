@@ -148,7 +148,7 @@
             </tbody>
         </table>
 
-        <div class="n-table-none">
+        <div>
             <c:if test="${questionlist == null}"><span>등록된 1:1문의가 없습니다.</span></c:if>
         </div>
 
@@ -159,7 +159,6 @@
                 <c:choose>
                     <c:when test="${questionlist.first}"></c:when>
                     <c:otherwise>
-                        <%--                        <a href="/inquiry/list/?field=${param.field}&word=${param.word}&page=0">처음</a>--%>
                         <a href="/inquiry/list/?field=${param.field}&word=${param.word}&page=${questionlist.number-1}">◀</a>
 
                     </c:otherwise>

@@ -28,26 +28,9 @@ function inquirysend() {
         return;
     }
 
+    if ($("input[name=agreement]:checkbox").is(":checked")) {
+        $("input[name=agreement]:checkbox").val("checked", "checked");
+    }
 }
 
-$(document).ready(function () {
-    //$('#registerForm').validate(); //유효성 검사를 적용
-    // validate signup form on keyup and submit
-    $('#inquiryForm').validate({
-        rules: {
-            agreement: "required"
-        },
-        messages: {
-            agreement: {
-                required: "개인정보 수집에 동의해주세요."
-            }
-        },
-        errorPlacement : function (error, element){
-            if(element.is(':checkBox')){
-                element.parent().after(error);
-            } else {
-                element.after(error);
-            }
-        }
-    });
-});
+
