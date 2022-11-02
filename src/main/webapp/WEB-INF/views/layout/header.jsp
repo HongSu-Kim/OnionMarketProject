@@ -185,6 +185,7 @@
 									<ul class="header__menu__dropdown nickname">
 										<li><a href="/member/mypage">마이페이지</a></li>
 										<li><a href="/review/mylist/${sessionDTO.id}">나의 후기</a></li>
+										<li><a href="/inquiry/myList/${sessionDTO.id}">나의 문의</a></li>
 										<li><a href="/wish/list">위시리스트</a></li>
 									</ul>
 								</li>

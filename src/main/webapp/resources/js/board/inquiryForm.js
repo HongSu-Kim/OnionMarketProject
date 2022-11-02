@@ -30,5 +30,13 @@ function inquirysend() {
         return;
     }
 
+    // required 속성 추가하기
+    $("[id=agreement]").attr("required" , false);
+    $("[id=agreement]").attr("required" , true);
+
+    if ($("input:checked[id='agreement']").is(":checked")){
+        document.getElementById('agreement').value = true;
+    }
+
 }
 

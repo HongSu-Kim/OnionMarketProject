@@ -27,6 +27,7 @@ public class ProductSellListDTO {
 
 	private String representativeImage;
 	private Long orderId;
+	private Long reviewId;
 
 	public ProductSellListDTO(Product product) {
 
@@ -40,7 +41,12 @@ public class ProductSellListDTO {
 		blindStatus = product.getBlindStatus();
 		representativeImage = product.getRepresentativeImage();
 
-		List<Order> orderList = product.getOrderList().stream().filter(order -> order.getOrderState() == OrderState.COMPLETE).collect(Collectors.toList());
-		orderId = orderList.size() == 0 ? null : orderList.get(0).getId();
+		List<Order> orderList = product.getOrderList().stream().filter(order -> order.getOrderState() != OrderState.CANCEL).collect(Collectors.toList());
+		if (orderList.size() != 0 ) {
+			orderId = orderList.get(0).getId();
+		}
+		if (orderId != null && orderList.get(0).getReviewList().size() != 0) {
+			reviewId = orderList.get(0).getReviewList().get(0).getId();
+		}
 	}
 }

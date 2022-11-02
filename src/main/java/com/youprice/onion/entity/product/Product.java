@@ -150,12 +150,8 @@ public class Product {
     }
 
 	// 상품상태 수정
-	public Product progressUpdate(String productProgress) {
-		for (ProductProgress pp : ProductProgress.class.getEnumConstants()) {
-			if (pp.name().equals(productProgress)) {
-				this.productProgress = pp;
-			}
-		}
+	public Product progressUpdate(ProductProgress productProgress) {
+		this.productProgress = productProgress;
 		return this;
 	}
     
@@ -164,10 +160,6 @@ public class Product {
         this.blindStatus = true;
         return this;
     }
-	public Product progressUpdate(ProductProgress productProgress) {
-		this.productProgress = productProgress;
-		return this;
-	}
 }
 
 

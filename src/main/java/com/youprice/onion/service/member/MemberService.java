@@ -5,6 +5,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 public interface MemberService {
@@ -29,6 +30,8 @@ public interface MemberService {
     public MemberDTO findPwd(String email) throws Exception;
 
     void modifyProfileImg(Long memberId, MultipartFile profileImg) throws IOException;
+
+	List<MemberDTO> getChatMemberList(Long memberId);
 
 //    public void profileImageUpdate(Long memberId, MemberModifyDTO memberModifyDTO, MultipartFile memberImageName);
 }

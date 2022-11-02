@@ -3,6 +3,12 @@
 <section class="spad">
 	<div class="container">
 		<div class="checkout__form">
+
+			<div class="section-title">
+				<h3 style="font-weight: bold">결제</h3>
+			</div>
+			<hr class="section-hr">
+
 			<form action="/order/payment" method="post" id="form">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 				<input type="hidden" id="orderNum" name="orderNum" value="${orderAddDTO.orderNum}"/>

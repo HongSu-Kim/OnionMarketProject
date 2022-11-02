@@ -5,7 +5,6 @@ import com.youprice.onion.dto.board.InquiryFormDTO;
 import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.security.auth.LoginUser;
-import com.youprice.onion.service.board.AnswerService;
 import com.youprice.onion.service.board.InquiryService;
 import com.youprice.onion.service.member.MemberService;
 import com.youprice.onion.service.member.ProhibitionKeywordService;
@@ -93,14 +92,10 @@ public class InquiryController {
     // 나의 문의 목록
     @GetMapping("/myList/{memberId}")
     public String myList(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
-                         @PathVariable Long memberId, Model model,
-                         @RequestParam(required = false, defaultValue = "") String dt_fr,
-                         @RequestParam(required = false, defaultValue = "") String dt_to,
-                         @RequestParam(required = false, defaultValue = "") String page) {
-
+                         @PathVariable Long memberId, Model model, @RequestParam(required = false) String dt_fr,
+                         @RequestParam(required = false) String dt_to) {
         Page<InquiryDTO> questionlist = inquiryService.MemberReviewList(memberId, pageable);
-
-        if (dt_fr.length() != 0) {
+        if(dt_fr != null){
             questionlist = inquiryService.getPeriodSearch(dt_fr, dt_to, memberId, pageable);
         }
 
@@ -116,10 +111,6 @@ public class InquiryController {
         model.addAttribute("questionlist", questionlist);
         model.addAttribute("memberId", memberId);
 
-        if(dt_fr.length() != 0){
-            //return "redirect:/inquiry/myList/"+memberId+"?page=" + page;
-            return "review/created/1";
-        }
         return "board/myInquiry";
     }
 

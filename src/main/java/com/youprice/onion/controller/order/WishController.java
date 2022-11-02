@@ -55,8 +55,9 @@ public class WishController {
 	}
 
 	// 찜 추가 - get
-	@GetMapping("addWish/{productId}")
-	public String addWishGet(@LoginUser SessionDTO sessionDTO, @PathVariable Long productId, HttpServletResponse response) throws IOException {
+	@GetMapping({ "addWish/{productId}", "addWish" })
+	public String addWishGet(@LoginUser SessionDTO sessionDTO, @PathVariable(value = "productId") Long productId,
+							 HttpServletResponse response) throws IOException {
 		if (sessionDTO == null) return "redirect:/member/login";
 
 		try {
