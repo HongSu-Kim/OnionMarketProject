@@ -18,20 +18,20 @@ public interface InquiryRepository extends JpaRepository<Inquiry, Long> {
 
 
     Page<Inquiry> findAllByMember_Id(Long memberId, Pageable pageable);
-    @Query(value = "select i from Inquiry i where i.inquiryDate between :dt_fr and :dt_to and i.member.id = :memberId", nativeQuery = true)
+    @Query(value = "select i from Inquiry i where i.inquiryDate between :dt_fr and :dt_to and i.member.id = :memberId")
     Page<Inquiry> findPeriod(LocalDate dt_fr, LocalDate dt_to, Long memberId, Pageable pageable);
 
-    @Query(value = "select i from Inquiry i where i.inquiryDate between :dt_fr and :dt_to", nativeQuery = true)
+    @Query(value = "select i from Inquiry i where i.inquiryDate between :dt_fr and :dt_to")
     Page<Inquiry> findAllByPeriod(LocalDate dt_fr, LocalDate dt_to, Pageable pageable);
 
     //기간 검색 - 전체 영역
-    @Query(value = "select i from Inquiry i where i.inquiryDate between :dt_fr and :dt_to and i.member.nickname like :username", nativeQuery = true)
+    @Query(value = "select i from Inquiry i where i.inquiryDate between :dt_fr and :dt_to and i.member.nickname like :username")
     Page<Inquiry> searchNamePeriod(LocalDate dt_fr, LocalDate dt_to, String username, Pageable pageable);
 
-    @Query(value = "select i from Inquiry i where i.inquiryDate between :dt_fr and :dt_to and i.inquirySubject like CONCAT('%',:subject,'%')", nativeQuery = true)
-    Page<Inquiry> searchAllByPeriod(LocalDate dt_fr, LocalDate dt_to, @Param("subject") String subject, Pageable pageable);
+    @Query(value = "select i from Inquiry i where i.inquiryDate between :dt_fr and :dt_to and i.inquirySubject like CONCAT('%',:subject,'%')")
+    Page<Inquiry> searchAllByPeriod(LocalDate dt_fr, LocalDate dt_to, String subject, Pageable pageable);
 
-    @Query(value = "select i from Inquiry i where i.inquiryDate between :dt_fr and :dt_to and i.inquiryType like :type and i.inquirySubject like '%:subject%'", nativeQuery = true)
+    @Query(value = "select i from Inquiry i where i.inquiryDate between :dt_fr and :dt_to and i.inquiryType like :type and i.inquirySubject like CONCAT('%',:subject,'%')")
     Page<Inquiry> searchTypePeriod(LocalDate dt_fr, LocalDate dt_to, String type, String subject, Pageable pageable);
 
 }

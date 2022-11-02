@@ -66,7 +66,7 @@ public class WishController {
 		try {
 			int wishCount = wishService.addWish(sessionDTO.getId(), productId);
 			session.setAttribute("wishCount", wishCount);
-			return AlertRedirect.warningMessage(response, "/product/detail/" + productId, "찜 목록에 추가헀습니다.");
+			return AlertRedirect.warningMessage(response, "찜 목록에 추가헀습니다.");
 		} catch (Exception e) {
 			return AlertRedirect.warningMessage(response, "/", "상품이 존재하지 않습니다.");
 		}

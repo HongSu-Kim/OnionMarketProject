@@ -16,8 +16,8 @@
                             <p>비밀번호<span>*</span></p>
                             <input type="password" class="form-control" name="preModifypwd" placeholder="비밀번호를 입력해주세요">
                         </div>
-                        <button type="submit" class="site-btn-modify">확인</button>
-                        <a href="/member/mypage" role="button" class="site-btn-modify">마이 페이지</a>
+                        <button type="submit" class="site-btn">확인</button>
+                        <a href="/member/mypage" class="site-btn">마이 페이지</a>
                     </div>
                 </div>
             </form>

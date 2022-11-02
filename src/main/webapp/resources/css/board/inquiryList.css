@@ -27,7 +27,7 @@
     right: 0;
     height: 4px;
     width: 170px;
-    background: #47cd65;
+    background: #90C8AC;
     content: "";
     margin-left: 285px;
 }
@@ -35,16 +35,11 @@
     color: black;
 }
 .secretColor:hover{
-    color: #47cd65;
+    color: #90C8AC;
 }
 .alignTitle{
     text-align: left;
 }
-
-
-
-
-
 
 
 
@@ -118,7 +113,7 @@
     width: 100%;
 }
 .n-section-title {
-    border-bottom: 3px solid #47CD65;
+    border-bottom: 3px solid #90C8AC;
     padding-bottom: 10px;
     margin-top: 200px;
     line-height: 1.5;
@@ -162,18 +157,21 @@
     table-layout: fixed;
     background-color: #ffffff;
 }
+
 .n-table strong,
 .n-table span {
     vertical-align: middle;
 }
+
 /* th */
 .n-table.table-col {
     border-top: 2px solid #000000;
 }
+
 .table-row th {
     height: 45px;
     text-align: center;
-    background-color: #47CD65;
+    background-color: #90C8AC;
     font-size: 16px;
     vertical-align: middle;
 }  /* th끝 */
@@ -189,9 +187,10 @@
     color: white;
     font-weight: bold;
 }
+
 .table-row td {
     height: 70px;
-    text-align: center;
+    text-align: left;
     font-weight: bold;
     box-sizing: border-box;
     border-bottom: 1px solid #b3b7bb;
