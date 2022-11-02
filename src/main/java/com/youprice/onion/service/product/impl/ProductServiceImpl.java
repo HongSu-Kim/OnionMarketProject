@@ -73,7 +73,7 @@ public class ProductServiceImpl implements ProductService {
 
         //대표이미지 설정
         productAddDTO.setRepresentativeImage(getImageName()+fileList.get(0).getOriginalFilename());
-        System.out.println("category.getId() = " + productAddDTO.getCategoryId());
+
         // 상품 등록
         Product product = new Product(member,town,category,productAddDTO);
 
@@ -99,7 +99,6 @@ public class ProductServiceImpl implements ProductService {
 
         //수정한 카테고리번호
         Category category = categoryRepository.findById(updateDTO.getCategoryId()).orElse(null);
-        //리턴처리해줘야함
 
         Product product = productRepository.findById(productId).orElse(null);
 
