@@ -15,8 +15,6 @@ public class ProductAddDTO {
 
     private Long categoryId; //카테고리번호
 
-    private String categoryName; //카테고리이름
-
     private Long orderId; //주문번호
 
     private String subject; //제목
