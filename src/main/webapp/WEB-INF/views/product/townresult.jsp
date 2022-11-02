@@ -29,17 +29,16 @@
         #modal .modal-window {
             overflow-y: auto;
 
-            background-color: white;
-
-            width: 650px;
-            height: 500px;
+            width: 850px;
+            height: 600px;
             position: relative;
-            top: -200px;
+            top: -100px;
             padding: 10px;
-            border-radius: 15px;
+            border-radius: 25px;
+            background-color: whitesmoke;
             border: 1px black;
 
-            box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+            box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);;
 
 
         }
@@ -156,10 +155,10 @@
             <div class="title">
                 <div style="text-align: right">
 
-                 <a href="/town/town"><span class="icon_close"></span></a>
+                 <a href="/town/town">뒤로가기</a>
                 </div>
                 <div style="text-align: center">
-                    [동네설정은 최대 3곳 가능]
+                    <h3> [동네는 최대 3 지역 가능]</h3>
                 </div>
 
 
@@ -172,7 +171,7 @@
 
                     <input type="hidden" name="memberId" value="${memberDTO.id}">
 
-                    <input type="submit" value="동네검색하기" style="background-color: #7EBD3D; color: white"/><br/>
+                    <input type="submit" value="동네검색하기" style="background-color: #47cd65; color: white"/><br/>
                 </form:form>
 
 

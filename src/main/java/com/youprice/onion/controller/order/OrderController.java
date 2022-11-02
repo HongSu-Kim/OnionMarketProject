@@ -70,9 +70,13 @@ public class OrderController {
 
 	// 주문 - 양파페이 결제
 	@PostMapping("payment")
-	public String payment(OrderAddDTO orderAddDTO) throws IOException {
-		Long orderId = orderService.addOrder(orderAddDTO);
-		return "redirect:/order/complete/" + orderId;
+	public String payment(OrderAddDTO orderAddDTO, HttpServletResponse response) throws IOException {
+		try {
+			Long orderId = orderService.addOrder(orderAddDTO);
+			return "redirect:/order/complete/" + orderId;
+		} catch (Exception e) {
+			return AlertRedirect.warningMessage(response, "양파페이가 부족합니다");
+		}
 	}
 
 	// 주문 - imp 결제

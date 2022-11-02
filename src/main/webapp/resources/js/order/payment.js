@@ -101,7 +101,8 @@ $(function () {
 					// 가맹점 서버 결제 API 성공시 로직
 				})
 			} else {
-				alert("결제에 실패하였습니다. 에러 내용: " +  rsp.error_msg);
+				// alert("결제에 실패하였습니다. 에러 내용: " +  rsp.error_msg);
+				alert("결제를 취소하셨습니다.");
 			}
 		});
 	})

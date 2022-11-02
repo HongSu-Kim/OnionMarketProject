@@ -5,8 +5,6 @@ import com.youprice.onion.dto.board.InquiryFormDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.time.LocalDate;
-
 public interface InquiryService {
     InquiryDTO findInquiryDTO(Long inquiryId);
     Long saveInquiry(InquiryFormDTO inquiryFormDTO);

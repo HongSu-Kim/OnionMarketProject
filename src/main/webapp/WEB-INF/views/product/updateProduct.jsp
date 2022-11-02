@@ -44,14 +44,16 @@
 						<div class="checkout__input">
 							<p>카테고리 선택<span>*</span></p>
 							<select id="topCategory">
-								<option value="">${productFindDTO.categoryName}</option>
+								<option value="${productFindDTO.categoryParentId}">${productFindDTO.categoryParentName}</option>
+								<option value="">선택하세요</option>
 								<c:forEach var="topCategory" items="${topCategory}">
 									<option value="${topCategory.id}">${topCategory.categoryName}</option>
 								</c:forEach>
-							</select>
+								</select>
 							<select id="subCategory" name="categoryId">
-								<option></option>
+								<option value="${productFindDTO.categoryId}">${productFindDTO.categoryName}</option>
 							</select>
+
 
 							<br><br><br><br><hr/>
 						</div>

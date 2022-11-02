@@ -2,6 +2,7 @@ package com.youprice.onion.controller.chat;
 
 import com.youprice.onion.dto.chat.ChatDTO;
 import com.youprice.onion.dto.chat.ChatImageDto;
+import com.youprice.onion.repository.chat.ChatRepository;
 import com.youprice.onion.service.chat.ChatService;
 import com.youprice.onion.util.ImageUtil;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class ChatController {
 
 	private final SimpMessagingTemplate template;
 	private final ChatService chatService;
+	private final ChatRepository chatRepository;
 
 	// 채팅 메세지
 	@MessageMapping("/chat/message")
@@ -41,8 +43,10 @@ public class ChatController {
 	public void image(ChatDTO chatDTO) {
 		log.error("ChatController : /chat/image : " + chatDTO.getChatImageName());
 
-		if (!ImageUtil.existsImage(chatDTO.getChatImageName(), "chat")) {
+		if (chatDTO.getSendingTime().plusSeconds(2).isAfter(LocalDateTime.now()) ) {
 			chatDTO.setChatImageName(null);
+//		} else {
+//			chatDTO.setChatImageName(chatRepository.findById(chatDTO.getChatId()).get().getChatImageName());
 		}
 
 		template.convertAndSend("/sub/chat/" + chatDTO.getMemberId(), chatDTO);

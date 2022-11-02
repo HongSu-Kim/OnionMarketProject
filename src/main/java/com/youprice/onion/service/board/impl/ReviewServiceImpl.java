@@ -31,11 +31,10 @@ public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final OrderRepository orderRepository;
-    private final ProductRepository productRepository;
     private final ReviewImageRepository reviewImageRepository;
     private final MemberRepository memberRepository;
 
-    public ReviewDTO getReviewDTO(Long reviewId){
+    public ReviewDTO getReviewDTO(Long reviewId) {
         return reviewRepository.findById(reviewId).map(ReviewDTO::new).orElse(null);
     }
     @Transactional
@@ -48,13 +47,13 @@ public class ReviewServiceImpl implements ReviewService {
         Long reviewId = save.getId();
 
         List<ReviewImage> list = storeImages(reviewId, reviewImageName);
-        for(ReviewImage reviewImage : list){
+        for (ReviewImage reviewImage : list) {
             reviewImageRepository.save(reviewImage);
         }
         int point = 0;
 
-        if(save.getId() != null){
-            if(list.size() != 0) {
+        if (save.getId() != null) {
+            if (list.size() != 0) {
                 point = member.addPoint(150);// 사진리뷰
             } else {
                 point = member.addPoint(50); // 일반리뷰
@@ -63,16 +62,16 @@ public class ReviewServiceImpl implements ReviewService {
         return point;
     }
 
-    public ReviewDTO findReviewDTO(Long reviewId){
+    public ReviewDTO findReviewDTO(Long reviewId) {
         return reviewRepository.findById(reviewId).map(ReviewDTO::new).orElse(null);
     }
 
     // 특정 회원의 목록
-    public Page<ReviewDTO> userReviewList(Long salesId, Pageable pageable){
+    public Page<ReviewDTO> userReviewList(Long salesId, Pageable pageable) {
         return reviewRepository.findAllBySalesIdOrderById(salesId, pageable).map(ReviewDTO::new);
     }
     // 내가 남긴 리뷰
-    public Page<ReviewDTO> myReviewList(Long memberId, Pageable pageable){
+    public Page<ReviewDTO> myReviewList(Long memberId, Pageable pageable) {
         return reviewRepository.findAllByMemberIdOrderById(memberId, pageable).map(ReviewDTO::new);
     }
 
@@ -90,18 +89,18 @@ public class ReviewServiceImpl implements ReviewService {
         review.updateReview(id, form);
 
         List<ReviewImage> list = storeImages(reviewId, form.getReviewImageName());
-        for(ReviewImage reviewImage : list){
+        for (ReviewImage reviewImage : list) {
             reviewImageRepository.save(reviewImage);
         }
         reviewRepository.save(review);
     }
     // 삭제
     @Transactional
-    public void deleteReview(Long reviewId){
+    public void deleteReview(Long reviewId) {
         reviewRepository.deleteById(reviewId);
     }
 
-    public void deleteImage(Long imageId){
+    public void deleteImage(Long imageId) {
         ReviewImage reviewImage = reviewImageRepository.findById(imageId).orElse(null);
         reviewImageRepository.delete(reviewImage);
     }
@@ -111,7 +110,7 @@ public class ReviewServiceImpl implements ReviewService {
         Review review = reviewRepository.findById(reviewId).orElse(null);
         for (MultipartFile multipartFile : multipartFiles) {
 
-            if(!multipartFile.isEmpty()){
+            if (!multipartFile.isEmpty()) {
                 String originalFilename = multipartFile.getOriginalFilename(); // 원본파일명
                 String storeImageName = storePath(multipartFile); // uuid 변환
                 ReviewImage reviewImage = new ReviewImage(review, originalFilename, storeImageName);
@@ -123,7 +122,7 @@ public class ReviewServiceImpl implements ReviewService {
     public String storePath(MultipartFile multipartFile) throws IOException {
         String filePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\review";
 
-        if(multipartFile.isEmpty()){
+        if (multipartFile.isEmpty()) {
             return null;
         }
         String originalFilename = multipartFile.getOriginalFilename();
@@ -138,7 +137,7 @@ public class ReviewServiceImpl implements ReviewService {
         return storeFileName;
     }
 
-    public double avgGrade(Long salesId){
+    public double avgGrade(Long salesId) {
         return reviewRepository.gradeAverage(salesId);
     }
 

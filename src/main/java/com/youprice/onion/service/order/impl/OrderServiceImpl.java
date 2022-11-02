@@ -56,6 +56,7 @@ public class OrderServiceImpl implements OrderService {
 				log.error("양파페이 부족");
 				throw new RuntimeException();
 			}
+			product.getMember().addCash(product.getPrice());
 		}
 		memberRepository.save(member);
 
