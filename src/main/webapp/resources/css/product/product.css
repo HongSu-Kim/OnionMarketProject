@@ -46,6 +46,11 @@ label.error{display:block;color:red;}
 
 
 /*detail*/
+.product__image {
+    width: 480px;
+    height: 480px;
+}
+
 .board {
 
 

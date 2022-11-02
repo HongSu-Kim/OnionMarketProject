@@ -54,7 +54,6 @@
 								<option value="${productFindDTO.categoryId}">${productFindDTO.categoryName}</option>
 							</select>
 
-
 							<br><br><br><br><hr/>
 						</div>
 						<div class="checkout__input">
