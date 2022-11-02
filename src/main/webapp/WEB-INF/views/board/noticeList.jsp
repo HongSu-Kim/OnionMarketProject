@@ -84,7 +84,6 @@
             <c:choose>
                 <c:when test="${noticelist.first}"></c:when>
                 <c:otherwise>
-                    <%--                    <a href="/notice/list/?field=${field}&word=${word}&page=0">처음으로</a>--%>
                     <a href="/notice/list/?field=${field}&word=${word}&page=${noticelist.number-1}">◀</a>
                 </c:otherwise>
             </c:choose>
@@ -106,7 +105,6 @@
                 <c:when test="${noticelist.last}"></c:when>
                 <c:otherwise>
                     <a href="/notice/list/?field=${param.field}&word=${param.word}&page=${noticelist.number+1}">▶</a>
-                    <%--                    <a href="/notice/list/?field=${param.field}&word=${param.word}&page=${noticelist.totalPages-1}">끝으로</a>--%>
                 </c:otherwise>
             </c:choose>
         </ul>
