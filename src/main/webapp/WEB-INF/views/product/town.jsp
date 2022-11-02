@@ -12,21 +12,18 @@
     <title>게 시 판</title>
     <style type="text/css">
 
-        p {
-            color: #1c1c1c;
-            font-weight: 700;
-            border-bottom: 1px solid #e1e1e1;
-            padding-bottom: 20px;
-            margin-bottom: 25px;
-        }
 
         .seek-bar {
             margin: 50px auto;
             position: relative;
-            width: calc(100% - 100px);
-            height: 10px;
-            background: #222;
-            border-radius: 5px;
+            width:200px;
+            height: 0px;
+
+
+            border-radius: 15px;
+            background-color: green;
+            background: #00de63;
+            border-radius: 15px;
         }
 
         .seek-bar > .circle {
@@ -34,27 +31,27 @@
             position: absolute;
             left: 0;
             top: 50%;
-            width: 30px;
-            height: 30px;
+            width: 300px;
+            height: 300px;
             transform: translate(-50%, -50%);
         }
 
         .seek-bar > .circle > span {
-            position: absolute;
+
             display: block;
             width: 30px;
-            line-height: 30px;
-            left: 50%;
-            top: 50%;
+            line-height: 130px;
+            left: 150%;
+            top:150%;
             transform: translate(-50%, -50%);
-            background: #2196f3;
+            background: #47cd65;
             border-radius: 100%;
             text-align: center;
         }
 
         #ex1 {
-            background-color: #ebebeb;
-            border-radius: 50%
+            background-color: #47cd65;
+            border-radius: 150%
         }
 
         #ex1 {
@@ -76,7 +73,7 @@
 
         output {
             display: block;
-            font-size: 30px;
+            font-size: 20px;
             font-weight: bold;
             text-align: center;
             margin: 30px 0;
@@ -122,31 +119,147 @@
             text-decoration: underline;
         }
 
+        #modal.modal-overlay {
+            width: 100%;
+            height: 100%;
+            position: center;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+
+        }
+
+        #modal .modal-window {
+            /*overflow-y: auto;*/
+            width: 850px;
+            height: 600px;
+            position: relative;
+            top: -40px;
+            padding: 10px;
+            border-radius: 25px;
+            background-color: whitesmoke;
+            border: 1px black;
+
+            box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+
+
+        }
+
+        #modal .title {
+            padding-left: 10px;
+            display: inline;
+
+            color: black;
+        }
+
+        #modal .title h2 {
+            display: inline;
+        }
+
+        #modal .close-area {
+            display: inline;
+            float: right;
+            padding-right: 10px;
+            cursor: pointer;
+
+            color: white;
+        }
+
+        #modal .content {
+            margin-top: 20px;
+            padding: 10px;
+            text-shadow: 1px 1px 2px gray;
+            color: black;
+        }
+
+        a {
+            color: black;
+            text-decoration-line: none;
+            text-decoration: none;
+
+        }
+
+        a:link {
+            color: red;
+            text-decoration: none;
+        }
+
+        a:visited {
+            color: black;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+
+
+
+        input {
+            width: 100%;
+            height: 46px;
+            font-size: 16px;
+            color: #6f6f6f;
+            padding-left: 15px;
+            border: 1px solid #e1e1e1;
+            border-radius: 20px;
+
+
+        }
+
+        button {
+
+            font-size: 16px;
+            color: #6f6f6f;
+            padding-left: 15px;
+            border: 10px solid #e1e1e1;
+
+
+        }
+
+
+
 
     </style>
 
 </head>
 <body>
 
-<h4>동네 설정</h4>
+
 
 
 <div style="text-align: center">
 
-    <p></p>
+    <div id="modal" class="modal-overlay">
+        <div class="modal-window">
+            <div class="title">
 
-    <strong>[동네설정은 최대 3곳 가능]</동네설정은> </strong>
-    <br/>
+                <h3>동네 설정</h3>
+
+                <div style="text-align: right">
+                    <a href="/product/list"><span class="icon_close"></span></a>
+                </div>
+
+        <br/>
+
+
+
+
 
 
     <form:form action="/town/townresult" method="get">
 
-    원하는 동네 검색: <input type="text" name="wishtown" value=""/>
-    <input type="hidden" name="memberId" value="${memberDTO.id}">
-    <input type="submit" value="동네설정하기"/><br/><br/>
+     <input type="text" name="wishtown" value="" style="background-color: white "  placeholder="동네설정은 최대 3곳 가능"/>
+    <input type="hidden" name="memberId" value="${memberDTO.id}"><br/><br/>
+    <input type="submit" value="동네설정하기" style="background-color: #47cd65; color: white;"/><br/><br/>
     </form:form>
 
-    <strong>현재 등록된 동네</strong><br/>
+    <strong><현재 등록된 동네></strong><br/>
     <c:forEach var="list" items="${list}">
 
     <a href="#" onclick="statusChange(this)">
@@ -155,16 +268,48 @@
 
     </a>
     </c:forEach>
-    <br/>
-    <strong> [동네예시]<br/>
+<br/>
+    <strong> [동네예시]
         강남구/ 송파구/ 강동구
 
     </strong>
+                <br/><br/>
+                <c:if test="${empty range}">
 
-    <br/><br/>
-    <c:if test="${empty range}">
 
-    <h2>거리설정</h2>
+                <form:form action="/product/allList" name="townadd" method="post">
+
+
+
+                            <div id="js-example-disabled">
+                       <input type="range" name="range" id="range" min="0" max="10" step="1" value="0" data-rangeslider
+                        class="seek-bar"/>
+                        </div>
+                        <input type="hidden" name="townName" id="coordinateId" style="width: 15%;"/>
+
+                        <input type="hidden" name="memberId" value="${memberDTO.id}">
+
+                        <output> 거리설정</output>
+
+
+
+
+                    <%--    <button type="submit">해당 범위 설정</button>--%>
+                </form:form>
+
+                </c:if>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
 
 
     <script type="text/javascript">
@@ -198,47 +343,13 @@
     </script>
 
 
-    <form:form action="/product/all" name="townadd" method="post">
-    <div id="js-example-disabled">
 
-        <input type="range" name="range" id="range" min="0" max="10" step="2" value="0" data-rangeslider/>
-        <input type="hidden" name="townName" id="coordinateId" style="width: 15%;"/>
-
-      <input type="hidden" name="memberId" value="${memberDTO.id}">
-
-            <output></output>
-
-
-    </div>
-
-<%--    <button type="submit">해당 범위 설정</button>--%>
-    </form:form>
-
-    </c:if>
-
-
-    <c:if test="${!empty range}">
-    <c:forEach var="range" items="${range}">
-
-    <h2>거리설정</h2>
-
-    전방 ${range}km 주변 물건 찾기
-    <form:form action="/town/rangeProduct" method="post">
-    <div id="js-example-disabled">
-
-
-        <input type="range" name="range" min="0" max="10" step="2" value="${range}" data-rangeslider/>
-        <output></output>
-
-    </div>
 
 <%--    <button type="submit">해당 범위내 상품 찾기</button>--%>
 
 
-    </form:form>
 
-    </c:forEach>
-    </c:if>
+
 
     <script src="//localhost:8083"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>

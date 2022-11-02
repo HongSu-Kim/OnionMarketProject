@@ -18,7 +18,7 @@
 	</head>
 	<body>
 
-		<form action="/product/all" method="get">
+		<form action="/product/allList" method="get">
 			<input type="hidden" name="range" value="${range}"/>
 
 			<input type="text" name="coordinateId" value="${coordinateId}"/>
@@ -29,17 +29,17 @@
 
 
 	<div>
-		<h3><상품 리스트입니다></h3><br/>
-		<c:if test="${townList ne null}">
-			<p>현재동네</p>
-			<c:forEach var="townList" items="${townList}">
-				<select>
-					<option>${townList.townName}</option>
-					<option>내 동네 설정하기</option>
-				</select>
-			</c:forEach>
-		</c:if>
-		<br><br>
+<%--		<h3><상품 리스트입니다></h3><br/>--%>
+<%--		<c:if test="${townList ne null}">--%>
+<%--			<p>현재동네</p>--%>
+<%--			<c:forEach var="townList" items="${townList}">--%>
+<%--				<select>--%>
+<%--					<option>${townList.townName}</option>--%>
+<%--					<option>내 동네 설정하기</option>--%>
+<%--				</select>--%>
+<%--			</c:forEach>--%>
+<%--		</c:if>--%>
+<%--		<br><br>--%>
 
 
 		<c:if test="${!empty rangeProduct }">
