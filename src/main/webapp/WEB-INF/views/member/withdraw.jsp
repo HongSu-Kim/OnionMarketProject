@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var = "cp" value = "<%=request.getContextPath()%>"/>
-<!DOCTYPE html>
+<%--<!DOCTYPE html>
 <html>
 <head>
 
@@ -44,4 +44,31 @@
 
 </body>
 
-</html>
+</html>--%>
+
+<section class="spad">
+    <div class="container">
+        <div class="checkout__form">
+            <form action="/member/withdraw" method="post" name="myForm">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                <div class="row">
+                    <div class="col-lg-3 col-md-3"></div>
+                    <div class="col-lg-6 col-md-6">
+                        <h4>회원 탈퇴</h4>
+                        <div class="checkout__input">
+                            <p>비밀번호<span>*</span></p>
+                            <input type="password" class="form-control" name="withdrawpwd" id="withdrawpwd" placeholder="비밀번호를 입력해 주세요." autofocus>
+                            <br/>
+                            <input type="password" name="pwdCheck" id="pwdCheck" class="form-control" placeholder="비밀번호 재확인"/>
+
+                            <div class="alert alert-success" id="alert-success" >비밀번호가 일치합니다.</div>
+                            <div class="alert alert-danger" id="alert-danger" >비밀번호가 일치하지 않습니다.</div>
+                        </div>
+                        <button class="site-btn" id="btn-member-withdraw">탈퇴하기</button>
+                        <a href="/member/mypage" role="button" class="site-btn">마이 페이지</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
