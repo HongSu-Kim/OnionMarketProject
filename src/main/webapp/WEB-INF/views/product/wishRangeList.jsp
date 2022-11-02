@@ -1,18 +1,28 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <meta name="_csrf" content="${_csrf.token}">
 <meta name="_csrf_header" content="${_csrf.headerName}">
 
+
+
 <!-- Featured Section Begin -->
-<section class="featured__product">
+<section class="featured spad">
 	<div class="container">
+		<div class="product__townList">
+			<c:if test="${townList ne null}">
+
+
+			</c:if>
+		</div>
+		<br/><br/>
 		<div class="row featured__filter">
-			<c:forEach var="list" items="${list}">
+			<c:forEach var="list" items="${distancePagelist}">
 				<div class="col-lg-3 col-md-4 col-sm-6" style="padding: 15px;">
 					<div class="featured__item">
-						<div class="featured__item__pic set-bg" data-setbg="/img/product/${list.productImageName}" onclick="location.href='/product/detail/${list.productId}';">
+						<div class="featured__item__pic set-bg" data-setbg="/img/product/${list.productImageName}">
 							<ul class="featured__item__pic__hover">
-								<li><a href="/wish/addWish/${productId}"><i class="fa fa-heart"></i></a></li>
+								<li><a href="/wish/addWish/${list.productId}"><i class="fa fa-heart"></i></a></li>
 								<li><a href="#"><i class="fa fa-retweet"></i></a></li>
 								<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
 							</ul>
@@ -39,24 +49,24 @@
 		<div class="col-lg-12">
 
 			<!-- 페이징 -->
-			<c:if test="${!empty page.content && page.totalPages != 1}">
-				<input type="hidden" id="pageNumber" value="${page.number + 1}"/>
+			<c:if test="${!empty distancePage.content && distancePage.totalPages != 1}">
+				<input type="hidden" id="pageNumber" value="${distancePage.number + 1}"/>
 				<div class="product__pagination text-center">
-					<c:set var="size" value="${page.pageable.pageSize}"/><%-- 12 --%>
-					<fmt:parseNumber var="pageNumber" integerOnly="true" value="${page.number / size}"/><%-- 현재페이지 : 0 ~ --%>
-					<c:set var="startNumber" value="${pageNumber * size}"/><%-- 0 * size ~ --%>
-					<c:set var="endNumber" value="${page.totalPages > (pageNumber + 1) * size ? (pageNumber + 1) * size - 1 : page.totalPages - 1}"/>
+					<c:set var="size" value="${distancePage.pageable.pageSize}"/><%-- 12 --%>
+					<fmt:parseNumber var="pageNumber" integerOnly="true" value="${distancePage.number / size}"/><%-- 현재페이지 : 0 ~ --%>
+					<c:set var="startNumber" value="${distancePage * size}"/><%-- 0 * size ~ --%>
+					<c:set var="endNumber" value="${distancePage.totalPages > (pageNumber + 1) * size ? (pageNumber + 1) * size - 1 : distancePage.totalPages - 1}"/>
 
-					<c:if test="${page.totalPages > size && page.number + 1 > size}">
+					<c:if test="${distancePage.totalPages > size && distancePage.number + 1 > size}">
 						<a href="?page=0"><<</a>
 						<a href="?page=${startNumber - 1}"><</a>
 					</c:if>
 					<c:forEach var="currentNumber" begin="${startNumber}" end="${endNumber}">
 						<a href="?page=${currentNumber}">${currentNumber + 1}</a>
 					</c:forEach>
-					<c:if test="${page.totalPages - 1 > endNumber}">
+					<c:if test="${distancePage.totalPages - 1 > endNumber}">
 						<a href="?page=${endNumber + 1}">></a>
-						<a href="?page=${page.totalPages - 1}">>></a>
+						<a href="?page=${distancePage.totalPages - 1}">>></a>
 					</c:if>
 				</div>
 			</c:if>
@@ -65,4 +75,3 @@
 	</div>
 	<!-- List Paging End -->
 </section>
-<!-- Featured Section End -->

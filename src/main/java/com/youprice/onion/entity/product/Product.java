@@ -154,6 +154,12 @@ public class Product {
 		this.productProgress = productProgress;
 		return this;
 	}
+
+    // 상품 신고 처리
+    public Product blindImage() {
+        this.representativeImage = "blindImage.png";
+        return this;
+    }
     
     // 블라인드 처리(삭제)
     public Product blindProduct(Boolean blindStatus) {

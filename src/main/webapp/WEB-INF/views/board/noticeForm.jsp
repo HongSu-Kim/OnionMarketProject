@@ -47,8 +47,8 @@
 
                 <div style="margin-left: 15px">
                     <div class="shoping__cart__btns">
-                        <label class="primary-btn cart-btn" for="noticeImage">사진 첨부하기</label>
-                        <input type="file" id="noticeImage" name="noticeImageName" multiple="multiple"
+                        <label class="primary-btn cart-btn" for="noticeImageName">사진 첨부하기</label>
+                        <input type="file" id="noticeImageName" name="noticeImageName" multiple="multiple"
                                style="display: none" onchange="setDetailImage(event);"/>
                         <div id="images_container"></div>
                     </div>

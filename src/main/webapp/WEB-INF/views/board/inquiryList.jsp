@@ -2,10 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
-<c:set var="cp" value="<%=request.getContextPath()%>"/>
 
-
-<%--<section class="hero hero-normal">--%>
 <section class="hero-normal" style="margin-top: 200px">
     <div class="container" style="width: 1000px;">
         <div class="section-title">
@@ -18,7 +15,6 @@
         </div>
 
         <form name="searchForm" id="searchForm" method="get" action="/inquiry/list">
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 
             <div class="n-table-filter">
                 <div class="n-radio-tab">
@@ -69,8 +65,9 @@
         <table class="n-table table-col table-row">
             <colgroup>
                 <col style="width:10%">
-                <col style="width:28%">
+                <col style="width:43%">
                 <col style="width:40%">
+                <col style="width:10%">
                 <col style="width:20%">
                 <col style="width:16%">
             </colgroup>
@@ -80,10 +77,12 @@
                 <th>No</th>
                 <th>문의유형</th>
                 <th>문의글</th>
+                <th>작성자</th>
                 <th>등록일</th>
                 <th>답변상태</th>
             </tr>
             </thead>
+
 
             <!-- list띄우기 -->
             <tbody>
@@ -95,8 +94,8 @@
                 <c:otherwise>
                     <c:forEach var="dto" items="${questionlist.content }">
                         <tr>
-                            <td>${questionlist.totalElements - (questionlist.number * questionlist.size) - questionlist.content.indexOf(dto)}</td>
-                            <td>${dto.inquiryType}/${dto.detailType}</td>
+                            <td><a style="margin-left: 30px;">${questionlist.totalElements - (questionlist.number * questionlist.size) - questionlist.content.indexOf(dto)}</a></td>
+                            <td><a style="margin-left: 75px;">${dto.inquiryType}/${dto.detailType}</a></td>
 
                             <!-- 비밀글 표시 -->
                             <c:if test="${dto.secret == true}">
@@ -105,18 +104,17 @@
                                     <c:when test="${dto.memberId eq sessionDTO.id || sessionDTO.role eq 'ADMIN'}">
                                         <%--|| sessionDTO.role eq 'ROLE_ADMIN'--%>
                                         <!-- 작성자이거나 관리자일 때 볼 수 있는 링크 -->
-                                        <td>Q <a
-                                                href="/inquiry/article/${dto.inquiryId}?field=${param.field}&word=${param.word}&page=${param.page}">
+                                        <td>Q <a href="/inquiry/article/${dto.inquiryId}?field=${param.field}&word=${param.word}&page=${param.page}">
                                             <c:out value="${dto.inquirySubject}"/><c:if
                                                 test="${dto.answer.size() != 0}">[${dto.answer.size()}]</c:if>
                                         </a></td>
                                     </c:when>
 
                                     <c:otherwise>
-                                        <td class="text-secondary"><i class="icofont-lock"></i>
+                                        <td class="text-secondary"><a><i class="icofont-lock"></i>
                                             🔒<c:out value="${dto.inquirySubject}"/><c:if
                                                     test="${dto.answer.size() != 0}">[${dto.answer.size()}]</c:if>
-                                        </td>
+                                        </a></td>
                                     </c:otherwise>
                                 </c:choose>
                             </c:if>
@@ -131,13 +129,15 @@
                                 </td>
                             </c:if>
 
-                            <td>${dto.inquiryDate}</td>
+                            <td><a style="margin-left: 15px">${dto.memberDTO.userId}</a></td>
+
+                            <td><a style="margin-left: 30px">${dto.inquiryDate}</a></td>
                             <td>
                                 <c:if test="${dto.status == 'complete'}">
-                                    <span style="color: #00c73c">complete</span>
+                                    <a style="margin-left: 40px"><span style="color: #00c73c">complete</span></a>
                                 </c:if>
                                 <c:if test="${dto.status == 'wait'}">
-                                    <span style="color: #7e828f">wait</span>
+                                    <a style="margin-left: 40px"><span style="color: #7e828f">wait</span></a>
                                 </c:if>
                             </td>
                         </tr>
@@ -148,7 +148,7 @@
             </tbody>
         </table>
 
-        <div class="n-table-none">
+        <div>
             <c:if test="${questionlist == null}"><span>등록된 1:1문의가 없습니다.</span></c:if>
         </div>
 
@@ -159,7 +159,6 @@
                 <c:choose>
                     <c:when test="${questionlist.first}"></c:when>
                     <c:otherwise>
-                        <%--                        <a href="/inquiry/list/?field=${param.field}&word=${param.word}&page=0">처음</a>--%>
                         <a href="/inquiry/list/?field=${param.field}&word=${param.word}&page=${questionlist.number-1}">◀</a>
 
                     </c:otherwise>
