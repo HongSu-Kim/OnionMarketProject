@@ -105,7 +105,6 @@ let printChat = function () {
 // 채팅 템플릿
 let chatTemplate = function (chatDTO) {
 
-	let str = ""
 	let content
 
 	if (chatDTO.message != null) {
@@ -113,10 +112,10 @@ let chatTemplate = function (chatDTO) {
 	} else if (chatDTO.chatImageName != null) {
 		content = `<img src="/img/chat/${chatDTO.chatImageName}"/>`
 	} else {
-		throw new Error();
+		content = `<div class="cm-msg-box"><i class="material-icons">loop</i></div>`
 	}
 
-	str +=
+	let str =
 		(chatDTO.memberId == memberId
 			? `<div class="chat-msg self">`
 			: `<div class="chat-msg user">`) +
@@ -261,17 +260,16 @@ $('#msg').keyup(function (event) {
 $('#button-send').click(function() {
 	let msg = $('#msg');
 
-	stomp.send(
-		"/pub/chat/message",
-		{},
-		JSON.stringify({
-			chatroomId: chatroomId,
-			message: msg.val(),
-			memberId: memberId,
-			memberNickname: memberNickname,
-			targetId: targetId
-		})
-	);
+	let data = {
+		chatroomId: chatroomId,
+		message: msg.val(),
+		memberId: memberId,
+		memberNickname: memberNickname,
+		targetId: targetId
+	}
+
+	stomp.send("/pub/chat/message", {}, JSON.stringify(data));
+
 	msg.val("");
 	msg.focus()
 })
@@ -279,7 +277,6 @@ $('#button-send').click(function() {
 // 이미지 전송
 $('#chatImageName').change(function () {
 
-	alert("chatImageName")
 	let formData = new FormData()
 
 	formData.set("chatroomId", chatroomId)
@@ -287,7 +284,6 @@ $('#chatImageName').change(function () {
 	formData.set("memberId", memberId)
 	formData.set("memberNickname", memberNickname)
 	formData.set("targetId", targetId)
-	alert("formData")
 
 	$.ajax({
 		url: "/chat/image",
@@ -300,11 +296,7 @@ $('#chatImageName').change(function () {
 		},
 		success: function (chatDTO) {
 			alert("success")
-			stomp.send(
-				"/pub/chat/image",
-				{},
-				JSON.stringify(chatDTO)
-			);
+			stomp.send("/pub/chat/image", {}, JSON.stringify(chatDTO));
 		},
 		error: function () {
 			alert("전송에 실패했습니다.")
@@ -325,10 +317,8 @@ stomp.connect({}, function () {
 		else if (chatroomId == chatDTO.chatroomId) {
 			let str = ""
 
-			alert(lastDate)
 			if (lastDate != chatDTO.sendingTime.substring(0, 10)) {
 				lastDate = chatDTO.sendingTime.substring(0, 10)
-				alert(lastDate)
 
 				let parseDate = new Date(chatDTO.sendingTime)
 				let formatDate = `${parseDate.getFullYear()}년 ${parseDate.getMonth() + 1}월 ${parseDate.getDate()}일`
@@ -340,6 +330,7 @@ stomp.connect({}, function () {
 			}
 
 			str += chatTemplate(chatDTO);
+
 			$('#foot').before(str)
 			$('#msgArea').scrollTop($('#msgArea')[0].scrollHeight)
 		}

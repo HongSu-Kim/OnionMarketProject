@@ -22,6 +22,8 @@ public class Town {
         @JoinColumn(name ="member_id") //회원번호 FK
         private Member member;
 
+        private Double wishDistance; //원하는 거리지역 상품조회
+
 
         public Town townCreate(TownAddDTO townAddDTO, Coordinate coordinate, Member member){
 
@@ -31,6 +33,16 @@ public class Town {
 
             return this;
         }
+
+//    public Town townDistanceCreate(Double wishDistance, Coordinate coordinate){
+//
+//
+//        this.coordinate = coordinate;
+//        this.wishDistance = wishDistance;
+//
+//
+//        return this;
+//    }
 
 
 }

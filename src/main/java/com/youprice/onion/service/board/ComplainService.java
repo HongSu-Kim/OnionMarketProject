@@ -7,8 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ComplainService {
 
-    ComplainDTO findComplainDTO(Long id);
-    void saveComplain(ComplainFormDTO complainFormDTO);
+    ComplainDTO saveComplain(ComplainFormDTO form);
     String modifyStatus(Long complainId, String select);
     Page<ComplainDTO> findAll(Pageable pageable);
 }

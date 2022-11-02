@@ -26,6 +26,7 @@ public class OrderDTO {
 	private MemberDTO memberDTO;
 	private ProductDTO productDTO;
 	private DeliveryDTO deliveryDTO;
+	private Long reviewId;
 
 	public OrderDTO(Order order) {
 
@@ -44,6 +45,9 @@ public class OrderDTO {
 		productDTO = new ProductDTO(order.getProduct());
 		if (order.getDelivery() != null) {
 			deliveryDTO = new DeliveryDTO(order.getDelivery());
+		}
+		if (order.getReviewList().size() != 0) {
+			reviewId = order.getReviewList().get(0).getId();
 		}
 	}
 

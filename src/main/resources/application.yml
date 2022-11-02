@@ -5,7 +5,7 @@ server:
       force: true
       charset: UTF-8
     session:
-      setMaxInactiveInterval: 1800
+      setMaxInactiveInterval: 900
 
 spring:
   datasource:

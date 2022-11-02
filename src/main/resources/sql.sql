@@ -116,14 +116,18 @@ CREATE TABLE coordinate (
 	CONSTRAINT PK_COORDINATE PRIMARY KEY (coordinate_id)
 );
 
-CREATE TABLE town (
-	town_id             NUMBER        	NOT NULL,
-	member_id           NUMBER        	NOT NULL,
-	coordinate_id       NUMBER        	NOT NULL,
-	CONSTRAINT PK_TOWN PRIMARY KEY (town_id),
-	CONSTRAINT FK_TOWN_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id),
-	CONSTRAINT FK_TOWN_COORDINATE_ID FOREIGN KEY (coordinate_id) REFERENCES coordinate(coordinate_id)
+CREATE TABLE town
+(
+    town_id       NUMBER NOT NULL,
+    member_id     NUMBER NOT NULL,
+    coordinate_id NUMBER NOT NULL,
+    wish_distance NUMBER NULL,
+
+    CONSTRAINT PK_TOWN PRIMARY KEY (town_id),
+    CONSTRAINT FK_TOWN_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member (member_id),
+    CONSTRAINT FK_TOWN_COORDINATE_ID FOREIGN KEY (coordinate_id) REFERENCES coordinate (coordinate_id)
 );
+
 
 CREATE TABLE category (
     category_id     	NUMBER          NOT NULL,
@@ -345,25 +349,25 @@ CREATE TABLE notice_image (
 
 INSERT INTO member VALUES(1, 'ADMIN', 'admin', '$2a$10$8gkJSCifAA3aWUAZJazhnuYLi2JVSbC7D2UtDmu0cUG9NScriVtZ6', --pwd : admin123
                           'admin', '관리자', SYSDATE, '01012341234', '06234', '서울 강남구 역삼동 823',
-                          '4층 아이티윌', '디글디글', 'youprice.onion.email@gmail.com', null, 0, 0, 0, 0);
+                          '4층 아이티윌', '디글디글', 'youprice.onion.email@gmail.com', 'null.png', 0, 0, 0, 0);
 INSERT INTO member VALUES(2, 'USER', 'user1', '$2a$10$X5ICHy3CCqtWl0su87UzMuCe.v2V92TBIH5szmZ.hBJd/tD/7o8LW', --pwd : user1
                           'user1', '유저1', SYSDATE, '01011111111', '06253', '서울 강남구 역삼동 838',
-                          '1', '', 'user1@naver.com', null, 1000000000, 0, 0, 0);
+                          '1', '', 'user1@naver.com', 'null.png', 1000000000, 0, 0, 0);
 INSERT INTO member VALUES(3, 'USER', 'user2', '$2a$10$yCBZmjwdiIsWneGJll69X.Z7DGnGx4pSgeBw1oNVZkbxvg4w./uUy', --pwd : user2
                           'user2', '유저2', SYSDATE, '01022222222', '06120', '서울 강남구 논현동 200-7',
-                          '2', '', 'user2@naver.com', null, 20000, 0, 0, 0);
+                          '2', '', 'user2@naver.com', 'null.png', 20000, 0, 0, 0);
 INSERT INTO member VALUES(4, 'USER', 'user3', '$2a$10$Az6LE39WK9WzZB5eTstyN.a3Ry8eEJaOS.bwdNAr2J8pwlKjfRL.C', --pwd : user3
                           'user3', '유저3', SYSDATE, '01033333333', '06308', '서울 강남구 개포동 1205-1',
-                          '3', '', 'user3@naver.com', null, 0, 0, 0, 0);
+                          '3', '', 'user3@naver.com', 'null.png', 0, 0, 0, 0);
 INSERT INTO member VALUES(5, 'USER', 'user4', '$2a$10$maqcisSSo/UvHjaBGlkdGeMdVmkYVVBUPtg9Yjy4eRXXV17v4yhTO', --pwd : user4
                           'user4', '유저4', SYSDATE, '01044444444', '06517', '서울 서초구 잠원동 54-5',
-                          '4', '', 'user4@naver.com', null, 1000, 0, 0, 0);
+                          '4', '', 'user4@naver.com', 'null.png', 1000, 0, 0, 0);
 INSERT INTO member VALUES(6, 'USER', 'user5', '$2a$10$No.Tv7ToHFb7dT0shjJlQ.acUoZeiW5a.PVvxn9fBL0ZjKcQ07Ipm', --pwd : user5
                           'user5', '유저5', SYSDATE, '01055555555', '06744', '서울 서초구 양재동 20-30',
-                          '5', '', 'user5@naver.com', null, 2000, 0, 0, 0);
+                          '5', '', 'user5@naver.com', 'null.png', 2000, 0, 0, 0);
 INSERT INTO member VALUES(7, 'USER', 'user6', '$2a$10$dTp.BTXTF4tkmWxzcKA0o.6QitOj1./MDoHfCFOfhgrQsJv3YvIgC', --pwd : user6
                           'user6', '유저6', SYSDATE, '01066666666', '06729', '서울 서초구 서초동 1357-35',
-                          '6', '', 'user6@naver.com', null, 2000, 0, 0, 0);
+                          '6', '', 'user6@naver.com', 'null.png', 2000, 0, 0, 0);
 
 ----------------------------------------------------------------------------------------------------
 
@@ -437,25 +441,26 @@ INSERT INTO Coordinate VALUES(65, '서울특별시 강동구 둔촌2동',  '37.5
 
 ----------------------------------------------------------------------------------------------------
 
-INSERT INTO town VALUES(1, 1, 1);
-INSERT INTO town VALUES(2, 1, 2);
-INSERT INTO town VALUES(3, 1, 3);
-INSERT INTO town VALUES(4, 1, 4);
-INSERT INTO town VALUES(5, 1, 5);
-INSERT INTO town VALUES(6, 1, 6);
-INSERT INTO town VALUES(7, 1, 7);
-INSERT INTO town VALUES(8, 1, 8);
-INSERT INTO town VALUES(9, 1, 9);
-INSERT INTO town VALUES(10, 1, 10);
-INSERT INTO town VALUES(11, 1, 11);
-INSERT INTO town VALUES(12, 1, 12);
-INSERT INTO town VALUES(13, 1, 13);
-INSERT INTO town VALUES(14, 1, 14);
-INSERT INTO town VALUES(15, 1, 15);
-INSERT INTO town VALUES(16, 1, 16);
-INSERT INTO town VALUES(17, 1, 17);
-INSERT INTO town VALUES(18, 1, 18);
-INSERT INTO town VALUES(19, 1, 19);
+INSERT INTO town VALUES(1, 1, 1,'');
+INSERT INTO town VALUES(2, 1, 2,'');
+INSERT INTO town VALUES(3, 1, 3,'');
+INSERT INTO town VALUES(4, 1, 4,'');
+INSERT INTO town VALUES(5, 1, 5,'');
+INSERT INTO town VALUES(6, 1, 6,'');
+INSERT INTO town VALUES(7, 1, 7,'');
+INSERT INTO town VALUES(8, 1, 8,'');
+INSERT INTO town VALUES(9, 1, 9,'');
+INSERT INTO town VALUES(10, 1, 10,'');
+INSERT INTO town VALUES(11, 1, 11,'');
+INSERT INTO town VALUES(12, 1, 12,'');
+INSERT INTO town VALUES(13, 1, 13,'');
+INSERT INTO town VALUES(14, 1, 14,'');
+INSERT INTO town VALUES(15, 1, 15,'');
+INSERT INTO town VALUES(16, 1, 16,'');
+INSERT INTO town VALUES(17, 1, 17,'');
+INSERT INTO town VALUES(18, 1, 18,'');
+INSERT INTO town VALUES(19, 1, 19,'');
+INSERT INTO town VALUES(20, 1, 20,'');
 
 ----------------------------------------------------------------------------------------------------
 
@@ -602,5 +607,16 @@ INSERT INTO category VALUES(114,'기타','');
 INSERT INTO category VALUES(115,'기타상품',114);
 
 ----------------------------------------------------------------------------------------------------
+INSERT INTO notice VALUES (1, 1, 'QNA', '아이디/비밀번호 찾는 방법', '아이디가 기억나지 않는다면, 웹 페이지에서 아이디/비밀번호 찾기에서 등록한 이메일을 통해 확인할 수 있습니다.', '2022-11-01', default);
+INSERT INTO notice VALUES (2, 1, 'QNA', '커뮤니티 가이드라인', '[ 양파마켓은 동네 이웃 간의 연결을 도와 따뜻하고 활발한 교류가 있는 지역 사회를 만들기 위해 노력하고 있습니다. ]<br/><br/>양파마켓을 사용하는 이웃 모두가 커뮤니티 가이드라인을 지켜주세요<br/><br/> * 이런 행동은 할 수 없어요. *<br/> · 판매 금지 물품 거래<br/> · 중고거래 사기 등 손해를 입히는 행위<br/> · 허위 정보 게시 등 속이거나 기만하는 행위 ' , '2022-11-01', default);
+INSERT INTO notice VALUES (3, 1, 'QNA', '회원가입 방법', '* 회원가입 시 아래 내용을 참고하세요.<br/><br/>[ 1. 아이디 입력 방법 ]<br/>- 5~20자의 영문 소문자, 숫자와 특수기호 -, _ 만 사용 가능합니다.<br/><br/>[ 2. 비밀번호 입력 방법 ]<br/>- 사용 가능한 특수문자 33자: ! " # $ % & '' ( ) * + , - . / : ; ? @ [ ＼ ] ^ _ ` { | } ~ \', '2022-11-01', default);
+INSERT INTO notice VALUES (4, 1, 'QNA', '도용 발생 시 대처 방법', '개인정보가 유출될 경우 다양한 피해가 발생할 수 있습니다.<br/>개인정보 도용을 막기 위해서는 안전한 계정 설정이 무엇보다 중요합니다.<br/><br/><br/>[1. 전체 로그아웃하기]<br/><br/>도용이 의심되면 가장 먼저 도용자의 로그인을 모두 로그아웃해야 합니다.<br/>※ 도용자가 비밀번호를 변경하여 로그인이 어렵다면, 비밀번호 찾기를 먼저 시도하세요.<br/><br/><br/>[2. 바뀐 계정정보 확인]<br/><br/>내정보에서 이름, 휴대전화 번호, 이메일을 확인하고 바뀐 내용이 있다면 수정하세요.<br/>계정 탈취 시 본인확인 이메일 계정의 비밀번호도 노출됐을 수 있습니다.<br/>본인확인 이메일 계정의 비밀번호도 함께 변경하는 것이 안전합니다.', '2022-11-01', default);
+INSERT INTO notice VALUES (5, 1, 'QNA', '게시중단 대상 게시물 유형', '개인정보가 유출될 경우 다양한 피해가 발생할 수 있습니다. 개인정보 도용을 막기 위해서는 안전한 계정 설정이 무엇보다 중요합니다.<br/><br/><br/>[1. 전체 로그아웃하기]<br/><br/>도용이 의심되면 가장 먼저 도용자의 로그인을 모두 로그아웃해야 합니다.<br/>※ 도용자가 비밀번호를 변경하여 로그인이 어렵다면, 비밀번호 찾기를 먼저 시도하세요.<br/><br/>[2. 바뀐 계정정보 확인]<br/><br/>내정보에서 이름, 휴대전화 번호, 이메일을 확인하고 바뀐 내용이 있다면 수정하세요.<br/>계정 탈취 시 본인확인 이메일 계정의 비밀번호도 노출됐을 수 있습니다.<br/>본인확인 이메일 계정의 비밀번호도 함께 변경하는 것이 안전합니다.', '2022-11-01', default);
+INSERT INTO notice VALUES (6, 1, 'QNA', '유해 게시물 정의 - 불법성 게시물', '※ 불법성 게시물은 현행법에 위배되거나 범죄 및 불법 행위에 악용될 수 있는 정보를 담은 게시물입니다. ※<br/><br/><br/>[ 양파마켓에서 제한하는 음란성 게시물의 대표적인 대상은 아래와 같습니다. ]<br/><br/>- 성 관련 범죄 정보 (타인의 신체를 본인의 의사에 반해 촬영 및 게시하여 성적 수치심을 유발하는 경우, 원조교제/성매매 관련 정보 등)<br/>- 생명 관련 범죄 정보 (자살 조장, 임신중절 알선/소개, 난자/대리모/장기/신생아 매매 및 알선, 살인청부 관련 내용 등)<br/>- 개인정보 관련 범죄 정보 (개인정보의 매매 시도, 개인 계좌 대여, 개인정보 위조 변경 관련 내용 등)' , '2022-11-02', default);
+INSERT INTO notice VALUES (7, 1, 'QNA', '유해 게시물 정의 - 청소년 유해 게시물', '※ 청소년유해 게시물은 어린이와 청소년의 정신적, 신체적 건강을 해칠 우려가 있는 선정적인 내용을 담은 게시물입니다. ※<br/><br/><br/>청소년보호법 제10조에 의해 19세 이상의 성인만 이용할 수 있도록 별도의 청소년유해표시를 하도록 법으로 정해져있습니다.<br/><br/>[ 양파마켓에서 제한하는 음란성 게시물의 대표적인 대상은 아래와 같습니다. ]<br/><br/>- 전신전라 노출, 둔부, 유두·유륜(여성)의 노출을 포함한 게시글<br/>- 성행위 및 자위행위에 대한 노골적인 묘사 및 내용이 포함된 게시글<br/>- 성행위 파트너, 성인물을 구하는 내용이 포함된 게시글<br/>- 청소년유해매체로 고시된 물건을 판매하거나, 거래를 알선하는 게시글 (담배, 주류, 성인 용품, 별지시기, 아이템 거래, 게임 ID 계정 거래 등)<br/>- 혐오스럽거나 불쾌감을 유발하여(신체가 훼손, 혈흔 낭자) 사회 통념상 청소년에게 유해하다고 인정되는 게시글<br/>- 기타 청소년의 건전한 생활태도 및 정신건강을 저해시킬 수 있는 게시글 ' , '2022-11-02', default);
+INSERT INTO notice VALUES (8, 1, 'QNA', '유해 게시물 정의 - 음란성 게시물', '※ 음란성 게시물은 성적 수치심을 유발하여 선량한 성적 관점에 반하는 내용을 담은 게시물입니다. ※<br/><br/>또한, 현행법상 정보통신망을 통한 유통이 금지된 불법정보입니다.<br/><br/><br/>[ 양파마켓에서 제한하는 음란성 게시물의 대표적인 대상은 아래와 같습니다. ]<br/><br/>- 성기, 음모, 항문의 노출을 포함한 게시글<br/>- 성기, 음모, 항문에 대한 성행위가 노골적으로 묘사되거나 관련 내용을 포함한 게시글<br/>- 반인륜적 성행위(시간, 수간, 스와핑) 및 이상 성행위가 묘사되거나 관련 내용을 포함한 게시글<br/>- 아동청소년을 성적 유희의 대상으로 직접적으로 묘사하거나 관련 내용을 포함한 게시글' , '2022-11-02', default);
+
+
+
 
 commit;
