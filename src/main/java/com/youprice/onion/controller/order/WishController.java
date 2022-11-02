@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @RequiredArgsConstructor
@@ -27,11 +28,12 @@ import java.io.IOException;
 public class WishController {
 
     private final WishService wishService;
+	private final HttpSession session;
 
     // 찜 목록 페이지
     @GetMapping("list")
     public String wishList(@LoginUser SessionDTO sessionDTO, Model model,
-						   @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+						   @PageableDefault(size = 9, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 		if (sessionDTO == null) return "redirect:/member/login";
 
 		Page<WishListDTO> page = wishService.getWishList(sessionDTO.getId(), pageable);
@@ -47,7 +49,8 @@ public class WishController {
 		if (sessionDTO == null) return new ResponseEntity<>("/member/login", HttpStatus.UNAUTHORIZED);
 
 		try {
-			wishService.addWish(sessionDTO.getId(), productId);
+			int wishCount = wishService.addWish(sessionDTO.getId(), productId);
+			session.setAttribute("wishCount", wishCount);
 			return new ResponseEntity<>("찜 목록에 추가헀습니다.", HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>("상품이 존재하지 않습니다.", HttpStatus.FORBIDDEN);
@@ -61,7 +64,8 @@ public class WishController {
 		if (sessionDTO == null) return "redirect:/member/login";
 
 		try {
-			wishService.addWish(sessionDTO.getId(), productId);
+			int wishCount = wishService.addWish(sessionDTO.getId(), productId);
+			session.setAttribute("wishCount", wishCount);
 			return AlertRedirect.warningMessage(response, "/product/detail/" + productId, "찜 목록에 추가헀습니다.");
 		} catch (Exception e) {
 			return AlertRedirect.warningMessage(response, "/", "상품이 존재하지 않습니다.");
@@ -74,7 +78,8 @@ public class WishController {
     public ResponseEntity<?> removeWish(@LoginUser SessionDTO sessionDTO, @RequestParam Long productId) {
 		if (sessionDTO == null) return new ResponseEntity<>("/member/login", HttpStatus.UNAUTHORIZED);
 
-		wishService.removeWish(sessionDTO.getId(), productId);
+		int wishCount = wishService.removeWish(sessionDTO.getId(), productId);
+		session.setAttribute("wishCount", wishCount);
 
 		return new ResponseEntity<>("찜 목록에서 삭제헀습니다.", HttpStatus.OK);
     }
@@ -85,7 +90,8 @@ public class WishController {
 	public String removeWishGet(@LoginUser SessionDTO sessionDTO, @PathVariable Long productId, HttpServletResponse response) throws IOException {
 		if (sessionDTO == null) return "redirect:/member/login";
 
-		wishService.removeWish(sessionDTO.getId(), productId);
+		int wishCount = wishService.removeWish(sessionDTO.getId(), productId);
+		session.setAttribute("wishCount", wishCount);
 
 		return AlertRedirect.warningMessage(response, "/product/detail/" + productId, "찜 목록에서 삭제헀습니다.");
 	}

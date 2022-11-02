@@ -134,7 +134,7 @@
 			<input type="hidden" id="memberNickname" value="${sessionDTO.nickname}"/>
 
 			<div class="chat-box-header">
-				채팅
+				구매자를 선택해주세요
 				<span class="chat-box-toggle right member-close-btn"><i class="material-icons">close</i></span>
 			</div>
 			<div class="chat-box-body list">

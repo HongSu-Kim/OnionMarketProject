@@ -3,9 +3,12 @@ package com.youprice.onion.service.product.impl;
 import com.youprice.onion.dto.order.ProductSellListDTO;
 import com.youprice.onion.dto.product.*;
 import com.youprice.onion.entity.member.Member;
+import com.youprice.onion.entity.order.Order;
+import com.youprice.onion.entity.order.OrderState;
 import com.youprice.onion.entity.product.*;
 import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.repository.member.ProhibitionKeywordRepositoy;
+import com.youprice.onion.repository.order.OrderRepository;
 import com.youprice.onion.repository.product.*;
 import com.youprice.onion.service.order.OrderService;
 import com.youprice.onion.service.product.ProductService;
@@ -35,6 +38,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 	private final ProductRepository.Querydsl productRepositoryQuerydsl;
     private final ProductImageRepository productImageRepository;
+	private final OrderRepository orderRepository;
 
 	@Override
 	public Page<ProductListDTO> getProductListDTO(SearchRequirements searchRequirements) {
@@ -65,7 +69,7 @@ public class ProductServiceImpl implements ProductService {
 
         Member member = memberRepository.findById(productAddDTO.getMemberId()).orElse(null);
         Town town = townRepositoy.findById(productAddDTO.getTownId()).orElse(null);
-        Category category = categoryRepository.findByCategoryName(productAddDTO.getCategoryName()).orElse(null);
+        Category category = categoryRepository.findById(productAddDTO.getCategoryId()).orElse(null);
 
         //대표이미지 설정
         productAddDTO.setRepresentativeImage(getImageName()+fileList.get(0).getOriginalFilename());
@@ -94,8 +98,7 @@ public class ProductServiceImpl implements ProductService {
         Town town = townRepositoy.findById(updateDTO.getTownId()).orElse(null);
 
         //수정한 카테고리번호
-        Category category = categoryRepository.findByCategoryName(updateDTO.getCategoryName()).orElse(null);
-        //리턴처리해줘야함
+        Category category = categoryRepository.findById(updateDTO.getCategoryId()).orElse(null);
 
         Product product = productRepository.findById(productId).orElse(null);
 
@@ -132,9 +135,18 @@ public class ProductServiceImpl implements ProductService {
 	// 상품상태 수정
 	@Override
 	@Transactional
-	public void progressUpdate(Long productId, String productProgress) {
+	public void progressUpdate(Long productId, String progress) {
 		Product product = productRepository.findById(productId).orElse(null);
-		product.progressUpdate(ProductProgress.valueOf(productProgress));
+		Order order = orderRepository.findByProductIdAndOrderState(productId, OrderState.ORDER).orElse(null);
+		ProductProgress productProgress = ProductProgress.valueOf(progress);
+
+		// 상품상태 수정
+		product.progressUpdate(productProgress);
+		
+		// 주문 상태 수정
+		if (productProgress == ProductProgress.SOLDOUT && order != null) {
+			order.setOrderState(OrderState.COMPLETE);
+		}
 	}
 
 	//상품 삭제(DB삭제가 아닌 조회불가상태로 변경)

@@ -48,11 +48,10 @@
 							<select id="topCategory">
 								<option>선택하세요</option>
 								<c:forEach var="topCategory" items="${topCategory}">
-									${productFindDTO.categoryName}
-									<option value="${topCategory.categoryName}">${topCategory.categoryName}</option>
+									<option value="${topCategory.id}">${topCategory.categoryName}</option>
 								</c:forEach>
 							</select>
-							<select id="subCategory" name="categoryName"></select>
+							<select id="subCategory" name="categoryId"></select>
 
 							<br><br><br><hr/>
 						</div>
