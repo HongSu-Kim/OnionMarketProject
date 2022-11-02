@@ -32,7 +32,7 @@
 					<div class="product__details__rating">
 						<c:choose>
 							<c:when test="${reviewAvg ne null}">
-								리뷰 평점: ${reviewAvg}
+								리뷰 평점: ${reviewAvg} / 5 점
 							</c:when>
 							<c:otherwise>
 								<p>판매자의 등록된 리뷰가 아직 없습니다.</p>
@@ -222,7 +222,7 @@
 			<c:forEach var="categoryDTO" items="${categoryDTO}" end="3">
 			<div class="col-lg-3 col-md-4 col-sm-6">
 				<div class="product__item">
-					<div class="product__item__pic set-bg" data-setbg="/img/product/${categoryDTO.representativeImage}">
+					<div class="product__item__pic set-bg" data-setbg="/img/product/${categoryDTO.representativeImage}" onclick="location.href='/product/detail/${categoryDTO.productId}';">
 						<ul class="product__item__pic__hover">
 							<li><a href="/wish/addWish/${categoryDTO.productId}"><i class="fa fa-heart"></i></a></li>
 							<li><a href="#"><i class="fa fa-retweet"></i></a></li>
