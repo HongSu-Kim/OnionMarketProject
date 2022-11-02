@@ -7,39 +7,26 @@
 <!-- Featured Section Begin -->
 <section class="featured spad">
 	<div class="container">
-		<div class="product__townList">
-			<c:if test="${townList ne null}">
-			<p>내 동네</p>
-					<select id="" name="coordinateId">
-						<c:forEach var="townList" items="${townList}">
-							<option value="${townList.coordinateId}">${townList.townName}</option>
-						</c:forEach>
-						<option >내 동네 설정하기</option>
-					</select>
-			</c:if>
-		</div>
-		<br/><br/>
 		<div class="row featured__filter">
 			<c:forEach var="list" items="${list}">
 			<div class="col-lg-3 col-md-4 col-sm-6" style="padding: 15px;">
 				<div class="featured__item">
 					<div class="featured__item__pic set-bg" data-setbg="/img/product/${list.productImageName}" onclick="location.href='/product/detail/${list.productId}';">
-						<ul class="featured__item__pic__hover">
-							<input type="hidden" id="productId" value="${list.productId}"/>
-<%--							<li class="wishBtn true"><a><i class="fa fa-heart"></i></a></li>--%>
-							<li class="wishBtn true"><a href="/wish/addWish/${list.productId}"><i class="fa fa-heart"></i></a></li>
-							<li><a href="#"><i class="fa fa-solid fa-comment" onclick="createChatroom(${list.productId})"></i></a></li>
-							<li><a href="/order/payment/${list.productId}"><i class="fa fa-shopping-cart"></i></a></li>
-						</ul>
 						<div style="margin-top:93%;"><c:if test="${list.payStatus eq true}"><img src="/template/img/product/pay.png"></c:if></div>
 					</div>
-					<div class="featured__item__text">
+					<div class="product__item__text">
 						<h6><a href="/product/detail/${list.productId}">${list.subject}</a></h6>
 						<c:if test="${list.auctionDeadline ne null}">
 							<p style="color: #47cd65;">
 								<경매 진행 중인 상품>
 							</p>
 						</c:if>
+						<ul class="product__wish__item">
+							<input type="hidden" id="productId" value="${list.productId}"/>
+							<li class="wishBtn"><a><i class="fa fa-heart"></i></a></li>
+							<li><a href="#"><i class="fa fa-solid fa-comment" onclick="createChatroom(${list.productId})"></i></a></li>
+							<li><a href="/order/payment/${list.productId}"><i class="fa fa-shopping-cart"></i></a></li>
+						</ul>
 						<fmt:parseDate var="uploadDate" value="${list.uploadDate}" pattern="yyyy-MM-dd'T'HH:mm"/>
 						<h5 style="text-align: left"><fmt:formatNumber maxFractionDigits="3" value="${list.price}"/></h5>
 						<h5 style="text-align: right"><fmt:formatDate value="${uploadDate}" pattern="MM/dd"/></h5>
