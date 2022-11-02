@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
-<c:set var="cp" value="<%=request.getContextPath()%>"/>
 
 
 <%--<section class="hero hero-normal">--%>
@@ -13,8 +12,6 @@
         </div>
 
         <form name="searchForm" id="searchForm" method="get" action="/inquiry/myList/${memberId}">
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-<%--            <input type="hidden" name="page" value="${param.page}"/>--%>
 
             <div class="n-table-filter">
                 <div class="n-radio-tab">

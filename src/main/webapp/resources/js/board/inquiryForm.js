@@ -9,9 +9,7 @@ function selectType() {
 }
 
 $(document).ready(function () {
-    if ($("#detail").val() != "") {
-        $("#formD").show();
-    }
+
 });
 
 function selectDetail(e) {
@@ -30,13 +28,26 @@ function inquirysend() {
         return;
     }
 
-    // required 속성 추가하기
-    $("[id=agreement]").attr("required" , false);
-    $("[id=agreement]").attr("required" , true);
-
-    if ($("input:checked[id='agreement']").is(":checked")){
-        document.getElementById('agreement').value = true;
-    }
-
 }
+$(document).ready(function () {
+    //$('#registerForm').validate(); //유효성 검사를 적용
+    // validate signup form on keyup and submit
+    $('#inquiryForm').validate({
+        rules: {
+            agreement: "required"
+        },
+        messages: {
+            agreement: {
+                required: "개인정보 수집에 동의해주세요."
+            }
+        },
+        errorPlacement : function (error, element){
+            if(element.is(':checkBox')){
+                element.parent().after(error);
+            } else {
+                element.after(error);
+            }
+        }
 
+    });
+});

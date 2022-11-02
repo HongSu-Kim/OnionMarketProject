@@ -109,8 +109,7 @@
 
                 <div class="css-kd8yp0">
                     <div class="d-flex" style="height: 30px">
-                        <input type="checkbox" id="agreement" oninvalid="this.setCustomValidity('개인정보 수집에 동의해주세요')"
-                        style="width: 20px; height: 20px" required/>
+                        <input type="checkbox" name="agreement" id="agreement" style="width: 20px; height: 20px" required value="false"/>
                         <label for="agreement" class="checkTitle">개인정보 수집 및 이용동의</label>
                     </div>
 

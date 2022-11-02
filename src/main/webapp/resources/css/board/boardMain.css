@@ -59,7 +59,7 @@
 }
 .createQna{
     text-align: center;
-    color: #6AB963;
+    color: #90C8AC;
     font-weight: bold;
 }
 
@@ -96,7 +96,7 @@
     right: 0;
     height: 4px;
     width: 170px;
-    background: #47cd65;
+    background: #90C8AC;
     content: "";
     margin: 0 auto;
 }
@@ -104,7 +104,7 @@
     color: black;
 }
 .secretColor:hover{
-    color: #47cd65;
+    color: #90C8AC;
 }
 .alignTitle{
     text-align: left;
@@ -167,7 +167,7 @@ w-tab-menu {
     border-width: 1px;
     border-color: rgba(97, 114, 131, 0.2);
     border-radius: 20px;
-    background-color: #47cd65;
+    background-color: #90C8AC;
     font-size: 20px;
     font-weight: bolder;
     color: #ffffff;
@@ -222,7 +222,7 @@ w-tab-link {
 }
 
 .w-tab-link.w--current {
-    background-color: #86E57F
+    background-color: #90C8AC
 }
 
 .w-tab-link:focus {
@@ -297,7 +297,7 @@ w-tab-link {
 }
 
 .adminbutton{
-    background-color: #47cd65;
+    background-color: #90C8AC;
     cursor: pointer;
     border: 0;
     outline: 0;
@@ -315,8 +315,8 @@ w-tab-link {
     overflow: hidden;
     border-radius: 30px;
     height: 150px;
-    background-image: -webkit-linear-gradient(347deg, #00de63 23%, #1ec8eb);
-    background-image: linear-gradient(103deg, #00de63 23%, #1ec8eb);
+    background-image: -webkit-linear-gradient(347deg, #90C8AC 23%, #1ec8eb);
+    background-image: linear-gradient(103deg, #90C8AC 23%, #1ec8eb);
     color: #fff;
     text-align: center;
     margin-bottom: 7px;

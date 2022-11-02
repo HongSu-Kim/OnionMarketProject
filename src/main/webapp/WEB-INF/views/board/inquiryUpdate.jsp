@@ -8,17 +8,14 @@
         color: #dc3545;
         font-weight: bold;
     }
-
     .detailSelect {
         display: none;
     }
-
     #secretBox {
         zoom: 1;
         width: 20px;
         height: 20px;
     }
-
     .inquiryline {
         border-bottom: 2px solid #47CD65;
     }
@@ -57,20 +54,19 @@
             <hr/>
 
             <div class="row">
-                <h4>*<span class="inquiryline"> 문의 정보</span></h4><br/><br/>
+                <h4>*<span class="inquiryline" style="margin-left: 10px"> 문의 정보</span></h4><br/><br/>
 
-                <div class="col-lg-12">
+                <div class="col-lg-12" style="margin-bottom: 20px; margin-left: 16px">
                     <!-- 비밀글 체크 -->
                     <div class="form-check" style="display: flex">
                         <input class="form-check-input" type="checkbox" name="secret" id="secretBox" placeholder="
                                 ${inquiryDTO.secret == true ? '<input class="form-check-input" type="checkbox" checked="checked" name="secret" id="secretBox"/>' : ' '}
-                        <div style=" margin-left: 5px; margin-top: 3px">비밀글 설정
+                        <div style=" margin-left: 5px; margin-top: 3px">&nbsp; 비밀글 설정
                     </div>
                 </div>
-                <br/>
             </div>
 
-            <div class="col-lg-12" style="margin-bottom: 40px;">
+            <div class="col-lg-12" style="padding-bottom: 50px">
                 <div><!-- 문의유형 선택 -->
                     <label for="inquiryType">문의 유형 &nbsp;<form:errors path="detailType" cssClass="field-error"
                                                                       cssStyle="margin-left: 12px"/></label><br/>

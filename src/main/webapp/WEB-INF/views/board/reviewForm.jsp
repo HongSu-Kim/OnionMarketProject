@@ -52,8 +52,8 @@
 
                     <!-- 사진 첨부 -->
                     <div class="shoping__cart__btns">
-                        <label class="site-btn" for="reviewImg">사진 첨부하기</label>
-                        <input type="file" id="reviewImg" name="reviewImg" multiple="multiple"
+                        <label class="site-btn" for="reviewImageName">사진 첨부하기</label>
+                        <input type="file" id="reviewImageName" name="reviewImageName" multiple="multiple"
                                style="display: none" onchange="setDetailImage(event);"/>
                         <div id="images_container"></div>
                     </div>
@@ -115,7 +115,7 @@
                         <div class="col-md-12" align="right">
                             <input type="submit" value="complete" class="site-btn">
                             <button class="site-btn" style="background-color: #5a6268"
-                                    onclick="location.href='/member/home'" type="button">CANCEL
+                                    onclick="location.href='/'" type="button">CANCEL
                             </button>
                         </div>
                     </div>
