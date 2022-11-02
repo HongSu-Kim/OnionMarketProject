@@ -180,12 +180,12 @@
 						</ul>
 						<nav class="header__menu profile">
 							<ul>
-								<li><img src="/img/member/${memberDTO.memberImageName}" class="header-img profile"></li>
-								<li><a href="/member/mypage" class="header__nickname">${sessionDTO.nickname}</a>
+								<li><img src="/img/member/<sec:authentication property="principal.sessionDTO.memberImageName"/>" class="header-img profile"></li>
+								<li><a href="/member/mypage" class="header__nickname"><sec:authentication property="principal.sessionDTO.nickname"/></a>
 									<ul class="header__menu__dropdown nickname">
 										<li><a href="/member/mypage">마이페이지</a></li>
-										<li><a href="/review/mylist/${sessionDTO.id}">나의 후기</a></li>
-										<li><a href="/inquiry/myList/${sessionDTO.id}">나의 문의</a></li>
+										<li><a href="/review/mylist/<sec:authentication property="principal.sessionDTO.id"/>">나의 후기</a></li>
+										<li><a href="/inquiry/myList/<sec:authentication property="principal.sessionDTO.id"/>">나의 문의</a></li>
 										<li><a href="/wish/list">위시리스트</a></li>
 									</ul>
 								</li>

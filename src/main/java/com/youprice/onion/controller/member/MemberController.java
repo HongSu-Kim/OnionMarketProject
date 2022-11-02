@@ -12,7 +12,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,6 +49,7 @@ public class MemberController {
     private final CustomValidators.EmailValidator emailValidator;
     private final ProhibitionKeywordService prohibitionKeywordService;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
     //회원가입 시 유효성 검증에 필요
     @InitBinder
@@ -76,13 +80,6 @@ public class MemberController {
     @PostMapping("/joinProc")
     public String joinProc(@Valid MemberJoinDTO memberJoinDTO, Errors errors, Model model, BindingResult bindingResult) throws IOException {
 
-        if (prohibitionKeywordService.ProhibitionKeywordFind(memberJoinDTO.getNickname())) { //금지키워가있으면 true
-            bindingResult.addError(new FieldError("memberJoinDTO", "nickname", "적합하지 않은 단어가 포함되어 있습니다."));
-
-            if (bindingResult.hasErrors()) {
-                return "member/join";
-            }
-        }
         if (errors.hasErrors()) {
             //회원가입 실패 시 입력 데이터 값을 유지
             model.addAttribute("memberJoinDTO", memberJoinDTO);
@@ -96,6 +93,15 @@ public class MemberController {
             //회원가입 페이지로 다시 리턴
             return "member/join";
         }
+
+        if (prohibitionKeywordService.ProhibitionKeywordFind(memberJoinDTO.getNickname())) { //금지키워가있으면 true
+            bindingResult.addError(new FieldError("memberJoinDTO", "nickname", "적합하지 않은 단어가 포함되어 있습니다."));
+
+            if (bindingResult.hasErrors()) {
+                return "member/join";
+            }
+        }
+
         memberService.saveMember(memberJoinDTO);
         return "redirect:login";
     }
@@ -136,6 +142,13 @@ public class MemberController {
     @PostMapping("modifyProfileImg")
     public String modifyProfileImg(@LoginUser SessionDTO sessionDTO, MultipartFile profileImg) throws IOException {
         memberService.modifyProfileImg(sessionDTO.getId(), profileImg);
+
+/*      //아래의 코드 적용 후 프로필 사진 변경 시, 로그아웃 되는 문제 발생
+        //변경된 세션 등록
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(sessionDTO.getUserId(), sessionDTO.getPwd()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+*/
+
         return "redirect:/member/mypage";
     }
 
