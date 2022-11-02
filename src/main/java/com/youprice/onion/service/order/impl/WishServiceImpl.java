@@ -34,10 +34,6 @@ public class WishServiceImpl implements WishService {
 	// 찜 리스트 조회
 	@Override
 	public Page<WishListDTO> getWishList(Long memberId, Pageable pageable) {
-
-		pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
-				pageable.getPageSize(), Sort.Direction.DESC, "id");
-
 		return wishRepository.findAllByMemberId(memberId, pageable).map(wish -> {
 
 			int chatroomListSize = chatroomRepository.countByProductId(wish.getProduct().getId());
@@ -56,20 +52,23 @@ public class WishServiceImpl implements WishService {
 
 	// 찜 등록
 	@Override
-	public void addWish(Long memberId, Long productId) {
-		// 이미 등록돼 있을때 리턴
-		if (wishRepository.existsByMemberIdAndProductId(memberId, productId)) return;
+	public int addWish(Long memberId, Long productId) {
+		if (!wishRepository.existsByMemberIdAndProductId(memberId, productId)) { // 중복 방지
 
-		Member member = memberRepository.findById(memberId).orElse(null);
-		Product product = productRepository.findById(productId).orElse(null);
+			Member member = memberRepository.findById(memberId).orElse(null);
+			Product product = productRepository.findById(productId).orElse(null);
 
-		wishRepository.save(new Wish(member, product));
+			wishRepository.save(new Wish(member, product));
+		}
+		return wishRepository.countByMemberId(memberId);
 	}
 
 	// 찜 삭제
 	@Override
-	public void removeWish(Long memberId, Long productId) {
+	public int removeWish(Long memberId, Long productId) {
 		wishRepository.deleteByMemberIdAndProductId(memberId, productId);
+
+		return wishRepository.countByMemberId(memberId);
 	}
 
 }
