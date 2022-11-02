@@ -17,7 +17,7 @@
 <%--							<img class="product__details__pic__item--large" src="img/product/${productFindDTO.representativeImage}" alt=""/>--%>
 						<ul>
 							<c:forEach var="imageList" items="${productFindDTO.productImageDTOList}">
-								<img src="/img/product/${imageList.productImageName}" alt=""/>
+								<img src="/img/product/${imageList.productImageName}" class="product__image"/>
 							</c:forEach>
 						</ul>
 					</div>
