@@ -9,9 +9,7 @@ function selectType() {
 }
 
 $(document).ready(function () {
-    if ($("#detail").val() != "") {
-        $("#formD").show();
-    }
+
 });
 
 function selectDetail(e) {
@@ -30,13 +28,9 @@ function inquirysend() {
         return;
     }
 
-    // required 속성 추가하기
-    $("[id=agreement]").attr("required" , false);
-    $("[id=agreement]").attr("required" , true);
-
-    if ($("input:checked[id='agreement']").is(":checked")){
-        document.getElementById('agreement').value = true;
+    if ($("input[name=agreement]:checkbox").is(":checked")) {
+        $("input[name=agreement]:checkbox").val("checked", "checked");
     }
-
 }
+
 

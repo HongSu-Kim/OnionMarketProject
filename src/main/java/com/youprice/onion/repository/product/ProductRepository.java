@@ -46,133 +46,143 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     //블라인드 처리가 안된 상품만 조회
     List<Product> findByBlindStatus(Boolean blindStatus);
 
-	//경매 상품만 조회
-	List<Product> findByAuctionDeadlineNotNullAndBlindStatus(Boolean blindStatus);
+    //경매 상품만 조회
+    List<Product> findByAuctionDeadlineNotNullAndBlindStatus(Boolean blindStatus);
 
-	// 판매 상품 리스트
+    // 판매 상품 리스트
 //	@EntityGraph(attributePaths = { "orderList.delivery" })
 //	Page<Product> findByMemberId(Long memberId, Pageable pageable);
 
-	//개인 판매 상품 리스트
-	Page<Product> findAllByMemberIdAndProductProgressIn(Long memberId, ProductProgress[] productProgressList, Pageable pageable);
+    //개인 판매 상품 리스트
+    Page<Product> findAllByMemberIdAndProductProgressIn(Long memberId, ProductProgress[] productProgressList, Pageable pageable);
 
-	// 하위 카테고리 상품 리스트
-	List<Product> findByCategoryId(Long categoryId);
+    // 하위 카테고리 상품 리스트
+    List<Product> findByCategoryId(Long categoryId);
 
     //
     List<Product> findByCategoryIdBetween(Long start, Long end);
+
     //제목과 내용으로 검색한 리스트 조회
-    List<Product> findBySubjectContainingOrContentContaining(String subject,String content);
+    List<Product> findBySubjectContainingOrContentContaining(String subject, String content);
 
-	List<Product> findAllById(Object productId);
+    List<Product> findAllById(Object productId);
 
-	boolean existsBySubject(String subject);
+    boolean existsBySubject(String subject);
 
-	@Repository
-	@RequiredArgsConstructor
-	class Querydsl {
+    @Repository
+    @RequiredArgsConstructor
+    class Querydsl {
 
-		private final JPAQueryFactory queryFactory;
+        private final JPAQueryFactory queryFactory;
 
-		public Page<Product> findAllBySearchRequirements(SearchRequirements searchRequirements) {
+        public Page<Product> findAllBySearchRequirements(SearchRequirements searchRequirements) {
 
-			List<Product> content = queryFactory
-					.select(product)
-					.from(product)
-					.join(product.town, town).fetchJoin()
-					.join(product.category, category).fetchJoin()
-					.where(
-							memberIdEq(searchRequirements.getMemberId()),
-							coordinateIdEq(searchRequirements.getCoordinateId()),
-							categoryIdEq(searchRequirements.getCategoryId()),
-							productProgressEq(searchRequirements.getProductProgress()),
-							blindStatusEq(searchRequirements.getBlindStatus()),
-							searchValueContains(searchRequirements.getSearchValue()),
-							coordinateIdListIn(searchRequirements.getCoordinateIdList())
-					)
-					.orderBy(orderBy(searchRequirements.getPageable()))
-					.offset(searchRequirements.getPageable().getOffset())
-					.limit(searchRequirements.getPageable().getPageSize())
-					.fetch();
+            List<Product> content = queryFactory
+                    .select(product)
+                    .from(product)
+                    .join(product.town, town).fetchJoin()
+                    .join(product.category, category).fetchJoin()
+                    .where(
+                            memberIdEq(searchRequirements.getMemberId()),
+                            coordinateIdEq(searchRequirements.getCoordinateId()),
+                            categoryIdEq(searchRequirements.getCategoryId()),
+                            productProgressEq(searchRequirements.getProductProgress()),
+                            blindStatusEq(searchRequirements.getBlindStatus()),
+                            searchValueContains(searchRequirements.getSearchValue()),
+                            coordinateIdListIn(searchRequirements.getCoordinateIdList())
+                    )
+                    .orderBy(orderBy(searchRequirements.getPageable()))
+                    .offset(searchRequirements.getPageable().getOffset())
+                    .limit(searchRequirements.getPageable().getPageSize())
+                    .fetch();
 
-			Long count = queryFactory
-					.select(product.count())
-					.from(product)
-					.where(
-							memberIdEq(searchRequirements.getMemberId()),
-							coordinateIdEq(searchRequirements.getCoordinateId()),
-							categoryIdEq(searchRequirements.getCategoryId()),
-							productProgressEq(searchRequirements.getProductProgress()),
-							blindStatusEq(searchRequirements.getBlindStatus()),
-							searchValueContains(searchRequirements.getSearchValue()),
-							coordinateIdListIn(searchRequirements.getCoordinateIdList())
-					)
-					.fetchOne();
+            Long count = queryFactory
+                    .select(product.count())
+                    .from(product)
+                    .where(
+                            memberIdEq(searchRequirements.getMemberId()),
+                            coordinateIdEq(searchRequirements.getCoordinateId()),
+                            categoryIdEq(searchRequirements.getCategoryId()),
+                            productProgressEq(searchRequirements.getProductProgress()),
+                            blindStatusEq(searchRequirements.getBlindStatus()),
+                            searchValueContains(searchRequirements.getSearchValue()),
+                            coordinateIdListIn(searchRequirements.getCoordinateIdList())
+                    )
+                    .fetchOne();
 
-			return new PageImpl<>(content, searchRequirements.getPageable(), count);
-		}
+            return new PageImpl<>(content, searchRequirements.getPageable(), count);
+        }
 
-		// 판매 상품 리스트
-		public Page<Product> findByMemberId(Long memberId, ProductProgress productProgress, Pageable pageable) {
 
-			List<Product> content = queryFactory
-					.selectDistinct(product)
-					.from(product)
-					.leftJoin(product.orderList, order).fetchJoin()
-					.leftJoin(order.delivery, delivery).fetchJoin()
-					.leftJoin(order.reviewList, review).on(review.member.id.eq(memberId))
-					.where(
-							memberIdEq(memberId),
-							productProgressEq(productProgress)
-					)
-					.orderBy(orderBy(pageable))
-					.offset(pageable.getOffset())
-					.limit(pageable.getPageSize())
-					.fetch();
+        // 판매 상품 리스트
+        public Page<Product> findByMemberId(Long memberId, ProductProgress productProgress, Pageable pageable) {
 
-			Long count = queryFactory
-					.selectDistinct(product.count())
-					.from(product)
-					.leftJoin(product.orderList, order)
-					.leftJoin(order.reviewList, review).on(review.member.id.eq(memberId))
-					.where(
-							memberIdEq(memberId),
-							productProgressEq(productProgress)
-					)
-					.fetchOne();
+            List<Product> content = queryFactory
+                    .selectDistinct(product)
+                    .from(product)
+                    .leftJoin(product.orderList, order).fetchJoin()
+                    .leftJoin(order.delivery, delivery).fetchJoin()
+                    .leftJoin(order.reviewList, review).on(review.member.id.eq(memberId))
+                    .where(
+                            memberIdEq(memberId),
+                            productProgressEq(productProgress)
+                    )
+                    .orderBy(orderBy(pageable))
+                    .offset(pageable.getOffset())
+                    .limit(pageable.getPageSize())
+                    .fetch();
 
-			return new PageImpl<>(content, pageable, count);
-		}
+            Long count = queryFactory
+                    .selectDistinct(product.count())
+                    .from(product)
+                    .leftJoin(product.orderList, order)
+                    .leftJoin(order.reviewList, review).on(review.member.id.eq(memberId))
+                    .where(
+                            memberIdEq(memberId),
+                            productProgressEq(productProgress)
+                    )
+                    .fetchOne();
 
-		private OrderSpecifier<?> orderBy(Pageable pageable) {
+            return new PageImpl<>(content, pageable, count);
+        }
 
-			for (Sort.Order o : pageable.getSort()) {
-				PathBuilder<Product> orderByExpression = new PathBuilder<>(Product.class, "product");
-				return new OrderSpecifier(o.isAscending() ? Order.ASC : Order.DESC, orderByExpression.get(o.getProperty()));
-			}
+        private OrderSpecifier<?> orderBy(Pageable pageable) {
 
-			return null;
-		}
-		private BooleanExpression memberIdEq(Long memberId){
-			return memberId == null ? null : product.member.id.eq(memberId);
-		}
-		private BooleanExpression coordinateIdEq(Long coordinateId){
-			return coordinateId == null ? null : product.town.coordinate.id.eq(coordinateId);
-		}
-		private BooleanExpression categoryIdEq(Long categoryId){
-			return categoryId == null ? null : product.category.id.eq(categoryId);
-		}
-		private BooleanExpression productProgressEq(ProductProgress productProgress){
-			return productProgress == null ? null : product.productProgress.eq(productProgress);
-		}
-		private BooleanExpression blindStatusEq(Boolean blindStatus){
-			return blindStatus == null ? null : product.blindStatus.eq(blindStatus);
-		}
-		private BooleanExpression searchValueContains(String searchValue){
-			return searchValue == null ? null : product.subject.contains(searchValue).or(product.content.contains(searchValue));
-		}
-		private BooleanExpression coordinateIdListIn(List<Long> coordinateIdList){
-			return coordinateIdList == null || coordinateIdList.size()==0 ? null : product.town.coordinate.id.in(coordinateIdList);
-		}
-	}
+            for (Sort.Order o : pageable.getSort()) {
+                PathBuilder<Product> orderByExpression = new PathBuilder<>(Product.class, "product");
+                return new OrderSpecifier(o.isAscending() ? Order.ASC : Order.DESC, orderByExpression.get(o.getProperty()));
+            }
+
+            return null;
+        }
+
+        private BooleanExpression memberIdEq(Long memberId) {
+            return memberId == null ? null : product.member.id.eq(memberId);
+        }
+
+        private BooleanExpression coordinateIdEq(Long coordinateId) {
+            return coordinateId == null ? null : product.town.coordinate.id.eq(coordinateId);
+        }
+
+        private BooleanExpression categoryIdEq(Long categoryId) {
+            return categoryId == null ? null : product.category.id.eq(categoryId);
+        }
+
+        private BooleanExpression productProgressEq(ProductProgress productProgress) {
+            return productProgress == null ? null : product.productProgress.eq(productProgress);
+        }
+
+        private BooleanExpression blindStatusEq(Boolean blindStatus) {
+            return blindStatus == null ? null : product.blindStatus.eq(blindStatus);
+        }
+
+        private BooleanExpression searchValueContains(String searchValue) {
+            return searchValue == null ? null : product.subject.contains(searchValue).or(product.content.contains(searchValue));
+        }
+
+        private BooleanExpression coordinateIdListIn(List<Long> coordinateIdList) {
+            return coordinateIdList == null || coordinateIdList.size() == 0 ? null : product.town.coordinate.id.in(coordinateIdList);
+        }
+
+    }
 }
