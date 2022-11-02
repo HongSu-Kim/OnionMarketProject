@@ -146,13 +146,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
 
-//    public List<CategoryFindDTO> findSubCategory(Long categoryId) { //parent_id가 null이 아닌 카테고리조회
-//
-//        return categoryRepositoy.findByParentId(categoryId)
-//                .stream().map(CategoryFindDTO::new)
-//                .collect(Collectors.toList());
-//
-//    }
+    public List<CategoryFindDTO> findSubCategory(Long categoryId) { //parent_id가 null이 아닌 카테고리조회
+
+        return categoryRepositoy.findByParentId(categoryId)
+                .stream().map(CategoryFindDTO::new)
+                .collect(Collectors.toList());
+
+    }
 
 
 

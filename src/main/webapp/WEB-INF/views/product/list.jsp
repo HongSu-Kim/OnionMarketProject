@@ -10,11 +10,11 @@
 		<div class="product__townList">
 			<c:if test="${townList ne null}">
 			<p>내 동네</p>
-					<select onchange="if(this.value) location.href=(this.value);">
+					<select id="" name="coordinateId">
 						<c:forEach var="townList" items="${townList}">
-							<option value="/product/list">${townList.townName}</option>
+							<option value="${townList.coordinateId}">${townList.townName}</option>
 						</c:forEach>
-							<option value="/town/town">내 동네 설정하기</option>
+						<option >내 동네 설정하기</option>
 					</select>
 			</c:if>
 		</div>

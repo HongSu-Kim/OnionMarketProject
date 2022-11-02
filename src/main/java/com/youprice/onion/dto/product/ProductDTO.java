@@ -31,6 +31,9 @@ public class ProductDTO {
     private Boolean payStatus; //페이현황
     private Boolean blindStatus; //블라인드현황
 
+    private Double latitude; //위도
+
+    private Double longitude; //경도
 	private MemberDTO memberDTO;
 
     public ProductDTO(Product product) {
@@ -50,7 +53,8 @@ public class ProductDTO {
         productProgress = product.getProductProgress();
         payStatus = product.getPayStatus();
         blindStatus = product.getBlindStatus();
-
+        latitude = product.getTown().getCoordinate().getLatitude();
+        longitude = product.getTown().getCoordinate().getLongitude();
 		memberDTO = new MemberDTO(product.getMember());
     }
 }
