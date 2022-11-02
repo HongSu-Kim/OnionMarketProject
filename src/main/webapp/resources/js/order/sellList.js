@@ -24,12 +24,12 @@ $(function () {
 		let $btn = $(this)
 
 		productId = $btn.siblings('#productId').val()
-		pageNumber = $('#pageNumber').val()
+		pageNumber = $('#pageNumber').val() || 0
 		let progress = $btn.html()
 
 		switch (progress) {
 			case "판매중" :
-				productProgress = ""
+				productProgress = "SALESON"
 				msg = "상태를 판매중으로 변경하시겠습니까?"; break
 			case "예약중" :
 				productProgress = "RESERVED"

@@ -21,10 +21,12 @@
     border-radius:5px;
 }
 .member-box > .chat-box-header {
-    background-color: #efefef;
+    background-color: #fff;
     color: #000;
 }
-
 #memberListArea {
     background:white;
+}
+.member-box .msg-avatar img {
+    margin-top: 10px;
 }

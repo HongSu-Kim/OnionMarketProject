@@ -54,8 +54,8 @@
 							<input type="hidden" id="orderPayment" name="orderPayment" value="${productDTO.price}">
 								<div class="checkout__input__checkbox">
 									<label for="acc-or">
-										이니시스 결제시 24시에 자동으로 환불됩니다.<br/>
-										결제에 동의하시겠습니까?
+										결제에 동의하시겠습니까?<br/>
+										(이니시스 결제시 24시에 자동으로 환불됩니다.)
 										<input type="checkbox" id="acc-or">
 										<span class="checkmark"></span>
 									</label>

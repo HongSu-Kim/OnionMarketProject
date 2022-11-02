@@ -338,7 +338,7 @@ public class ProductController {
 	@GetMapping("progressUpdate/{productId}/{productProgress}/{pageNumber}")
 	public String progressUpdate(@PathVariable Long productId, @PathVariable String productProgress, @PathVariable int pageNumber) {
 		productService.progressUpdate(productId, productProgress);
-		return "redirect:/order/sellList?page=" + pageNumber;
+		return "redirect:/order/sellList?productProgress=" + productProgress + "&page=" + pageNumber;
 	}
 
     @PostMapping("/update/{productId}")//실제 상품 업데이트 주소

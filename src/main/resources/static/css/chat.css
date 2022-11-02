@@ -18,7 +18,7 @@
     position: fixed;
     bottom: 50px;
     right: 50px;
-    background: #47cd65;
+    background: #90C8AC;
     width: 70px;
     height: 70px;
     border-radius: 50%;
@@ -35,7 +35,7 @@
     border-radius: 45px;
     padding-right: 40px;
     padding-left: 40px;
-    color: #47cd65;
+    color: #90C8AC;
 }
 
 #chat-overlay {
@@ -76,7 +76,7 @@
 }
 
 .chat-box-header {
-    background: #47cd65;
+    background: #90C8AC;
     height:60px;
     border-top-left-radius:5px;
     border-top-right-radius:5px;
@@ -150,7 +150,7 @@
     box-shadow:none;
     border:none;
     border-radius:50%;
-    color:#47cd65;
+    color:#90C8AC;
     width:35px;
     height:35px;
 }
@@ -181,7 +181,7 @@
 
 .chat-logs::-webkit-scrollbar-thumb
 {
-    background-color: #47cd65;
+    background-color: #90C8AC;
 }
 
 @media only screen and (max-width: 500px) {
@@ -218,10 +218,15 @@
 .cm-msg-box > i {
     margin: auto;
     font-size: 24px;
-    color: #47cd65;
+    color: #90C8AC;
     animation: rotate_image 1s linear infinite;
     transform-origin: 50% 50%;
 }
+
+.chat-msg.self .cm-msg-box {
+    float: right;
+}
+
 @keyframes rotate_image{
     100% {
         transform: rotate(-360deg);
@@ -229,7 +234,7 @@
 }
 .chat-msg.self > .cm-msg-text {
     float:right;
-    background: #47cd65;
+    background: #90C8AC;
     color:white;
 }
 .chat-msg > img {
