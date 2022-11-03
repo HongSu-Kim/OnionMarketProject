@@ -118,10 +118,9 @@
 					<ul>
 						<li><a href="/product/list">상품</a>
 							<ul class="header__menu__dropdown">
-								<li><a href="/product/list">상품 리스트</a></li>
+								<li><a href="/product/list">동네 상품</a></li>
+								<li><a href="/product/auctionList">경매 상품</a></li>
 								<li><a href="/product/add">상품 등록</a></li>
-								<li><a href="/product/auctionList">경매 리스트</a></li>
-								<li><a href="/product/allList">전체 리스트</a></li>
 							</ul>
 						</li>
 						<sec:authorize access="isAuthenticated()">
@@ -176,16 +175,15 @@
 					<sec:authorize access="isAuthenticated()">
 						<ul>
 							<li><a href="/wish/list"><i class="fa fa-heart"></i> <span>${wishCount}</span></a></li>
-	<%--						<li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>--%>
 						</ul>
 						<nav class="header__menu profile">
 							<ul>
-								<li><img src="/img/member/${memberDTO.memberImageName}" class="header-img profile"></li>
-								<li><a href="/member/mypage" class="header__nickname">${sessionDTO.nickname}</a>
+<%--								<li><img src="/img/member/<sec:authentication property="principal.sessionDTO.memberImageName"/>" class="header-img profile"></li>--%>
+								<li><a href="/member/mypage" class="header__nickname"><img src="/img/member/<sec:authentication property="principal.sessionDTO.memberImageName"/>" class="header-img profile">&nbsp;<sec:authentication property="principal.sessionDTO.nickname"/></a>
 									<ul class="header__menu__dropdown nickname">
 										<li><a href="/member/mypage">마이페이지</a></li>
-										<li><a href="/review/mylist/${sessionDTO.id}">나의 후기</a></li>
-										<li><a href="/inquiry/myList/${sessionDTO.id}">나의 문의</a></li>
+										<li><a href="/review/mylist/<sec:authentication property="principal.sessionDTO.id"/>">나의 후기</a></li>
+										<li><a href="/inquiry/myList/<sec:authentication property="principal.sessionDTO.id"/>">나의 문의</a></li>
 										<li><a href="/wish/list">위시리스트</a></li>
 									</ul>
 								</li>

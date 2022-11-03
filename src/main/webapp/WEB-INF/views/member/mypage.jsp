@@ -32,8 +32,8 @@
                         <h4 class="text-right">마이 페이지</h4>
                     </div>
                     <div class="col-lg-12 col-md-12">
-                        <div class="checkout__input"><label class="labels">아이디</label><input type="text" class="form-control" value="${sessionDTO.userId}" readonly="readonly"></div>
-                        <div class="checkout__input"><label class="labels">닉네임</label><input type="text" class="form-control" value="${sessionDTO.nickname}" readonly="readonly"></div>
+                        <div class="checkout__input"><label class="labels">아이디</label><input type="text" class="form-control" value="${memberDTO.userId}" readonly="readonly"></div>
+                        <div class="checkout__input"><label class="labels">닉네임</label><input type="text" class="form-control" value="${memberDTO.nickname}" readonly="readonly"></div>
                         <div class="checkout__input"><label class="labels">이름</label><input type="text" class="form-control" value="${memberDTO.name}" readonly="readonly"></div>
                         <div class="checkout__input"><label class="labels">생년월일</label><input type="date" class="form-control" value="${memberDTO.birth}" readonly="readonly"></div>
                         <div class="checkout__input"><label class="labels">휴대폰 번호</label><input type="text" class="form-control" value="${memberDTO.tel}" readonly="readonly"></div>

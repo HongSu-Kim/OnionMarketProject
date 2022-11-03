@@ -30,12 +30,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (member.getRole().name().equals("WITHDRAWAL")) {
             throw new UsernameNotFoundException("탈퇴한 회원입니다.");
         }
+        SessionDTO sessionDTO = new SessionDTO(member);
 
-        session.setAttribute("sessionDTO", new SessionDTO(member));
         session.setAttribute("wishCount", wishRepository.countByMemberId(member.getId()));
 
         //시큐리티 세션에 유저 정보 저장
-        return new CustomUserDetails(member);
+        return new CustomUserDetails(sessionDTO);
     }
 
 /*    @Override

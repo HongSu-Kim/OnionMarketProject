@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepositoy categoryRepositoy;
-    private final CategoryRepositoy.Categoryrepositoy categoryrepositoy;
 
     @Override
     public void TopCategoryAdd(CategoryAddDTO categoryCreatedto, String topcategoryName, HttpServletResponse response) throws IOException { //상위카테고리 생성
@@ -101,9 +100,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void CategoryUpdate(CategoryUpdateDTO categoryUpdatedto) { //카테고리수정
         Category category = new Category();
-//
-//        category.categoryUpdate(categoryUpdatedto);
-//        categoryRepositoy.save(category);
+
     }
 
 
@@ -120,40 +117,22 @@ public class CategoryServiceImpl implements CategoryService {
                 .collect(Collectors.toList());
 
 
-        // @Override
-// public List<TownFindDTO> townList(Long memberId) {
-//
-//  return townRepositoy.findAllByMemberId(memberId)
-//          .stream().map(town -> new TownFindDTO(town))
-//          .collect(Collectors.toList());
-// }
-
-
     }
 
     @Override
     public List<Category> findTopCategory() {
 
-
-        return categoryrepositoy.findTopCategory(); //parent_id가 null인 상위카테고리조회
-    }
-
-//    @Override
-
-    @Override
-    public List<Category> findSubCategory() {  //parent_id가 null이 아닌 카테고리조회
-        return categoryrepositoy.findSubcategory();
+        return categoryRepositoy.findTopCategory(); //parent_id가 null인 상위카테고리조회
     }
 
 
-    public List<CategoryFindDTO> findSubCategory(Long categoryId) { //parent_id가 null이 아닌 카테고리조회
+    public List<CategoryFindDTO> findSubCategory(Long categoryId) { // parent_id가 null이 아닌 상위카테고리에 해당하는 하위 카테고리조회
 
         return categoryRepositoy.findByParentId(categoryId)
                 .stream().map(CategoryFindDTO::new)
                 .collect(Collectors.toList());
 
     }
-
 
 
 }
