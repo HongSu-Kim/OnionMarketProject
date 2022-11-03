@@ -2,6 +2,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <div class="container">
 	<div id="body">
 
@@ -15,8 +16,8 @@
 
 			<!-- chat list -->
 			<div class="chat-box" id="chatList">
-				<input type="hidden" id="memberId" value="${sessionDTO.id}"/>
-				<input type="hidden" id="memberNickname" value="${sessionDTO.nickname}"/>
+				<input type="hidden" id="memberId" value="<sec:authentication property="principal.sessionDTO.id"/>"/>
+				<input type="hidden" id="memberNickname" value="<sec:authentication property="principal.sessionDTO.nickname"/>"/>
 
 				<div class="chat-box-header">
 					채팅
