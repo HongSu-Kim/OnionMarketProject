@@ -156,7 +156,8 @@ public class ProductController {
         return "redirect:/product/detail/"+productId;
     }
     //상품 리스트 주소
-    public String list(@LoginUser SessionDTO userSession, HttpSession session, Model model,
+    @GetMapping(value = "list")
+    public String list(@LoginUser SessionDTO userSession,HttpSession session, Model model,
                        @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
 
         /*세션아이디로 동네 조회*/
@@ -176,18 +177,17 @@ public class ProductController {
                 .build();
 
         searchRequirements.setPageable(pageable);
-
         searchRequirements.setCoordinateIdList((List<Long>)session.getAttribute("RangeList"));
 
-        Page<ProductListDTO> page = productService.getProductListDTO(searchRequirements);
         Page<ProductListDTO> distancePage = productService.getProductListDTO(searchRequirements);
+
 
         model.addAttribute("distancePage", distancePage);
         model.addAttribute("distancePagelist", distancePage.getContent());
 
         return "product/wishRangeList";//상품 리스트 메인 화면페이지
-
     }
+
 
     //상품 전체 리스트 주소
     @GetMapping("allList")
