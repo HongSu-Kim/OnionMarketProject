@@ -1,8 +1,4 @@
 
-.product__add__input__file{
-
-}
-
 .product__add {
     width: 250px;
     overflow: hidden;
@@ -35,7 +31,16 @@ label.error{display:block;color:red;}
 .button {
     border-width: thin;
 }
+
+
 /*list*/
+.product__item__pic {
+    height: 270px;
+    position: relative;
+    overflow: hidden;
+    background-position: center center;
+    border-radius: 10px;
+}
 .product__item__text {
     text-align: center;
     padding-top: 15px;
@@ -46,6 +51,7 @@ label.error{display:block;color:red;}
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    text-align: left;
 }
 
 .product__item__text h6 a {
@@ -132,6 +138,18 @@ label.error{display:block;color:red;}
     color: #000000;
     transform: rotate(360deg);
 }
+.product__list {
+    display: flex;
+    justify-content: space-between;
+}
+.product__list__upload {
+    color: #b2b2b2;
+}
+.product__list__price {
+    font-size: 20px;
+}
+
+
 /*update*/
 .imageList {
     display: flex;

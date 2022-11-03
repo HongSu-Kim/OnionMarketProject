@@ -236,11 +236,10 @@
 				<div class="hero__search">
 					<div class="hero__search__form">
 						<form:form action="/search/list"  method="get">
-							<div class="hero__search__categories">
-								All Categories
-								<span class="arrow_carrot-down"></span>
-							</div>
-
+<%--							<div class="hero__search__categories">--%>
+<%--								All Categories--%>
+<%--								<span class="arrow_carrot-down"></span>--%>
+<%--							</div>--%>
 							<input type="text" name="searchName" placeholder="원하는 상품을 검색하세요">
 							<button type="submit" class="site-btn">SEARCH</button>
 						</form:form>
@@ -276,10 +275,7 @@
 				<div class="col-lg-12 text-center">
 					<div class="breadcrumb__text">
 						<h2>Shopping Cart</h2>
-						<div class="breadcrumb__option">
-							<a href="./index.html">Home</a>
-							<span>Shopping Cart</span>
-						</div>
+
 					</div>
 				</div>
 			</div>
