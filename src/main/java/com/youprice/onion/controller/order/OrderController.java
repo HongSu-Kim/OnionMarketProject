@@ -112,7 +112,7 @@ public class OrderController {
 	// 구매 내역 조회 페이지
 	@GetMapping("buyList")
 	public String buyList(@LoginUser SessionDTO sessionDTO, Model model,
-						  @PageableDefault(sort = "order_id", direction = Sort.Direction.DESC) Pageable pageable) {
+						  @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 		if (sessionDTO == null) return "redirect:/member/login";
 
 		Page<OrderDTO> page = orderService.getBuyList(sessionDTO.getId(), pageable);

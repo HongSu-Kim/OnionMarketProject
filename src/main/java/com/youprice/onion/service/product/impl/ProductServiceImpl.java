@@ -12,6 +12,7 @@ import com.youprice.onion.repository.order.OrderRepository;
 import com.youprice.onion.repository.product.*;
 import com.youprice.onion.service.order.OrderService;
 import com.youprice.onion.service.product.ProductService;
+import com.youprice.onion.util.ImageUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -219,7 +220,7 @@ public class ProductServiceImpl implements ProductService {
         for (MultipartFile file : fileList) {
 
             if (!file.isEmpty()) {
-                String productImageName = saveFile(file);
+                String productImageName = ImageUtil.store(file,"product");
                 ProductImage image = new ProductImage(product, productImageName);
 
                 productImageList.add(image);
@@ -300,11 +301,6 @@ public class ProductServiceImpl implements ProductService {
         return townRepositoy.findByCoordinateTownName(townName).map(TownFindDTO::new).orElse(null);
     }
 
-    //카테고리번호 조회
-    @Override
-    public CategoryFindDTO findCategoryId(Long categoryId) {
-        return categoryRepository.findById(categoryId).map(CategoryFindDTO::new).orElse(null);
-    }
     //유저 판매 상품 목록
     @Override
     public Page<ProductSellListDTO> getProductSellListDTO(Long memberId, ProductProgress productProgress, Pageable pageable) {

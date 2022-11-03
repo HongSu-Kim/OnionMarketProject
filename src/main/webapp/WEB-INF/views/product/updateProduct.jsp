@@ -35,8 +35,14 @@
 							<p>경매 등록</p>
 							<div>
 								경매 기간은 12시간입니다.
-								<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="auctionStatus" value="true">
-								<input type="hidden" name="auctionStatus" value="false">
+								<c:if test="${not empty productFindDTO.auctionDeadline}">
+									<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="auctionStatus" value="true" checked="checked">
+									<input type="hidden" name="auctionStatus" value="false">
+								</c:if>
+								<c:if test="${empty productFindDTO.auctionDeadline}">
+									<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="auctionStatus" value="true">
+									<input type="hidden" name="auctionStatus" value="false">
+								</c:if>
 								<hr/>
 							</div>
 						</div>
@@ -65,8 +71,14 @@
 						<div class="checkout__input">
 							<p>페이 결제</p>
 							<div style="color: #aaaaaa">
-								<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="payStatus" value="true" checked="${productFindDTO.payStatus}">
+								<c:if test="${productFindDTO.payStatus eq true}">
+								<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="payStatus" value="true" checked="checked">
 								<input type="hidden" name="payStatus" value="false">
+								</c:if>
+								<c:if test="${productFindDTO.payStatus ne true}">
+								<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="payStatus" value="true">
+								<input type="hidden" name="payStatus" value="false">
+								</c:if>
 								안전결제 환영
 								<img src="/template/img/product/pay.png">
 							</div>
