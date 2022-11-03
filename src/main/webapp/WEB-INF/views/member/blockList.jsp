@@ -38,10 +38,10 @@
 									<td>${blockDTO.targetDTO.userGrade}</td>
 									<td>
 										<c:if test="${!blockDTO.targetDTO.blockCheck}">
-											<button type="button" class="site-btn" onclick="location.href='/block/removeBlock/${blockDTO.targetDTO.id}'">차단해제</button>
+											<button type="button" class="site-btn-ing" onclick="location.href='/block/removeBlock/${blockDTO.targetDTO.id}'">차단해제</button>
 										</c:if>
 										<c:if test="${blockDTO.targetDTO.blockCheck}">
-											<button type="button" class="site-btn" onclick="location.href='/block/addBlock/${blockDTO.targetDTO.id}'">차단</button>
+											<button type="button" class="site-btn-follow" onclick="location.href='/block/addBlock/${blockDTO.targetDTO.id}'">차단</button>
 										</c:if>
 									</td>
 								</tr>
@@ -81,7 +81,7 @@
 				</div>
 			</div>
 			<!-- List Paging End -->
-
+			<div class="mt-5 text-center"><button class="site-btn" type="button" onclick="location.href='/member/mypage'">마이페이지</button></div>
 		</div>
 	</div>
 </section>

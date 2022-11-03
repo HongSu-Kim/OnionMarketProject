@@ -49,7 +49,7 @@ ul.list_modify {
     border: solid 1px #90C8AC
 }
 
-.site-btn-modify {
+.site-btn-follow {
     font-size: 14px;
     color: #ffffff;
     font-weight: 800;
@@ -57,6 +57,20 @@ ul.list_modify {
     display: inline-block;
     padding: 5px 10px 5px;
     background: #90C8AC;
+    border: none;
+    margin-bottom: 5px;
+    width: 120px;
+    height: 40px;
+}
+
+.site-btn-ing {
+    font-size: 14px;
+    color: #ffffff;
+    font-weight: 800;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 5px 10px 5px;
+    background: #73A9AD;
     border: none;
     margin-bottom: 5px;
     width: 120px;
