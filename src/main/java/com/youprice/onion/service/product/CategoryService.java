@@ -18,9 +18,7 @@ public interface CategoryService {
 
     void CategoryUpdate(CategoryUpdateDTO categoryUpdatedto);
 
-    List<Category> findTopCategory();//전체 상위 카테고리 조회 
-
-    List<Category> findSubCategory();//전체 하위 카테고리 조회
+    List<Category> findTopCategory();//전체 상위 카테고리 조회
 
     List<CategoryFindDTO> findSubCategory(Long categoryId); //특정 상위카테고리에 해당하는 하위 카테고리찾기
 
