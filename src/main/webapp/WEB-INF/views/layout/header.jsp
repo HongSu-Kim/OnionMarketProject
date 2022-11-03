@@ -118,10 +118,9 @@
 					<ul>
 						<li><a href="/product/list">상품</a>
 							<ul class="header__menu__dropdown">
-								<li><a href="/product/list">상품 리스트</a></li>
+								<li><a href="/product/list">동네 상품</a></li>
+								<li><a href="/product/auctionList">경매 상품</a></li>
 								<li><a href="/product/add">상품 등록</a></li>
-								<li><a href="/product/auctionList">경매 리스트</a></li>
-								<li><a href="/product/allList">전체 리스트</a></li>
 							</ul>
 						</li>
 						<sec:authorize access="isAuthenticated()">

@@ -42,6 +42,7 @@ public class ProductController {
     private final ProductImageService productImageService;
     private final CoordinateService coordinateService;
     private final BiddingService biddingService;
+    private final ReviewService reviewService;
     private final ProhibitionKeywordService prohibitionKeywordService;
 
     @GetMapping("add")//상픔 등록 주소
@@ -110,11 +111,12 @@ public class ProductController {
 
             return "redirect:/product/addProduct";
         }
+        System.out.println("productFindDTO = " + productFindDTO.getMemberId());
         /*리뷰 조회*/
         Double reviewAvg = null;
-//        if (reviewService.avgGrade(productFindDTO.getMemberId()) > 0) {
-//            reviewAvg = reviewService.avgGrade(productFindDTO.getMemberId());
-//        }
+        if (reviewService.avgGrade(productFindDTO.getMemberId()) > 0) {
+            reviewAvg = reviewService.avgGrade(productFindDTO.getMemberId());
+        }
         /*입찰 리스트 조회 및 마지막 입찰가 조회*/
         List<BiddingListDTO> biddingList = biddingService.getBiddingList(productId, model);
         if(biddingList.size()>0) {
@@ -156,7 +158,8 @@ public class ProductController {
         return "redirect:/product/detail/"+productId;
     }
     //상품 리스트 주소
-    public String list(@LoginUser SessionDTO userSession, HttpSession session, Model model,
+    @GetMapping(value = "list")
+    public String list(@LoginUser SessionDTO userSession,HttpSession session, Model model,
                        @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
 
         /*세션아이디로 동네 조회*/
@@ -176,38 +179,18 @@ public class ProductController {
                 .build();
 
         searchRequirements.setPageable(pageable);
-
         searchRequirements.setCoordinateIdList((List<Long>)session.getAttribute("RangeList"));
 
-        Page<ProductListDTO> page = productService.getProductListDTO(searchRequirements);
         Page<ProductListDTO> distancePage = productService.getProductListDTO(searchRequirements);
+
 
         model.addAttribute("distancePage", distancePage);
         model.addAttribute("distancePagelist", distancePage.getContent());
 
         return "product/wishRangeList";//상품 리스트 메인 화면페이지
-
     }
 
-    //상품 전체 리스트 주소
-    @GetMapping("allList")
-    public String allList(Model model, @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-
-        SearchRequirements searchRequirements = SearchRequirements.builder()
-                .blindStatus(false)
-                .build();
-
-        searchRequirements.setPageable(PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
-                pageable.getPageSize(), Sort.Direction.DESC, "id"));
-
-        Page<ProductListDTO> page = productService.getProductListDTO(searchRequirements);
-
-        model.addAttribute("page", page);
-        model.addAttribute("list", page.getContent());
-        return "product/list";
-    }
-
-    @PostMapping("allList")
+    @PostMapping("list")
     public String allList(Model model, @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable, @RequestParam("range") Double range
             , @RequestParam("townName") String townName, HttpSession session, HttpServletRequest request, @RequestParam("memberId") Long memberId) {
 
