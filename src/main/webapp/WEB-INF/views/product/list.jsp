@@ -8,7 +8,7 @@
 <section class="featured spad">
 	<div class="container">
 		<div class="row featured__filter">
-			<c:forEach var="list" items="${distancePagelist}">
+			<c:forEach var="list" items="${list}">
 				<div class="col-lg-3 col-md-4 col-sm-6" style="padding: 15px;">
 					<div class="featured__item">
 						<div class="featured__item__pic set-bg" data-setbg="/img/product/${list.productImageName}" onclick="location.href='/product/detail/${list.productId}';">
