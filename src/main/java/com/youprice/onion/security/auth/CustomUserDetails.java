@@ -1,5 +1,6 @@
 package com.youprice.onion.security.auth;
 
+import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.entity.member.Member;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,16 +17,21 @@ import java.util.Collection;
 */
 public class CustomUserDetails implements UserDetails {
 
-    private final Member member;
+//    private final Member member;
+    private final SessionDTO sessionDTO;
+
+    public SessionDTO getSessionDTO() {
+        return sessionDTO;
+    }
 
     @Override
     public String getPassword() {
-        return member.getPwd();
+        return sessionDTO.getPwd();
     }
 
     @Override
     public String getUsername() {
-        return member.getUserId();
+        return sessionDTO.getUserId();
     }
 
     //계정 만료 여부
@@ -64,7 +70,7 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collectors = new ArrayList<>();
-        collectors.add(() -> "ROLE_"+member.getRole());
+        collectors.add(() -> sessionDTO.getRole().getValue());
         return collectors;
     }
 
