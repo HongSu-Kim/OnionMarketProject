@@ -3,6 +3,7 @@ package com.youprice.onion.service.member.impl;
 import com.youprice.onion.dto.member.*;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.member.Role;
+import com.youprice.onion.repository.board.ReviewRepository;
 import com.youprice.onion.repository.member.BlockRepository;
 import com.youprice.onion.repository.member.FollowRepository;
 import com.youprice.onion.repository.member.MemberRepository;
@@ -34,6 +35,7 @@ public class MemberServiceImpl implements MemberService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final BlockRepository blockRepository;
     private final FollowRepository followRepository;
+    private final ReviewRepository reviewRepository;
 
     @Value("$(file.path}")
     private String uploadFolder;
@@ -218,4 +220,13 @@ public class MemberServiceImpl implements MemberService {
     }
 */
 
+    // 평점 찾기
+    public Double avgGrade(Long salesId) {
+        Member member = memberRepository.findById(salesId).orElse(null);
+        Double grade = reviewRepository.gradeAverage(salesId);
+
+        member.updateGrade(grade);
+        memberRepository.save(member);
+        return grade;
+    }
 }

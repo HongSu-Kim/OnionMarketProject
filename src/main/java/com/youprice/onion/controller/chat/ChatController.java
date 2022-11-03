@@ -31,9 +31,11 @@ public class ChatController {
 	// 채팅 메세지
 	@MessageMapping("/chat/message")
 	public void message(ChatDTO chatDTO) {
-		log.error("ChatController : /chat/message : " + chatDTO.getMessage());
+		// 채팅 메세지 저장
 		chatDTO.setSendingTime(LocalDateTime.now());
 		chatService.writeChat(chatDTO);
+
+		// 채팅 메세지 전송
 		template.convertAndSend("/sub/chat/" + chatDTO.getMemberId(), chatDTO);
 		template.convertAndSend("/sub/chat/" + chatDTO.getTargetId(), chatDTO);
 	}
@@ -41,14 +43,7 @@ public class ChatController {
 	// 채팅 이미지
 	@MessageMapping("/chat/image")
 	public void image(ChatDTO chatDTO) {
-		log.error("ChatController : /chat/image : " + chatDTO.getChatImageName());
-
-		if (chatDTO.getSendingTime().plusSeconds(2).isAfter(LocalDateTime.now()) ) {
-			chatDTO.setChatImageName(null);
-//		} else {
-//			chatDTO.setChatImageName(chatRepository.findById(chatDTO.getChatId()).get().getChatImageName());
-		}
-
+		// 채팅 이미지 전송
 		template.convertAndSend("/sub/chat/" + chatDTO.getMemberId(), chatDTO);
 		template.convertAndSend("/sub/chat/" + chatDTO.getTargetId(), chatDTO);
 	}
@@ -57,9 +52,11 @@ public class ChatController {
 	@ResponseBody
 	public ResponseEntity<?> chatImage(ChatImageDto chatImageDto) {
 		try {
+			// 채팅 이미지 저장
 			ChatDTO chatDTO = chatService.uploadImage(chatImageDto);
 			return new ResponseEntity<>(chatDTO, HttpStatus.OK);
 		} catch (Exception e) {
+			log.error("채팅 이미지 저장 에러 :" + e.toString());
 			return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
 		}
 	}
