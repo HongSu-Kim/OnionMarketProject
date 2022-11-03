@@ -120,7 +120,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryFindDTO> findTopCategory() {
+    public List<Category> findTopCategory() {
 
         return categoryRepositoy.findTopCategory(); //parent_id가 null인 상위카테고리조회
     }
