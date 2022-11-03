@@ -150,7 +150,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         return categoryRepositoy.findByParentId(categoryId)
                 .stream().map(CategoryFindDTO::new)
-                .collect(Collectors.toList());
+                 .collect(Collectors.toList());
 
     }
 
