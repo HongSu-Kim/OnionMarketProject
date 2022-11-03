@@ -25,5 +25,5 @@ public interface ReviewService {
     List<ReviewImage> storeImages(Long reviewId, List<MultipartFile> multipartFiles) throws IOException;
     String storePath(MultipartFile multipartFile) throws IOException;
 
-    double avgGrade(Long salesId);
+    Integer avgGrade(Long salesId);
 }

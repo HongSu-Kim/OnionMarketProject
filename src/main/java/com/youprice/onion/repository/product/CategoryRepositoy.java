@@ -7,6 +7,7 @@ import com.youprice.onion.entity.product.Category;
 import lombok.RequiredArgsConstructor;
 //import org.apache.ibatis.annotations.Delete;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -32,6 +33,9 @@ public interface CategoryRepositoy extends JpaRepository<Category, Long> {
     Category deleteById(CategoryUpdateDTO id);
 
     List<Category> findByParentId(Long categoryId);
+
+	@Query("select o from Category o  where o.parent is not null")
+	List<Category> findAllSubcategory();
 
 
     @Repository

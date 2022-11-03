@@ -12,6 +12,7 @@ import com.youprice.onion.repository.product.ProductImageRepository;
 import com.youprice.onion.repository.product.ProductRepository;
 import com.youprice.onion.repository.product.TownRepositoy;
 import com.youprice.onion.security.auth.LoginUser;
+import com.youprice.onion.service.product.CategoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -29,6 +30,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Iterator;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -40,6 +42,7 @@ public class CrawlingController {
 	private final ProductImageRepository productImageRepository;
 	private final TownRepositoy townRepositoy;
 	private final CategoryRepositoy categoryRepositoy;
+	private final CategoryService categoryService;
 
 	@GetMapping("crawling")
 	@Transactional
@@ -55,17 +58,15 @@ public class CrawlingController {
 
 		Member member = memberRepository.findById(sessionDTO.getId()).orElse(null);
 		Town defaultTown = townRepositoy.findById(1L).orElse(null);
-		Category category = categoryRepositoy.findById(115L).orElse(null);
+		List<Category> categoryList = categoryRepositoy.findAllSubcategory();
 
 		boolean payStatus = true;
 
 		String path = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\product\\";
 
-		Iterator<Element> iterator = elements.iterator();
-		while (iterator.hasNext()) {
+		int i = 0;
+		for (Element ele : elements) {
 			try {
-
-				Element ele = iterator.next();
 
 				String subject = ele.select(".card-title").text();//제목
 				String priceStr = ele.select(".card-price").text();//가격 - String
@@ -107,6 +108,8 @@ public class CrawlingController {
 				log.info("townName : " + townName);
 				Town town = townRepositoy.findByMemberIdAndCoordinateTownNameContains(1L, townNameStr).orElse(defaultTown);
 
+				Category category = categoryList.get(i);
+				log.info(category.getCategoryName());
 
 				Product product = new Product(member, town, category, subject, content, price, representativeImage, payStatus);
 				productRepository.save(product);
@@ -115,7 +118,12 @@ public class CrawlingController {
 				log.info("ProductImage 저장");
 
 				log.info("DB 저장");
+
 				payStatus = !payStatus;
+				i++;
+				if (i == categoryList.size()) {
+					i = 0;
+				}
 
 			} catch (Exception e) {
 				e.getStackTrace();
