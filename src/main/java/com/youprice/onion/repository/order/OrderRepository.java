@@ -37,7 +37,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
 	
 	// 구매 내역 조회 - list
-	@EntityGraph(attributePaths = { "member", "delivery", "product", "reviewList" })
+	@EntityGraph(attributePaths = { "member", "delivery", "product", "review" })
 //	@Query(value = "select distinct o.* " +
 //					"from Orders o " +
 //					"join Member m " +

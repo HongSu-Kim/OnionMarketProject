@@ -417,6 +417,7 @@ ol {
 
 .header__menu {
 	padding: 24px 0;
+	text-align: center;
 }
 
 .header__menu ul li {
@@ -430,10 +431,12 @@ ol {
 	position: absolute;
 	left: 0;
 	top: 50px;
-	background: #222222;
-	width: 180px;
+	background: #ffffff;
+	display: block;
+	width: 120px;
 	z-index: 9;
-	padding: 5px 0;
+	padding-top: 12px;
+	padding-bottom: 12px;
 	-webkit-transition: all, 0.3s;
 	-moz-transition: all, 0.3s;
 	-ms-transition: all, 0.3s;
@@ -441,6 +444,8 @@ ol {
 	transition: all, 0.3s;
 	opacity: 0;
 	visibility: hidden;
+	border-radius: 4px;
+	box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
 }
 
 .header__menu ul li .header__menu__dropdown li {
@@ -454,7 +459,7 @@ ol {
 
 .header__menu ul li .header__menu__dropdown li a {
 	text-transform: capitalize;
-	color: #ffffff;
+	color: #000000;
 	font-weight: 400;
 	padding: 5px 15px;
 }
