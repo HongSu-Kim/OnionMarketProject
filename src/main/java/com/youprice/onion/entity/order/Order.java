@@ -30,10 +30,9 @@ public class Order {
 	private Product product;
 
     private String orderNum;//주문번호
-
     private String imp_uid;//결제번호
-
-    private int orderPayment;//결제금액
+	private int orderPayment;//결제금액
+	private int usePoint;//사용포인트
 
     @Setter
     @Enumerated(EnumType.STRING)
@@ -51,12 +50,13 @@ public class Order {
 
 
 	// 주문 생성
-    public Order(Member member, Product product, String orderNum, String imp_uid, int orderPayment, OrderState orderState) {
+    public Order(Member member, Product product, String orderNum, String imp_uid, int orderPayment, int usePoint, OrderState orderState) {
 		this.member = member;
 		this.product = product;
 		this.orderNum = orderNum;
 		this.imp_uid = imp_uid;
-        this.orderPayment = orderPayment;
+		this.orderPayment = orderPayment;
+		this.usePoint = usePoint;
         this.orderState = orderState;
         this.orderDate = LocalDateTime.now();
     }

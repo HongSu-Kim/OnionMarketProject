@@ -19,7 +19,7 @@ public class ChatDTO {
 	private String memberNickname;
 	private String message; //메세지
 	private String chatImageName; //첨부이미지
-	private boolean readOrNot; //읽음 표시
+	private boolean read; //읽음 표시
 	private LocalDateTime sendingTime; //전송 시간
 
 	public ChatDTO(Chat chat) {
@@ -29,7 +29,7 @@ public class ChatDTO {
 		memberNickname = chat.getMember().getNickname();
 		message = chat.getMessage();
 		chatImageName = chat.getChatImageName();
-		readOrNot = chat.isReadOrNot();
+		read = chat.isRead();
 		sendingTime = chat.getSendingTime();
 	}
 

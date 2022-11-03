@@ -4,6 +4,7 @@ import com.youprice.onion.entity.chat.Chat;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -26,5 +27,18 @@ public interface ChatRepository extends JpaRepository<Chat, Long> {
 			nativeQuery = true)
 	Optional<Chat> findOneByChatroomId(@Param("chatroomId") Long chatroomId);
 
+	@Query("select count(c) " +
+			"from Chat c " +
+			"where c.chatroom.id = :chatroomId " +
+			"and c.member.id <> :memberId " +
+			"and c.read = false")
+	int countNotRead(@Param("chatroomId") Long chatroomId, @Param("memberId")  Long memberId);
 
+	@Modifying
+	@Query("update Chat c " +
+			"set c.read = true " +
+			"where c.member.id <> :memberId " +
+			"and c.chatroom.id = :chatroomId " +
+			"and c.read = false")
+	void readChat(@Param("memberId") Long memberId, @Param("chatroomId") Long chatroomId);
 }
