@@ -14,6 +14,7 @@ public class SessionDTO implements Serializable { //인증된 사용자 정보�
     private Long id;
     private Role role;
     private String userId;
+    private String pwd;
     private String nickname;
     private String memberImageName;
 
@@ -22,6 +23,7 @@ public class SessionDTO implements Serializable { //인증된 사용자 정보�
         this.id = member.getId();
         this.role = member.getRole();
         this.userId = member.getUserId();
+        this.pwd = member.getPwd();
         this.nickname = member.getNickname();
         this.memberImageName = member.getMemberImageName();
     }
