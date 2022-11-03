@@ -300,11 +300,6 @@ public class ProductServiceImpl implements ProductService {
         return townRepositoy.findByCoordinateTownName(townName).map(TownFindDTO::new).orElse(null);
     }
 
-    //카테고리번호 조회
-    @Override
-    public CategoryFindDTO findCategoryId(Long categoryId) {
-        return categoryRepository.findById(categoryId).map(CategoryFindDTO::new).orElse(null);
-    }
     //유저 판매 상품 목록
     @Override
     public Page<ProductSellListDTO> getProductSellListDTO(Long memberId, ProductProgress productProgress, Pageable pageable) {

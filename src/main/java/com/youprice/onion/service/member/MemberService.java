@@ -34,4 +34,6 @@ public interface MemberService {
 	List<MemberDTO> getChatMemberList(Long memberId);
 
 //    public void profileImageUpdate(Long memberId, MemberModifyDTO memberModifyDTO, MultipartFile memberImageName);
+
+    Double avgGrade(Long salesId);
 }

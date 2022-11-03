@@ -65,7 +65,7 @@
 						<div class="checkout__input">
 							<p>페이 결제</p>
 							<div style="color: #aaaaaa">
-								<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="payStatus" value="true" checked="${productFindDTO.payStatus}">
+								<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="payStatus" value="true">
 								<input type="hidden" name="payStatus" value="false">
 								안전결제 환영
 								<img src="/template/img/product/pay.png">
