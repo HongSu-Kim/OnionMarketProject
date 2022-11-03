@@ -175,12 +175,11 @@
 					<sec:authorize access="isAuthenticated()">
 						<ul>
 							<li><a href="/wish/list"><i class="fa fa-heart"></i> <span>${wishCount}</span></a></li>
-	<%--						<li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>--%>
 						</ul>
 						<nav class="header__menu profile">
 							<ul>
-								<li><img src="/img/member/<sec:authentication property="principal.sessionDTO.memberImageName"/>" class="header-img profile"></li>
-								<li><a href="/member/mypage" class="header__nickname"><sec:authentication property="principal.sessionDTO.nickname"/></a>
+<%--								<li><img src="/img/member/<sec:authentication property="principal.sessionDTO.memberImageName"/>" class="header-img profile"></li>--%>
+								<li><a href="/member/mypage" class="header__nickname"><img src="/img/member/<sec:authentication property="principal.sessionDTO.memberImageName"/>" class="header-img profile">&nbsp;<sec:authentication property="principal.sessionDTO.nickname"/></a>
 									<ul class="header__menu__dropdown nickname">
 										<li><a href="/member/mypage">마이페이지</a></li>
 										<li><a href="/review/mylist/<sec:authentication property="principal.sessionDTO.id"/>">나의 후기</a></li>
