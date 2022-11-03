@@ -104,8 +104,8 @@ label.error{display:block;color:red;}
 }
 
 .product__wish__item li:hover a {
-    background: #47cd65;
-    border-color: #47cd65;
+    background: #90C8AC;
+    border-color: #90C8AC;
 }
 
 .product__wish__item li:hover a i {
@@ -114,8 +114,8 @@ label.error{display:block;color:red;}
 }
 
 .product__wish__item li.true a {
-    background: #47cd65;
-    border-color: #47cd65;
+    background: #90C8AC;
+    border-color: #90C8AC;
 }
 
 .product__wish__item li.true a i {
@@ -161,7 +161,7 @@ label.error{display:block;color:red;}
     color: #ffffff;
     text-transform: uppercase;
     font-weight: 700;
-    background: #47cd65;
+    background: #90C8AC;
     letter-spacing: 2px;
 }
 
