@@ -277,7 +277,7 @@
                 <c:if test="${empty range}">
 
 
-                <form:form action="/product/allList" name="townadd" method="post">
+                <form:form action="/product/list" name="townadd" method="post">
 
 
 
@@ -285,7 +285,7 @@
                        <input type="range" name="range" id="range" min="0" max="10" step="1" value="0" data-rangeslider
                         class="seek-bar"/>
                         </div>
-                        <input type="text" name="townName" id="coordinateId" style="width: 15%;"/>
+                        <input type="hidden" name="townName" id="coordinateId" style="width: 15%;"/>
 
                         <input type="hidden" name="memberId" value="${memberDTO.id}">
 
