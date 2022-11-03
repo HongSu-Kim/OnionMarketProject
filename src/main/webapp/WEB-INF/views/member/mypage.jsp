@@ -10,14 +10,14 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                    <img class="rounded-circle mt-5" src="/img/member/${memberDTO.memberImageName}">
+                    <img onclick="window.open('/img/member/${memberDTO.memberImageName}', 'Profile', 'width=600, height=800, location=no, status=no, scrollbars=yes');" class="rounded-circle mt-5 profile" src="/img/member/${memberDTO.memberImageName}">
                     <span class="font-weight-bold">${sessionDTO.userId}</span>
                     <span class="text-black-50">${sessionDTO.nickname}</span>
                 </div>
                 <div>
                     <span>
                         <ul class="list_modify">
-                            <li><button type="button" onclick="location.href='/member/modifyProfileImg'" class="site-btn-modify">사진변경</button></li>
+                            <li><button type="button" onclick="location.href='/member/modifyProfileImg'" class="site-btn-modify">사진 변경</button></li>
                             <li><button type="button" onclick="location.href='/member/preModify'" class="site-btn-modify">회원정보 수정</button></li>
                             <li><button type="button" onclick="location.href='/follow/list'" class="site-btn-modify">팔로우 목록</button></li>
                             <li><button type="button" onclick="location.href='/block/list'" class="site-btn-modify">차단 목록</button></li>

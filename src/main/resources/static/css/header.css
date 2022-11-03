@@ -18,14 +18,19 @@
 }
 
 .header__nickname {
-    text-align: right;
+    text-align: center;
 }
 
 .header-img.profile {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
 }
 
 .header__logo {
     text-align: center;
+}
+
+.header__profile {
+    display: inline-block;
 }
