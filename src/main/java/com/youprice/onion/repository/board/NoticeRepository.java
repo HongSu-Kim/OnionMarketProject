@@ -23,7 +23,7 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> {
     Page<Notice> findAllByNoticeSubjectContainingAndNoticeTypeLike(String word, NoticeType noticeType, Pageable pageable);
 
     // 공지사항 전체
-    Page<Notice> findAllByNoticeTypeLikeOrderById(NoticeType notice, Pageable pageable);
+    Page<Notice> findAllByNoticeTypeLikeOrderByIdDesc(NoticeType notice, Pageable pageable);
     // 자주하는 질문
     List<Notice> findAllByNoticeTypeLikeOrderByIdDesc(NoticeType notice);
 }
