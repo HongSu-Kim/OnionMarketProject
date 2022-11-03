@@ -35,7 +35,7 @@ public interface CategoryRepositoy extends JpaRepository<Category, Long> {
     List<Category> findByParentId(Long categoryId);
 
     @Query("select o from Category o where o.parent is null")
-    List<CategoryFindDTO> findTopCategory();
+    List<Category> findTopCategory();
 
 	@Query("select o from Category o  where o.parent is not null")
 	List<Category> findAllSubcategory();

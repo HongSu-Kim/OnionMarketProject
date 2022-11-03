@@ -63,7 +63,7 @@ public class ProductController {
         }
 
         /*카테고리 조회*/
-        List<CategoryFindDTO> topCategory = categoryService.findTopCategory();
+        List<Category> topCategory = categoryService.findTopCategory();
         model.addAttribute("townList", townList);
         model.addAttribute("topCategory", topCategory);
 
@@ -277,7 +277,7 @@ public class ProductController {
         List<ProductImageDTO> imageList = productImageService.getProductImage(productId);
 
         /*카테고리 조회*/
-        List<CategoryFindDTO> topCategory = categoryService.findTopCategory();
+        List<Category> topCategory = categoryService.findTopCategory();
 
         model.addAttribute("imageList", imageList);
         model.addAttribute("townList", townList);
