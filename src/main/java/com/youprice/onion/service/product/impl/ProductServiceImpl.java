@@ -12,6 +12,7 @@ import com.youprice.onion.repository.order.OrderRepository;
 import com.youprice.onion.repository.product.*;
 import com.youprice.onion.service.order.OrderService;
 import com.youprice.onion.service.product.ProductService;
+import com.youprice.onion.util.ImageUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -219,7 +220,7 @@ public class ProductServiceImpl implements ProductService {
         for (MultipartFile file : fileList) {
 
             if (!file.isEmpty()) {
-                String productImageName = saveFile(file);
+                String productImageName = ImageUtil.store(file,"product");
                 ProductImage image = new ProductImage(product, productImageName);
 
                 productImageList.add(image);
