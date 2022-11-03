@@ -64,11 +64,9 @@ public class ProductController {
 
         /*카테고리 조회*/
         List<Category> topCategory = categoryService.findTopCategory();
-        List<Category> subCategory = categoryService.findSubCategory();
-
         model.addAttribute("townList", townList);
         model.addAttribute("topCategory", topCategory);
-        model.addAttribute("subCategory", subCategory);
+
 
         return "product/addProduct";//상품등록 페이지
     }
@@ -280,12 +278,10 @@ public class ProductController {
 
         /*카테고리 조회*/
         List<Category> topCategory = categoryService.findTopCategory();
-        List<Category> subCategory = categoryService.findSubCategory();
 
         model.addAttribute("imageList", imageList);
         model.addAttribute("townList", townList);
         model.addAttribute("topCategory", topCategory);
-        model.addAttribute("subCategory", subCategory);
         model.addAttribute("productFindDTO",productFindDTO);
         model.addAttribute("productId",productId);
 
