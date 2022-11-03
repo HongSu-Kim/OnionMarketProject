@@ -4,6 +4,7 @@ import com.youprice.onion.entity.product.ProductProgress;
 import lombok.*;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -22,6 +23,7 @@ public class SearchRequirements {
 	private Boolean blindStatus;//블라인드현황
 	private String searchValue;//검색어
 	private List<Long> coordinateIdList;//지역PK목록
+	private LocalDateTime auctionDeadline;
 	private Long productId; //범위설정 해당 상품번호
 
 }

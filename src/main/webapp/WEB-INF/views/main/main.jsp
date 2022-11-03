@@ -40,7 +40,7 @@
 				<div class="categories__slider owl-carousel">
 					<c:forEach var="productListDTO" items="${hotProductList}">
 						<div class="col-lg-3">
-							<div class="categories__item set-bg" data-setbg="/img/product/${productListDTO.productImageName}">
+							<div class="categories__item set-bg" data-setbg="/img/product/${productListDTO.productImageName}" onclick="location.href='/product/detail/${productListDTO.productId}';">
 								<h5><a href="/product/detail/${productListDTO.productId}">${productListDTO.subject}</a></h5>
 							</div>
 						</div>

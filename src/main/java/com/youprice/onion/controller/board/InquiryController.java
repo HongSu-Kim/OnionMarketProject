@@ -180,4 +180,5 @@ public class InquiryController {
 
         return "redirect:/inquiry/list";
     }
+
 }

@@ -38,7 +38,7 @@ $(document).ready(function () {
     var exBid = Number($('#exBid').val()); //이전 입찰가
     var now; //최소 입찰가
     if(exBid == 0) {
-        now = price-1;
+        now = price;
     }else if(exBid >= price) {
         now = exBid+1000;
     }

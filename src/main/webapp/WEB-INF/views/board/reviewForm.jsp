@@ -52,13 +52,13 @@
 
                     <!-- 사진 첨부 -->
                     <div class="shoping__cart__btns">
-                        <label class="site-btn" for="reviewImg">사진 첨부하기</label>
-                        <input type="file" id="reviewImg" name="reviewImg" multiple="multiple"
+                        <label class="site-btn" for="reviewImageName">사진 첨부하기</label>
+                        <input type="file" id="reviewImageName" name="reviewImageName" multiple="multiple"
                                style="display: none" onchange="setDetailImage(event);"/>
                         <div id="images_container"></div>
+
                     </div>
                     <p id="review_span"><span>상품과 무관한 사진/동영상을 첨부한 리뷰는 통보없이 삭제 및 적립 혜택이 회수됩니다.</span></p><br/>
-
 
                     <div class="row form-group">
                         <div class="col-md-12">
@@ -115,7 +115,7 @@
                         <div class="col-md-12" align="right">
                             <input type="submit" value="complete" class="site-btn">
                             <button class="site-btn" style="background-color: #5a6268"
-                                    onclick="location.href='/member/home'" type="button">CANCEL
+                                    onclick="location.href='/'" type="button">CANCEL
                             </button>
                         </div>
                     </div>

@@ -14,10 +14,18 @@ public class CoordinateFindDTO {
 
     private String townName; //동네명
 
+    private Double latitude; //위도
+
+    private Double longitude; //경도
+
+
+
     public CoordinateFindDTO(Coordinate coordinate) {
 
         id =coordinate.getId();
         townName = coordinate.getTownName();
+        latitude = coordinate.getLatitude();
+        longitude = coordinate.getLongitude();
     }
 
 

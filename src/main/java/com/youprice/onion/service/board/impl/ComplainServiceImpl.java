@@ -5,6 +5,7 @@ import com.youprice.onion.dto.board.ComplainFormDTO;
 import com.youprice.onion.entity.board.Complain;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.product.Product;
+import com.youprice.onion.entity.product.ProductProgress;
 import com.youprice.onion.repository.board.ComplainRepository;
 import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.repository.product.ProductRepository;
@@ -45,9 +46,10 @@ public class ComplainServiceImpl implements ComplainService {
             member.addComplainCount(); // 처리완료가 되면 신고대상 회원의 complainCount 증가
             memberRepository.save(member);
 
-            if(member.getComplaintCount() >= 5){
+            if(member.getComplaintCount() >= 1){
                 Product product = productRepository.findById(complain.getProduct().getId()).orElse(null);
-                product.blindProduct(true);
+                product.progressUpdate(ProductProgress.BLIND);
+                product.blindImage();
                 productRepository.save(product);
             }
             return select;
