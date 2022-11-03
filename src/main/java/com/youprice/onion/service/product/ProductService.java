@@ -53,9 +53,6 @@ public interface ProductService {
     //동네번호 조회
     TownFindDTO findTownId(String townName);
 
-    //카테고리번호 조회
-    CategoryFindDTO findCategoryId(Long categoryId);
-
     Page<ProductSellListDTO> getProductSellListDTO(Long memberId, ProductProgress productProgress, Pageable pageable);
 
     Page<ProductListDTO> getPersonalList(Long memberId, Pageable pageable);

@@ -46,7 +46,7 @@ public class Member {
     private String memberImageName; //프로필 사진
     private int cash; //양파페이
     private int point; //포인트
-    private int userGrade; //평점
+    private Double userGrade; //평점
     private int complaintCount; //신고접수 횟수
 
 
@@ -93,7 +93,7 @@ public class Member {
     private List<Review> reviewList = new ArrayList<>(); //리뷰-회원번호 FK
 
     @Builder
-    public Member(Long id, Role role, String userId, String pwd, String name, String nickname, LocalDate birth, String tel, String postcode, String address, String detailAddress, String extraAddress, String email, String memberImageName, int cash, int point, int userGrade, int complaintCount) {
+    public Member(Long id, Role role, String userId, String pwd, String name, String nickname, LocalDate birth, String tel, String postcode, String address, String detailAddress, String extraAddress, String email, String memberImageName, int cash, int point, Double userGrade, int complaintCount) {
 
         this.id = id;
         this.role = role;
@@ -146,12 +146,21 @@ public class Member {
 		this.cash += cash;
 	}
 
+    // 포인트 적립
     public int addPoint(int point){
         this.point += point;
         return point;
     }
+
+    // 신고횟수 추가
     public Member addComplainCount(){
         this.complaintCount += 1;
         return this;
+    }
+
+    // 평점
+    public Double updateGrade(Double grade){
+        this.userGrade = grade;
+        return this.userGrade;
     }
 }
