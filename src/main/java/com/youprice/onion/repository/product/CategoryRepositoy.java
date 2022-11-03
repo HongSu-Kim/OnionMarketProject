@@ -7,6 +7,7 @@ import com.youprice.onion.entity.product.Category;
 import lombok.RequiredArgsConstructor;
 //import org.apache.ibatis.annotations.Delete;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -33,34 +34,13 @@ public interface CategoryRepositoy extends JpaRepository<Category, Long> {
 
     List<Category> findByParentId(Long categoryId);
 
+    @Query("select o from Category o where o.parent is null")
+    List<CategoryFindDTO> findTopCategory();
 
-    @Repository
-    @RequiredArgsConstructor
-
-
-    public class Categoryrepositoy {
-
-
-        private final EntityManager em;
-
-        public List<Category> findTopCategory() { //상위카테고리 조회
+	@Query("select o from Category o  where o.parent is not null")
+	List<Category> findAllSubcategory();
 
 
-            return em.createQuery("select o from Category o where o.parent is null ", Category.class)
-                    .getResultList();
-
-        }
-
-        public List<Category> findSubcategory() { //하위카테고리 조회
-
-
-            return em.createQuery("select o from Category o  where o.parent is not null ", Category.class)
-                    .getResultList();
-
-        }
-
-
-    }
 }
 
 
