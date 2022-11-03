@@ -33,6 +33,11 @@ ul.list_modify {
     box-shadow: none
 }
 
+.rounded-circle.mt-5.profile {
+    width: 230px;
+    height: 230px;
+}
+
 .back:hover {
     color: #90C8AC;
     cursor: pointer
@@ -58,6 +63,7 @@ ul.list_modify {
     padding: 5px 10px 5px;
     background: #90C8AC;
     border: none;
+    border-radius: 12px;
     margin-bottom: 5px;
     width: 120px;
     height: 40px;
@@ -65,13 +71,14 @@ ul.list_modify {
 
 .site-btn-ing {
     font-size: 14px;
-    color: #ffffff;
+    color: black;
     font-weight: 800;
     text-transform: uppercase;
     display: inline-block;
     padding: 5px 10px 5px;
-    background: #73A9AD;
-    border: none;
+    background: #ffffff;
+    border-width: thin;
+    border-radius: 12px;
     margin-bottom: 5px;
     width: 120px;
     height: 40px;

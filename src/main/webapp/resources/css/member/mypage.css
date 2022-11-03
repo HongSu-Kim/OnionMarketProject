@@ -32,6 +32,11 @@ a {
     border-radius: 4px;
 }
 
+.rounded-circle.mt-5.profile {
+    width: 230px;
+    height: 230px;
+}
+
 input:read-only {
     background-color: white;
 }
