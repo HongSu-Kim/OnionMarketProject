@@ -42,7 +42,7 @@ public class ProductController {
     private final ProductImageService productImageService;
     private final CoordinateService coordinateService;
     private final BiddingService biddingService;
-    private final ReviewService reviewService;
+    private final MemberService memberService;
     private final ProhibitionKeywordService prohibitionKeywordService;
 
     @GetMapping("add")//상픔 등록 주소
@@ -110,9 +110,9 @@ public class ProductController {
             return "redirect:/product/addProduct";
         }
         /*리뷰 조회*/
-        Integer reviewAvg = null;
-        if (reviewService.avgGrade(productFindDTO.getMemberId()) != null) {
-            reviewAvg = reviewService.avgGrade(productFindDTO.getMemberId());
+        Double reviewAvg = null;
+        if (memberService.avgGrade(productFindDTO.getMemberId()) != null) {
+            reviewAvg = memberService.avgGrade(productFindDTO.getMemberId());
         }
         /*입찰 리스트 조회 및 마지막 입찰가 조회*/
         List<BiddingListDTO> biddingList = biddingService.getBiddingList(productId, model);
