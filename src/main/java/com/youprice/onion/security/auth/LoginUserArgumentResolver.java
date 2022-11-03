@@ -2,6 +2,7 @@ package com.youprice.onion.security.auth;
 
 import com.youprice.onion.dto.member.SessionDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
 @Component
+@Slf4j
 public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver {
 
 //    private final HttpSession session;
@@ -32,7 +34,12 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        CustomUserDetails userDetails = (CustomUserDetails)principal;
-        return userDetails.getSessionDTO();
+		try {
+			CustomUserDetails userDetails = (CustomUserDetails) principal;
+			return userDetails.getSessionDTO();
+		} catch (Exception e) {
+			log.error("에러 : " + e.toString());
+			return null;
+		}
     }
 }
