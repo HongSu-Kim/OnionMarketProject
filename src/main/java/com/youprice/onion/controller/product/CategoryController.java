@@ -28,7 +28,7 @@ public class CategoryController {
     @GetMapping("category") //카테고리조회
     public String CategoryAdd(Model model,CategoryAddDTO categoryAddDTO) {
 
-        List<Category> category =categoryService.findTopCategory();
+        List<CategoryFindDTO> category =categoryService.findTopCategory();
 
         model.addAttribute("category",category);
         model.addAttribute("categoryAddDTO",categoryAddDTO);
@@ -36,22 +36,7 @@ public class CategoryController {
 
         return "product/category";
     }
-//    @PostMapping("category") //카테고리생성
-//    public String CategoryAdd(Category category, Model model
-//    , @Valid @ModelAttribute CategoryAddDTO categoryAddDTO, BindingResult bindingResult) {
-//
-//
-//        if(bindingResult.hasErrors()){
-//           model.addAttribute("category",categoryService.findTopCategory());
-//            return "product/category";
-//        }
-//
-//    else
-//
-//
-//
-//        return "redirect:/category/category";
-//    }
+
     @PostMapping("category") //카테고리생성
     public String CategoryAdd(CategoryAddDTO categoryCreatedto, Category category, Model model, @RequestParam("topcategoryName")
                          String topcategoryName, @RequestParam("categoryName")String categoryName,HttpServletResponse response)throws IOException {
@@ -78,11 +63,11 @@ public class CategoryController {
     @GetMapping("categoryupdate") //카테고리 수정
     public String create(Model model) {
 
-        List<Category> Topcategory =categoryService.findTopCategory();
-       // List<CategoryFindDTO> Subcategory = categoryService.findSubCategory();
+        List<CategoryFindDTO> Topcategory =categoryService.findTopCategory();
+
 
         model.addAttribute("Topcategory",Topcategory);
-       // model.addAttribute("Subcategory",Subcategory);
+
 
         return "product/categoryupdate";
     }
@@ -91,7 +76,6 @@ public class CategoryController {
 
     @PostMapping("categoryupdate") //카테고리 삭제
     public String update (@RequestParam("id") Long id) {
-
 
 
 
