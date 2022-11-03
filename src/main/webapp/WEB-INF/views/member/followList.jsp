@@ -40,10 +40,10 @@
 									<td><a href="/product/personalList/${followDTO.targetDTO.id}">보러 가기</a></td>
 									<td>
 										<c:if test="${!followDTO.targetDTO.followCheck}">
-											<button type="button" class="site-btn" onclick="location.href='/follow/removeFollow/${followDTO.targetDTO.id}'">팔로잉</button>
+											<button type="button" class="site-btn-ing" onclick="location.href='/follow/removeFollow/${followDTO.targetDTO.id}'">팔로잉</button>
 										</c:if>
 										<c:if test="${followDTO.targetDTO.followCheck}">
-											<button type="button" class="site-btn" onclick="location.href='/follow/addFollow/${followDTO.targetDTO.id}'">언팔로우</button>
+											<button type="button" class="site-btn-follow" onclick="location.href='/follow/addFollow/${followDTO.targetDTO.id}'">언팔로우</button>
 										</c:if>
 									</td>
 								</tr>
@@ -83,7 +83,7 @@
 				</div>
 			</div>
 			<!-- List Paging End -->
-
+			<div class="mt-5 text-center"><button class="site-btn" type="button" onclick="location.href='/member/mypage'">마이페이지</button></div>
 		</div>
 	</div>
 </section>
