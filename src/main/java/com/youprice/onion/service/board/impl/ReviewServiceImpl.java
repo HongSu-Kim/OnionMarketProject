@@ -137,7 +137,7 @@ public class ReviewServiceImpl implements ReviewService {
         return storeFileName;
     }
 
-    public double avgGrade(Long salesId) {
+    public Integer avgGrade(Long salesId) {
         return reviewRepository.gradeAverage(salesId);
     }
 
