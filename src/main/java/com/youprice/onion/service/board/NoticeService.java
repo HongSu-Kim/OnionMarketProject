@@ -23,11 +23,7 @@ public interface NoticeService {
     List<NoticeDTO> findTypeQna();
 
 
-    List<NoticeImage> storeImages(Long noticeId, List<MultipartFile> multipartFiles) throws IOException;
-    String storePath(MultipartFile multipartFile) throws IOException;
-
     int updateView(Long id);
-
     void imageDelete(Long imageId);
 
 }

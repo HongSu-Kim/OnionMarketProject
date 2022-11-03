@@ -11,6 +11,7 @@ import com.youprice.onion.repository.board.NoticeImageRepository;
 import com.youprice.onion.repository.board.NoticeRepository;
 import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.service.board.NoticeService;
+import com.youprice.onion.util.ImageUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,11 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,14 +36,14 @@ public class NoticeServiceImpl implements NoticeService {
 
         Member member = memberRepository.findById(form.getMemberId()).orElse(null);
         Notice notice = new Notice(member, form.getNoticeType(), form.getNoticeSubject(), form.getNoticeContent());
-
         Notice save = noticeRepository.save(notice);
-        Long noticeId = save.getId();
-        List<NoticeImage> list = storeImages(noticeId, noticeImageName);
-        for(NoticeImage noticeImage : list){
+
+        List<String> storeName = ImageUtil.store(noticeImageName, "notice");
+        for (String storeImageName : storeName) {
+            NoticeImage noticeImage = new NoticeImage(save, storeImageName);
             noticeImageRepository.save(noticeImage);
         }
-        return noticeId;
+        return save.getId();
     }
 
     @Override
@@ -53,21 +51,23 @@ public class NoticeServiceImpl implements NoticeService {
         return noticeRepository.findById(id).map(NoticeDTO::new).orElse(null);
     }
 
+    // 제목 검색
     public Page<NoticeDTO> searchNotice( String word, Pageable pageable){
         return noticeRepository.findAllByNoticeSubjectContainingAndNoticeTypeLike(word, NoticeType.NOTICE, pageable).map(NoticeDTO::new);
     }
 
+    // 수정 (새로운 이미지 추가)
     @Transactional
     public void update(Long noticeId, NoticeUpdateDTO noticeUpdateDTO) throws IOException {
         Notice notice = noticeRepository.findById(noticeId).orElseThrow(() -> new IllegalArgumentException("수정이 불가합니다"));
-        Long id = notice.getId();
-        Notice update = notice.updateNotice(id, noticeUpdateDTO);
+        notice.updateNotice(notice.getId(), noticeUpdateDTO);
 
-        List<NoticeImage> list = storeImages(noticeId, noticeUpdateDTO.getNoticeImageName());
-        for(NoticeImage noticeImage : list){
+        List<String> storeName = ImageUtil.store(noticeUpdateDTO.getNoticeImageName(), "notice");
+        for (String storeImageName : storeName) {
+            NoticeImage noticeImage = new NoticeImage(notice, storeImageName);
             noticeImageRepository.save(noticeImage);
         }
-        noticeRepository.save(update);
+        noticeRepository.save(notice);
     }
 
     @Transactional
@@ -75,50 +75,24 @@ public class NoticeServiceImpl implements NoticeService {
         noticeRepository.deleteById(noticeId);
     }
 
+    // 공지사항 list
     public Page<NoticeDTO> findTypeNotice(Pageable pageable){
-        return noticeRepository.findAllByNoticeTypeLikeOrderById(NoticeType.NOTICE, pageable).map(NoticeDTO::new);
+        return noticeRepository.findAllByNoticeTypeLikeOrderByIdDesc(NoticeType.NOTICE, pageable).map(NoticeDTO::new);
     }
+
+    // qna 리스트
     public List<NoticeDTO> findTypeQna(){
     return noticeRepository.findAllByNoticeTypeLikeOrderByIdDesc(NoticeType.QNA)
             .stream().map(NoticeDTO::new).collect(Collectors.toList());
     }
 
-    public String storePath(MultipartFile multipartFile) throws IOException{
-        String filePath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\notice";
-
-        if(multipartFile.isEmpty()){
-            return null;
-        }
-
-        String noticeImageName = multipartFile.getOriginalFilename();
-
-        String ext = noticeImageName.substring(noticeImageName.lastIndexOf(".")+1);
-        String uuid = UUID.randomUUID().toString();
-        noticeImageName = uuid + "." + ext;
-        multipartFile.transferTo(new File(filePath, noticeImageName));
-
-        return noticeImageName;
-    }
-
-    public List<NoticeImage> storeImages(Long id, List<MultipartFile> multipartFiles) throws IOException{
-
-        List<NoticeImage> storeImageList = new ArrayList<>();
-        Notice notice = noticeRepository.findById(id).orElse(null);
-        for (MultipartFile multipartFile : multipartFiles) {
-
-            if(!multipartFile.isEmpty()){
-                String noticeImageName = storePath(multipartFile); // uuid 반환
-                NoticeImage noticeImage = new NoticeImage(notice, noticeImageName);
-                storeImageList.add(noticeImage);
-            }
-        }
-        return storeImageList;
-    }
+    //조회수 상승
     @Transactional
     public int updateView(Long id){
         return noticeRepository.updateView(id);
-    } //조회수 상승
+    }
 
+    // 이미지 개별삭제
     @Transactional
     public void imageDelete(Long imageId){
         NoticeImage noticeImage = noticeImageRepository.findById(imageId).orElse(null);
