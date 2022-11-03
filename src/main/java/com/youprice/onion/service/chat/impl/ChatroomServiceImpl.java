@@ -45,6 +45,10 @@ public class ChatroomServiceImpl implements ChatroomService {
 				chatroomDTO.setChatDTO(new ChatDTO(chat));
 				return chat;
 			}).orElse(null);
+			
+			// 안 읽은 채팅 개수
+			int notRead = chatRepository.countNotRead(chatroom.getId(), memberId);
+			chatroomDTO.setNotRead(notRead);
 
 			return chatroomDTO;
 		}).collect(Collectors.toList());
@@ -52,13 +56,13 @@ public class ChatroomServiceImpl implements ChatroomService {
 
 	// 채팅방 
 	@Override
-	public ChatroomDTO getChatroomDTO(Long chatroomId, Pageable pageable) {
+	public ChatroomDTO getChatroomDTO(Long memberId, Long chatroomId, Pageable pageable) {
 		return chatroomRepository.findById(chatroomId).map(chatroom -> {
 			ChatroomDTO chatroomDTO = new ChatroomDTO(chatroom);
 
-//			// 채팅 내역 - pageable
-//			chatroomDTO.setSlice(chatRepository.findByChatroomId(chatroomId, pageable).map(ChatDTO::new));
-
+			// 채팅 읽음
+			chatRepository.readChat(memberId, chatroomId);
+			
 			// 채팅 내역 순서 반대로 반환
 			Slice<ChatDTO> chatDTOSlice = chatRepository.findByChatroomId(chatroomId, pageable).map(ChatDTO::new);
 			List<ChatDTO> chatDTOList = new ArrayList<>(chatDTOSlice.getContent());

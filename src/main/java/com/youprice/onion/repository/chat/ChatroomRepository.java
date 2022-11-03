@@ -26,5 +26,5 @@ public interface ChatroomRepository extends JpaRepository<Chatroom, Long> {
 	List<Chatroom> findAllByMemberIdOrderByModifyDate(@Param("memberId") Long memberId);
 
 	// 채팅방 - 채팅리스트
-	Optional<Chatroom> findByMemberIdAndProductId(Long memberId, Long id);
+	Optional<Chatroom> findByMemberIdAndProductId(Long memberId, Long productId);
 }

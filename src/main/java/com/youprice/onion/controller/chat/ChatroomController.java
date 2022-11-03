@@ -49,10 +49,10 @@ public class ChatroomController {
 	// 채팅 내역
 	@GetMapping("room/{chatroomId}")
 	@ResponseBody
-	public ResponseEntity<?> chatroomRoom(@PathVariable Long chatroomId,
+	public ResponseEntity<?> chatroomRoom(@LoginUser SessionDTO sessionDTO, @PathVariable Long chatroomId,
 										  @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
-		ChatroomDTO chatroomDTO = chatroomService.getChatroomDTO(chatroomId, pageable);
+		ChatroomDTO chatroomDTO = chatroomService.getChatroomDTO(sessionDTO.getId(), chatroomId, pageable);
 
 		return new ResponseEntity<>(chatroomDTO, HttpStatus.OK);
 	}
