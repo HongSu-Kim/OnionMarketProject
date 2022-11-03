@@ -9,7 +9,6 @@ import com.youprice.onion.repository.board.ReviewImageRepository;
 import com.youprice.onion.repository.board.ReviewRepository;
 import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.repository.order.OrderRepository;
-import com.youprice.onion.repository.product.ProductRepository;
 import com.youprice.onion.service.board.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -135,10 +134,6 @@ public class ReviewServiceImpl implements ReviewService {
         multipartFile.transferTo(new File(filePath, storeFileName));
 
         return storeFileName;
-    }
-
-    public Integer avgGrade(Long salesId) {
-        return reviewRepository.gradeAverage(salesId);
     }
 
 }
