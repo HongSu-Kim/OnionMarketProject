@@ -137,6 +137,7 @@
 						</c:choose>
 					</div>
 					<c:choose>
+<%--						<sec:authentication property="principal.sessionDTO.memberImageName"/>--%>
 						<c:when test="${productFindDTO.memberId eq userSession.id}">
 							<div class="product__item">
 								<div class="product__item__text">
