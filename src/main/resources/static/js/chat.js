@@ -333,13 +333,9 @@ stomp.connect({}, function () {
 			str += chatTemplate(chatDTO);
 
 			$('#foot').before(str)
-			$('#msgArea').scrollTop($('#msgArea')[0].scrollHeight)
-
-			// if (chatDTO.message == null && chatDTO.chatImageName == null) {
-			// 	setTimeout(function () {
-			// 		stomp.send("/pub/chat/image", {}, JSON.stringify(chatDTO));
-			// 	}, 3000)
-			// }
+			setTimeout(function () {
+				$('#msgArea').scrollTop($('#msgArea')[0].scrollHeight)
+			}, 50)
 		}
 	})
 
