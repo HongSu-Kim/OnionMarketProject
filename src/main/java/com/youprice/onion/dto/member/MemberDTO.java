@@ -29,7 +29,7 @@ public class MemberDTO {
     private String memberImageName;
     private int cash;
     private int point;
-    private int userGrade;
+    private Double userGrade;
     private int complaintCount;
 
     private boolean followCheck;

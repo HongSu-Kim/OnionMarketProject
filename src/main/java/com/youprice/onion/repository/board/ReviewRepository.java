@@ -11,5 +11,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     Page<Review> findAllBySalesIdOrderById(Long salesId, Pageable pageable);
     Page<Review> findAllByMemberIdOrderById(Long memberId, Pageable pageable);
     @Query(value = "select ROUND(AVG(NVL(r.grade, 0)),1) from Review r where r.salesId = ?1")
-    Integer gradeAverage(@RequestParam("salesId") Long salesId);
+    Double gradeAverage(@RequestParam("salesId") Long salesId);
 }

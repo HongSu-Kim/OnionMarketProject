@@ -15,7 +15,7 @@ public class FollowListDTO {
     private Long targetId;
     private String memberNickname;
     private String memberImageName;
-    private int userGrade;
+    private Double userGrade;
     private int complaintCount;
     private int followListSize;
 
