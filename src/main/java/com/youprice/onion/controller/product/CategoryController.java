@@ -28,7 +28,7 @@ public class CategoryController {
     @GetMapping("category") //카테고리조회
     public String CategoryAdd(Model model,CategoryAddDTO categoryAddDTO) {
 
-        List<CategoryFindDTO> category =categoryService.findTopCategory();
+        List<Category> category =categoryService.findTopCategory();
 
         model.addAttribute("category",category);
         model.addAttribute("categoryAddDTO",categoryAddDTO);
@@ -63,7 +63,7 @@ public class CategoryController {
     @GetMapping("categoryupdate") //카테고리 수정
     public String create(Model model) {
 
-        List<CategoryFindDTO> Topcategory =categoryService.findTopCategory();
+        List<Category> Topcategory =categoryService.findTopCategory();
 
 
         model.addAttribute("Topcategory",Topcategory);
