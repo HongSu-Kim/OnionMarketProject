@@ -46,8 +46,8 @@ public class Order {
     @OneToOne(mappedBy = "order")
     private Delivery delivery;
 
-    @OneToMany(mappedBy = "order")
-    private List<Review> reviewList = new ArrayList<>();
+    @OneToOne(mappedBy = "order")
+    private Review review;
 
 
 	// 주문 생성

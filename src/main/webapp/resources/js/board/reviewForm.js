@@ -8,6 +8,7 @@ function setDetailImage(event){
             img.setAttribute("style", "width: 145px; height: 140px;");
             document.querySelector("div#images_container").appendChild(img);
         };
+
         console.log(image);
         reader.readAsDataURL(image);
     }

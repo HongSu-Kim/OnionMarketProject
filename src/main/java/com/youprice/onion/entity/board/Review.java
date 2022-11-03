@@ -21,7 +21,7 @@ public class Review {
     @Column(name = "review_id")
     private Long id; // 리뷰번호 PK
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order; // 주문번호 FK
 
@@ -32,21 +32,16 @@ public class Review {
     private String reviewContent; // 리뷰내용
     private Integer grade; // 평점
     private LocalDate reviewDate; //등록일
-    private Long salesId; // 판매자
-
-    /*@OneToMany(mappedBy = "review")
-    private List<ReviewComment> reviewComment;*/
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
     private List<ReviewImage> reviewImageName = new ArrayList<>();
 
-    public Review(Order order, Member member, String reviewContent, Integer grade, Long salesId) {
+    public Review(Order order, Member member, String reviewContent, Integer grade) {
         this.order = order;
         this.member = member;
         this.reviewContent = reviewContent;
         this.grade = grade;
         this.reviewDate = LocalDate.now();
-        this.salesId = salesId;
     }
 
     public void updateReview(Long id, ReviewUpdateDTO form){

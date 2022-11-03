@@ -25,7 +25,6 @@
 
                     <input type="hidden" name="memberId" value="${orderDTO.memberDTO.id}">
                     <input type="hidden" name="orderId" value="${form == null ? orderDTO.orderId : form.orderId}">
-                    <input type="hidden" name="salesId" value="${salesDTO.id}">
 
                     <div class="row form-group">
                         <div class="col-md-6 mb-3 mb-md-0">
@@ -52,11 +51,10 @@
 
                     <!-- 사진 첨부 -->
                     <div class="shoping__cart__btns">
-                        <label class="site-btn" for="reviewImageName">사진 첨부하기</label>
+                        <label class="primary-btn cart-btn" for="reviewImageName">사진 첨부하기</label>
                         <input type="file" id="reviewImageName" name="reviewImageName" multiple="multiple"
                                style="display: none" onchange="setDetailImage(event);"/>
                         <div id="images_container"></div>
-
                     </div>
                     <p id="review_span"><span>상품과 무관한 사진/동영상을 첨부한 리뷰는 통보없이 삭제 및 적립 혜택이 회수됩니다.</span></p><br/>
 

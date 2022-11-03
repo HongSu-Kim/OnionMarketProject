@@ -122,7 +122,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                     .from(product)
                     .leftJoin(product.orderList, order).fetchJoin()
                     .leftJoin(order.delivery, delivery).fetchJoin()
-                    .leftJoin(order.reviewList, review).on(review.member.id.eq(memberId))
+                    .leftJoin(order.review, review).on(review.member.id.eq(memberId))
                     .where(
                             memberIdEq(memberId),
                             productProgressEq(productProgress)
@@ -136,7 +136,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                     .selectDistinct(product.count())
                     .from(product)
                     .leftJoin(product.orderList, order)
-                    .leftJoin(order.reviewList, review).on(review.member.id.eq(memberId))
+                    .leftJoin(order.review, review).on(review.member.id.eq(memberId))
                     .where(
                             memberIdEq(memberId),
                             productProgressEq(productProgress)

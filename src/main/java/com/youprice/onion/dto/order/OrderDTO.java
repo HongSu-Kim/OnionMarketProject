@@ -46,8 +46,8 @@ public class OrderDTO {
 		if (order.getDelivery() != null) {
 			deliveryDTO = new DeliveryDTO(order.getDelivery());
 		}
-		if (order.getReviewList().size() != 0) {
-			reviewId = order.getReviewList().get(0).getId();
+		if (order.getReview() != null) {
+			reviewId = order.getReview().getId();
 		}
 	}
 

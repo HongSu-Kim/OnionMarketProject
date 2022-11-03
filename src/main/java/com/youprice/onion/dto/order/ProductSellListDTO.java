@@ -45,8 +45,8 @@ public class ProductSellListDTO {
 		if (orderList.size() != 0 ) {
 			orderId = orderList.get(0).getId();
 		}
-		if (orderId != null && orderList.get(0).getReviewList().size() != 0) {
-			reviewId = orderList.get(0).getReviewList().get(0).getId();
+		if (orderId != null && orderList.get(0).getReview() != null) {
+			reviewId = orderList.get(0).getReview().getId();
 		}
 	}
 }

@@ -286,7 +286,6 @@ CREATE TABLE review (
 	review_content	    VARCHAR2(255)	NOT NULL,
 	grade	            NUMBER          NOT NULL,
 	review_date	        DATE            DEFAULT SYSDATE,
-    sales_id            NUMBER          NOT NULL,
 	CONSTRAINT PK_REVIEW PRIMARY KEY (review_id),
 	CONSTRAINT FK_REVIEW_ORDER_ID FOREIGN KEY (order_id) REFERENCES orders(order_id),
     CONSTRAINT FK_REVIEW_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id)
@@ -294,7 +293,6 @@ CREATE TABLE review (
 CREATE TABLE review_image(
     review_image_id     NUMBER          NOT NULL,
     review_id           NUMBER          NOT NULL,
-    original_file_name  VARCHAR2(255)   NOT NULL,
     store_image_name    VARCHAR2(255)   NOT NULL,
     CONSTRAINT PK_REVIEW_IMAGE PRIMARY KEY (review_image_id),
     CONSTRAINT FK_REVIEW_IMAGE_REVIEW_ID FOREIGN KEY (review_id) REFERENCES review(review_id)
