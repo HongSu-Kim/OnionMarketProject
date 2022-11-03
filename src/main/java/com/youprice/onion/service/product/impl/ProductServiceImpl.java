@@ -12,6 +12,7 @@ import com.youprice.onion.repository.order.OrderRepository;
 import com.youprice.onion.repository.product.*;
 import com.youprice.onion.service.order.OrderService;
 import com.youprice.onion.service.product.ProductService;
+import com.youprice.onion.util.ImageUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -73,18 +74,17 @@ public class ProductServiceImpl implements ProductService {
         Town town = townRepositoy.findById(productAddDTO.getTownId()).orElse(null);
         Category category = categoryRepository.findById(productAddDTO.getCategoryId()).orElse(null);
 
-        //대표이미지 설정
-        productAddDTO.setRepresentativeImage(getImageName()+fileList.get(0).getOriginalFilename());
+        //상품 경로에 파일 저장
+        List<String> productImageList = ImageUtil.store(fileList,"product");
 
-        // 상품 등록
+        //상품 DB등록
+        productAddDTO.setRepresentativeImage(productImageList.get(0));
         Product product = new Product(member,town,category,productAddDTO);
-
         Long productId = productRepository.save(product).getId();
 
-        // 상품 이미지 등록
-        //반복으로 꺼내면서 하나씩 저장
-        List<ProductImage> productImageList = productImages(productId,fileList);
-        for(ProductImage productImage : productImageList){
+        //상품이미지 DB등록
+        List<ProductImage> productImages = productImages(productId,productImageList);
+        for(ProductImage productImage : productImages){
             productImageRepository.save(productImage);
         }
 
@@ -104,31 +104,21 @@ public class ProductServiceImpl implements ProductService {
 
         Product product = productRepository.findById(productId).orElse(null);
 
-        //대표이미지 설정
-        updateDTO.setRepresentativeImage(getImageName()+updateDTO.getProductImageName().get(0).getOriginalFilename());
+        //상품 경로에 파일이 없으면 저장 있으면 삭제
+        List<ProductImage> productOldImageList = product.getProductImageList();
+        List<MultipartFile> productNewImageLIst = updateDTO.getProductImageName();
+        List<String> productImageList = ImageUtil.store(updateDTO.getProductImageName(),"product");
 
+        //상품 DB업데이트
+        updateDTO.setRepresentativeImage(productImageList.get(0));
         product.updateProduct(productId, town, category, updateDTO);
 
         Long updateProductId = productRepository.save(product).getId();
-        //상품 이미지 수정
-        //반복으로 지우고 저장
-        String path = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\product";
 
-        List<ProductImage> oldImageList = product.getProductImageList();
-
-        for (ProductImage oldImage : oldImageList) {
-
-            productImageRepository.delete(oldImage);
-
-            File file = new File(path+"\\"+oldImage.getProductImageName());
-            if (file.exists()) {
-                file.delete();
-            }
-        }
-        //조회한 값
-        List<ProductImage> imageList = productImages(productId, updateDTO.getProductImageName());
-        for(ProductImage newImage : imageList){
-            productImageRepository.save(newImage);
+        //상품이미지 DB등록
+        List<ProductImage> productImages = productImages(productId,productImageList);
+        for(ProductImage productImage : productImages){
+            productImageRepository.save(productImage);
         }
 
         return updateProductId;
@@ -211,21 +201,19 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findById(productId).map(ProductFindDTO::new).orElse(null);
     }
 
-    //이미지리스트
-    private List<ProductImage> productImages(Long productId, List<MultipartFile> fileList) throws Exception {
-        List<ProductImage> productImageList = new ArrayList<>();
+    //이미지리스트 저장
+    private List<ProductImage> productImages(Long productId, List<String> productImageList) throws Exception {
+        List<ProductImage> productImages = new ArrayList<>();
         Product product = productRepository.findById(productId).orElse(null);
 
-        for (MultipartFile file : fileList) {
+        for (String imageName: productImageList) {
 
-            if (!file.isEmpty()) {
-                String productImageName = saveFile(file);
-                ProductImage image = new ProductImage(product, productImageName);
+            ProductImage image = new ProductImage(product, imageName);
 
-                productImageList.add(image);
-            }
+            productImages.add(image);
+
         }
-        return productImageList;
+        return productImages;
     }
 
     // imageName 생성
