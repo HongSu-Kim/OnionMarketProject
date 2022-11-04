@@ -45,11 +45,12 @@
                                 <td style="text-align: center">
                                     <c:if test="${dto.status == 'wait'}">처리 대기</c:if>
                                     <c:if test="${dto.status == 'complete'}">처리 완료</c:if>
+                                    <c:if test="${dto.status == 'clear'}">재검토 대상</c:if>
                                 </td>
                                 <td style="text-align: center" class="modifyStatus">
                                     <c:choose>
                                         <c:when test="${dto.status == 'complete'}">
-                                            <a href="/complain/modify/${dto.complainId}?select=cancel">취소</a>
+                                            <a href="/complain/modify/${dto.complainId}?select=clear">취소</a>
                                         </c:when>
                                         <c:otherwise>
                                             <a href="/complain/modify/${dto.complainId}?select=complete">완료</a> /
@@ -63,10 +64,28 @@
                             </tr>
 
                             <tr>
-                                <td colspan="7" id="collapse${dto.complainId}" class="collapse acc" data-parent="#accordion">
-                                    <span class="complainContent">[ 신고 내용 ]
-                                        <p>: ${dto.complainContent}</p>
-                                    </span>
+                                <td colspan="7" id="collapse${dto.complainId}" class="collapse acc"
+                                    data-parent="#accordion">
+                                    <div>
+                                        <p>[ 신고 상품 ]</p>
+                                        <a style="font-weight: bold">${dto.productFindDTO.categoryParentName}/${dto.productFindDTO.categoryName}</a>
+                                    </div>
+
+                                    <div style="display: inline-block">
+                                        <div>- ${dto.productFindDTO.subject}</div>
+                                    </div>
+
+                                    <div style="margin-top: 20px;" class="d-flex">
+                                        <div><img src="/img/product/${dto.productFindDTO.representativeImage}"
+                                                  width="150" height="120" style="border-radius: 20px;"/>
+                                        </div>
+                                        <div style="margin-left: 30px">
+                                            <a style="font-weight: bold;">${dto.productFindDTO.content}</a><br/><br/>
+
+                                            [ 신고 내용 ]<br/>
+                                            <p>: ${dto.complainContent}</p>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         </c:forEach>
