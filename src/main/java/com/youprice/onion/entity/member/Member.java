@@ -130,8 +130,8 @@ public class Member {
         this.pwd = pwd;
     }
 
-    //회원 탈퇴
-    public void withdraw(Role role) {
+    //권한 변경
+    public void changeRole(Role role) {
         this.role = role;
     }
 
@@ -174,4 +174,5 @@ public class Member {
         this.userGrade = grade;
         return this.userGrade;
     }
+
 }
