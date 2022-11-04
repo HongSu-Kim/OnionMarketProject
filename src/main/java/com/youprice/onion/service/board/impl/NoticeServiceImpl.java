@@ -62,10 +62,12 @@ public class NoticeServiceImpl implements NoticeService {
         Notice notice = noticeRepository.findById(noticeId).orElseThrow(() -> new IllegalArgumentException("수정이 불가합니다"));
         notice.updateNotice(notice.getId(), noticeUpdateDTO);
 
-        List<String> storeName = ImageUtil.store(noticeUpdateDTO.getNoticeImageName(), "notice");
-        for (String storeImageName : storeName) {
-            NoticeImage noticeImage = new NoticeImage(notice, storeImageName);
-            noticeImageRepository.save(noticeImage);
+        if(noticeUpdateDTO.getNoticeImageName() != null) {
+            List<String> storeName = ImageUtil.store(noticeUpdateDTO.getNoticeImageName(), "notice");
+            for (String storeImageName : storeName) {
+                NoticeImage noticeImage = new NoticeImage(notice, storeImageName);
+                noticeImageRepository.save(noticeImage);
+            }
         }
         noticeRepository.save(notice);
     }
