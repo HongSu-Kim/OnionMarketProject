@@ -60,7 +60,14 @@ let printChat = function () {
 				targetId = chatroomDTO.memberDTO.id
 			page = chatroomDTO.page + 1
 			hasNext = chatroomDTO.hasNext
-			$('#title').html(chatroomDTO.productDTO.subject)
+
+			let title
+			if (chatroomDTO.productDTO.productId != 0) {
+				title = `<a href="/product/detail/${chatroomDTO.productDTO.productId}" style="color: white">${chatroomDTO.productDTO.subject}</a>`
+			} else {
+				title = `${chatroomDTO.productDTO.subject}`
+			}
+			$('#title').html(title)
 
 			let chatDTOList = chatroomDTO.chatDTOSlice.content
 			let date = ""
@@ -174,7 +181,13 @@ let openChatroomList = function () {
 				if (chatroomDTO.chatDTO == null) {
 					content = "메세지가 없습니다."
 				} else if (chatroomDTO.chatDTO.message != null) {
-					content = `<span id="chatMessage${chatroomDTO.chatroomId}">${chatroomDTO.chatDTO.message}</span>`
+
+					let message = chatroomDTO.chatDTO.message
+					if (message.indexOf("<br/>") > -1) {
+						message = message.substring(0, message.indexOf("<br/>"))
+					}
+
+					content = `<span id="chatMessage${chatroomDTO.chatroomId}">${message}</span>`
 				} else if (chatroomDTO.chatDTO.chatImageName != null) {
 					content = "사진"
 				} else {

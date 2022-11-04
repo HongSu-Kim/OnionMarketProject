@@ -7,6 +7,8 @@ import com.youprice.onion.entity.order.Order;
 import com.youprice.onion.entity.product.Category;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -23,11 +25,13 @@ public interface KeywordRepositoy extends JpaRepository<Keyword, Long> {
 
     List<Keyword> findAllByMemberId(Long memberId);
 
-  void  deleteById(Long keywordId );
+	void  deleteById(Long keywordId );
+
+	@Query("select k from Keyword k where :subject like concat('%', k.keywordName, '%')")
+	List<Keyword> findAllSearch(@Param("subject") String subject);
 
 
-
-    @Repository
+	@Repository
     @RequiredArgsConstructor
 
 

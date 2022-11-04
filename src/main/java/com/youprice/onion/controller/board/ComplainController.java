@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequiredArgsConstructor
@@ -35,7 +37,14 @@ public class ComplainController {
 
     @GetMapping("created/{productId}")
     public String complainForm(@PathVariable Long productId, Model model, @LoginUser SessionDTO sessionDTO,
-                               @ModelAttribute("form") ComplainFormDTO form){
+                               @ModelAttribute("form") ComplainFormDTO form, HttpServletResponse response) throws IOException {
+        List<ComplainDTO> list = complainService.checkComplain(sessionDTO.getId());
+        for(ComplainDTO complainDTO : list){
+            if(Objects.equals(complainDTO.getProductId(), productId)){
+                return AlertRedirect.warningMessage(response, "/product/detail/" + productId, "이미 신고한 게시물입니다.");
+            }
+        }
+
         if(sessionDTO != null){
             MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
             ProductDTO productDTO = productService.getProductDTO(productId);
@@ -99,6 +108,8 @@ public class ComplainController {
             return AlertRedirect.warningMessage(response, "/complain/list", "신고를 처리하였습니다.");
         } else if (result.equals("cancle")) {
             return AlertRedirect.warningMessage(response, "/complain/list", "접수를 취소하였습니다.");
+        } else if(result.equals("clear")){
+            return AlertRedirect.warningMessage(response, "/complain/list", "신고 처리를 취소하였습니다.");
         }
         return "redirect:/complain/list";
     }

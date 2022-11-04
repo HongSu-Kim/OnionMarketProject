@@ -156,8 +156,12 @@ public class Product {
 	}
 
     // 상품 신고 처리
-    public Product blindImage() {
-        this.representativeImage = "blindImage.png";
+    public Product blindImage(String productImageName) {
+        if(productImageName == null) {
+            this.representativeImage = "blindImage.png";
+        } else {
+            this.representativeImage = productImageName;
+        }
         return this;
     }
     

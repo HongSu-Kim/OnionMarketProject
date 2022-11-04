@@ -4,10 +4,14 @@ import com.youprice.onion.dto.chat.ChatDTO;
 import com.youprice.onion.dto.chat.ChatImageDTO;
 import com.youprice.onion.entity.chat.Chat;
 import com.youprice.onion.entity.chat.Chatroom;
+import com.youprice.onion.entity.member.Keyword;
 import com.youprice.onion.entity.member.Member;
+import com.youprice.onion.entity.product.Product;
 import com.youprice.onion.repository.chat.ChatRepository;
 import com.youprice.onion.repository.chat.ChatroomRepository;
+import com.youprice.onion.repository.member.KeywordRepositoy;
 import com.youprice.onion.repository.member.MemberRepository;
+import com.youprice.onion.repository.product.ProductRepository;
 import com.youprice.onion.service.chat.ChatService;
 import com.youprice.onion.util.ImageUtil;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +33,8 @@ public class ChatServiceImpl implements ChatService {
 	private final ChatRepository chatRepository;
 	private final ChatroomRepository chatroomRepository;
     private final MemberRepository memberRepository;
+	private final ProductRepository productRepository;
+	private final KeywordRepositoy keywordRepositoy;
 
 	// 메세지 저장
 	@Override
@@ -62,9 +70,43 @@ public class ChatServiceImpl implements ChatService {
 		
 		return chatDTO;
 	}
-
+	
+	// 채팅 읽음 
 	@Override
 	public void readChat(Long memberId, Long chatroomId) {
 		chatRepository.readChat(memberId, chatroomId);
+	}
+
+	// 키워드 알림
+	@Override
+	public List<ChatDTO> alertChat(Long productId, String subject) {
+		List<ChatDTO> chatDTOList = new ArrayList<>();
+
+		// 알림보낼 키워드
+		List<Keyword> keywordList = keywordRepositoy.findAllSearch(subject);
+
+		for (Keyword keyword : keywordList) {
+
+			Member member = memberRepository.findById(keyword.getMember().getId()).orElse(null);
+			Product product = productRepository.findById(0L).orElse(null);
+
+			// 채팅방 없으면 생성
+			Chatroom chatroom = chatroomRepository.findByMemberIdAndProductMemberId(member.getId(), 0L).orElseGet(() -> {
+				Chatroom chatroom1 = new Chatroom(member, product);
+				return chatroomRepository.save(chatroom1);
+			});
+
+			// 메세지 저장
+			String message = "키워드 : " + keyword.getKeywordName() + "<br/>" +
+					"<a href='/product/detail/" + productId + "'>" + subject + "</a>";
+			Chat chat = new Chat(chatroom, product.getMember(), message, null);
+
+			ChatDTO chatDTO = new ChatDTO(chatRepository.save(chat));
+			chatDTO.setTargetId(member.getId());
+
+			chatDTOList.add(chatDTO);
+		}
+		
+		return chatDTOList;
 	}
 }
