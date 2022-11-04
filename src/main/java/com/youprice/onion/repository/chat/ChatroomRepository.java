@@ -27,4 +27,6 @@ public interface ChatroomRepository extends JpaRepository<Chatroom, Long> {
 
 	// 채팅방 - 채팅리스트
 	Optional<Chatroom> findByMemberIdAndProductId(Long memberId, Long productId);
+
+	Optional<Chatroom> findByMemberIdAndProductMemberId(Long memberId, Long productMemberId);
 }
