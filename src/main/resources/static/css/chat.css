@@ -292,6 +292,7 @@
 }
 .chat-room {
     overflow: hidden;
+    height: 90px;
 }
 .chat-room > .msg-avatar img {
     width:45px;
@@ -302,12 +303,32 @@
     width:15%;
 }
 .cr-room-text {
-     background: white;
-     padding: 10px 15px 10px 15px;
-     color: #666;
-     max-width: 75%;
-     width: 100%;
-     margin: 10px 0 10px 50px;
-     position: relative;
-     border-radius: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background: white;
+    padding: 10px 15px 10px 15px;
+    color: #666;
+    max-width: 75%;
+    width: 100%;
+    margin: 10px 0 10px 50px;
+    position: relative;
+    border-radius: 30px;
  }
+
+.chat-room > .not-read {
+    height: 25px;
+    width: 25px;
+    background: #90C8AC;
+    font-size: 15px;
+    padding-top: 5px;
+    color: #ffffff;
+    line-height: 13px;
+    text-align: center;
+    font-weight: 700;
+    display: inline-block;
+    border-radius: 50%;
+    position: relative;
+    left: 285px;
+    bottom: 60px;
+}

@@ -1,7 +1,9 @@
 package com.youprice.onion.controller.member;
 
-import com.youprice.onion.dto.member.*;
-import com.youprice.onion.repository.member.MemberRepository;
+import com.youprice.onion.dto.member.MemberDTO;
+import com.youprice.onion.dto.member.MemberFindDTO;
+import com.youprice.onion.dto.member.MemberJoinDTO;
+import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.security.auth.CustomUserDetails;
 import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.security.validator.CustomValidators;
@@ -13,9 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,13 +26,11 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -49,7 +47,6 @@ public class MemberController {
     private final CustomValidators.EmailValidator emailValidator;
     private final ProhibitionKeywordService prohibitionKeywordService;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
 
     //회원가입 시 유효성 검증에 필요
     @InitBinder
@@ -57,17 +54,6 @@ public class MemberController {
         binder.addValidators(userIdValidator);
         binder.addValidators(nicknameValidator);
         binder.addValidators(emailValidator);
-    }
-
-    //메인 페이지
-    @GetMapping("/")
-    public String homeView1() {
-        return "member/home";
-    }
-
-    @GetMapping("/home")
-    public String homeView2() {
-        return "member/home";
     }
 
     //회원가입 페이지
@@ -142,13 +128,12 @@ public class MemberController {
     @PostMapping("modifyProfileImg")
     public String modifyProfileImg(@LoginUser SessionDTO sessionDTO, MultipartFile profileImg) throws IOException {
         memberService.modifyProfileImg(sessionDTO.getId(), profileImg);
-
-/*      //아래의 코드 적용 후 프로필 사진 변경 시, 로그아웃 되는 문제 발생
+/*
+         //아래의 코드 적용 후 프로필 사진 변경 시, 로그아웃 되는 문제 발생
         //변경된 세션 등록
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(sessionDTO.getUserId(), sessionDTO.getPwd()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-*/
-
+        */
         return "redirect:/member/mypage";
     }
 
@@ -178,9 +163,7 @@ public class MemberController {
     public String mypageView(@LoginUser SessionDTO sessionDTO,  Model model) {
         MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
 
-        if (sessionDTO != null) {
-            model.addAttribute("memberDTO", memberDTO);
-        }
+        model.addAttribute("memberDTO", memberDTO);
         return "member/mypage";
     }
 

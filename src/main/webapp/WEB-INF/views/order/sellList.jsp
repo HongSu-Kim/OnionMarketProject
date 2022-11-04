@@ -71,14 +71,14 @@
 												<c:if test="${productDTO.productProgress eq 'TRADINGS'}">
 													<a class="primary-btn progressUpdate">판매완료</a>
 												</c:if>
-												<c:if test="${productDTO.productProgress eq 'SOLDOUT'}">
+												<%--<c:if test="${productDTO.productProgress eq 'SOLDOUT'}">
 													<c:if test="${empty productDTO.reviewId}">
 														<a href="/review/created/${productDTO.orderId}" class="primary-btn">판매후기등록</a>
 													</c:if>
 													<c:if test="${!empty productDTO.reviewId}">
 														<a href="/review/update/${sessionDTO.id}/${productDTO.reviewId}" class="primary-btn">판매후기수정</a>
 													</c:if>
-												</c:if>
+												</c:if>--%>
 											</p>
 										</td>
 									</tr>
@@ -130,9 +130,6 @@
 	<div id="member-modal">
 
 		<div class="member-box" id="memberList">
-			<input type="hidden" id="memberId" value="${sessionDTO.id}"/>
-			<input type="hidden" id="memberNickname" value="${sessionDTO.nickname}"/>
-
 			<div class="chat-box-header">
 				구매자를 선택해주세요
 				<span class="chat-box-toggle right member-close-btn"><i class="material-icons">close</i></span>

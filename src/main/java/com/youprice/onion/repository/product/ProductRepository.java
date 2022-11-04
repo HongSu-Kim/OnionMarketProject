@@ -52,7 +52,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     // 판매 상품 리스트
 //	@EntityGraph(attributePaths = { "orderList.delivery" })
-//	Page<Product> findByMemberId(Long memberId, Pageable pageable);
+//	Page<Product> findByMemberIdAndProductProgress(Long memberId, ProductProgress productProgress, Pageable pageable);
 
     //개인 판매 상품 리스트
     Page<Product> findAllByMemberIdAndProductProgressIn(Long memberId, ProductProgress[] productProgressList, Pageable pageable);
@@ -118,14 +118,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 
         // 판매 상품 리스트
-        public Page<Product> findByMemberId(Long memberId, ProductProgress productProgress, Pageable pageable) {
+        public Page<Product> findByMemberIdAndProductProgress(Long memberId, ProductProgress productProgress, Pageable pageable) {
 
             List<Product> content = queryFactory
                     .selectDistinct(product)
                     .from(product)
                     .leftJoin(product.orderList, order).fetchJoin()
                     .leftJoin(order.delivery, delivery).fetchJoin()
-                    .leftJoin(order.reviewList, review).on(review.member.id.eq(memberId))
                     .where(
                             memberIdEq(memberId),
                             productProgressEq(productProgress)
@@ -138,8 +137,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             Long count = queryFactory
                     .selectDistinct(product.count())
                     .from(product)
-                    .leftJoin(product.orderList, order)
-                    .leftJoin(order.reviewList, review).on(review.member.id.eq(memberId))
                     .where(
                             memberIdEq(memberId),
                             productProgressEq(productProgress)

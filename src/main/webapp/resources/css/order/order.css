@@ -54,7 +54,7 @@ td a.primary-btn,td a.primary-btn.cart-btn {
     text-transform: uppercase;
     display: inline-block;
     padding: 13px 30px 12px;
-    background: #47cd65;
+    background: #90C8AC;
     border: none;
 }
 
@@ -130,8 +130,8 @@ span.comment {
 }
 
 .product__wish__item li:hover a {
-    background: #47cd65;
-    border-color: #47cd65;
+    background: #90C8AC;
+    border-color: #90C8AC;
 }
 
 .product__wish__item li:hover a i {
@@ -140,8 +140,8 @@ span.comment {
 }
 
 .product__wish__item li.true a {
-    background: #47cd65;
-    border-color: #47cd65;
+    background: #90C8AC;
+    border-color: #90C8AC;
 }
 
 .product__wish__item li.true a i {
@@ -172,10 +172,10 @@ span.comment {
     right: 0;
     height: 4px;
     width: 170px;
-    background: #47cd65;
+    background: #90C8AC;
     content: "";
     margin: 0 auto;
 }
 .section-hr {
-    background-color: #47cd65; height: 1px
+    background-color: #90C8AC; height: 1px
 }

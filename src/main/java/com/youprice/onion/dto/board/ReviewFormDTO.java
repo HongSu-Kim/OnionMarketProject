@@ -15,5 +15,4 @@ public class ReviewFormDTO {
     private String reviewContent;
     @Min(value = 1, message = "별점을 평가해주세요!")
     private int grade;
-    private Long salesId;
 }

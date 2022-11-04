@@ -69,8 +69,8 @@
             <!-- list띄우기 -->
             <tbody>
             <c:choose>
-                <c:when test="${questionlist.size == 0}">
-                    회원님의 문의내역이 존재하지 않습니다.
+                <c:when test="${questionlist.getContent().size() == 0}">
+                    <tr><td colspan="5">회원님의 문의내역이 존재하지 않습니다.</td></tr>
                 </c:when>
 
                 <c:otherwise>
