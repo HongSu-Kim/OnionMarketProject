@@ -1,11 +1,13 @@
 package com.youprice.onion.controller.product;
 
+import com.youprice.onion.dto.chat.ChatDTO;
 import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.product.*;
 import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.entity.product.ProductProgress;
 import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.service.board.ReviewService;
+import com.youprice.onion.service.chat.ChatService;
 import com.youprice.onion.service.member.MemberService;
 import com.youprice.onion.service.member.ProhibitionKeywordService;
 import com.youprice.onion.service.product.*;
@@ -17,6 +19,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -44,6 +47,8 @@ public class ProductController {
     private final BiddingService biddingService;
     private final MemberService memberService;
     private final ProhibitionKeywordService prohibitionKeywordService;
+	private final ChatService chatService;
+	private final SimpMessagingTemplate template;
 
     @GetMapping("add")//상픔 등록 주소
     public String add(Model model, @LoginUser SessionDTO userSession, HttpServletResponse response) throws IOException {
@@ -91,7 +96,14 @@ public class ProductController {
         /*상품 등록*/
         Long productId = productService.addProduct(productAddDTO,fileList);
 
-        model.addAttribute("productId",productId);
+		// 키워드 알림
+		List<ChatDTO> chatDTOList = chatService.alertChat(productId, productAddDTO.getSubject());
+		for (ChatDTO chatDTO : chatDTOList) {
+			template.convertAndSend("/sub/chat/" + chatDTO.getTargetId(), chatDTO);
+		}
+
+
+		model.addAttribute("productId",productId);
 
         return "redirect:/product/detail/"+productId;//상품 상세페이지로 이동
     }
