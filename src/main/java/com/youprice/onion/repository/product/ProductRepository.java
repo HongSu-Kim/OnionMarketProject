@@ -12,6 +12,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.youprice.onion.dto.product.ProductListDTO;
 import com.youprice.onion.dto.product.SearchRequirements;
 import com.youprice.onion.entity.product.Product;
 import com.youprice.onion.entity.product.ProductProgress;
@@ -89,7 +90,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                             productProgressEq(searchRequirements.getProductProgress()),
                             blindStatusEq(searchRequirements.getBlindStatus()),
                             searchValueContains(searchRequirements.getSearchValue()),
-                            coordinateIdListIn(searchRequirements.getCoordinateIdList())
+                            coordinateIdListIn(searchRequirements.getCoordinateIdList()),
+                            categoryIdListIn(searchRequirements.getCategoryIdList())
                     )
                     .orderBy(orderBy(searchRequirements.getPageable()))
                     .offset(searchRequirements.getPageable().getOffset())
@@ -106,7 +108,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                             productProgressEq(searchRequirements.getProductProgress()),
                             blindStatusEq(searchRequirements.getBlindStatus()),
                             searchValueContains(searchRequirements.getSearchValue()),
-                            coordinateIdListIn(searchRequirements.getCoordinateIdList())
+                            coordinateIdListIn(searchRequirements.getCoordinateIdList()),
+                            categoryIdListIn(searchRequirements.getCategoryIdList())
                     )
                     .fetchOne();
 
@@ -182,6 +185,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
         private BooleanExpression coordinateIdListIn(List<Long> coordinateIdList) {
             return coordinateIdList == null || coordinateIdList.size() == 0 ? null : product.town.coordinate.id.in(coordinateIdList);
+        }
+
+        private BooleanExpression categoryIdListIn(List<Long> categoryIdList) {
+            return categoryIdList == null || categoryIdList.size() == 0 ? null : product.category.id.in(categoryIdList);
         }
 
     }
