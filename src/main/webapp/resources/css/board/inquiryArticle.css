@@ -1,5 +1,5 @@
 .n-section-title {
-    border-bottom: 3px solid #47cd65;
+    border-bottom: 3px solid #90C8AC;
     padding-bottom: 10px;
     margin-top: 200px;
     line-height: 1.5;
@@ -84,7 +84,7 @@
     font-weight: bold;
 }
 .qna-answer-admin > span{
-    border-bottom: 2px solid #47cd65;
+    border-bottom: 2px solid #90C8AC;
     font-weight: bold;
 }
 .qna-date{
@@ -92,7 +92,7 @@
 }
 .site-btn-answer{
     margin-right: 10px;
-    background-color: #47cd65;
+    background-color: #90C8AC;
     border: 0;
     outline: 0;
     width: 100px;
@@ -102,7 +102,7 @@
     color: white;
 }
 .adminbutton{
-    background-color: #47cd65;
+    background-color: #90C8AC;
     cursor: pointer;
     border: 0;
     outline: 0;

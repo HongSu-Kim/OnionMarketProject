@@ -16,6 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class ComplainServiceImpl implements ComplainService {
@@ -35,8 +38,15 @@ public class ComplainServiceImpl implements ComplainService {
         return complainRepository.findById(save.getId()).map(ComplainDTO::new).orElse(null);
     }
 
+    // 중복검사 (회원은 특정 상품당 1번만 신고)
+    public List<ComplainDTO> checkComplain(Long memberId){
+        return complainRepository.findAllByMemberId(memberId)
+                .stream().map(ComplainDTO::new).collect(Collectors.toList());
+    }
+
+
     @Transactional
-    public String modifyStatus(Long complainId, String select){
+    public String modifyStatus(Long complainId, String select) {
         Complain complain = complainRepository.findById(complainId).orElse(null);
         Member member = complain.getProduct().getMember();
 
@@ -46,18 +56,36 @@ public class ComplainServiceImpl implements ComplainService {
             member.addComplainCount(); // 처리완료가 되면 신고대상 회원의 complainCount 증가
             memberRepository.save(member);
 
-            if(member.getComplaintCount() >= 1){
+            if (member.getComplaintCount() >= 1) {
                 Product product = productRepository.findById(complain.getProduct().getId()).orElse(null);
                 product.progressUpdate(ProductProgress.BLIND);
-                product.blindImage();
+                product.blindImage(null);
                 productRepository.save(product);
             }
             return select;
-        } else{ // 접수취소되면 삭제
+
+        } else if (select.equals("cancel")) { // 접수취소되면 삭제
             complain.updateStatus(select);
             complainRepository.delete(complain);
             return select;
+
+        } else if (select.equals("clear")) { // 처리된 신고를 다시 취소
+            complain.updateStatus(select);
+            complainRepository.save(complain);
+            member.ComplainCancel();
+            memberRepository.save(member);
+
+            if (member.getComplaintCount() == 0) {
+                Product product = productRepository.findById(complain.getProduct().getId()).orElse(null);
+                product.progressUpdate(ProductProgress.SALESON);
+
+                String productImageName = product.getProductImageList().get(0).getProductImageName();
+                product.blindImage(productImageName);
+                productRepository.save(product);
+            }
+            return select;
         }
+        return select;
     }
 
     @Override

@@ -163,6 +163,11 @@ public class Member {
         this.complaintCount += 1;
         return this;
     }
+    // 신고 취소
+    public Member ComplainCancel(){
+        this.complaintCount -= 1;
+        return this;
+    }
 
     // 평점
     public Double updateGrade(Double grade){
