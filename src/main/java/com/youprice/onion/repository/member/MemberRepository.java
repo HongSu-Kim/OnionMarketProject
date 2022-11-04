@@ -1,4 +1,5 @@
 package com.youprice.onion.repository.member;
+
 import com.youprice.onion.entity.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,11 +24,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     boolean existsByUserId(String userId); //해당 데이터가 존재할 경우 true, 존재하지 않을 경우 false 반환
 
-    boolean existsById(Long id);
-
     boolean existsByNickname(String nickname);
 
     boolean existsByEmail(String email);
+
+	boolean existsById(Long targetId);
 
 	@Query("select distinct m " +
 			"from Member m " +

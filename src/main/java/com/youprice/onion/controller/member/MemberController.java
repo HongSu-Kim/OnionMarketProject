@@ -4,6 +4,7 @@ import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.dto.member.MemberFindDTO;
 import com.youprice.onion.dto.member.MemberJoinDTO;
 import com.youprice.onion.dto.member.SessionDTO;
+import com.youprice.onion.entity.member.Role;
 import com.youprice.onion.security.auth.CustomUserDetails;
 import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.security.validator.CustomValidators;
@@ -11,13 +12,18 @@ import com.youprice.onion.service.member.MemberService;
 import com.youprice.onion.service.member.ProhibitionKeywordService;
 import com.youprice.onion.util.AlertRedirect;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
@@ -37,6 +43,7 @@ import java.util.Objects;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("member")
 public class MemberController {
 
@@ -270,4 +277,57 @@ public class MemberController {
         return "member/denied";
     }
 
+    //양파페이 충전 페이지
+    @Transactional
+    @GetMapping("/cash/{memberId}")
+    public String myCash(@LoginUser SessionDTO sessionDTO, @PathVariable("memberId") Long memberId, Model model) {
+        if (sessionDTO == null) return "redirect:/member/login";
+
+        MemberDTO memberDTO = memberService.getMemberDTO(memberId);
+        model.addAttribute("memberDTO", memberDTO);
+
+        return "member/cashCharge";
+    }
+
+    @PostMapping("/charge/cash")
+    @ResponseBody
+    public String chargeCash(@LoginUser SessionDTO sessionDTO, @RequestParam int amount) {
+        MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
+        memberService.chargeCash(memberDTO.getId(), amount);
+        log.error(String.valueOf(amount));
+        return "/member/mypage";
+    }
+
+    //관리자권한 - 회원관리 페이지
+    @GetMapping("/manageMember")
+    public String memberList(@LoginUser SessionDTO sessionDTO, Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable, HttpServletResponse response) throws IOException {
+        if (!sessionDTO.getRole().equals(Role.ADMIN))
+            return AlertRedirect.warningMessage(response, "/", "관리자만 접근 가능한 페이지 입니다.");
+
+        Page<MemberDTO> page = memberService.getMemberList(pageable);
+
+        model.addAttribute("page", page);
+        return "member/manageMember.admin";
+    }
+
+    //계정 잠금
+    @GetMapping("addLock/{targetId}")
+    public String addLockGet(@PathVariable Long targetId, HttpServletResponse response) throws IOException {
+
+        try {
+            memberService.accountLock(targetId);
+        } catch (Exception e) {
+            return AlertRedirect.warningMessage(response, "/", "회원이 존재하지 않습니다.");
+        }
+
+        return AlertRedirect.warningMessage(response, "/member/manageMember/", "해당 회원의 계정을 일시 잠금했습니다.");
+    }
+
+    //계정 잠금 해제
+    @GetMapping("removeLock/{targetId}")
+    public String removeLockGet(@PathVariable Long targetId, HttpServletResponse response) throws IOException {
+        memberService.removeLock(targetId);
+
+        return AlertRedirect.warningMessage(response, "/member/manageMember/", "해당 회원의 계정을 잠금 해제하였습니다.");
+    }
 }

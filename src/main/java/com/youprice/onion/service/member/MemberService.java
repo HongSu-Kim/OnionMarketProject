@@ -1,6 +1,10 @@
 package com.youprice.onion.service.member;
 
-import com.youprice.onion.dto.member.*;
+import com.youprice.onion.dto.member.MemberDTO;
+import com.youprice.onion.dto.member.MemberJoinDTO;
+import com.youprice.onion.dto.member.MemberModifyDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.validation.Errors;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,7 +37,13 @@ public interface MemberService {
 
 	List<MemberDTO> getChatMemberList(Long memberId);
 
-//    public void profileImageUpdate(Long memberId, MemberModifyDTO memberModifyDTO, MultipartFile memberImageName);
-
     Double avgGrade(Long salesId);
+
+    void chargeCash(Long memberId, int amount);
+
+    Page<MemberDTO> getMemberList(Pageable pageable);
+
+    void accountLock(Long targetId);
+
+    void removeLock(Long targetId);
 }

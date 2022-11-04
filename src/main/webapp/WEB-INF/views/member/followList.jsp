@@ -15,8 +15,8 @@
 							<tr>
 								<th>프로필 사진</th>
 								<th>닉네임</th>
-								<th>평점</th>
 								<th>판매중인 물품</th>
+								<th>평점</th>
 								<th>팔로우 상태</th>
 							</tr>
 							</thead>
@@ -36,8 +36,8 @@
 										<img src="/img/member/${followDTO.targetDTO.memberImageName}" class="list-img profile">
 									</td>
 									<td><a href="/member/profile/${followDTO.targetDTO.id}">${followDTO.targetDTO.nickname}</a></td>
-									<td>${followDTO.targetDTO.userGrade}</td>
 									<td><a href="/product/personalList/${followDTO.targetDTO.id}">보러 가기</a></td>
+									<td>${followDTO.targetDTO.userGrade}</td>
 									<td>
 										<c:if test="${!followDTO.targetDTO.followCheck}">
 											<button type="button" class="site-btn-ing" onclick="location.href='/follow/removeFollow/${followDTO.targetDTO.id}'">팔로잉</button>

@@ -123,6 +123,17 @@ public class ProductServiceImpl implements ProductService {
         //새로 저장해야할 리스트
         List<MultipartFile> addImageList = new ArrayList<>();
 
+        for(ProductImage oldImage : oldImageList) {
+
+            for(Long newImageId : updateDTO.getNewImageIdList()) {
+
+                if(!oldImageList.contains(newImageId)) {
+                    ImageUtil.delete(oldImage.getProductImageName(),"product");
+                }
+
+            }
+        }
+
         if(CollectionUtils.isEmpty(oldImageList)) {//DB에 없을 때
             if(!CollectionUtils.isEmpty(newImageList)) {//전달해야할 파일이 하나라도 있을 시
                 for(MultipartFile multipartFile : newImageList)
@@ -136,13 +147,13 @@ public class ProductServiceImpl implements ProductService {
                     ImageUtil.delete(oldImage.getProductImageName(), "product");
             } else {//전달 된 파일이 하나 이상일 경우
 
-                //DB에 저장되어 있는 파일 원본 목록
+                //DB에 저장되어 있는 파일 목록
                 List<String> originalNameList = new ArrayList<>();
 
                 for (ProductImage oldImage : oldImageList) {
                     ProductImage productImage = productImageRepository.findById(oldImage.getId()).orElse(null);
                     //저장된 파일 중 전달 된게 없으면 삭제
-                    if (!newImageList.contains(productImage.getProductImageName())) {
+                    if (!newImageList.contains(productImage.getId())) {
                         ImageUtil.delete(oldImage.getProductImageName(), "product");
                     } else {//아니면 DB에 추가
                         originalNameList.add(productImage.getProductImageName());
