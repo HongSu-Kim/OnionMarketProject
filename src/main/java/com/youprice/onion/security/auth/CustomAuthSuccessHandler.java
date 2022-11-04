@@ -21,8 +21,20 @@ public class CustomAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+/*
+        //기본 url 설정, savedRequest가 null일 경우 설정한 페이지로 보내기 위함이다.
+        setDefaultTargetUrl("/");
 
+        // 사용자가 인증을 시도하기 이전에 접근을 시도했던 자원이 없을경우 savedRequest는 null로 반환된다.
+        SavedRequest savedRequest = requestCache.getRequest(request, response);
+        if(savedRequest != null) {
+            String targetUrl = savedRequest.getRedirectUrl();
+            redirectStrategy.sendRedirect(request, response, targetUrl);
+        }else{
+            redirectStrategy.sendRedirect(request, response, getDefaultTargetUrl());
+        }
+        */
         String url;
         if (request.getHeader("Referer").indexOf("/member") > 0) {
             url = "/";
