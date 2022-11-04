@@ -1,6 +1,7 @@
 package com.youprice.onion.dto.board;
 
 import com.youprice.onion.dto.member.MemberDTO;
+import com.youprice.onion.dto.product.ProductFindDTO;
 import com.youprice.onion.entity.board.Complain;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,7 @@ public class ComplainDTO {
 
     private MemberDTO memberDTO;
     private MemberDTO targetDTO;
+    private ProductFindDTO productFindDTO;
 
     public ComplainDTO(Complain complain){
         this.complainId = complain.getId();
@@ -30,5 +32,6 @@ public class ComplainDTO {
         this.status = complain.getStatus();
         this.memberDTO = new MemberDTO(complain.getMember());
         this.targetDTO = new MemberDTO(complain.getProduct().getMember());
+        this.productFindDTO = new ProductFindDTO(complain.getProduct());
     }
 }
