@@ -250,19 +250,6 @@
 </html>
 
 
-
-
-
-
-
-<%--<form:form action="mykeyword" method="get">--%>
-
-<%--&lt;%&ndash;    <input type="hidden" name="userId" value="asd">&ndash;%&gt;--%>
-
-<%--    <input type="submit" value="MY키워드확인" />--%>
-<%--</form:form>--%>
-
-
 <br/><br/>
 
 
