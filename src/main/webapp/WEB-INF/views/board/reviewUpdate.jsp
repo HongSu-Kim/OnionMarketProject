@@ -28,29 +28,36 @@
                         <div class="col-md-12">
                             <label class="text-black" style="font-size: 22pt; font-weight: bold"
                                    for="message">Content</label>
-                            <textarea name="reviewContent" id="message" cols="30" rows="7" class="form-control" placeholder="내용을 입력하세요">${reviewDTO.reviewContent}</textarea>
+                            <textarea name="reviewContent" id="message" cols="30" rows="7" class="form-control"
+                                      placeholder="내용을 입력하세요">${reviewDTO.reviewContent}</textarea>
                             <form:errors path="reviewContent" cssClass="field-error"/>
                         </div>
                     </div>
 
                     <!-- 사진 첨부 -->
-                    <label class="fileButton" for="reviewImageName"><p id="fileFont">사진/동영상 첨부하기</p></label>
-                    <input type="file" id="reviewImageName" name="reviewImageName" multiple="multiple"
-                           onchange="setDetailImage(event);" style="display: none"/>
-                        <!-- 사진 미리보기 -->
-                            <div style="display: flex">
-                                <div id="images_container"></div>
-                                <c:forEach items="${reviewDTO.reviewImageList}" var="reviewImageDTO">
-                                    <div>
-                                        <img src="/img/review/${reviewImageDTO.storeImageName}" width="130" height="130"/>
-                                        <button type="button" class="site-btn"
-                                                style="width: 130px; height: 40px; background-color: #6c757d;"
-                                                onclick="location.href='/review/images/delete/${reviewDTO.memberId}/${reviewImageDTO.id}/${reviewDTO.reviewId}'">
-                                            삭제
-                                        </button>
-                                    </div>
-                                </c:forEach>
+                    <div>
+                        <label class="fileButton" for="reviewImageName"><p id="fileFont">사진/동영상 첨부하기</p></label>
+                        <input type="file" id="reviewImageName" name="reviewImageName" multiple="multiple"
+                               onchange="fileInfo(this)" style="display: none"/>
+                        <div id="preview"></div>
+                    </div>
+
+
+                    <!-- 기존 사진 보기 - 삭제 -->
+                    <div style="display: flex">
+                        <div id="images_container"></div>
+                        <c:forEach items="${reviewDTO.reviewImageList}" var="reviewImageDTO">
+                            <div style="margin-right: 5px">
+                                <img src="/img/review/${reviewImageDTO.storeImageName}" width="130" height="130"
+                                     style="border-top-left-radius: 15px; border-top-right-radius: 15px"/><br/>
+                                <button type="button" class="site-btn"
+                                        style="width: 130px; height: 40px; background-color: #6c757d; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px"
+                                        onclick="location.href='/review/images/delete/${reviewDTO.memberId}/${reviewImageDTO.id}/${reviewDTO.reviewId}'">
+                                    삭제
+                                </button>
                             </div>
+                        </c:forEach>
+                    </div>
                     <p id="review_span"><span>상품과 무관한 사진/동영상을 첨부한 리뷰는 통보없이 삭제 및 적립 혜택이 회수됩니다.</span></p><br/>
 
                 </div>
