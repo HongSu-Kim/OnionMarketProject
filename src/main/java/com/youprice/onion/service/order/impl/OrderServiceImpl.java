@@ -50,22 +50,30 @@ public class OrderServiceImpl implements OrderService {
 		Member member = memberRepository.findById(orderAddDTO.getMemberId()).orElse(null);
 		Product product = productRepository.findById(orderAddDTO.getProductId()).orElse(null);
 
+
+		// 포인트 차감
+		if (member.subPoint(orderAddDTO.getUsePoint()) < 0) {
+			log.error("포인트 부족");
+			throw new RuntimeException("포인트가 부족합니다");
+		}
+		
 		// 양파페이 결제
 		if (orderAddDTO.getImp_uid() == null) {
 			if (member.subCash(orderAddDTO.getOrderPayment()) < 0) {
 				log.error("양파페이 부족");
-				throw new RuntimeException();
+				throw new RuntimeException("양파페이가 부족합니다");
 			}
 			product.getMember().addCash(product.getPrice());
 		}
-		memberRepository.save(member);
+//		memberRepository.save(member);
 
 		// 상품상태 변경 - tradings
 		product.progressUpdate(ProductProgress.TRADINGS);
-		productRepository.save(product);
+//		productRepository.save(product);
 
 		// 주문내역 생성
-		Order order = new Order(member, product, orderAddDTO.getOrderNum(), orderAddDTO.getImp_uid(), orderAddDTO.getOrderPayment(), OrderState.ORDER);
+		Order order = new Order(member, product, orderAddDTO.getOrderNum(), orderAddDTO.getImp_uid(),
+				orderAddDTO.getOrderPayment(), orderAddDTO.getUsePoint(), OrderState.ORDER);
 		Long orderId = orderRepository.save(order).getId();
 
 		// 배송정보 생성
@@ -131,6 +139,9 @@ public class OrderServiceImpl implements OrderService {
 			// 상품 상태 변경 - sales on
 			order.getProduct().progressUpdate(ProductProgress.SALESON);
 
+			// 포인트 환불
+			order.getMember().addPoint(order.getUsePoint());
+
 			// imp 결제시 환불
 			if (order.getImp_uid() != null){
 				try {
@@ -160,7 +171,7 @@ public class OrderServiceImpl implements OrderService {
 		productRepository.save(product);
 
 		// 주문내역 생성
-		Order order = new Order(member, product, getOrderNum(), null, product.getPrice(), OrderState.COMPLETE);
+		Order order = new Order(member, product, getOrderNum(), null, product.getPrice(), 0, OrderState.COMPLETE);
 		orderRepository.save(order);
 	}
 

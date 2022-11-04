@@ -52,18 +52,16 @@ public class ReviewController {
     public String created(@Valid @ModelAttribute("form") ReviewFormDTO form, BindingResult bindingResult, @PathVariable("orderId") Long orderId,
                                 @RequestParam("reviewImageName") List<MultipartFile> reviewImageName,
                                     Model model, HttpServletResponse response) throws IOException {
-        MemberDTO salesDTO = memberService.getMemberDTO(form.getSalesId());
         OrderDTO orderDTO = orderService.getOrderDTO(orderId);
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("orderDTO", orderDTO);
-            model.addAttribute("salesDTO", salesDTO);
             return "board/reviewForm";
         }
         int point = reviewService.saveReview(form, reviewImageName);
 
         if(point != 0) {
-            return AlertRedirect.warningMessage(response, "/member/home", point + "포인트가 적립되었습니다.");
+            return AlertRedirect.warningMessage(response, "/review/mylist/"+form.getMemberId(), point + "포인트가 적립되었습니다.");
         }
         return "redirect:/";
     }
@@ -91,12 +89,10 @@ public class ReviewController {
 
     // 내가 작성한 후기 목록
     @GetMapping("/mylist/{memberId}")
-    public String myReviewList(@PathVariable Long memberId, Model model, @LoginUser SessionDTO sessionDTO,
-                                 @PageableDefault(size = 5) Pageable pageable) {
-        Page<ReviewDTO> reviewList = reviewService.myReviewList(memberId, pageable);
+    public String myReviewList(@PathVariable Long memberId, Model model, @PageableDefault(size = 5) Pageable pageable) {
 
-        if(sessionDTO == null) return "redirect:/member/login";
-        MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
+        MemberDTO memberDTO = memberService.getMemberDTO(memberId);
+        Page<ReviewDTO> reviewList = reviewService.myReviewList(memberId, pageable);
 
         int pageNumber = reviewList.getPageable().getPageNumber();
         int totalPages = reviewList.getTotalPages();

@@ -19,6 +19,7 @@ public class OrderDTO {
 	private String orderNum;//주문번호
 	private String imp_uid;//결제번호
 	private int orderPayment;//결제금액
+	private int usePoint;//사용포인트
 	private OrderState orderState;//주문상태-order,delivery,cancel,complete
     private LocalDateTime orderDate;//주문시간
     private LocalDateTime modifiedDate;//수정시간
@@ -37,6 +38,7 @@ public class OrderDTO {
 		orderNum = order.getOrderNum();
 		imp_uid = order.getImp_uid();
 		orderPayment = order.getOrderPayment();
+		usePoint = order.getUsePoint();
 		orderState = order.getOrderState();
 		orderDate = order.getOrderDate();
 		modifiedDate = order.getModifiedDate();
@@ -46,8 +48,8 @@ public class OrderDTO {
 		if (order.getDelivery() != null) {
 			deliveryDTO = new DeliveryDTO(order.getDelivery());
 		}
-		if (order.getReviewList().size() != 0) {
-			reviewId = order.getReviewList().get(0).getId();
+		if (order.getReview() != null) {
+			reviewId = order.getReview().getId();
 		}
 	}
 
