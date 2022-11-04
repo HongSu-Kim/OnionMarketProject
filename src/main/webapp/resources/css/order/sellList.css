@@ -30,3 +30,6 @@
 .member-box .msg-avatar img {
     margin-top: 10px;
 }
+.member-box .chat-room {
+    height: 70px;
+}

@@ -50,6 +50,11 @@ public class WishController {
 
 		try {
 			int wishCount = wishService.addWish(sessionDTO.getId(), productId);
+
+			if (wishCount == 0) {
+				return new ResponseEntity<>("자신의 상품은 찜할 수 없습니다.", HttpStatus.FORBIDDEN);
+			}
+
 			session.setAttribute("wishCount", wishCount);
 			return new ResponseEntity<>("찜 목록에 추가헀습니다.", HttpStatus.OK);
 		} catch (Exception e) {
@@ -65,6 +70,11 @@ public class WishController {
 
 		try {
 			int wishCount = wishService.addWish(sessionDTO.getId(), productId);
+
+			if (wishCount == 0) {
+				return AlertRedirect.warningMessage(response, "/", "자신의 상품은 찜할 수 없습니다.");
+			}
+
 			session.setAttribute("wishCount", wishCount);
 			return AlertRedirect.warningMessage(response, "찜 목록에 추가헀습니다.");
 		} catch (Exception e) {

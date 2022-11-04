@@ -58,8 +58,8 @@ public class ProductServiceImpl implements ProductService {
                 productRepository.save(product);
             }
         }
-/*
-        return productRepositoryQuerydsl.findAllBySearchRequirements(searchRequirements).map(product -> {
+
+        return productRepository.findAllBySearchRequirements(searchRequirements).map(product -> {
             ProductListDTO productListDTO = new ProductListDTO(product);
 
             boolean check = false;
@@ -74,11 +74,7 @@ public class ProductServiceImpl implements ProductService {
 
             return productListDTO;
         });
-*/
-        return productRepository.findAllBySearchRequirements(searchRequirements).map(ProductListDTO::new);
     }
-
-
 
     //상품 등록
     @Override
