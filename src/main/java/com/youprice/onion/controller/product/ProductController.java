@@ -196,7 +196,7 @@ public class ProductController {
         searchRequirements.setPageable(pageable);
         searchRequirements.setCoordinateIdList((List<Long>) session.getAttribute("RangeList"));
 
-        Page<ProductListDTO> distancePage = productService.getProductListDTO(searchRequirements);
+        Page<ProductListDTO> distancePage = productService.getProductListDTO(userSession.getId(), searchRequirements);
 
         model.addAttribute("distancePage", distancePage);
         model.addAttribute("distancePagelist", distancePage.getContent());
@@ -238,7 +238,7 @@ public class ProductController {
 
         searchRequirements.setPageable(pageable);
 
-        Page<ProductListDTO> page = productService.getProductListDTO(searchRequirements);
+        Page<ProductListDTO> page = productService.getProductListDTO(userSession.getId(), searchRequirements);
 
         model.addAttribute("page", page);
         model.addAttribute("list", page.getContent());
@@ -277,7 +277,7 @@ public class ProductController {
 
                     searchRequirements.setCategoryIdList(CategoryIdList);
 
-                    Page<ProductListDTO> page = productService.getProductListDTO(searchRequirements);
+                    Page<ProductListDTO> page = productService.getProductListDTO(userSession.getId(), searchRequirements);
 
 
                     System.out.println(page.getSize());

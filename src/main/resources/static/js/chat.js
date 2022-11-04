@@ -240,6 +240,9 @@ let createChatroom = function (num) { // num == productId
 		error: function (request) {
 			if (request.status == 401) {
 				location.href = request.responseText
+			} else if (request.status == 406) {
+				openChatroomList()
+				modalChange("list")
 			} else {
 				alert(request.status + " : " + request.responseText)
 			}
