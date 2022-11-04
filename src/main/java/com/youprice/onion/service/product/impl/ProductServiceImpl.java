@@ -40,7 +40,7 @@ public class ProductServiceImpl implements ProductService {
     private final WishRepository wishRepository;
 
     @Override
-    public Page<ProductListDTO> getProductListDTO(SearchRequirements searchRequirements) {
+    public Page<ProductListDTO> getProductListDTO(Long memberId, SearchRequirements searchRequirements) {
         List<ProductListDTO> blindList = getAuctionList(false);
 
         LocalDateTime now = LocalDateTime.now();
@@ -63,12 +63,8 @@ public class ProductServiceImpl implements ProductService {
             ProductListDTO productListDTO = new ProductListDTO(product);
 
             boolean check = false;
-
-            if(searchRequirements.getMemberId()!=null){
-
-                check = wishRepository.existsByMemberIdAndProductId(
-                    searchRequirements.getMemberId(), productListDTO.getProductId());
-
+            if (memberId!=null) {
+                check = wishRepository.existsByMemberIdAndProductId(memberId, productListDTO.getProductId());
             }
             productListDTO.setWishCheck(check);
 

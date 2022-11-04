@@ -42,6 +42,7 @@ public class ProductRepositoryQueryDslImpl implements ProductRepositoryQueryDsl{
 						productProgressEq(searchRequirements.getProductProgress()),
 						blindStatusEq(searchRequirements.getBlindStatus()),
 						searchValueContains(searchRequirements.getSearchValue()),
+						auctionStatus(searchRequirements.getAuctionStatus()),
 						coordinateIdListIn(searchRequirements.getCoordinateIdList()),
 						categoryIdListIn(searchRequirements.getCategoryIdList())
 				)
@@ -60,6 +61,7 @@ public class ProductRepositoryQueryDslImpl implements ProductRepositoryQueryDsl{
 						productProgressEq(searchRequirements.getProductProgress()),
 						blindStatusEq(searchRequirements.getBlindStatus()),
 						searchValueContains(searchRequirements.getSearchValue()),
+						auctionStatus(searchRequirements.getAuctionStatus()),
 						coordinateIdListIn(searchRequirements.getCoordinateIdList()),
 						categoryIdListIn(searchRequirements.getCategoryIdList())
 				)
@@ -131,6 +133,11 @@ public class ProductRepositoryQueryDslImpl implements ProductRepositoryQueryDsl{
 
 	private BooleanExpression searchValueContains(String searchValue) {
 		return searchValue == null ? null : product.subject.contains(searchValue).or(product.content.contains(searchValue));
+	}
+
+	private BooleanExpression auctionStatus(Boolean auctionStatus) {
+		return auctionStatus == null ? null :
+				(auctionStatus ? product.auctionDeadline.isNotNull() : product.auctionDeadline.isNull());
 	}
 
 	private BooleanExpression coordinateIdListIn(List<Long> coordinateIdList) {

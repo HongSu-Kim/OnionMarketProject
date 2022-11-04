@@ -82,11 +82,16 @@ public class ChatroomServiceImpl implements ChatroomService {
 			return chatroom.getId();
 		}
 
-		// 채팅방 생성
 		Member member = memberRepository.findById(memberId).orElse(null);
 		Product product = productRepository.findById(productId).orElse(null);
+
+		// 채팅방 생성자와 대상자가 같을때 null반환
+		if (memberId == product.getMember().getId()) {
+			return null;
+		}
+
+		// 채팅방 생성
 		chatroom = new Chatroom(member, product);
-		
 		return chatroomRepository.save(chatroom).getId();
 	}
 }

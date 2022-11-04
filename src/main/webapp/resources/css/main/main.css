@@ -1,0 +1,125 @@
+
+.text-align-center {
+    text-align: center;
+}
+
+.product__item__pic {
+    height: 270px;
+    position: relative;
+    overflow: hidden;
+    background-position: center center;
+    border-radius: 10px;
+}
+
+.product__item__text {
+    text-align: center;
+    padding-top: 15px;
+}
+
+.product__item__text h6 {
+    margin-bottom: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left;
+}
+
+.product__item__text h6 a {
+    color: #252525;
+}
+
+.product__item__text h5 {
+    color: #252525;
+    font-weight: 700;
+}
+
+.product__wish__item {
+    left: 0;
+    bottom: -50px;
+    width: 100%;
+    text-align: center;
+    -webkit-transition: all, 0.5s;
+    -moz-transition: all, 0.5s;
+    -ms-transition: all, 0.5s;
+    -o-transition: all, 0.5s;
+    transition: all, 0.5s;
+}
+
+.product__wish__item li {
+    list-style: none;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+.product__wish__item li a {
+    font-size: 16px;
+    color: #1c1c1c;
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+    text-align: center;
+    border: 1px solid #ebebeb;
+    background: #ffffff;
+    display: block;
+    border-radius: 50%;
+    -webkit-transition: all, 0.5s;
+    -moz-transition: all, 0.5s;
+    -ms-transition: all, 0.5s;
+    -o-transition: all, 0.5s;
+    transition: all, 0.5s;
+}
+
+.product__wish__item li a i {
+    position: relative;
+    transform: rotate(0);
+    -webkit-transition: all, 0.3s;
+    -moz-transition: all, 0.3s;
+    -ms-transition: all, 0.3s;
+    -o-transition: all, 0.3s;
+    transition: all, 0.3s;
+}
+
+.product__wish__item li:hover a {
+    background: #90C8AC;
+    border-color: #90C8AC;
+}
+
+.product__wish__item li:hover a i {
+    color: #ffffff;
+    transform: rotate(360deg);
+}
+
+.product__wish__item li.true a {
+    background: #90C8AC;
+    border-color: #90C8AC;
+}
+
+.product__wish__item li.true a i {
+    color: #ffffff;
+    transform: rotate(360deg);
+}
+
+.product__wish__item li.true:hover a {
+    background: #ffffff;
+    border-color: #ebebeb;
+}
+
+.product__wish__item li.true:hover a i {
+    color: #000000;
+    transform: rotate(360deg);
+}
+.product__list {
+    display: flex;
+    justify-content: space-between;
+}
+.product__list__upload {
+    color: #b2b2b2;
+}
+.product__list__price {
+    font-size: 20px;
+}
+.latest-product__item__text > h6 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

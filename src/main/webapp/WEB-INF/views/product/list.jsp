@@ -13,7 +13,7 @@
 				<div class="col-lg-12">
 					<div class="contact__form__title">
 						<h3>등록된 상품이 없습니다.</h3>
-						<button type="button" class="site-btn mt-5" onclick="location.href='/product/list'">상품 보러가기</button>
+						<button type="button" class="site-btn mt-5" onclick="location.href='/product/wishRangeList'">상품 보러가기</button>
 					</div>
 				</div>
 			</c:if>
