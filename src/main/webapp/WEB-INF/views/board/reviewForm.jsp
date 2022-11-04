@@ -53,8 +53,8 @@
                     <div class="shoping__cart__btns">
                         <label class="primary-btn cart-btn" for="reviewImageName">사진 첨부하기</label>
                         <input type="file" id="reviewImageName" name="reviewImageName" multiple="multiple"
-                               style="display: none" onchange="setDetailImage(event);"/>
-                        <div id="images_container"></div>
+                               style="display: none" onchange="fileInfo(this)"/>
+                        <div id="preview"></div>
                     </div>
                     <p id="review_span"><span>상품과 무관한 사진/동영상을 첨부한 리뷰는 통보없이 삭제 및 적립 혜택이 회수됩니다.</span></p><br/>
 
