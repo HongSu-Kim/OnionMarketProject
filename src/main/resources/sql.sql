@@ -354,7 +354,7 @@ INSERT INTO member VALUES(1, 'ADMIN', 'admin', '$2a$10$8gkJSCifAA3aWUAZJazhnuYLi
                           '4층 아이티윌', '디글디글', 'youprice.onion.email@gmail.com', 'null.png', 1000000, 10000, 0, 0);
 INSERT INTO member VALUES(2, 'USER', 'user1', '$2a$10$X5ICHy3CCqtWl0su87UzMuCe.v2V92TBIH5szmZ.hBJd/tD/7o8LW', --pwd : user1
                           'user1', '유저1', SYSDATE, '01011111111', '06253', '서울 강남구 역삼동 838',
-                          '1', '', 'user1@naver.com', 'null.png', 1000000000, 1000, 0, 0);
+                          '1', '', 'user1@naver.com', 'null.png', 1000000000, 10000, 0, 0);
 INSERT INTO member VALUES(3, 'USER', 'user2', '$2a$10$yCBZmjwdiIsWneGJll69X.Z7DGnGx4pSgeBw1oNVZkbxvg4w./uUy', --pwd : user2
                           'user2', '유저2', SYSDATE, '01022222222', '06120', '서울 강남구 논현동 200-7',
                           '2', '', 'user2@naver.com', 'null.png', 20000, 1000, 0, 0);
@@ -610,7 +610,7 @@ INSERT INTO category VALUES(115,'기타상품',114);
 
 ----------------------------------------------------------------------------------------------------
 
-INSERT INTO product VALUES (0, 0, 1, 114, '키워드 알림', '키워드 알림', 0, 'onion.png', SYSDATE, NULL, NULL, 0, 'SOLDOUT', 0, 0);
+INSERT INTO product VALUES (0, 0, 1, 114, '양파마켓 키워드 알림', '키워드 알림', 0, 'onion.png', SYSDATE, NULL, NULL, 0, 'SOLDOUT', 0, 1);
 
 ----------------------------------------------------------------------------------------------------
 

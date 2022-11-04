@@ -32,8 +32,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+//@Repository
+public interface ProductRepository extends JpaRepository<Product, Long>, ProductRepositoryQueryDsl {
     //상품번호로 상품 하나 조회
     @Override
     @EntityGraph(attributePaths = {"productImageList"})
@@ -49,10 +49,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     //경매 상품만 조회
     List<Product> findByAuctionDeadlineNotNullAndBlindStatus(Boolean blindStatus);
-
-    // 판매 상품 리스트
-//	@EntityGraph(attributePaths = { "orderList.delivery" })
-//	Page<Product> findByMemberIdAndProductProgress(Long memberId, ProductProgress productProgress, Pageable pageable);
 
     //개인 판매 상품 리스트
     Page<Product> findAllByMemberIdAndProductProgressIn(Long memberId, ProductProgress[] productProgressList, Pageable pageable);
@@ -70,123 +66,4 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     boolean existsBySubject(String subject);
 
-    @Repository
-    @RequiredArgsConstructor
-    class Querydsl {
-
-        private final JPAQueryFactory queryFactory;
-
-        public Page<Product> findAllBySearchRequirements(SearchRequirements searchRequirements) {
-
-            List<Product> content = queryFactory
-                    .select(product)
-                    .from(product)
-                    .join(product.town, town).fetchJoin()
-                    .join(product.category, category).fetchJoin()
-                    .where(
-                            memberIdEq(searchRequirements.getMemberId()),
-                            coordinateIdEq(searchRequirements.getCoordinateId()),
-                            categoryIdEq(searchRequirements.getCategoryId()),
-                            productProgressEq(searchRequirements.getProductProgress()),
-                            blindStatusEq(searchRequirements.getBlindStatus()),
-                            searchValueContains(searchRequirements.getSearchValue()),
-                            coordinateIdListIn(searchRequirements.getCoordinateIdList()),
-                            categoryIdListIn(searchRequirements.getCategoryIdList())
-                    )
-                    .orderBy(orderBy(searchRequirements.getPageable()))
-                    .offset(searchRequirements.getPageable().getOffset())
-                    .limit(searchRequirements.getPageable().getPageSize())
-                    .fetch();
-
-            Long count = queryFactory
-                    .select(product.count())
-                    .from(product)
-                    .where(
-                            memberIdEq(searchRequirements.getMemberId()),
-                            coordinateIdEq(searchRequirements.getCoordinateId()),
-                            categoryIdEq(searchRequirements.getCategoryId()),
-                            productProgressEq(searchRequirements.getProductProgress()),
-                            blindStatusEq(searchRequirements.getBlindStatus()),
-                            searchValueContains(searchRequirements.getSearchValue()),
-                            coordinateIdListIn(searchRequirements.getCoordinateIdList()),
-                            categoryIdListIn(searchRequirements.getCategoryIdList())
-                    )
-                    .fetchOne();
-
-            return new PageImpl<>(content, searchRequirements.getPageable(), count);
-        }
-
-
-        // 판매 상품 리스트
-        public Page<Product> findByMemberIdAndProductProgress(Long memberId, ProductProgress productProgress, Pageable pageable) {
-
-            List<Product> content = queryFactory
-                    .selectDistinct(product)
-                    .from(product)
-                    .leftJoin(product.orderList, order).fetchJoin()
-                    .leftJoin(order.delivery, delivery).fetchJoin()
-                    .where(
-                            memberIdEq(memberId),
-                            productProgressEq(productProgress)
-                    )
-                    .orderBy(orderBy(pageable))
-                    .offset(pageable.getOffset())
-                    .limit(pageable.getPageSize())
-                    .fetch();
-
-            Long count = queryFactory
-                    .selectDistinct(product.count())
-                    .from(product)
-                    .where(
-                            memberIdEq(memberId),
-                            productProgressEq(productProgress)
-                    )
-                    .fetchOne();
-
-            return new PageImpl<>(content, pageable, count);
-        }
-
-        private OrderSpecifier<?> orderBy(Pageable pageable) {
-
-            for (Sort.Order o : pageable.getSort()) {
-                PathBuilder<Product> orderByExpression = new PathBuilder<>(Product.class, "product");
-                return new OrderSpecifier(o.isAscending() ? Order.ASC : Order.DESC, orderByExpression.get(o.getProperty()));
-            }
-
-            return null;
-        }
-
-        private BooleanExpression memberIdEq(Long memberId) {
-            return memberId == null ? null : product.member.id.eq(memberId);
-        }
-
-        private BooleanExpression coordinateIdEq(Long coordinateId) {
-            return coordinateId == null ? null : product.town.coordinate.id.eq(coordinateId);
-        }
-
-        private BooleanExpression categoryIdEq(Long categoryId) {
-            return categoryId == null ? null : product.category.id.eq(categoryId);
-        }
-
-        private BooleanExpression productProgressEq(ProductProgress productProgress) {
-            return productProgress == null ? null : product.productProgress.eq(productProgress);
-        }
-
-        private BooleanExpression blindStatusEq(Boolean blindStatus) {
-            return blindStatus == null ? null : product.blindStatus.eq(blindStatus);
-        }
-
-        private BooleanExpression searchValueContains(String searchValue) {
-            return searchValue == null ? null : product.subject.contains(searchValue).or(product.content.contains(searchValue));
-        }
-
-        private BooleanExpression coordinateIdListIn(List<Long> coordinateIdList) {
-            return coordinateIdList == null || coordinateIdList.size() == 0 ? null : product.town.coordinate.id.in(coordinateIdList);
-        }
-
-        private BooleanExpression categoryIdListIn(List<Long> categoryIdList) {
-            return categoryIdList == null || categoryIdList.size() == 0 ? null : product.category.id.in(categoryIdList);
-        }
-
-    }
 }

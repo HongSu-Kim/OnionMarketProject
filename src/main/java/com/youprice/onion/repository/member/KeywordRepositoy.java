@@ -27,8 +27,8 @@ public interface KeywordRepositoy extends JpaRepository<Keyword, Long> {
 
 	void  deleteById(Long keywordId );
 
-	@Query("select k from Keyword k where :subject like concat('%', k.keywordName, '%')")
-	List<Keyword> findAllSearch(@Param("subject") String subject);
+	@Query("select distinct k.member.id from Keyword k where :subject like concat('%', k.keywordName, '%')")
+	List<Long> findAllSearch(@Param("subject") String subject);
 
 
 	@Repository
