@@ -167,7 +167,7 @@ public class Product {
     
     // 블라인드 처리(삭제)
     public Product blindProduct(Boolean blindStatus) {
-        this.blindStatus = true;
+        this.blindStatus = blindStatus;
         return this;
     }
 }
