@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                    <img class="rounded-circle mt-5" src="/img/member/${memberDTO.memberImageName}">
+                    <img onclick="window.open('/img/member/${memberDTO.memberImageName}', 'Profile', 'width=600, height=800, location=no, status=no, scrollbars=yes');" class="rounded-circle mt-5 profile" src="/img/member/${memberDTO.memberImageName}">
                     <span class="font-weight-bold">${memberDTO.nickname}</span>
                     <span> </span>
                 </div>
@@ -42,7 +42,7 @@
                                 <c:if test="${memberDTO.blockCheck}">
                                     <li><button type="button" class="site-btn-ing"  onclick="location.href='/block/removeBlock/${memberDTO.id}'">차단해제</button></li>
                                 </c:if>--%>
-                                <li><button type="button" class="site-btn-follow"  onclick="location.href='/product/personalList/${memberDTO.id}'">판매 리스트</button></li>
+                                <li><button type="button" class="site-btn"  onclick="location.href='/product/personalList/${memberDTO.id}'">판매 리스트</button></li>
                         </ul>
                     </span>
                 </div>

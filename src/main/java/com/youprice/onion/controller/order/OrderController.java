@@ -75,7 +75,7 @@ public class OrderController {
 			Long orderId = orderService.addOrder(orderAddDTO);
 			return "redirect:/order/complete/" + orderId;
 		} catch (Exception e) {
-			return AlertRedirect.warningMessage(response, "양파페이가 부족합니다");
+			return AlertRedirect.warningMessage(response, e.getMessage());
 		}
 	}
 
@@ -92,11 +92,11 @@ public class OrderController {
 			try {
 				log.error("데이터베이스 입력오류입니다 : " + e.toString());
 				PaymentUtil.paymentCancel(orderAddDTO.getImp_uid(), orderAddDTO.getOrderNum(), orderAddDTO.getOrderPayment());
+				return new ResponseEntity<>("오류가 발생해 결제가 취소되었습니다.", HttpStatus.SERVICE_UNAVAILABLE);
 			} catch (IOException ioe) {
 				log.error("결제 취소중 오류입니다 : " + ioe.toString());
 				return new ResponseEntity<>("결제 취소중 오류입니다\n고객센터에 문의하세요", HttpStatus.SERVICE_UNAVAILABLE);
 			}
-			return new ResponseEntity<>("오류가 발생해 결제가 취소되었습니다.", HttpStatus.SERVICE_UNAVAILABLE);
 		}
 	}
 

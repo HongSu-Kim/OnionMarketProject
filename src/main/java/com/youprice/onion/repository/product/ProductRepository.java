@@ -12,6 +12,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.youprice.onion.dto.product.ProductListDTO;
 import com.youprice.onion.dto.product.SearchRequirements;
 import com.youprice.onion.entity.product.Product;
 import com.youprice.onion.entity.product.ProductProgress;
@@ -51,7 +52,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     // 판매 상품 리스트
 //	@EntityGraph(attributePaths = { "orderList.delivery" })
-//	Page<Product> findByMemberId(Long memberId, Pageable pageable);
+//	Page<Product> findByMemberIdAndProductProgress(Long memberId, ProductProgress productProgress, Pageable pageable);
 
     //개인 판매 상품 리스트
     Page<Product> findAllByMemberIdAndProductProgressIn(Long memberId, ProductProgress[] productProgressList, Pageable pageable);
@@ -89,7 +90,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                             productProgressEq(searchRequirements.getProductProgress()),
                             blindStatusEq(searchRequirements.getBlindStatus()),
                             searchValueContains(searchRequirements.getSearchValue()),
-                            coordinateIdListIn(searchRequirements.getCoordinateIdList())
+                            coordinateIdListIn(searchRequirements.getCoordinateIdList()),
+                            categoryIdListIn(searchRequirements.getCategoryIdList())
                     )
                     .orderBy(orderBy(searchRequirements.getPageable()))
                     .offset(searchRequirements.getPageable().getOffset())
@@ -106,7 +108,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                             productProgressEq(searchRequirements.getProductProgress()),
                             blindStatusEq(searchRequirements.getBlindStatus()),
                             searchValueContains(searchRequirements.getSearchValue()),
-                            coordinateIdListIn(searchRequirements.getCoordinateIdList())
+                            coordinateIdListIn(searchRequirements.getCoordinateIdList()),
+                            categoryIdListIn(searchRequirements.getCategoryIdList())
                     )
                     .fetchOne();
 
@@ -115,14 +118,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 
         // 판매 상품 리스트
-        public Page<Product> findByMemberId(Long memberId, ProductProgress productProgress, Pageable pageable) {
+        public Page<Product> findByMemberIdAndProductProgress(Long memberId, ProductProgress productProgress, Pageable pageable) {
 
             List<Product> content = queryFactory
                     .selectDistinct(product)
                     .from(product)
                     .leftJoin(product.orderList, order).fetchJoin()
                     .leftJoin(order.delivery, delivery).fetchJoin()
-                    .leftJoin(order.review, review).on(review.member.id.eq(memberId))
                     .where(
                             memberIdEq(memberId),
                             productProgressEq(productProgress)
@@ -135,8 +137,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             Long count = queryFactory
                     .selectDistinct(product.count())
                     .from(product)
-                    .leftJoin(product.orderList, order)
-                    .leftJoin(order.review, review).on(review.member.id.eq(memberId))
                     .where(
                             memberIdEq(memberId),
                             productProgressEq(productProgress)
@@ -182,6 +182,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
         private BooleanExpression coordinateIdListIn(List<Long> coordinateIdList) {
             return coordinateIdList == null || coordinateIdList.size() == 0 ? null : product.town.coordinate.id.in(coordinateIdList);
+        }
+
+        private BooleanExpression categoryIdListIn(List<Long> categoryIdList) {
+            return categoryIdList == null || categoryIdList.size() == 0 ? null : product.category.id.in(categoryIdList);
         }
 
     }

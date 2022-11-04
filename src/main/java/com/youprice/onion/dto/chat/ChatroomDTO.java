@@ -24,6 +24,7 @@ public class ChatroomDTO {
 	
 	// list 출력시 최근 채팅정보
 	private ChatDTO chatDTO;
+	private int notRead;
 	// 채팅방에 채팅 10개씩 출력
 	private Slice<ChatDTO> chatDTOSlice;
 	private boolean hasNext;

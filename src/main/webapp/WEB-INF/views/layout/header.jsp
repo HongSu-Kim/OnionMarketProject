@@ -142,8 +142,8 @@
 						<sec:authorize access="isAnonymous()">
 							<li><a href="#">로그인</a>
 								<ul class="header__menu__dropdown">
-									<li><a href="/member/login">Login</a></li>
-									<li><a href="/member/join">Join</a></li>
+									<li><a href="/member/login">로그인</a></li>
+									<li><a href="/member/join">회원가입</a></li>
 								</ul>
 							</li>
 						</sec:authorize>
@@ -179,7 +179,7 @@
 						<nav class="header__menu profile">
 							<ul>
 <%--								<li><img src="/img/member/<sec:authentication property="principal.sessionDTO.memberImageName"/>" class="header-img profile"></li>--%>
-								<li><a href="/member/mypage" class="header__nickname"><img src="/img/member/<sec:authentication property="principal.sessionDTO.memberImageName"/>" class="header-img profile">&nbsp;<sec:authentication property="principal.sessionDTO.nickname"/></a>
+								<li><a href="/member/mypage" class="header__nickname"><%--<img src="/img/member/<sec:authentication property="principal.sessionDTO.memberImageName"/>" class="header-img profile">--%>&nbsp;<sec:authentication property="principal.sessionDTO.nickname"/> 님</a>
 									<ul class="header__menu__dropdown nickname">
 										<li><a href="/member/mypage">마이페이지</a></li>
 										<li><a href="/review/mylist/<sec:authentication property="principal.sessionDTO.id"/>">나의 후기</a></li>
@@ -195,7 +195,7 @@
 						<div class="header__cart__price profile"><a href="/member/login" class="header__cart__price profile">로그인</a></div>
 					</sec:authorize>
 					<sec:authorize access="isAuthenticated()">
-						<div class="header__cart__price profile"><a href="/member/logout" class="header__cart__price profile">로그아웃</a></div>
+						<div class="header__profile"><a href="/member/logout" class="header__cart__price profile">로그아웃</a></div>
 					</sec:authorize>
 				</div>
 			</div>
