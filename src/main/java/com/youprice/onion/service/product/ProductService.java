@@ -32,9 +32,6 @@ public interface ProductService {
     //경매상품 전체 조회
     List<ProductListDTO> getAuctionList(Boolean blindStatus);
 
-    //경매 종료된 상품 처리 후 조회
-    List<ProductListDTO> getProductAuctionList();
-
     //상품 하나 조회
     ProductDTO getProductDTO(Long productId);
 
@@ -46,8 +43,6 @@ public interface ProductService {
 
     //카테고리별 상품 조회
     List<ProductListDTO> getProductCategoryList(Long start, Long end);
-
-  //  List<ProductListDTO> getProductCategoryList(Long start);
 
     //하위 카테고리 조회
     List<ProductFindDTO> getProductSubCategory(Long productId, Long categoryId);

@@ -58,6 +58,7 @@ public class ComplainServiceImpl implements ComplainService {
 
             if (member.getComplaintCount() >= 1) {
                 Product product = productRepository.findById(complain.getProduct().getId()).orElse(null);
+                product.blindProduct(true);
                 product.progressUpdate(ProductProgress.BLIND);
                 product.blindImage(null);
                 productRepository.save(product);
@@ -77,8 +78,9 @@ public class ComplainServiceImpl implements ComplainService {
 
             if (member.getComplaintCount() == 0) {
                 Product product = productRepository.findById(complain.getProduct().getId()).orElse(null);
-                product.progressUpdate(ProductProgress.SALESON);
 
+                product.blindProduct(false);
+                product.progressUpdate(ProductProgress.SALESON);
                 String productImageName = product.getProductImageList().get(0).getProductImageName();
                 product.blindImage(productImageName);
                 productRepository.save(product);
