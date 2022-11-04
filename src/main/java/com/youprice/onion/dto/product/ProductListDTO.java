@@ -5,6 +5,7 @@ import com.youprice.onion.dto.order.WishListDTO;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.order.Wish;
 import com.youprice.onion.entity.product.Product;
+import com.youprice.onion.repository.order.WishRepository;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,7 +31,7 @@ public class ProductListDTO {
     private Boolean blindStatus; //블라인드현황
     private Boolean payStatus; //페이 현황
     private Long categoryId; //카테고리 아이디
-    private List<WishDTO> memberIdList; //찜 멤버 아이디
+    private Boolean wishCheck; //찜 체크 여부
 
     public ProductListDTO(Product product) {
 
@@ -50,9 +51,6 @@ public class ProductListDTO {
         this.blindStatus = product.getBlindStatus();
         this.payStatus = product.getPayStatus();
         this.categoryId = product.getCategory().getId();
-        this.memberIdList = product.getWishList()
-                .stream().map(WishDTO::new)
-                .collect(Collectors.toList());
     }
 
 

@@ -14,10 +14,12 @@
 			<div class="col-lg-6 col-md-6">
 				<div class="product__details__pic">
 					<div class="product__details__pic__item">
-<%--							<img class="product__details__pic__item--large" src="img/product/${productFindDTO.representativeImage}" alt=""/>--%>
-						<ul>
+						<div id="bigImage">
+							<img src="/img/product/${productFindDTO.representativeImage}" class="product__rimage" id="big">
+						</div>
+						<ul id="smallImage">
 							<c:forEach var="imageList" items="${productFindDTO.productImageDTOList}">
-								<img src="/img/product/${imageList.productImageName}" class="product__image"/>
+								<img src="/img/product/${imageList.productImageName}" class="product__image" id="small"/>
 							</c:forEach>
 						</ul>
 					</div>
@@ -137,13 +139,14 @@
 						</c:choose>
 					</div>
 					<c:choose>
-<%--						<sec:authentication property="principal.sessionDTO.memberImageName"/>--%>
 						<c:when test="${productFindDTO.memberId eq userSession.id}">
 							<div class="product__item">
 								<div class="product__item__text">
-									<a href="/product/update/${productId}" class="primary-btn">상품 수정</a>
-									<a href="/product/delete/${productId}" class="primary-btn">삭 제</a>
 									<a href="#" class="primary-btn">채팅 목록</a>
+									<c:if test="${empty productFindDTO.auctionDeadline}">
+										<a href="/product/update/${productId}" class="primary-btn">상품 수정</a>
+									</c:if>
+									<a href="/product/delete/${productId}" class="primary-btn">삭 제</a>
 								</div>
 							</div>
 						</c:when>

@@ -44,9 +44,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("update Product p set p.viewCount = p.viewCount + 1 where p.id = ?1")
     int updateView(@RequestParam("productId") Long productId);
 
-    //블라인드 처리가 안된 상품만 조회
-    List<Product> findByBlindStatus(Boolean blindStatus);
-
     //경매 상품만 조회
     List<Product> findByAuctionDeadlineNotNullAndBlindStatus(Boolean blindStatus);
 
@@ -65,8 +62,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     //제목과 내용으로 검색한 리스트 조회
     List<Product> findBySubjectContainingOrContentContaining(String subject, String content);
-
-    List<Product> findAllById(Object productId);
 
     boolean existsBySubject(String subject);
 
@@ -91,7 +86,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                             blindStatusEq(searchRequirements.getBlindStatus()),
                             searchValueContains(searchRequirements.getSearchValue()),
                             coordinateIdListIn(searchRequirements.getCoordinateIdList()),
-                            categoryIdListIn(searchRequirements.getCategoryIdList())
+                            categoryIdListIn(searchRequirements.getCategoryIdList()),
+                            auctionDeadlineIsNotNull(searchRequirements.getAuctionStatus())
                     )
                     .orderBy(orderBy(searchRequirements.getPageable()))
                     .offset(searchRequirements.getPageable().getOffset())
@@ -109,7 +105,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                             blindStatusEq(searchRequirements.getBlindStatus()),
                             searchValueContains(searchRequirements.getSearchValue()),
                             coordinateIdListIn(searchRequirements.getCoordinateIdList()),
-                            categoryIdListIn(searchRequirements.getCategoryIdList())
+                            categoryIdListIn(searchRequirements.getCategoryIdList()),
+                            auctionDeadlineIsNotNull(searchRequirements.getAuctionStatus())
                     )
                     .fetchOne();
 
@@ -186,6 +183,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
         private BooleanExpression categoryIdListIn(List<Long> categoryIdList) {
             return categoryIdList == null || categoryIdList.size() == 0 ? null : product.category.id.in(categoryIdList);
+        }
+
+        private BooleanExpression auctionDeadlineIsNotNull(Boolean auctionStatus) {
+            return auctionStatus == null ? null : product.auctionDeadline.isNotNull();
         }
 
     }

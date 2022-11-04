@@ -6,14 +6,12 @@ import com.youprice.onion.dto.product.*;
 import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.entity.product.ProductProgress;
 import com.youprice.onion.security.auth.LoginUser;
-import com.youprice.onion.service.board.ReviewService;
 import com.youprice.onion.service.chat.ChatService;
 import com.youprice.onion.service.member.MemberService;
 import com.youprice.onion.service.member.ProhibitionKeywordService;
 import com.youprice.onion.service.product.*;
 import com.youprice.onion.util.AlertRedirect;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -191,11 +189,14 @@ public class ProductController {
                 .coordinateIdList(coordinateList)
                 .build();
 
+        if(userSession != null) {
+            searchRequirements.setMemberId(userSession.getId());
+        }
+
         searchRequirements.setPageable(pageable);
         searchRequirements.setCoordinateIdList((List<Long>) session.getAttribute("RangeList"));
 
         Page<ProductListDTO> distancePage = productService.getProductListDTO(searchRequirements);
-
 
         model.addAttribute("distancePage", distancePage);
         model.addAttribute("distancePagelist", distancePage.getContent());
@@ -203,7 +204,6 @@ public class ProductController {
         return "product/wishRangeList";
     }
 
-    //전체리스트
     @PostMapping("wishRangeList")
     public String allList(Model model, @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable, @RequestParam("range") Double range
             , @RequestParam("townName") String townName, HttpSession session, HttpServletRequest request, @RequestParam("memberId") Long memberId) {
@@ -224,11 +224,24 @@ public class ProductController {
     }
 
     @GetMapping("auctionList") //경매 상품 리스트
-    public String auctionList(Model model, @PageableDefault Pageable pageable) throws Exception {
+    public String auctionList(@LoginUser SessionDTO userSession, HttpSession session, Model model,
+                              @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
 
-        List<ProductListDTO> list = productService.getProductAuctionList();
+        SearchRequirements searchRequirements = SearchRequirements.builder()
+                .blindStatus(false)
+                .auctionStatus(true)
+                .build();
 
-        model.addAttribute("list", list);
+        if(userSession != null) {
+            searchRequirements.setMemberId(userSession.getId());
+        }
+
+        searchRequirements.setPageable(pageable);
+
+        Page<ProductListDTO> page = productService.getProductListDTO(searchRequirements);
+
+        model.addAttribute("page", page);
+        model.addAttribute("list", page.getContent());
 
         return "product/auctionList";//상품 리스트 메인 화면페이지
     }

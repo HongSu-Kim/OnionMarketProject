@@ -116,7 +116,7 @@
 			<div class="col-lg-6">
 				<nav class="header__menu">
 					<ul>
-						<li><a href="/product/list">상품</a>
+						<li><a href="/product/wishRangeList">상품</a>
 							<ul class="header__menu__dropdown">
 								<li><a href="/product/wishRangeList">동네 상품</a></li>
 								<li><a href="/product/auctionList">경매 상품</a></li>

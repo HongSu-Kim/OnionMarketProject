@@ -37,7 +37,7 @@
 						<div class="checkout__input">
 							<p>경매 등록</p><%--true/false로 변경--%>
 							<div>
-								경매 기간은 12시간입니다.
+								경매 기간은 12시간입니다.(상품 수정 불가)
 								<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="auctionStatus" value="true">
 								<input type="hidden" name="auctionStatus" value="false">
 								<hr/>
