@@ -72,12 +72,29 @@
 						<h4>결제 정보</h4>
 						<div class="checkout__order__products">상품 <span>금액</span></div>
 						<ul>
-							<li>${productDTO.subject} <span>${productDTO.price}원</span></li>
+							<li>
+								${productDTO.subject}
+									<span>${productDTO.price}원</span>
+							</li>
 							<c:if test="${!empty deliveryDTO}">
-								<li>배송비 <span>${deliveryDTO.deliveryCost}원</span></li>
+								<li>
+									배송비
+									<span>${deliveryDTO.deliveryCost}원
+									</span>
+								</li>
+							</c:if>
+							<c:if test="${orderDTO.usePoint != 0}">
+								<li>
+									포인트
+									<span>-${orderDTO.usePoint}원
+									</span>
+								</li>
 							</c:if>
 						</ul>
-						<div class="checkout__order__total">결제금액 <span>${productDTO.price + deliveryDTO.deliveryCost}원</span></div>
+						<div class="checkout__order__total">
+							결제금액
+							<span>${orderDTO.orderPayment}원</span>
+						</div>
 					</div>
 				</div>
 
