@@ -116,9 +116,9 @@
 			<div class="col-lg-6">
 				<nav class="header__menu">
 					<ul>
-						<li><a href="/product/list">상품</a>
+						<li><a href="/product/wishRangeList">상품</a>
 							<ul class="header__menu__dropdown">
-								<li><a href="/product/list">동네 상품</a></li>
+								<li><a href="/product/wishRangeList">동네 상품</a></li>
 								<li><a href="/product/auctionList">경매 상품</a></li>
 								<li><a href="/product/add">상품 등록</a></li>
 							</ul>
@@ -215,20 +215,20 @@
 						<span>All departments</span>
 					</div>
 					<ul>
-						<li><a href="/product/main/category?categoryId=1">디지털/가전</a></li>
-						<li><a href="/product/main/category?categoryId=9">가구/인테리어</a></li>
-						<li><a href="/product/main/category?categoryId=12">생활/가공식품</a></li>
-						<li><a href="/product/main/category?categoryId=17">유아동</a></li>
-						<li><a href="/product/main/category?categoryId=27">남성의류</a></li>
-						<li><a href="/product/main/category?categoryId=42">여성의류</a></li>
-						<li><a href="/product/main/category?categoryId=57">가방/잡화</a></li>
-						<li><a href="/product/main/category?categoryId=61">뷰티/미용</a></li>
-						<li><a href="/product/main/category?categoryId=71">스포츠/레저</a></li>
-						<li><a href="/product/main/category?categoryId=86">게임/음반</a></li>
-						<li><a href="/product/main/category?categoryId=90">도서/티켓</a></li>
-						<li><a href="/product/main/category?categoryId=96">반려동물용품</a></li>
-						<li><a href="/product/main/category?categoryId=105">식물</a></li>
-						<li><a href="/product/main/category?categoryId=114">기타</a></li>
+						<li><a href="/product/category?categoryId=1">디지털/가전</a></li>
+						<li><a href="/product/category?categoryId=9">가구/인테리어</a></li>
+						<li><a href="/product/category?categoryId=12">생활/가공식품</a></li>
+						<li><a href="/product/category?categoryId=17">유아동</a></li>
+						<li><a href="/product/category?categoryId=27">남성의류</a></li>
+						<li><a href="/product/category?categoryId=42">여성의류</a></li>
+						<li><a href="/product/category?categoryId=57">가방/잡화</a></li>
+						<li><a href="/product/category?categoryId=61">뷰티/미용</a></li>
+						<li><a href="/product/category?categoryId=71">스포츠/레저</a></li>
+						<li><a href="/product/category?categoryId=86">게임/음반</a></li>
+						<li><a href="/product/category?categoryId=90">도서/티켓</a></li>
+						<li><a href="/product/category?categoryId=96">반려동물용품</a></li>
+						<li><a href="/product/category?categoryId=105">식물</a></li>
+						<li><a href="/product/category?categoryId=114">기타</a></li>
 					</ul>
 				</div>
 			</div>

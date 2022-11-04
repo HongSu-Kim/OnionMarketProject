@@ -41,6 +41,8 @@ $(document).ready(function () {
         now = price;
     }else if(exBid >= price) {
         now = exBid+1000;
+    }else if(exBid < price) {
+        now = price;
     }
 
     $('#productForm').validate({
@@ -63,3 +65,17 @@ $(document).ready(function () {
         }
     });
 });
+
+function clickImage(){
+    var bigPic = document.querySelector("#big");
+    var smallPic = document.querySelectorAll(".small")
+
+    for(var i=0;i<smallPic.length;i++){
+        smallPic[i].addEventListener("click",changepic);
+    }
+
+    function changepic() {
+        var smallPicAttr = this.getAttribute("src");
+        bigPic.setAttribute("src",smallPicAttr);
+    }
+}
