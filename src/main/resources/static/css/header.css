@@ -1,7 +1,7 @@
 .header__menu.profile {
     display: inline-block;
     padding: 0;
-    text-align: left;
+    text-align: center;
 }
 
 .header__cart__price.profile {
@@ -19,6 +19,7 @@
 
 .header__nickname {
     text-align: center;
+    display: inline-block;
 }
 
 .header-img.profile {
@@ -33,4 +34,9 @@
 
 .header__profile {
     display: inline-block;
+}
+
+.header__cash {
+    text-align: right;
+    font-weight: normal;
 }

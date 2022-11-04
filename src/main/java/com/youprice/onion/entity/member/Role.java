@@ -6,9 +6,10 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum Role {
-    ADMIN("ROLE_ADMIN"),
+    ADMIN("ROLE_ADMIN"), //관리자
     USER("ROLE_USER"),
-    WITHDRAWAL("ROLE_WITHDRAWAL");
+    WITHDRAWAL("ROLE_WITHDRAWAL"),
+    LOCK("ROLE_LOCK");
 
     private String value;
 }
