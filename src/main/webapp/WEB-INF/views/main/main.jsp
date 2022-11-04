@@ -62,7 +62,7 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="section-title">
-						<h2>Featured Product</h2>
+						<h2>새 상품</h2>
 					</div>
 					<%--<div class="featured__controls">
 						<ul>
@@ -77,9 +77,9 @@
 			</div>
 			<div class="row">
 				<c:forEach var="productDTO" items="${newProductList}">
-					<div class="col-lg-3 col-md-4 col-sm-6" style="padding: 15px;">
+					<div class="col-lg-3 col-md-4 col-sm-6">
 						<div class="featured__item">
-							<div class="featured__item__pic set-bg" data-setbg="/img/product/${productDTO.productImageName}"
+							<div class="product__item__pic radius set-bg" data-setbg="/img/product/${productDTO.productImageName}"
 									 onclick="location.href='/product/detail/${productDTO.productId}';">
 								<div style="margin-top:93%;">
 									<c:if test="${productDTO.payStatus eq true}"><img src="/template/img/product/pay.png"></c:if>
@@ -103,13 +103,16 @@
 									<c:if test="${productDTO.wishCheck ne true}">
 										<li class="wishBtn"><a><i class="fa fa-heart"></i></a></li>
 									</c:if>
-									<li><a href="#"><i class="fa fa-solid fa-comment" onclick="createChatroom(${productDTO.productId})"></i></a></li>
+									<li><a><i class="fa fa-solid fa-comment" onclick="createChatroom(${productDTO.productId})"></i></a></li>
 									<li><a href="/order/payment/${productDTO.productId}"><i class="fa fa-shopping-cart"></i></a></li>
 								</ul>
 							</div>
 						</div>
 					</div>
 				</c:forEach>
+				<div class="col-12 text-align-center">
+					<button type="button" class="site-btn" onclick="location.href='/product/wishRangeList?page=1'">상품 더보기</button>
+				</div>
 			</div>
 		</div>
 	</section>
@@ -138,201 +141,88 @@
 	<section class="latest-product spad">
 		<div class="container">
 			<div class="row">
+
 				<div class="col-lg-4 col-md-6">
 					<div class="latest-product__text">
-						<h4>Latest Products</h4>
+						<h4>조회수</h4>
 						<div class="latest-product__slider owl-carousel">
-							<div class="latest-prdouct__slider__item">
-								<a href="#" class="latest-product__item">
+							<c:set var="i" value="0"/>
+							<c:forEach var="productDTO" items="${topViewProductList}">
+								<c:if test="${i % 3 == 0}">
+									<div class="latest-prdouct__slider__item">
+								</c:if>
+								<a href="/product/detail/${productDTO.productId}" class="latest-product__item">
 									<div class="latest-product__item__pic">
-										<img src="/template/img/latest-product/lp-1.jpg" alt="">
+										<img src="/img/product/${productDTO.productImageName}" alt="${productDTO.subject}" style="width: 100px; height: 100px">
 									</div>
 									<div class="latest-product__item__text">
-										<h6>Crab Pool Security</h6>
-										<span>$30.00</span>
+										<h6>${productDTO.subject}</h6>
+										<span><fmt:formatNumber maxFractionDigits="3" value="${productDTO.price}"/>원</span>
 									</div>
 								</a>
-								<a href="#" class="latest-product__item">
-									<div class="latest-product__item__pic">
-										<img src="/template/img/latest-product/lp-2.jpg" alt="">
+								<c:if test="${i % 3 == 2 || i == topViewProductList.size() - 1}">
 									</div>
-									<div class="latest-product__item__text">
-										<h6>Crab Pool Security</h6>
-										<span>$30.00</span>
-									</div>
-								</a>
-								<a href="#" class="latest-product__item">
-									<div class="latest-product__item__pic">
-										<img src="/template/img/latest-product/lp-3.jpg" alt="">
-									</div>
-									<div class="latest-product__item__text">
-										<h6>Crab Pool Security</h6>
-										<span>$30.00</span>
-									</div>
-								</a>
-							</div>
-							<div class="latest-prdouct__slider__item">
-								<a href="#" class="latest-product__item">
-									<div class="latest-product__item__pic">
-										<img src="/template/img/latest-product/lp-1.jpg" alt="">
-									</div>
-									<div class="latest-product__item__text">
-										<h6>Crab Pool Security</h6>
-										<span>$30.00</span>
-									</div>
-								</a>
-								<a href="#" class="latest-product__item">
-									<div class="latest-product__item__pic">
-										<img src="/template/img/latest-product/lp-2.jpg" alt="">
-									</div>
-									<div class="latest-product__item__text">
-										<h6>Crab Pool Security</h6>
-										<span>$30.00</span>
-									</div>
-								</a>
-								<a href="#" class="latest-product__item">
-									<div class="latest-product__item__pic">
-										<img src="/template/img/latest-product/lp-3.jpg" alt="">
-									</div>
-									<div class="latest-product__item__text">
-										<h6>Crab Pool Security</h6>
-										<span>$30.00</span>
-									</div>
-								</a>
-							</div>
+								</c:if>
+								<c:set var="i" value="${i + 1}"/>
+							</c:forEach>
 						</div>
 					</div>
 				</div>
+
 				<div class="col-lg-4 col-md-6">
 					<div class="latest-product__text">
-						<h4>Top Rated Products</h4>
+						<h4>낮은 가격</h4>
 						<div class="latest-product__slider owl-carousel">
-							<div class="latest-prdouct__slider__item">
-								<a href="#" class="latest-product__item">
+							<c:set var="i" value="0"/>
+							<c:forEach var="productDTO" items="${lowPriceProductList}">
+								<c:if test="${i % 3 == 0}">
+									<div class="latest-prdouct__slider__item">
+								</c:if>
+								<a href="/product/detail/${productDTO.productId}" class="latest-product__item">
 									<div class="latest-product__item__pic">
-										<img src="/template/img/latest-product/lp-1.jpg" alt="">
+										<img src="/img/product/${productDTO.productImageName}" alt="${productDTO.subject}" style="width: 100px; height: 100px">
 									</div>
 									<div class="latest-product__item__text">
-										<h6>Crab Pool Security</h6>
-										<span>$30.00</span>
+										<h6>${productDTO.subject}</h6>
+										<span><fmt:formatNumber maxFractionDigits="3" value="${productDTO.price}"/>원</span>
 									</div>
 								</a>
-								<a href="#" class="latest-product__item">
-									<div class="latest-product__item__pic">
-										<img src="/template/img/latest-product/lp-2.jpg" alt="">
+								<c:if test="${i % 3 == 2 || i == lowPriceProductList.size() - 1}">
 									</div>
-									<div class="latest-product__item__text">
-										<h6>Crab Pool Security</h6>
-										<span>$30.00</span>
-									</div>
-								</a>
-								<a href="#" class="latest-product__item">
-									<div class="latest-product__item__pic">
-										<img src="/template/img/latest-product/lp-3.jpg" alt="">
-									</div>
-									<div class="latest-product__item__text">
-										<h6>Crab Pool Security</h6>
-										<span>$30.00</span>
-									</div>
-								</a>
-							</div>
-							<div class="latest-prdouct__slider__item">
-								<a href="#" class="latest-product__item">
-									<div class="latest-product__item__pic">
-										<img src="/template/img/latest-product/lp-1.jpg" alt="">
-									</div>
-									<div class="latest-product__item__text">
-										<h6>Crab Pool Security</h6>
-										<span>$30.00</span>
-									</div>
-								</a>
-								<a href="#" class="latest-product__item">
-									<div class="latest-product__item__pic">
-										<img src="/template/img/latest-product/lp-2.jpg" alt="">
-									</div>
-									<div class="latest-product__item__text">
-										<h6>Crab Pool Security</h6>
-										<span>$30.00</span>
-									</div>
-								</a>
-								<a href="#" class="latest-product__item">
-									<div class="latest-product__item__pic">
-										<img src="/template/img/latest-product/lp-3.jpg" alt="">
-									</div>
-									<div class="latest-product__item__text">
-										<h6>Crab Pool Security</h6>
-										<span>$30.00</span>
-									</div>
-								</a>
-							</div>
+								</c:if>
+								<c:set var="i" value="${i + 1}"/>
+							</c:forEach>
 						</div>
 					</div>
 				</div>
+
 				<div class="col-lg-4 col-md-6">
 					<div class="latest-product__text">
-						<h4>Review Products</h4>
+						<h4>경매 상품</h4>
 						<div class="latest-product__slider owl-carousel">
-							<div class="latest-prdouct__slider__item">
-								<a href="#" class="latest-product__item">
+							<c:set var="i" value="0"/>
+							<c:forEach var="productDTO" items="${auctionProductList}">
+								<c:if test="${i % 3 == 0}">
+									<div class="latest-prdouct__slider__item">
+								</c:if>
+								<a href="/product/detail/${productDTO.productId}" class="latest-product__item">
 									<div class="latest-product__item__pic">
-										<img src="/template/img/latest-product/lp-1.jpg" alt="">
+										<img src="/img/product/${productDTO.productImageName}" alt="${productDTO.subject}" style="width: 100px; height: 100px">
 									</div>
 									<div class="latest-product__item__text">
-										<h6>Crab Pool Security</h6>
-										<span>$30.00</span>
+										<h6>${productDTO.subject}</h6>
+										<span><fmt:formatNumber maxFractionDigits="3" value="${productDTO.price}"/>원</span>
 									</div>
 								</a>
-								<a href="#" class="latest-product__item">
-									<div class="latest-product__item__pic">
-										<img src="/template/img/latest-product/lp-2.jpg" alt="">
+								<c:if test="${i % 3 == 2 || i == auctionProductList.size() - 1}">
 									</div>
-									<div class="latest-product__item__text">
-										<h6>Crab Pool Security</h6>
-										<span>$30.00</span>
-									</div>
-								</a>
-								<a href="#" class="latest-product__item">
-									<div class="latest-product__item__pic">
-										<img src="/template/img/latest-product/lp-3.jpg" alt="">
-									</div>
-									<div class="latest-product__item__text">
-										<h6>Crab Pool Security</h6>
-										<span>$30.00</span>
-									</div>
-								</a>
-							</div>
-							<div class="latest-prdouct__slider__item">
-								<a href="#" class="latest-product__item">
-									<div class="latest-product__item__pic">
-										<img src="/template/img/latest-product/lp-1.jpg" alt="">
-									</div>
-									<div class="latest-product__item__text">
-										<h6>Crab Pool Security</h6>
-										<span>$30.00</span>
-									</div>
-								</a>
-								<a href="#" class="latest-product__item">
-									<div class="latest-product__item__pic">
-										<img src="/template/img/latest-product/lp-2.jpg" alt="">
-									</div>
-									<div class="latest-product__item__text">
-										<h6>Crab Pool Security</h6>
-										<span>$30.00</span>
-									</div>
-								</a>
-								<a href="#" class="latest-product__item">
-									<div class="latest-product__item__pic">
-										<img src="/template/img/latest-product/lp-3.jpg" alt="">
-									</div>
-									<div class="latest-product__item__text">
-										<h6>Crab Pool Security</h6>
-										<span>$30.00</span>
-									</div>
-								</a>
-							</div>
+								</c:if>
+								<c:set var="i" value="${i + 1}"/>
+							</c:forEach>
 						</div>
 					</div>
 				</div>
+
 			</div>
 		</div>
 	</section>
