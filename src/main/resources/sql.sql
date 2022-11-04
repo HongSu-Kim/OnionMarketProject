@@ -304,7 +304,7 @@ CREATE TABLE inquiry (
 	member_id	    	NUMBER	        NOT NULL,
 	inquiry_type        VARCHAR2(50)	NOT NULL,
 	detail_type         VARCHAR2(50)	NOT NULL,
-	inquiry_subject     VARCHAR2(50)	NOT NULL,
+	inquiry_subject     VARCHAR2(100)	NOT NULL,
 	inquiry_content     VARCHAR2(255)	NOT NULL,
 	inquiry_date    	DATE            DEFAULT SYSDATE,
 	status          	VARCHAR2(20)	DEFAULT 'wait',
@@ -327,7 +327,7 @@ CREATE TABLE answer (
 CREATE TABLE notice (
 	notice_id        	NUMBER          NOT NULL,
 	member_id        	NUMBER          NOT NULL,
-	notice_type      	VARCHAR2(20)    NOT NULL,
+	notice_type      	VARCHAR2(30)    NOT NULL,
 	notice_subject   	VARCHAR2(255)   NOT NULL,
 	notice_content   	VARCHAR2(4000)  NOT NULL,
 	notice_date      	DATE            DEFAULT SYSDATE,
