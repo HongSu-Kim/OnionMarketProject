@@ -2,6 +2,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <section class="spad">
 	<div class="container">
 		<div class="buyList">
@@ -68,7 +69,7 @@
 														<a href="/review/created/${orderDTO.orderId}" class="primary-btn">판매후기등록</a>
 													</c:if>
 													<c:if test="${!empty orderDTO.reviewId}">
-														<a href="/review/update/${sessionDTO.id}/${orderDTO.reviewId}" class="primary-btn">판매후기수정</a>
+														<a href="/review/update/<sec:authentication property="principal.sessionDTO.id"/>/${orderDTO.reviewId}" class="primary-btn">판매후기수정</a>
 													</c:if>
 												</c:if>
 											</p>

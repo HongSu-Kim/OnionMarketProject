@@ -33,7 +33,7 @@ public class WishController {
     // 찜 목록 페이지
     @GetMapping("list")
     public String wishList(@LoginUser SessionDTO sessionDTO, Model model,
-						   @PageableDefault(size = 9, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+						   @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 		if (sessionDTO == null) return "redirect:/member/login";
 
 		Page<WishListDTO> page = wishService.getWishList(sessionDTO.getId(), pageable);
