@@ -181,14 +181,18 @@ let openChatroomList = function () {
 					content = "오류"
 				}
 
+				let notRead = (chatroomDTO.notRead != 0 ? `<div class="not-read">${chatroomDTO.notRead}</div>` : "")
+
 				let str =
 					`<div class="chat-room" id="chatroom${chatroomDTO.chatroomId}">` +
-					`   <span class="msg-avatar">` +
-					`       <img src="/img/product/${chatroomDTO.productDTO.representativeImage}">` +
-					`   </span>` +
+					`	<span class="msg-avatar">` +
+					`		<img src="/img/product/${chatroomDTO.productDTO.representativeImage}">` +
+					`	</span>` +
 					`   <div class="cr-room-text">` +
 					`		${chatroomDTO.productDTO.subject}<br/>${content}` +
-					`   </div>` +
+					`	</div>` +
+						notRead +
+					`</div>` +
 					`<div style="border: 1px solid #ebebeb"></div>`
 				$('#listArea').append(str);
 
@@ -280,7 +284,6 @@ $('#button-send').click(function() {
 $('#chatImageName').change(function () {
 
 	let formData = new FormData()
-
 	formData.set("chatroomId", chatroomId)
 	formData.set("chatImageName", document.getElementById('chatImageName').files[0])
 	formData.set("memberId", memberId)
@@ -293,31 +296,37 @@ $('#chatImageName').change(function () {
 		contentType : false, // multipart/form-data
 		processData : false,
 		data : formData,
-		beforeSend: function (jqXHR) {
+		beforeSend: jqXHR => {
 			jqXHR.setRequestHeader(header, token);
 		},
-		success: function (chatDTO) {
-			stomp.send("/pub/chat/image", {}, JSON.stringify(chatDTO));
-		},
-		error: function () {
-			alert("전송에 실패했습니다.")
-		}
+		error: (request) => { alert(request.responseText) }
 	})
 })
 
 // 메세지 출력
 stomp.connect({}, function () {
 	stomp.subscribe("/sub/chat/" + memberId, function (chat) {
+
 		let chatDTO = JSON.parse(chat.body)
 
 		// 채팅방 리스트에 있을 때
 		if (chatroomId == 0) {
 			openChatroomList()
 		}
+		
 		// 메세지가 온 채팅방에 있을때
 		else if (chatroomId == chatDTO.chatroomId) {
-			let str = ""
 
+			// 채팅 읽음
+			$.ajax({
+				url: "/chat/readChat",
+				method: "PUT",
+				data: { memberId: memberId, chatroomId: chatroomId },
+				beforeSend: jqXHR => { jqXHR.setRequestHeader(header, token) }
+			})
+
+			// 채팅 출력
+			let str = ""
 			if (lastDate != chatDTO.sendingTime.substring(0, 10)) {
 				lastDate = chatDTO.sendingTime.substring(0, 10)
 
@@ -331,9 +340,9 @@ stomp.connect({}, function () {
 			}
 
 			str += chatTemplate(chatDTO);
-
 			$('#foot').before(str)
-			setTimeout(function () {
+
+			setTimeout(() => {
 				$('#msgArea').scrollTop($('#msgArea')[0].scrollHeight)
 			}, 50)
 		}
@@ -341,11 +350,6 @@ stomp.connect({}, function () {
 
 })
 
-
 // modal에서 body 스크롤 방지 // 수정 필요
-$('#chat-modal').mouseover(function () {
-	document.body.style.overflow = "hidden";
-})
-$('#chat-modal').mouseout (function () {
-	document.body.style.overflow = "auto";
-})
+$('#chat-modal').mouseover(() => { document.body.style.overflow = "hidden" })
+$('#chat-modal').mouseout (() => { document.body.style.overflow = "auto" })

@@ -41,29 +41,59 @@
 							<input type="hidden" id="name" name="name" value="${memberDTO.name}">
 							<input type="hidden" id="tel" name="tel" value="${memberDTO.tel}">
 							<input type="hidden" id="email" name="email" value="${memberDTO.email}">
-							<div class="checkout__order__products">Products <span>Total</span></div>
+
+							<div class="checkout__order__products">상품정보</div>
 							<ul>
-								<li>${productDTO.subject} <span>${productDTO.price}</span></li>
-								<input type="hidden" id="productPrice" name="productPrice" value="${productDTO.price}">
+								<li>
+									${productDTO.subject}
+										<span>${productDTO.price}</span>
+									<input type="hidden" id="productPrice" name="productPrice" value="${productDTO.price}">
+								</li>
 								<div id="deliveryCost-group" class="d-none">
-									<li>배송비 <span>3000</span></li>
-									<input type="hidden" id="deliveryCost" name="deliveryCost" value="3000">
+									<li>
+										배송비
+										<span>3000</span>
+										<input type="hidden" id="deliveryCost" name="deliveryCost" value="3000">
+									</li>
 								</div>
 							</ul>
-							<div class="checkout__order__total">결제금액 <span id="totalPrice">${productDTO.price}</span></div>
-							<input type="hidden" id="orderPayment" name="orderPayment" value="${productDTO.price}">
-								<div class="checkout__input__checkbox">
-									<label for="acc-or">
-										결제에 동의하시겠습니까?<br/>
-										(이니시스 결제시 24시에 자동으로 환불됩니다.)
-										<input type="checkbox" id="acc-or">
-										<span class="checkmark"></span>
-									</label>
-								</div>
+							<div class="checkout__order__total">
+								총 금액
+								<span id="totalPrice">${productDTO.price}</span>
+							</div>
+
+							<div class="checkout__order__products">포인트</div>
+							<ul>
+								<li>
+									보유 포인트
+									<span>${memberDTO.point}</span>
+								</li>
+								<input type="hidden" id="point" name="point" value="${memberDTO.point}">
+							</ul>
+<%--							<div class="checkout__order__total">사용 포인트 <span id="usePoint">0</span></div>--%>
+							<div class="checkout__order__total">
+								사용 포인트
+								<span><input type="text" id="usePoint" name="usePoint" value="0" onblur="blurUsePoint()"/></span>
+							</div>
+
+							<div class="checkout__order__total">
+								결제 금액
+								<span id="orderPaymentSpan">${productDTO.price}</span>
+								<input type="hidden" id="orderPayment" name="orderPayment" value="${productDTO.price}">
+							</div>
+
+							<div class="checkout__input__checkbox">
+								<label for="acc-or">
+									결제에 동의하시겠습니까?<br/>
+									(이니시스 결제시 24시에 자동으로 환불됩니다.)
+									<input type="checkbox" id="acc-or">
+									<span class="checkmark"></span>
+								</label>
+							</div>
+							<button type="button" class="order-btn btn-50" id="imp-payment">결제하기</button>
 							<c:if test="${productDTO.payStatus}">
 								<button type="button" class="order-btn btn-50" id="payment">양파페이</button>
 							</c:if>
-							<button type="button" class="order-btn btn-50 float-right" id="imp-payment">결제하기</button>
 						</div>
 
 					</div>

@@ -291,7 +291,7 @@ public class ProductServiceImpl implements ProductService {
     //유저 판매 상품 목록
     @Override
     public Page<ProductSellListDTO> getProductSellListDTO(Long memberId, ProductProgress productProgress, Pageable pageable) {
-        return productRepositoryQuerydsl.findByMemberId(memberId, productProgress, pageable).map(ProductSellListDTO::new);
+        return productRepositoryQuerydsl.findByMemberIdAndProductProgress(memberId, productProgress, pageable).map(ProductSellListDTO::new);
     }
     //개인 유저 상품 리스트
     @Override

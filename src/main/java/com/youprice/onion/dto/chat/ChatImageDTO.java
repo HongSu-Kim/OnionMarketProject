@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ChatImageDto {
+public class ChatImageDTO {
 
 	private Long chatroomId;
 	private Long memberId;
