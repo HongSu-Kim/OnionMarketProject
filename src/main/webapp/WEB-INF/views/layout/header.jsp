@@ -142,8 +142,8 @@
 						<sec:authorize access="isAnonymous()">
 							<li><a href="#">로그인</a>
 								<ul class="header__menu__dropdown">
-									<li><a href="/member/login">Login</a></li>
-									<li><a href="/member/join">Join</a></li>
+									<li><a href="/member/login">로그인</a></li>
+									<li><a href="/member/join">회원가입</a></li>
 								</ul>
 							</li>
 						</sec:authorize>

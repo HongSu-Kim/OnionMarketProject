@@ -81,7 +81,7 @@ public class ProhibitionKeywordServiceImpl implements ProhibitionKeywordService 
 
         } else
 
-            prohibitionKeywordRepositoy.deleteByProhibitionKeywordName(updatekeyword);
+           // prohibitionKeywordRepositoy.deleteByProhibitionKeywordName(updatekeyword);
 
         prohibitionKeyword.prohibitionKeywordUpdate(prohibitionKeywordUpdateDTO);
 
@@ -92,9 +92,9 @@ public class ProhibitionKeywordServiceImpl implements ProhibitionKeywordService 
     }
 
     @Override
-    public void ProhibitionKeywordDelete(String prohibitionKeywordName) {
-        System.out.println(prohibitionKeywordName);
-        prohibitionKeywordRepositoy.deleteByProhibitionKeywordName(prohibitionKeywordName);
+    public void ProhibitionKeywordDelete(Long prohibitionKeywordId) {
+
+        prohibitionKeywordRepositoy.deleteById(prohibitionKeywordId);
 
     }
 

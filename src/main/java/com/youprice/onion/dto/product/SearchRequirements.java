@@ -24,6 +24,6 @@ public class SearchRequirements {
 	private String searchValue;//검색어
 	private List<Long> coordinateIdList;//지역PK목록
 	private LocalDateTime auctionDeadline;
-	private Long productId; //범위설정 해당 상품번호
+	private List<Long> categoryIdList;//카테고리PK목록
 
 }

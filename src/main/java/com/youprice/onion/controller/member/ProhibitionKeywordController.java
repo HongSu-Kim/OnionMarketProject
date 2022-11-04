@@ -31,6 +31,13 @@ public class ProhibitionKeywordController {
     public String ProhibitionKeywordAdd(Model model, @LoginUser SessionDTO sessionDTO, HttpServletResponse response)throws IOException {
 
         if (sessionDTO == null) return "redirect:/member/login";
+        MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
+
+        model.addAttribute("memberDTO",memberDTO);
+
+        List<ProhibitionKeywordFindDTO> prohibitionKeywordList = prohibitionKeywordService.prohibitionKewordList();
+
+        model.addAttribute("prohibitionKeywordList",prohibitionKeywordList);
 
 
         return "member/Addprohibitionkeyword";
@@ -47,48 +54,16 @@ public class ProhibitionKeywordController {
             return "redirect:/prohibitionkeyword/prohibitionkeyword";
         }
 
-    @GetMapping("prohibitionkeywordUpdate")
-
-    public String prohibitionkeywordUpdate(Model model){
-
-        List<ProhibitionKeywordFindDTO> prohibitionKeywordFindDTOList = prohibitionKeywordService.prohibitionKewordList();
-
-        model.addAttribute("prohibitionKeywordFindDTOList",prohibitionKeywordFindDTOList);
-
-        return "member/prohibitionkeywordUpdate";
-    }
-
-    @PostMapping("prohibitionkeywordUpdate")
-
-    public String prohibitionkeywordUpdate(ProhibitionKeywordUpdateDTO prohibitionKeywordUpdateDTO
-    ,@RequestParam("updatekeyword")String updatekeyword,HttpServletResponse response)throws IOException {
-
-
-
-        prohibitionKeywordService.ProhibitionKeywordUpdate(prohibitionKeywordUpdateDTO,updatekeyword,response);
-
-        return "redirect:/prohibitionkeyword/prohibitionkeywordUpdate";
-    }
-
-
-
-    @GetMapping("prohibitionkeywordDelete")
-
-    public String prohibitionkeywordDelete(Model model){
-
-        List<ProhibitionKeywordFindDTO> prohibitionKeywordFindDTOList = prohibitionKeywordService.prohibitionKewordList();
-
-        model.addAttribute("prohibitionKeywordFindDTOList",prohibitionKeywordFindDTOList);
-
-        return "member/prohibitionkeywordDelete";
-    }
 
     @PostMapping("prohibitionkeywordDelete")
-    public String prohibitionkeywordDelete(Model model, @RequestParam("prohibitionKeywordName")String prohibitionKeywordName){
 
-        prohibitionKeywordService.ProhibitionKeywordDelete(prohibitionKeywordName);
+    public String prohibitionkeywordDelete(Model model,@RequestParam("id") Long prohibitionkeywordId){
 
-        return "redirect:/prohibitionkeyword/prohibitionkeywordDelete";
+        prohibitionKeywordService.ProhibitionKeywordDelete(prohibitionkeywordId);
+
+
+
+        return "redirect:/prohibitionkeyword/prohibitionkeyword";
     }
 
 
