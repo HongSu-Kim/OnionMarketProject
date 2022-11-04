@@ -67,7 +67,7 @@ $(document).ready(function () {
 $(document).ready(function() {
     $('.btnAdd').click(function () {
         $('.addInput').append(
-            '<input type="file" name="fileList" id="fileList"><button type="button" class="btnRemove" style="border-width: thin;">삭제</button>'
+            '<input type="file" name="fileList" id="fileList" onchange="readURL(this);"><button type="button" class="btnRemove" style="border-width: thin;">삭제</button>'
         );//input file
         $('.btnRemove').on('click',function(){//this='.btnRemove'
             $(this).prev().remove();// .prev()=input file을 가리키고 remove()실행
@@ -76,16 +76,18 @@ $(document).ready(function() {
         });
     });
 });
-
-function setImageFromFile(input, expression) {
+//이미지 미리보기
+function readURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
-        reader.onload = function (e) {
-            $(expression).attr('src', e.target.result);
+        reader.onload = function(e) {
+            document.getElementById('preview').src = e.target.result;
         };
         reader.readAsDataURL(input.files[0]);
-    };
-};
+    } else {
+        document.getElementById('preview').src = "";
+    }
+}
 
 //이미지 파일 사이즈 지정
 $.validator.addMethod('filesize', function(value, element, param) {

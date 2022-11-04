@@ -89,7 +89,7 @@
 								<div class="checkout__input">
 									<div class='addInput'>
 										<p>상품 이미지<span>*</span></p>
-										<input type="file" name="fileList" id="fileList">
+										<input type="file" name="fileList" id="fileList" onchange="readURL(this);">
 									</div>
 									<button type="button" class="btnAdd" style="border-width: thin;">이미지 추가</button>
 								</div>

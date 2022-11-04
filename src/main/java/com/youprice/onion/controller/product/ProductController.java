@@ -160,7 +160,7 @@ public class ProductController {
     }
 
     //상품 동네리스트 주소
-    @GetMapping(value = "list")
+    @GetMapping(value = "wishRangeList")
     public String list(@LoginUser SessionDTO userSession, HttpSession session, Model model,
                        @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
 
@@ -193,7 +193,7 @@ public class ProductController {
     }
 
     //전체리스트
-    @PostMapping("list")
+    @PostMapping("wishRangeList")
     public String allList(Model model, @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable, @RequestParam("range") Double range
             , @RequestParam("townName") String townName, HttpSession session, HttpServletRequest request, @RequestParam("memberId") Long memberId) {
 
@@ -208,7 +208,7 @@ public class ProductController {
         coordinateService.coordinateSearch(townName, range, model, session, request, memberId, searchRequirements);
 
 
-        return "product/list";
+        return "product/wishRangeList";
 
     }
 
@@ -222,7 +222,7 @@ public class ProductController {
         return "product/auctionList";//상품 리스트 메인 화면페이지
     }
 
-    @GetMapping(value = "main/category")//상품 카테고리별 화면 주소
+    @GetMapping(value = "category")//상품 카테고리별 화면 주소
     public String main(Model model, @LoginUser SessionDTO userSession, HttpSession session, @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC)
     Pageable pageable,@RequestParam(value = "categoryId",defaultValue = "1") int categoryId) throws Exception {
 

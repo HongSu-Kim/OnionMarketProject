@@ -105,7 +105,20 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(productId).orElse(null);
 
         //상품 경로에 파일이 없으면 저장 있으면 삭제
-        List<ProductImage> productOldImageList = product.getProductImageList();
+        List<Long> newImageIdList = updateDTO.getNewImageId();
+        List<ProductImage> oldImageIdList = product.getProductImageList();
+//        for(Long newImageId : newImageIdList) {
+//
+//            for(int i=0;i<oldImageIdList.size();i++)
+//                boolean isExists = newImageIdList.contains(oldImageIdList.get(i).getId());
+//
+//                if(oldImageIdList.get(i).getId() == newImageId) {
+//                    continue;
+//                }
+//
+//
+//        }
+
         List<MultipartFile> productNewImageLIst = updateDTO.getProductImageName();
         List<String> productImageList = ImageUtil.store(updateDTO.getProductImageName(),"product");
 
