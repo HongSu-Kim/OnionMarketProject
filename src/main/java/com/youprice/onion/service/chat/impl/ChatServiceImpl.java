@@ -82,27 +82,27 @@ public class ChatServiceImpl implements ChatService {
 	public List<ChatDTO> alertChat(Long productId, String subject) {
 		List<ChatDTO> chatDTOList = new ArrayList<>();
 
-		// 알림보낼 키워드
-		List<Keyword> keywordList = keywordRepositoy.findAllSearch(subject);
+		// 키워드 알림보낼 대상
+		List<Long> memberIdList = keywordRepositoy.findAllSearch(subject);
 
-		for (Keyword keyword : keywordList) {
+		for (Long memberId : memberIdList) {
 
-			Member member = memberRepository.findById(keyword.getMember().getId()).orElse(null);
+			Member member = memberRepository.findById(memberId).orElse(null);
 			Product product = productRepository.findById(0L).orElse(null);
 
-			// 채팅방 없으면 생성
-			Chatroom chatroom = chatroomRepository.findByMemberIdAndProductMemberId(member.getId(), 0L).orElseGet(() -> {
+			// 알림 채팅방이 없으면 생성
+			Chatroom chatroom = chatroomRepository.findByMemberIdAndProductMemberId(memberId, 0L).orElseGet(() -> {
 				Chatroom chatroom1 = new Chatroom(member, product);
 				return chatroomRepository.save(chatroom1);
 			});
 
 			// 메세지 저장
-			String message = "키워드 : " + keyword.getKeywordName() + "<br/>" +
+			String message = "키워드 알림<br/>" +
 					"<a href='/product/detail/" + productId + "'>" + subject + "</a>";
 			Chat chat = new Chat(chatroom, product.getMember(), message, null);
 
 			ChatDTO chatDTO = new ChatDTO(chatRepository.save(chat));
-			chatDTO.setTargetId(member.getId());
+			chatDTO.setTargetId(memberId);
 
 			chatDTOList.add(chatDTO);
 		}

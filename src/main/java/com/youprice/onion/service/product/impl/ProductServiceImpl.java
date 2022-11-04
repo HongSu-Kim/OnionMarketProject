@@ -35,7 +35,6 @@ public class ProductServiceImpl implements ProductService {
     private final TownRepositoy townRepositoy;
     private final CategoryRepositoy categoryRepository;
     private final ProductRepository productRepository;
-    private final ProductRepository.Querydsl productRepositoryQuerydsl;
     private final ProductImageRepository productImageRepository;
     private final OrderRepository orderRepository;
     private final WishRepository wishRepository;
@@ -59,6 +58,7 @@ public class ProductServiceImpl implements ProductService {
                 productRepository.save(product);
             }
         }
+/*
         return productRepositoryQuerydsl.findAllBySearchRequirements(searchRequirements).map(product -> {
             ProductListDTO productListDTO = new ProductListDTO(product);
 
@@ -74,7 +74,8 @@ public class ProductServiceImpl implements ProductService {
 
             return productListDTO;
         });
-
+*/
+        return productRepository.findAllBySearchRequirements(searchRequirements).map(ProductListDTO::new);
     }
 
 
@@ -287,7 +288,7 @@ public class ProductServiceImpl implements ProductService {
     //유저 판매 상품 목록
     @Override
     public Page<ProductSellListDTO> getProductSellListDTO(Long memberId, ProductProgress productProgress, Pageable pageable) {
-        return productRepositoryQuerydsl.findByMemberIdAndProductProgress(memberId, productProgress, pageable).map(ProductSellListDTO::new);
+        return productRepository.findByMemberIdAndProductProgress(memberId, productProgress, pageable).map(ProductSellListDTO::new);
     }
     //개인 유저 상품 리스트
     @Override
