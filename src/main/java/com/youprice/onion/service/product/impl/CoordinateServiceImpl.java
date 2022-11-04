@@ -115,7 +115,7 @@ public class CoordinateServiceImpl implements CoordinateService {
 
 
         model.addAttribute("page", page);
-        model.addAttribute("list", page.getContent());
+        model.addAttribute("distancePagelist", page.getContent());
 
 
         session.setAttribute("RangeList",RangeList);

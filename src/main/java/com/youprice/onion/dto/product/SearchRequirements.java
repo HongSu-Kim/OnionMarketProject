@@ -23,7 +23,7 @@ public class SearchRequirements {
 	private Boolean blindStatus;//블라인드현황
 	private String searchValue;//검색어
 	private List<Long> coordinateIdList;//지역PK목록
-	private LocalDateTime auctionDeadline;
+	private Boolean auctionStatus;
 	private List<Long> categoryIdList;//카테고리PK목록
 
 }

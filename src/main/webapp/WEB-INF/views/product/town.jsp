@@ -277,7 +277,7 @@
                 <c:if test="${empty range}">
 
 
-                <form:form action="/product/list" name="townadd" method="post">
+                <form:form action="/product/wishRangeList" name="townadd" method="post">
 
 
 
