@@ -22,10 +22,8 @@ public class WishListDTO {
 	private String representativeImage; //이미지파일이름
 	@Setter
 	private Long chatroomId;
-	private int chatroomListSize;
-	private int wishListSize;
 
-	public WishListDTO(Wish wish, int chatroomListSize, int wishListSize) {
+	public WishListDTO(Wish wish) {
 		wishId = wish.getId();
 		Product product = wish.getProduct();
 		productId = product.getId();
@@ -36,8 +34,6 @@ public class WishListDTO {
 		viewCount = product.getViewCount();
 		payStatus = product.getPayStatus();
 		representativeImage = product.getRepresentativeImage();
-		this.chatroomListSize = chatroomListSize;
-		this.wishListSize = wishListSize;
 	}
 }
 
