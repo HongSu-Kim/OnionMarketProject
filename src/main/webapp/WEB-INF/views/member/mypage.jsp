@@ -11,17 +11,23 @@
             <div class="col-md-3">
                 <div class="d-flex flex-column align-items-center text-center p-3 py-5">
                     <img onclick="window.open('/img/member/${memberDTO.memberImageName}', 'Profile', 'width=600, height=800, location=no, status=no, scrollbars=yes');" class="rounded-circle mt-5 profile" src="/img/member/${memberDTO.memberImageName}">
-                    <span class="font-weight-bold">${sessionDTO.userId}</span>
-                    <span class="text-black-50">${sessionDTO.nickname}</span>
+                    <span class="font-weight-bold">${memberDTO.nickname}</span>
+                    <span class="text-black-50">${memberDTO.userId}</span>
                 </div>
                 <div>
                     <span>
                         <ul class="list_modify">
-                            <li><button type="button" onclick="location.href='/member/modifyProfileImg'" class="site-btn-modify">사진 변경</button></li>
-                            <li><button type="button" onclick="location.href='/member/preModify'" class="site-btn-modify">회원정보 수정</button></li>
-                            <li><button type="button" onclick="location.href='/follow/list'" class="site-btn-modify">팔로우 목록</button></li>
-                            <li><button type="button" onclick="location.href='/block/list'" class="site-btn-modify">차단 목록</button></li>
-                            <li><button type="button" onclick="location.href='/member/withdraw'" class="site-btn-modify">회원탈퇴</button></li>
+                                <li><button type="button" onclick="location.href='/member/modifyProfileImg'" class="site-btn-modify">사진 변경</button></li>
+                                <li><button type="button" onclick="location.href='/member/preModify'" class="site-btn-modify">회원정보 수정</button></li>
+                            <sec:authorize access="hasRole('USER')">
+                                <li><button type="button" onclick="location.href='/follow/list'" class="site-btn-modify">팔로우 목록</button></li>
+                                <li><button type="button" onclick="location.href='/block/list'" class="site-btn-modify">차단 목록</button></li>
+                                <li><button type="button" onclick="location.href='/member/cash/<sec:authentication property="principal.sessionDTO.id"/>'" class="site-btn-modify">양파페이 충전</button></li>
+                                <li><button type="button" onclick="location.href='/member/withdraw'" class="site-btn-modify">회원탈퇴</button></li>
+                            </sec:authorize>
+                            <sec:authorize access="hasRole('ADMIN')">
+                                <li><button type="button" onclick="location.href='/member/manageMember'" class="site-btn-modify">회원관리</button></li>
+                            </sec:authorize>
                         </ul>
                     </span>
                 </div>

@@ -60,8 +60,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         //페이지 권한 설정
         http.authorizeRequests()
-                .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/**/**.admin").hasRole("ADMIN")
+                .antMatchers("/order/**").authenticated()
+                .antMatchers("/wish/**").authenticated()
                 .antMatchers("/**/login", "/**/join", "/**/findId", "/**/findPwd").access("!hasRole('USER') and !hasRole('ADMIN')")
                 .antMatchers("/member/mypage").authenticated()
                 .antMatchers("/**").permitAll();

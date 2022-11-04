@@ -11,11 +11,11 @@
                 <div class="d-flex flex-column align-items-center text-center p-3 py-5">
                     <img onclick="window.open('/img/member/${memberDTO.memberImageName}', 'Profile', 'width=600, height=800, location=no, status=no, scrollbars=yes');" class="rounded-circle mt-5 profile" src="/img/member/${memberDTO.memberImageName}">
                     <span class="font-weight-bold">${memberDTO.nickname}</span>
-                    <span> </span>
+                    <span class="text-black-50">${memberDTO.userId}</span>
                 </div>
                 <div>
                     <span>
-                        <p style="text-align: center">
+                        <p>
                             <c:if test="${!memberDTO.followCheck}">
                                     <button type="button" class="site-btn-follow" onclick="location.href='/follow/addFollow/${memberDTO.id}'">팔로우</button>
                                 </c:if>

@@ -93,3 +93,7 @@ ul.list_modify {
     color: #000000;
     border-radius: 4px;
 }
+
+p {
+    text-align: center;
+}
