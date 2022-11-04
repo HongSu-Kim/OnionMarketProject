@@ -22,7 +22,6 @@ public class ReviewDTO {
     private String reviewContent; // 리뷰내용
     private Integer grade; // 평점
     private LocalDate reviewDate; //등록일
-    private Long salesId;
     private List<ReviewImageDTO> reviewImageList;
 
     private MemberDTO memberDTO;
@@ -35,7 +34,6 @@ public class ReviewDTO {
         this.reviewContent = review.getReviewContent();
         this.grade = review.getGrade();
         this.reviewDate = review.getReviewDate();
-        this.salesId = review.getSalesId();
         this.reviewImageList = review.getReviewImageName().stream().map(ReviewImageDTO::new).collect(Collectors.toList());
         memberDTO = new MemberDTO(review.getMember());
         productDTO = new ProductDTO(review.getOrder().getProduct());

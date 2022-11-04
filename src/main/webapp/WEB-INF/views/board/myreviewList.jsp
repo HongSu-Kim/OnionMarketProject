@@ -70,16 +70,6 @@
         </div>
     </div>
 
-    <!-- 페이징 -->
-    <div class="text-xs-center">
-        <ul class="product__pagination text-center">
-            <!-- 이전 -->
-            <c:choose>
-                <c:when test="${reviewList.first}"></c:when>
-                <c:otherwise>
-                    <a href="/review/mylist/${memberDTO.id}?page=${reviewList.number-1}">◀</a>
-                </c:otherwise>
-            </c:choose>
 
             <!-- 페이지 그룹 -->
             <c:forEach begin="${startBlockPage}" end="${endBlockPage}" var="i">

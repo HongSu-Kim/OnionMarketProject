@@ -27,7 +27,7 @@ public class Chat{
 
     private String message; //메세지
     private String chatImageName; //첨부이미지
-    private boolean readOrNot; //읽음 표시
+    private boolean read; //읽음 표시
     private LocalDateTime sendingTime; //전송 시간
 
 	public Chat(Chatroom chatroom, Member member, String message, String chatImageName) {
@@ -35,7 +35,7 @@ public class Chat{
 		this.member = member;
 		this.message = message;
 		this.chatImageName = chatImageName;
-		readOrNot = false;
+		read = false;
 		sendingTime = LocalDateTime.now();
 	}
 

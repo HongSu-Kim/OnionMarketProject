@@ -14,6 +14,7 @@ public class OrderAddDTO {
 	private Long productId;//상품번호
 
     private int orderPayment;//주문가격
+	private int usePoint;//사용포인트
     private String orderNum;//주문번호
     private String imp_uid;//결제번호
 
@@ -28,6 +29,6 @@ public class OrderAddDTO {
     private String extraAddress;//참고사항
 
     private String request;//요청사항
-    private int deliveryCost;//배송비
+	private int deliveryCost;//배송비
 
 }

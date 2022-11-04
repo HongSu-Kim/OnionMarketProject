@@ -8,7 +8,7 @@ import java.util.List;
 public interface ChatroomService {
 
 	public List<ChatroomDTO> getChatroomDTOList(Long memberId);
-	public ChatroomDTO getChatroomDTO(Long chatroomId, Pageable pageable);
+	public ChatroomDTO getChatroomDTO(Long memberId, Long chatroomId, Pageable pageable);
 	public Long createChatroom(Long memberId, Long productId);
 
 }

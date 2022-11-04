@@ -13,10 +13,10 @@
                 <div class="row">
                     <div class="col-lg-3 col-md-3"></div>
                     <div class="col-lg-6 col-md-6">
-                    <h4>프로필 수정</h4>
+                    <h4>사진 변경</h4>
 
                         <div class="checkout__input">
-                            <p>프로필</p>
+                            <p>프로필 사진 변경</p>
                             <img class="rounded-circle mt-2 preview" id="preview"/>
                             <input type="file" name="profileImg" onchange="readURL(this);"/>
                         </div>
@@ -27,6 +27,5 @@
             </form>
         </div>
     </div>
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </section>
 <!-- Checkout Section End -->

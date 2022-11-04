@@ -75,7 +75,7 @@ public class OrderController {
 			Long orderId = orderService.addOrder(orderAddDTO);
 			return "redirect:/order/complete/" + orderId;
 		} catch (Exception e) {
-			return AlertRedirect.warningMessage(response, "양파페이가 부족합니다");
+			return AlertRedirect.warningMessage(response, e.getMessage());
 		}
 	}
 

@@ -147,10 +147,16 @@ public class Member {
 	}
 
     // 포인트 적립
-    public int addPoint(int point){
-        this.point += point;
-        return point;
-    }
+	public int addPoint(int point){
+		this.point += point;
+		return point;
+	}
+	
+	// 포인트 사용
+	public int subPoint(int point){
+		this.point -= point;
+		return point;
+	}
 
     // 신고횟수 추가
     public Member addComplainCount(){

@@ -19,12 +19,10 @@ public class ReviewImage {
     @JoinColumn(name = "review_id")
     private Review review; // 리뷰번호 FK
 
-    private String originalFileName;
     private String storeImageName;
 
-    public ReviewImage(Review review, String originalFileName, String storeImageName) {
+    public ReviewImage(Review review, String storeImageName) {
         this.review = review;
-        this.originalFileName = originalFileName;
         this.storeImageName = storeImageName;
     }
 }
