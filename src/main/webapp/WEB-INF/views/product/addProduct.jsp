@@ -78,7 +78,7 @@
 							<div class="wrap">
 								<textarea id="content" name="content" class="wrap"
 										  placeholder="여러 장의 상품 사진과 구입 연도, 브랜드, 사용감, 하자 유무 등 구매자에게 필요한 정보를 꼭 포함해 주세요. (10자 이상)"></textarea>
-								<div id="counter" align="right"/>
+								<div id="counter"/>
 							</div>
 							<hr/>
 							<br/>

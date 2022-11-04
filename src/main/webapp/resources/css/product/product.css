@@ -1,4 +1,6 @@
-
+#counter {
+ text-align: right;
+}
 .product__add {
     width: 250px;
     overflow: hidden;

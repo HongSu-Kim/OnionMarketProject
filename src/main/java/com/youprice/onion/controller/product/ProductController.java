@@ -117,9 +117,9 @@ public class ProductController {
         /*상품조회 및 접근 제한*/
         ProductFindDTO productFindDTO = productService.getProductFindDTO(productId);
         if (productFindDTO.getProductProgress() == ProductProgress.BLIND) {
-            AlertRedirect.warningMessage(response, "/product/list", "신고된 상품입니다.");
+            AlertRedirect.warningMessage(response, "/product/wishRangeList", "신고된 상품입니다.");
 
-            return "redirect:/product/addProduct";
+            return "redirect:/product/wishRangeList";
         }
         /*리뷰 조회*/
         Double reviewAvg = null;
@@ -189,9 +189,9 @@ public class ProductController {
                 .coordinateIdList(coordinateList)
                 .build();
 
-        if(userSession != null) {
-            searchRequirements.setMemberId(userSession.getId());
-        }
+//        if(userSession != null) {
+//            searchRequirements.setMemberId(userSession.getId());
+//        }
 
         searchRequirements.setPageable(pageable);
         searchRequirements.setCoordinateIdList((List<Long>) session.getAttribute("RangeList"));
@@ -232,9 +232,9 @@ public class ProductController {
                 .auctionStatus(true)
                 .build();
 
-        if(userSession != null) {
-            searchRequirements.setMemberId(userSession.getId());
-        }
+//        if(userSession != null) {
+//            searchRequirements.setMemberId(userSession.getId());
+//        }
 
         searchRequirements.setPageable(pageable);
 
