@@ -346,6 +346,9 @@ CREATE TABLE notice_image (
 
 ----------------------------------------------------------------------------------------------------
 
+INSERT INTO member VALUES(0, 'ADMIN', 'admin0', '$2a$10$8gkJSCifAA3aWUAZJazhnuYLi2JVSbC7D2UtDmu0cUG9NScriVtZ6', --pwd : admin123
+                          'onion', '양파 마켓', SYSDATE, '01012341234', '06234', '서울 강남구 역삼동 823',
+                          '4층 아이티윌', '디글디글0', 'onion@gmail.com', 'onion.png', 1000000, 10000, 0, 0);
 INSERT INTO member VALUES(1, 'ADMIN', 'admin', '$2a$10$8gkJSCifAA3aWUAZJazhnuYLi2JVSbC7D2UtDmu0cUG9NScriVtZ6', --pwd : admin123
                           'admin', '관리자', SYSDATE, '01012341234', '06234', '서울 강남구 역삼동 823',
                           '4층 아이티윌', '디글디글', 'youprice.onion.email@gmail.com', 'null.png', 1000000, 10000, 0, 0);
@@ -606,6 +609,11 @@ INSERT INTO category VALUES(114,'기타','');
 INSERT INTO category VALUES(115,'기타상품',114);
 
 ----------------------------------------------------------------------------------------------------
+
+INSERT INTO product VALUES (0, 0, 1, 114, '키워드 알림', '키워드 알림', 0, 'onion.png', SYSDATE, NULL, NULL, 0, 'SOLDOUT', 0, 0);
+
+----------------------------------------------------------------------------------------------------
+
 INSERT INTO notice VALUES (100, 1, 'QNA', '아이디/비밀번호 찾는 방법', '아이디가 기억나지 않는다면, 웹 페이지에서 아이디/비밀번호 찾기에서 등록한 이메일을 통해 확인할 수 있습니다.', '2022-11-01', default);
 INSERT INTO notice VALUES (101, 1, 'QNA', '커뮤니티 가이드라인', '[ 양파마켓은 동네 이웃 간의 연결을 도와 따뜻하고 활발한 교류가 있는 지역 사회를 만들기 위해 노력하고 있습니다. ]<br/><br/>양파마켓을 사용하는 이웃 모두가 커뮤니티 가이드라인을 지켜주세요<br/><br/> * 이런 행동은 할 수 없어요. *<br/> · 판매 금지 물품 거래<br/> · 중고거래 사기 등 손해를 입히는 행위<br/> · 허위 정보 게시 등 속이거나 기만하는 행위 ' , '2022-11-01', default);
 INSERT INTO notice VALUES (102, 1, 'QNA', '회원가입 방법', '* 회원가입 시 아래 내용을 참고하세요.<br/><br/>[ 1. 아이디 입력 방법 ]<br/>- 5~20자의 영문 소문자, 숫자와 특수기호 -, _ 만 사용 가능합니다.<br/><br/>[ 2. 비밀번호 입력 방법 ]<br/>- 사용 가능한 특수문자 33자: ! " # $ % & '' ( ) * + , - . / : ; ? @ [ ＼ ] ^ _ ` { | } ~ \', '2022-11-01', default);
