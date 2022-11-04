@@ -4,6 +4,7 @@ package com.youprice.onion.repository.product;
 import com.youprice.onion.dto.product.CategoryFindDTO;
 import com.youprice.onion.dto.product.CategoryUpdateDTO;
 import com.youprice.onion.entity.product.Category;
+import com.youprice.onion.entity.product.Product;
 import lombok.RequiredArgsConstructor;
 //import org.apache.ibatis.annotations.Delete;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -40,6 +41,7 @@ public interface CategoryRepositoy extends JpaRepository<Category, Long> {
 	@Query("select o from Category o  where o.parent is not null")
 	List<Category> findAllSubcategory();
 
+    List<Category> findByIdBetween(Long start, Long end);
 
 }
 
