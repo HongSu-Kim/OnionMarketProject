@@ -87,8 +87,8 @@
             <!-- list띄우기 -->
             <tbody>
             <c:choose>
-                <c:when test="${questionlist.size == 0}">
-                    문의가 없습니다.
+                <c:when test="${empty questionlist.content}">
+                    <tr><td colspan="6" style="text-align: center">등록된 문의가 없습니다.</td></tr>
                 </c:when>
 
                 <c:otherwise>
