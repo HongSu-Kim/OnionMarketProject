@@ -56,6 +56,7 @@ public class ChatController {
 		}
 	}
 
+	// 채팅 읽음
 	@PutMapping("readChat")
 	public void readChat(Long memberId, Long chatroomId) {
 		chatService.readChat(memberId, chatroomId);
