@@ -124,9 +124,7 @@ public class ProductController {
         }
         /*리뷰 조회*/
         Double reviewAvg = memberService.getMemberDTO(productFindDTO.getMemberId()).getUserGrade();
-        if (memberService.avgGrade(productFindDTO.getMemberId()) != null) {
-            reviewAvg = memberService.avgGrade(productFindDTO.getMemberId());
-        }
+
         /*입찰 리스트 조회 및 마지막 입찰가 조회*/
         List<BiddingListDTO> biddingList = biddingService.getBiddingList(productId, model);
         if (biddingList.size() > 0) {
