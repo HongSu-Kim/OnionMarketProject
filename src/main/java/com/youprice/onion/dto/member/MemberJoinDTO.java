@@ -63,6 +63,10 @@ public class MemberJoinDTO { //회원가입 할 때 필요한 DTO (MemberDTO)에
     private String email;
 
     private String memberImageName;
+    private int cash;
+    private int point;
+    private Double userGrade;
+
     private MultipartFile profileImg;
 
     public Member toEntity() { //DTO -> Entity
@@ -81,6 +85,9 @@ public class MemberJoinDTO { //회원가입 할 때 필요한 DTO (MemberDTO)에
                 .extraAddress(extraAddress)
                 .email(email)
                 .memberImageName(memberImageName == null ? "null.png" : memberImageName)
+                .cash(0)
+                .point(0)
+                .userGrade(0.0)
                 .build();
     }
 }
