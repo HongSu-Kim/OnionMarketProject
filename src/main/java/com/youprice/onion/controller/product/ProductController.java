@@ -175,6 +175,7 @@ public class ProductController {
 
         /*세션아이디로 동네 조회*/
         List<Long> coordinateList = null;
+		Long memberId = null;
 
         if (userSession != null) {
 
@@ -183,20 +184,17 @@ public class ProductController {
                     .map(TownFindDTO::getCoordinateId)
                     .collect(Collectors.toList());
 
+			memberId = userSession.getId();
         }
         SearchRequirements searchRequirements = SearchRequirements.builder()
                 .blindStatus(false)
                 .coordinateIdList(coordinateList)
                 .build();
 
-//        if(userSession != null) {
-//            searchRequirements.setMemberId(userSession.getId());
-//        }
-
         searchRequirements.setPageable(pageable);
         searchRequirements.setCoordinateIdList((List<Long>) session.getAttribute("RangeList"));
 
-        Page<ProductListDTO> distancePage = productService.getProductListDTO(userSession.getId(), searchRequirements);
+        Page<ProductListDTO> distancePage = productService.getProductListDTO(memberId, searchRequirements);
 
         model.addAttribute("distancePage", distancePage);
         model.addAttribute("distancePagelist", distancePage.getContent());
@@ -235,10 +233,14 @@ public class ProductController {
 //        if(userSession != null) {
 //            searchRequirements.setMemberId(userSession.getId());
 //        }
+		Long memberId = null;
+		if (userSession != null) {
+			memberId = userSession.getId();
+		}
 
         searchRequirements.setPageable(pageable);
 
-        Page<ProductListDTO> page = productService.getProductListDTO(userSession.getId(), searchRequirements);
+        Page<ProductListDTO> page = productService.getProductListDTO(memberId, searchRequirements);
 
         model.addAttribute("page", page);
         model.addAttribute("list", page.getContent());

@@ -40,24 +40,10 @@ public class ProductServiceImpl implements ProductService {
     private final WishRepository wishRepository;
 
     @Override
+	@Transactional
     public Page<ProductListDTO> getProductListDTO(Long memberId, SearchRequirements searchRequirements) {
-        List<ProductListDTO> blindList = getAuctionList(false);
 
-        LocalDateTime now = LocalDateTime.now();
-
-        for(ProductListDTO blindDTO : blindList) {
-
-            Product product = productRepository.findById(blindDTO.getProductId()).orElse(null);
-
-            if(blindDTO.getAuctionDeadline().isBefore(now)){
-
-                blindDTO.setBlindStatus(true);
-
-                product.updateAuctionProduct(blindDTO);
-
-                productRepository.save(product);
-            }
-        }
+		productRepository.actionBlind();
 
         return productRepository.findAllBySearchRequirements(searchRequirements).map(product -> {
             ProductListDTO productListDTO = new ProductListDTO(product);
