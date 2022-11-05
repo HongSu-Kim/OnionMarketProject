@@ -63,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**/**.admin").hasRole("ADMIN")
                 .antMatchers("/order/**").authenticated()
                 .antMatchers("/wish/**").authenticated()
-                .antMatchers("/**/login", "/**/join", "/**/findId", "/**/findPwd").access("!hasRole('USER') and !hasRole('ADMIN')")
+                .antMatchers("/member/login", "/member/join", "/member/findId", "/member/findPwd").access("!isAuthenticated()")
                 .antMatchers("/member/mypage").authenticated()
                 .antMatchers("/**").permitAll();
 
@@ -86,7 +86,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         //403 예외처리 핸들링
         http.exceptionHandling()
-                .accessDeniedPage("/member/denied");
+                .accessDeniedPage("/main/denied");
     }
 
     @Override

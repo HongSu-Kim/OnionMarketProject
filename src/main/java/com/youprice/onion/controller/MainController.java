@@ -60,4 +60,11 @@ public class MainController {
 		model.addAttribute("pageName", "main");
 		return "main/main";
 	}
+
+	//접근 거부 페이지
+	@GetMapping("/main/denied")
+	public String deniedView() {
+		return "redirect:/";
+	}
+
 }

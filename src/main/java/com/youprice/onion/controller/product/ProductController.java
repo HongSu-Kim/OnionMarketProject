@@ -3,7 +3,6 @@ package com.youprice.onion.controller.product;
 import com.youprice.onion.dto.chat.ChatDTO;
 import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.product.*;
-import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.entity.product.ProductProgress;
 import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.service.chat.ChatService;
@@ -26,7 +25,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -68,9 +66,9 @@ public class ProductController {
         }
 
         /*카테고리 조회*/
-        List<Category> topCategory = categoryService.findTopCategory();
+        List<CategoryFindDTO> topCategoryList = categoryService.findTopCategory();
         model.addAttribute("townList", townList);
-        model.addAttribute("topCategory", topCategory);
+        model.addAttribute("topCategoryList", topCategoryList);
 
 
         return "product/addProduct";//상품등록 페이지
@@ -122,10 +120,8 @@ public class ProductController {
             return "redirect:/product/wishRangeList";
         }
         /*리뷰 조회*/
-        Double reviewAvg = null;
-        if (memberService.avgGrade(productFindDTO.getMemberId()) != null) {
-            reviewAvg = memberService.avgGrade(productFindDTO.getMemberId());
-        }
+        Double reviewAvg = memberService.getMemberDTO(productFindDTO.getMemberId()).getUserGrade();
+
         /*입찰 리스트 조회 및 마지막 입찰가 조회*/
         List<BiddingListDTO> biddingList = biddingService.getBiddingList(productId, model);
         if (biddingList.size() > 0) {
@@ -135,10 +131,9 @@ public class ProductController {
         }
 
         /*동일 카테고리 추천상품 조회*/
-        List<ProductFindDTO> categoryDTO = productService.getProductSubCategory(productId, productFindDTO.getCategoryId());
+        List<ProductFindDTO> categoryDTO = productService.getProductSubCategory(productFindDTO.getProductId(), productFindDTO.getCategoryId());
 
         model.addAttribute("userSession", userSession);
-        model.addAttribute("productId", productId);
         model.addAttribute("productFindDTO", productFindDTO);
         model.addAttribute("reviewAvg", reviewAvg);
         model.addAttribute("biddingList", biddingList);
@@ -175,6 +170,7 @@ public class ProductController {
 
         /*세션아이디로 동네 조회*/
         List<Long> coordinateList = null;
+		Long memberId = null;
 
         if (userSession != null) {
 
@@ -183,20 +179,17 @@ public class ProductController {
                     .map(TownFindDTO::getCoordinateId)
                     .collect(Collectors.toList());
 
+			memberId = userSession.getId();
         }
         SearchRequirements searchRequirements = SearchRequirements.builder()
                 .blindStatus(false)
                 .coordinateIdList(coordinateList)
                 .build();
 
-//        if(userSession != null) {
-//            searchRequirements.setMemberId(userSession.getId());
-//        }
-
         searchRequirements.setPageable(pageable);
         searchRequirements.setCoordinateIdList((List<Long>) session.getAttribute("RangeList"));
 
-        Page<ProductListDTO> distancePage = productService.getProductListDTO(userSession.getId(), searchRequirements);
+        Page<ProductListDTO> distancePage = productService.getProductListDTO(memberId, searchRequirements);
 
         model.addAttribute("distancePage", distancePage);
         model.addAttribute("distancePagelist", distancePage.getContent());
@@ -205,21 +198,27 @@ public class ProductController {
     }
 
     @PostMapping("wishRangeList")
-    public String allList(Model model, @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable, @RequestParam("range") Double range
-            , @RequestParam("townName") String townName, HttpSession session, HttpServletRequest request, @RequestParam("memberId") Long memberId) {
+    public String allList(@LoginUser SessionDTO sessionDTO, Model model, @PageableDefault(size = 12, sort = "uploadDate", direction = Sort.Direction.DESC) Pageable pageable, @RequestParam("range") Double range
+            , @RequestParam("townName") String townName, HttpSession session) {
 
+		List<Long> rangeList = coordinateService.coordinateSearch(townName, range);
+		session.setAttribute("rangeList", rangeList);
 
         SearchRequirements searchRequirements = SearchRequirements.builder()
+				.pageable(pageable)
                 .blindStatus(false)
+				.coordinateIdList(rangeList)
                 .build();
 
-        searchRequirements.setPageable(PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
-                pageable.getPageSize(), Sort.Direction.DESC, "uploadDate"));
+		Long memberId = null;
+		if (sessionDTO != null) {
+			memberId = sessionDTO.getId();
+		}
 
-        coordinateService.coordinateSearch(townName, range, model, session, request, memberId, searchRequirements);
+		Page<ProductListDTO> page = productService.getProductListDTO(memberId, searchRequirements);
 
-
-        return "product/wishRangeList";
+		model.addAttribute("page", page);
+		return "product/wishRangeList";
 
     }
 
@@ -232,13 +231,14 @@ public class ProductController {
                 .auctionStatus(true)
                 .build();
 
-//        if(userSession != null) {
-//            searchRequirements.setMemberId(userSession.getId());
-//        }
+		Long memberId = null;
+		if (userSession != null) {
+			memberId = userSession.getId();
+		}
 
         searchRequirements.setPageable(pageable);
 
-        Page<ProductListDTO> page = productService.getProductListDTO(userSession.getId(), searchRequirements);
+        Page<ProductListDTO> page = productService.getProductListDTO(memberId, searchRequirements);
 
         model.addAttribute("page", page);
         model.addAttribute("list", page.getContent());
@@ -349,16 +349,16 @@ public class ProductController {
 
         /*ProductDTO 및 ProductImageDTO 조회*/
         ProductFindDTO productFindDTO = productService.getProductFindDTO(productId);
-        List<ProductImageDTO> imageList = productImageService.getProductImage(productId);
 
         /*카테고리 조회*/
-        List<Category> topCategory = categoryService.findTopCategory();
+        List<CategoryFindDTO> topCategoryList = categoryService.findTopCategory();
+        Long categoryId = productFindDTO.getCategoryParentId();
+        List<CategoryFindDTO> subCategoryList = categoryService.findSubCategory(categoryId);
 
-        model.addAttribute("imageList", imageList);
         model.addAttribute("townList", townList);
-        model.addAttribute("topCategory", topCategory);
+        model.addAttribute("topCategoryList", topCategoryList);
+        model.addAttribute("subCategoryList", subCategoryList);
         model.addAttribute("productFindDTO", productFindDTO);
-        model.addAttribute("productId", productId);
 
         return "product/updateProduct";
     }
@@ -402,11 +402,11 @@ public class ProductController {
         if (userSession == null) {
             AlertRedirect.warningMessage(response, "/member/login", "로그인이 필요합니다.");
             return "redirect:/member/login";
+        }else {
+            //DB삭제가 아닌 boolean사용
+            productService.deleteProduct(productId);
+            return AlertRedirect.warningMessage(response,"/product/wishRangeList", "삭제가 완료되었습니다.");//삭제 후 메인 화면
         }
-        //DB삭제가 아닌 boolean사용
-        productService.deleteProduct(productId);
-
-        return "redirect:/product/main";//삭제 후 메인 화면
     }
 
     @GetMapping("/category/{topCategoryId}") //하위 카테고리 호출

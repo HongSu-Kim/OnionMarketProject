@@ -49,14 +49,23 @@
 						<div class="checkout__input">
 							<p>카테고리 선택<span>*</span></p>
 							<select id="topCategory">
-								<option value="${productFindDTO.categoryParentId}">${productFindDTO.categoryParentName}</option>
 								<option value="">선택하세요</option>
-								<c:forEach var="topCategory" items="${topCategory}">
-									<option value="${topCategory.id}">${topCategory.categoryName}</option>
+								<c:forEach var="topCategory" items="${topCategoryList}">
+
+									<option <c:if test="${topCategory.categoryId eq productFindDTO.categoryParentId}"> selected="selected" </c:if>
+											value="${topCategory.categoryId}">${topCategory.categoryName}
+									</option>
+
 								</c:forEach>
 								</select>
 							<select id="subCategory" name="categoryId">
-								<option value="${productFindDTO.categoryId}">${productFindDTO.categoryName}</option>
+								<c:forEach var="subCategory" items="${subCategoryList}">
+
+									<option <c:if test="${subCategory.categoryId eq productFindDTO.categoryId}"> selected="selected" </c:if>
+											value="${subCategory.categoryId}">${subCategory.categoryName}
+									</option>
+
+								</c:forEach>
 							</select>
 
 							<br><br><br><br><hr/>
@@ -101,13 +110,12 @@
 								<div class="checkout__input">
 									<div class='addInput'>
 										<p>상품 이미지<span>*</span></p>
-<%--										<input type="file" name="productImageName" id="fileList">--%>
-										<c:forEach var="imageList" items="${imageList}">
-<%--											<label for="fileList">${imageList.productImageName}</label>--%>
+
+										<c:forEach var="imageDTO" items="${productFindDTO.productImageDTOList}">
 											<input type="file" name="productImageName" id="fileList">
 											<button type="button" class="btnRemove">삭제</button><br>
-											<input type="hidden" name="newImageIdList" value="${imageList.productImageId}">
-											${imageList.productImageId}
+											<input type="hidden" name="newImageIdList" value="${imageDTO.productImageId}">
+											${imageDTO.productImageId}
 										</c:forEach>
 									</div>
 									<button type="button" class="btnAdd" style="border-width: thin;">이미지 추가</button>
@@ -126,7 +134,7 @@
 							<input type="submit" value="상품 수정" style="color: black">
 						</div>
 						<div>
-							<input type="hidden" name="productId" value="${productId}">
+							<input type="hidden" name="productId" value="${productFindDTO.productId}">
 							<input type="button" value="뒤로가기" onclick="goBack();" style="color: black">
 						</div>
 					</div>

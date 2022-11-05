@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <meta name="_csrf" content="${_csrf.token}">
 <meta name="_csrf_header" content="${_csrf.headerName}">
 <section class="spad">
@@ -51,7 +52,12 @@
 													 class="primary-btn cart-btn">주문취소</a>
 											</c:if>
 											<c:if test="${orderDTO.orderState eq 'COMPLETE'}">
-												<a href="/review/created/${orderDTO.orderId}" class="primary-btn">구매후기등록</a>
+												<c:if test="${empty orderDTO.reviewId}">
+													<a href="/review/created/${orderDTO.orderId}" class="primary-btn">구매후기등록</a>
+												</c:if>
+												<c:if test="${!empty orderDTO.reviewId}">
+													<a href="/review/update/<sec:authentication property="principal.sessionDTO.id"/>/${orderDTO.reviewId}" class="primary-btn">구매후기수정</a>
+												</c:if>
 											</c:if>
 										</p>
 									</td>
