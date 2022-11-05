@@ -112,10 +112,9 @@
 										<p>상품 이미지<span>*</span></p>
 
 										<c:forEach var="imageDTO" items="${productFindDTO.productImageDTOList}">
-											<input type="file" name="productImageName" id="fileList">
-											<button type="button" class="btnRemove">삭제</button><br>
-											<input type="hidden" name="newImageIdList" value="${imageDTO.productImageId}">
-											${imageDTO.productImageId}
+											<img src="/img/product/${imageDTO.productImageName}"/>
+											<button type="button" class="btnRemove">삭제</button>
+											<input type="hidden" name="productImageIdList" value="${imageDTO.productImageId}">
 										</c:forEach>
 									</div>
 									<button type="button" class="btnAdd" style="border-width: thin;">이미지 추가</button>
