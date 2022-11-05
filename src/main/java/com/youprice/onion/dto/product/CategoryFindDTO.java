@@ -10,16 +10,18 @@ import lombok.Setter;
 public class CategoryFindDTO {
 
 
-    private Long id; //카테고리번호 PK
+    private Long categoryId; //카테고리번호 PK
 
-    private Long categoryId; //하위카테고리번호
+    private Long parentId; //상위카테고리번호
 
-    private String categoryName; //하위카테고리이름
+    private String categoryName; //카테고리이름
 
     public CategoryFindDTO(Category category) {
 
-        id =category.getId();
-        categoryId = category.getParent().getId();
+        categoryId = category.getId();
+        if (category.getParent() != null) {
+            parentId = category.getParent().getId();
+        }
         categoryName = category.getCategoryName();
     }
 

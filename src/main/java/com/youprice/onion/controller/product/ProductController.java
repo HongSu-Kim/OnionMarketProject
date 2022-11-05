@@ -3,7 +3,6 @@ package com.youprice.onion.controller.product;
 import com.youprice.onion.dto.chat.ChatDTO;
 import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.product.*;
-import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.entity.product.ProductProgress;
 import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.service.chat.ChatService;
@@ -19,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,7 +25,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -69,9 +66,9 @@ public class ProductController {
         }
 
         /*카테고리 조회*/
-        List<Category> topCategory = categoryService.findTopCategory();
+        List<CategoryFindDTO> topCategoryList = categoryService.findTopCategory();
         model.addAttribute("townList", townList);
-        model.addAttribute("topCategory", topCategory);
+        model.addAttribute("topCategoryList", topCategoryList);
 
 
         return "product/addProduct";//상품등록 페이지
@@ -134,10 +131,9 @@ public class ProductController {
         }
 
         /*동일 카테고리 추천상품 조회*/
-        List<ProductFindDTO> categoryDTO = productService.getProductSubCategory(productId, productFindDTO.getCategoryId());
+        List<ProductFindDTO> categoryDTO = productService.getProductSubCategory(productFindDTO.getProductId(), productFindDTO.getCategoryId());
 
         model.addAttribute("userSession", userSession);
-        model.addAttribute("productId", productId);
         model.addAttribute("productFindDTO", productFindDTO);
         model.addAttribute("reviewAvg", reviewAvg);
         model.addAttribute("biddingList", biddingList);
@@ -353,16 +349,16 @@ public class ProductController {
 
         /*ProductDTO 및 ProductImageDTO 조회*/
         ProductFindDTO productFindDTO = productService.getProductFindDTO(productId);
-        List<ProductImageDTO> imageList = productImageService.getProductImage(productId);
 
         /*카테고리 조회*/
-        List<Category> topCategory = categoryService.findTopCategory();
+        List<CategoryFindDTO> topCategoryList = categoryService.findTopCategory();
+        Long categoryId = productFindDTO.getCategoryParentId();
+        List<CategoryFindDTO> subCategoryList = categoryService.findSubCategory(categoryId);
 
-        model.addAttribute("imageList", imageList);
         model.addAttribute("townList", townList);
-        model.addAttribute("topCategory", topCategory);
+        model.addAttribute("topCategoryList", topCategoryList);
+        model.addAttribute("subCategoryList", subCategoryList);
         model.addAttribute("productFindDTO", productFindDTO);
-        model.addAttribute("productId", productId);
 
         return "product/updateProduct";
     }
