@@ -97,7 +97,8 @@ public class ChatServiceImpl implements ChatService {
 			});
 
 			// 메세지 저장
-			String message = "키워드 알림<br/>" +
+			String message =
+					"키워드 알림<br/>" +
 					"<a href='/product/detail/" + productId + "'>" + subject + "</a>";
 			Chat chat = new Chat(chatroom, product.getMember(), message, null);
 

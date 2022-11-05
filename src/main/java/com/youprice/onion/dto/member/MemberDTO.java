@@ -34,6 +34,7 @@ public class MemberDTO {
 
     private boolean followCheck;
     private boolean blockCheck;
+    private boolean locked;
 
     public MemberDTO(Member member) {
         this.id = member.getId();

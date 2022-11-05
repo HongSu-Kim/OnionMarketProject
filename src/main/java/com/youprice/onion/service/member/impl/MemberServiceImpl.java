@@ -1,6 +1,8 @@
 package com.youprice.onion.service.member.impl;
 
-import com.youprice.onion.dto.member.*;
+import com.youprice.onion.dto.member.MemberDTO;
+import com.youprice.onion.dto.member.MemberJoinDTO;
+import com.youprice.onion.dto.member.MemberModifyDTO;
 import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.member.Role;
 import com.youprice.onion.repository.board.ReviewRepository;
@@ -12,9 +14,9 @@ import com.youprice.onion.util.ImageUtil;
 import com.youprice.onion.util.MailUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-//import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,11 +25,15 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class MemberServiceImpl implements MemberService {
 
@@ -44,7 +50,6 @@ public class MemberServiceImpl implements MemberService {
 //    private final ModelMapper modelMapper;
 
     //회원가입
-    @Transactional
     @Override
     public Long saveMember(MemberJoinDTO memberJoinDTO) throws IOException {
 
@@ -72,7 +77,6 @@ public class MemberServiceImpl implements MemberService {
     }
 
     //회원정보 수정
-    @Transactional
     @Override
     public void modify(MemberModifyDTO memberModifyDTO) {
         Member findById = memberRepository.findById(memberModifyDTO.getId()).orElseThrow(() ->
@@ -145,11 +149,10 @@ public class MemberServiceImpl implements MemberService {
 		return memberRepository.findAllChatMember(memberId).stream().map(MemberDTO::new).collect(Collectors.toList());
 	}
 
-	@Transactional
     @Override
     public void withdraw(String userId) {
         Member member = memberRepository.findByUserId(userId).orElse(null);
-        member.withdraw(Role.valueOf("WITHDRAWAL"));
+        member.changeRole(Role.WITHDRAWAL);
         memberRepository.save(member);
     }
 
@@ -170,56 +173,6 @@ public class MemberServiceImpl implements MemberService {
         }).orElse(null);
     }
 
-/*
-    //프로필사진 수정
-    @Transactional
-    @Override
-    public void profileImageUpdate(Long memberId, MemberModifyDTO memberModifyDTO, MultipartFile profileImageFile) {
-        UUID uuid = UUID.randomUUID();
-        String memberImageName = uuid + "_" + profileImageFile.getOriginalFilename();
-        Path imageFilePath = Paths.get(uploadFolder + memberImageName);
-
-        try {
-            Files.write(imageFilePath, profileImageFile.getBytes());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> {
-            return new IllegalArgumentException("프로필 사진 수정 실패 : 존재하지 않는 회원입니다.");
-        });
-    }
-*/
-
-/*  차단
-    @Override
-    public MemberDTO getMemberDTO(Long memberId) {
-
-        Long sender = 1L;
-        Long target = 2L;
-        if (blockRepository.existsBlockByMemberAndTarget(target,sender)) {
-            // 차단되는 로직
-            throw new NullPointerException();
-        }
-        // 채팅로직
-        return null;
-    }
-
-    //차단 추가
-    public void makeBlock(Long memberId, Long targetId) {
-
-        Member targetingMember = memberRepository.findById(memberId).orElseThrow(NullPointerException::new);
-        Member targetedMember = memberRepository.findById(targetId).orElseThrow(NullPointerException::new);
-
-        Block block = Block.builder()
-                .member(targetingMember)
-                .target(targetedMember)
-                .build();
-
-        blockRepository.save(block);
-    }
-*/
-
     // 평점 찾기
     public Double avgGrade(Long salesId) {
         Member member = memberRepository.findById(salesId).orElse(null);
@@ -228,5 +181,35 @@ public class MemberServiceImpl implements MemberService {
         member.updateGrade(grade);
         memberRepository.save(member);
         return grade;
+    }
+
+    //양파페이 충전
+    @Override
+    public void chargeCash(Long memberId, int amount) {
+        Member member = memberRepository.findById(memberId).get();
+        member.addCash(amount);
+    }
+
+    @Override
+    public Page<MemberDTO> getMemberList(Pageable pageable) {
+        return memberRepository.findAll(pageable).map(MemberDTO::new);
+    }
+
+    @Override
+    public void accountLock(Long targetId) {
+        Member target = memberRepository.findById(targetId).orElse(null);
+        if (target == null) return;
+
+        target.changeRole(Role.LOCK);
+        memberRepository.save(target);
+    }
+
+    @Override
+    public void removeLock(Long targetId) {
+        Member target = memberRepository.findById(targetId).orElse(null);
+        if (target == null) return;
+
+        target.changeRole(Role.USER);
+        memberRepository.save(target);
     }
 }

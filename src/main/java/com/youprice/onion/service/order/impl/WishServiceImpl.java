@@ -36,10 +36,7 @@ public class WishServiceImpl implements WishService {
 	public Page<WishListDTO> getWishList(Long memberId, Pageable pageable) {
 		return wishRepository.findAllByMemberId(memberId, pageable).map(wish -> {
 
-			int chatroomListSize = chatroomRepository.countByProductId(wish.getProduct().getId());
-			int wishListSize = wishRepository.countByProductId(wish.getProduct().getId());
-
-			WishListDTO wishListDTO = new WishListDTO(wish, chatroomListSize, wishListSize);
+			WishListDTO wishListDTO = new WishListDTO(wish);
 
 			Chatroom chatroom = chatroomRepository.findByMemberIdAndProductId(memberId, wish.getProduct().getId()).orElse(null);
 			if (chatroom != null) {
@@ -57,6 +54,11 @@ public class WishServiceImpl implements WishService {
 
 			Member member = memberRepository.findById(memberId).orElse(null);
 			Product product = productRepository.findById(productId).orElse(null);
+
+			// 자신의 상품을 찜할때 0 리턴
+			if (member == product.getMember()) {
+				return 0;
+			}
 
 			wishRepository.save(new Wish(member, product));
 		}

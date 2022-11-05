@@ -111,11 +111,11 @@ public class CoordinateServiceImpl implements CoordinateService {
         }
 
         searchRequirements.setCoordinateIdList(RangeList);
-        Page<ProductListDTO> page = productService.getProductListDTO(searchRequirements);
+        Page<ProductListDTO> page = productService.getProductListDTO(memberId, searchRequirements);
 
 
         model.addAttribute("page", page);
-        model.addAttribute("list", page.getContent());
+        model.addAttribute("distancePagelist", page.getContent());
 
 
         session.setAttribute("RangeList",RangeList);

@@ -44,9 +44,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
     @Query("update Product p set p.viewCount = p.viewCount + 1 where p.id = ?1")
     int updateView(@RequestParam("productId") Long productId);
 
-    //블라인드 처리가 안된 상품만 조회
-    List<Product> findByBlindStatus(Boolean blindStatus);
-
     //경매 상품만 조회
     List<Product> findByAuctionDeadlineNotNullAndBlindStatus(Boolean blindStatus);
 
@@ -61,8 +58,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
 
     //제목과 내용으로 검색한 리스트 조회
     List<Product> findBySubjectContainingOrContentContaining(String subject, String content);
-
-    List<Product> findAllById(Object productId);
 
     boolean existsBySubject(String subject);
 

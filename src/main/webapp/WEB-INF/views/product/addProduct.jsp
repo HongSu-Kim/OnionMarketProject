@@ -37,7 +37,7 @@
 						<div class="checkout__input">
 							<p>경매 등록</p><%--true/false로 변경--%>
 							<div>
-								경매 기간은 12시간입니다.
+								경매 기간은 12시간입니다.(상품 수정 불가)
 								<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="auctionStatus" value="true">
 								<input type="hidden" name="auctionStatus" value="false">
 								<hr/>
@@ -78,7 +78,7 @@
 							<div class="wrap">
 								<textarea id="content" name="content" class="wrap"
 										  placeholder="여러 장의 상품 사진과 구입 연도, 브랜드, 사용감, 하자 유무 등 구매자에게 필요한 정보를 꼭 포함해 주세요. (10자 이상)"></textarea>
-								<div id="counter" align="right"/>
+								<div id="counter"/>
 							</div>
 							<hr/>
 							<br/>
@@ -89,7 +89,7 @@
 								<div class="checkout__input">
 									<div class='addInput'>
 										<p>상품 이미지<span>*</span></p>
-										<input type="file" name="fileList" id="fileList">
+										<input type="file" name="fileList" id="fileList" onchange="readURL(this);">
 									</div>
 									<button type="button" class="btnAdd" style="border-width: thin;">이미지 추가</button>
 								</div>

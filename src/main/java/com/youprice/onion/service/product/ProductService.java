@@ -12,7 +12,7 @@ import java.util.List;
 public interface ProductService {
 
     //상품 목록 조회
-    Page<ProductListDTO> getProductListDTO(SearchRequirements searchRequirements);
+    Page<ProductListDTO> getProductListDTO(Long memberId, SearchRequirements searchRequirements);
 
     //상품등록
     Long addProduct(ProductAddDTO productAddDTO, List<MultipartFile> fileList) throws Exception;
@@ -32,9 +32,6 @@ public interface ProductService {
     //경매상품 전체 조회
     List<ProductListDTO> getAuctionList(Boolean blindStatus);
 
-    //경매 종료된 상품 처리 후 조회
-    List<ProductListDTO> getProductAuctionList();
-
     //상품 하나 조회
     ProductDTO getProductDTO(Long productId);
 
@@ -46,8 +43,6 @@ public interface ProductService {
 
     //카테고리별 상품 조회
     List<ProductListDTO> getProductCategoryList(Long start, Long end);
-
-  //  List<ProductListDTO> getProductCategoryList(Long start);
 
     //하위 카테고리 조회
     List<ProductFindDTO> getProductSubCategory(Long productId, Long categoryId);
