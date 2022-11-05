@@ -70,37 +70,6 @@ public class ProductRepositoryQueryDslImpl implements ProductRepositoryQueryDsl{
 		return new PageImpl<>(content, searchRequirements.getPageable(), count);
 	}
 
-
-	// 판매 상품 리스트
-	@Override
-	public Page<Product> findByMemberIdAndProductProgress(Long memberId, ProductProgress productProgress, Pageable pageable) {
-
-		List<Product> content = queryFactory
-				.selectDistinct(product)
-				.from(product)
-				.leftJoin(product.orderList, order).fetchJoin()
-				.leftJoin(order.delivery, delivery).fetchJoin()
-				.where(
-						memberIdEq(memberId),
-						productProgressEq(productProgress)
-				)
-				.orderBy(orderBy(pageable))
-				.offset(pageable.getOffset())
-				.limit(pageable.getPageSize())
-				.fetch();
-
-		Long count = queryFactory
-				.selectDistinct(product.count())
-				.from(product)
-				.where(
-						memberIdEq(memberId),
-						productProgressEq(productProgress)
-				)
-				.fetchOne();
-
-		return new PageImpl<>(content, pageable, count);
-	}
-
 	private OrderSpecifier<?> orderBy(Pageable pageable) {
 
 		for (Sort.Order o : pageable.getSort()) {
