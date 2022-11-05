@@ -190,16 +190,22 @@ label.error{display:block;color:red;}
     background: #90C8AC;
     letter-spacing: 2px;
 }
-
+.board{
+    overflow-y: scroll;
+    height: 280px;
+}
 dl {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
+    padding-right: 100px;
 }
+
 dt {
 
 }
 dd {
     text-align: center;
+    margin-left: 70px;
 }
 
 .auction__time__price {
