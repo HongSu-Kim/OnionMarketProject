@@ -35,10 +35,10 @@ public class KeywordServiceImpl implements KeywordService {
   response.setContentType("text/html;charset=UTF-8");
   PrintWriter out =response.getWriter();
 
-  Optional<Keyword> DuplicatecheckProhibitionKeywordName =
+  Optional<Keyword> DuplicatecheckKeywordName =
         keywordRepositoy.findByKeywordName(keywordCreateDto.getKeywordName());
-  if (DuplicatecheckProhibitionKeywordName.isPresent()) {
-   out.println("<script>alert('이미 존재하는 금지키워드입니다 다시입력하세요!');history.go(-1); </script>");
+  if (DuplicatecheckKeywordName.isPresent()) {
+   out.println("<script>alert('이미 존재하는 키워드입니다 다시입력하세요!');history.go(-1); </script>");
    out.flush();
    return;
   }

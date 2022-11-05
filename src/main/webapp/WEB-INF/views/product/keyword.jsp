@@ -162,7 +162,7 @@
                     <input type="text" name="keywordName"  placeholder="키워드를 입력해주세요 (예: 유니폼)" size="33"
                           style="color: black; margin-right: 10cm;"    /><br/><br/>
                     <form:errors path="keywordName"/>
-                    <strong> <input type="submit" value="키워드등록" style="background-color: #47cd65; color: white"/><br/></strong>
+                    <strong> <input type="submit" value="키워드등록" style="background-color: #90C8AC; color: white"/><br/></strong>
 
                 </form:form>
 
@@ -175,7 +175,7 @@
 
 
                         <button type="submit"  class="btn btnEvent" name="id" value="${MykeywordList.id}
-                            " style="background-color:#47cd65; color: white;  border-radius: 20px;">
+                            " style="background-color:#90C8AC; color: white;  border-radius: 20px;">
                             <div>
                                 ${MykeywordList.keywordName}
                                 <a href="/product/list"><span class="icon_close"></span></a>

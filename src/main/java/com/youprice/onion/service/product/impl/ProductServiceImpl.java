@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
 
     private final MemberRepository memberRepository;
-    private final TownRepositoy townRepositoy;
+    private final TownRepository townRepositoy;
     private final CategoryRepositoy categoryRepository;
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;

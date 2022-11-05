@@ -18,6 +18,4 @@ public class CoordinateDeleteDTO {
     private Category category; //하위카테고리번호
 
 
-
-
 }
