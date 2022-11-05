@@ -16,6 +16,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -121,8 +122,9 @@ public class Member {
         this.email = email;
     }
 
+    //프로필 사진 수정
     public void modifyProfileImg(String memberImageName) {
-        this.memberImageName = memberImageName;
+        this.memberImageName = Objects.requireNonNullElse(memberImageName, "null.png");
     }
 
     //비밀번호 찾기

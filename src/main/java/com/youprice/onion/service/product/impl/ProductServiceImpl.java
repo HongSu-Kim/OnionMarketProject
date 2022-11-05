@@ -40,24 +40,10 @@ public class ProductServiceImpl implements ProductService {
     private final WishRepository wishRepository;
 
     @Override
+	@Transactional
     public Page<ProductListDTO> getProductListDTO(Long memberId, SearchRequirements searchRequirements) {
-        List<ProductListDTO> blindList = getAuctionList(false);
 
-        LocalDateTime now = LocalDateTime.now();
-
-        for(ProductListDTO blindDTO : blindList) {
-
-            Product product = productRepository.findById(blindDTO.getProductId()).orElse(null);
-
-            if(blindDTO.getAuctionDeadline().isBefore(now)){
-
-                blindDTO.setBlindStatus(true);
-
-                product.updateAuctionProduct(blindDTO);
-
-                productRepository.save(product);
-            }
-        }
+		productRepository.actionBlind();
 
         return productRepository.findAllBySearchRequirements(searchRequirements).map(product -> {
             ProductListDTO productListDTO = new ProductListDTO(product);
@@ -90,7 +76,7 @@ public class ProductServiceImpl implements ProductService {
         Long productId = productRepository.save(product).getId();
 
         //상품이미지 DB등록
-        List<ProductImage> productImages = productImages(productId,productImageList);
+        List<ProductImage> productImages = productImages(product, productImageList);
         for(ProductImage productImage : productImages){
             productImageRepository.save(productImage);
         }
@@ -101,7 +87,7 @@ public class ProductServiceImpl implements ProductService {
     //상품 수정
     @Override
     @Transactional
-    public Long updateProduct(Long productId, ProductUpdateDTO updateDTO) throws Exception {
+    public void updateProduct(Long productId, ProductUpdateDTO updateDTO) throws Exception {
 
         //수정한 동네번호
         Town town = townRepositoy.findById(updateDTO.getTownId()).orElse(null);
@@ -111,76 +97,48 @@ public class ProductServiceImpl implements ProductService {
 
         Product product = productRepository.findById(productId).orElse(null);
 
-        //상품 경로에 파일이 없으면 저장 있으면 삭제
-        //DB에 저장된 파일
+        // 상품 경로에 파일이 없으면 저장 있으면 삭제
+        //  저장된 파일
         List<ProductImage> oldImageList = product.getProductImageList();
-        //업데이트할 이미지
-        List<MultipartFile> newImageList = updateDTO.getProductImageName();
-        //새로 저장해야할 리스트
-        List<MultipartFile> addImageList = new ArrayList<>();
+		// 새로운 이미지
+		List<MultipartFile> newImageList = updateDTO.getNewImageList();
+		// 삭제안하는 이미지 id
+		List<Long> productImageIdList = updateDTO.getProductImageIdList();
 
+		// 이미지 개수 확인
+		int newImageSize = newImageList == null ? 0 : newImageList.size();
+		int imageIdSize = productImageIdList == null ? 0 : productImageIdList.size();
+		if (newImageSize + imageIdSize == 0) {
+			throw new ArrayIndexOutOfBoundsException("이미지를 하나 이상 올려주세요");
+		}
+
+		// 이미지 삭제
         for(ProductImage oldImage : oldImageList) {
-
-            for(Long newImageId : updateDTO.getNewImageIdList()) {
-
-                if(!oldImageList.contains(newImageId)) {
-                    ImageUtil.delete(oldImage.getProductImageName(),"product");
-                }
-
+            if(imageIdSize == 0 || !productImageIdList.contains(oldImage.getId())) {
+                ImageUtil.delete(oldImage.getProductImageName(),"product");
+                productImageRepository.deleteById(oldImage.getId());
             }
         }
 
-        if(CollectionUtils.isEmpty(oldImageList)) {//DB에 없을 때
-            if(!CollectionUtils.isEmpty(newImageList)) {//전달해야할 파일이 하나라도 있을 시
-                for(MultipartFile multipartFile : newImageList)
-                    addImageList.add(multipartFile); //저장할 파일 목록에 추가
-            }
-        }//DB에 한 장 이상 존재할 시
-        else {
-            if (CollectionUtils.isEmpty(newImageList)) { //전달 될 파일이 없을 경우
-                //파일 삭제
-                for (ProductImage oldImage : oldImageList)
-                    ImageUtil.delete(oldImage.getProductImageName(), "product");
-            } else {//전달 된 파일이 하나 이상일 경우
+		// 이미지 저장
+		if (newImageSize != 0) {
+			List<ProductImage> addList = new ArrayList<>();
+			
+			// 이미지 파일 저장
+			List<String> imageNameList = ImageUtil.store(newImageList, "product");
 
-                //DB에 저장되어 있는 파일 목록
-                List<String> originalNameList = new ArrayList<>();
+			// 이미지 DB 저장
+			List<ProductImage> productImageList = productImages(product, imageNameList);
+			productImageRepository.saveAll(productImageList);
+		}
 
-                for (ProductImage oldImage : oldImageList) {
-                    ProductImage productImage = productImageRepository.findById(oldImage.getId()).orElse(null);
-                    //저장된 파일 중 전달 된게 없으면 삭제
-                    if (!newImageList.contains(productImage.getId())) {
-                        ImageUtil.delete(oldImage.getProductImageName(), "product");
-                    } else {//아니면 DB에 추가
-                        originalNameList.add(productImage.getProductImageName());
-                    }
-                }
+		// 대표 이미지 설정
+		List<ProductImage> productImageList = productImageRepository.findByProductId(productId);
+		updateDTO.setRepresentativeImage(productImageList.get(0).getProductImageName());
 
-                for (MultipartFile multipartFile : newImageList) {
-
-                    if (!originalNameList.contains(multipartFile.getOriginalFilename())) {
-                        addImageList.add(multipartFile);
-                    }
-                }
-            }
-        }
-
-//        List<MultipartFile> productNewImageLIst = updateDTO.getProductImageName();
-        List<String> productImageList = ImageUtil.store(updateDTO.getProductImageName(),"product");
-
-        //상품 DB업데이트
-        updateDTO.setRepresentativeImage(productImageList.get(0));
-        product.updateProduct(productId, town, category, updateDTO);
-
-        Long updateProductId = productRepository.save(product).getId();
-
-//        //상품이미지 DB등록
-//        List<ProductImage> productImages = productImages(productId,productImageList);
-//        for(ProductImage productImage : productImages){
-//            productImageRepository.save(productImage);
-//        }
-
-        return updateProductId;
+		// 업데이트
+        product.updateProduct(town, category, productImageList, updateDTO);
+		productRepository.save(product);
     }
 
     // 상품상태 수정
@@ -205,7 +163,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public void deleteProduct(Long productId) throws Exception {
         Product product = productRepository.findById(productId).orElse(null);
-        product.blindProduct(product.getBlindStatus());
+        product.blindProduct(true);
 
         productRepository.save(product);
     }
@@ -232,14 +190,6 @@ public class ProductServiceImpl implements ProductService {
         return subCategoryProduct;
     }
 
-    //전체 경매 상품 조회
-    @Override
-    public List<ProductListDTO> getAuctionList(Boolean blindStatus) {
-        return productRepository.findByAuctionDeadlineNotNullAndBlindStatus(false).stream()
-                .map(product -> new ProductListDTO(product))
-                .collect(Collectors.toList());
-    }
-
     //검색에 따른 조회(제목,카테고리,내용)
     @Override
     public List<ProductListDTO> getSearchList(String subject,String content) {
@@ -261,9 +211,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     //이미지리스트 저장
-    private List<ProductImage> productImages(Long productId, List<String> productImageList) throws Exception {
+    private List<ProductImage> productImages(Product product, List<String> productImageList) {
         List<ProductImage> productImages = new ArrayList<>();
-        Product product = productRepository.findById(productId).orElse(null);
 
         for (String imageName: productImageList) {
 
@@ -290,8 +239,8 @@ public class ProductServiceImpl implements ProductService {
 
     //유저 판매 상품 목록
     @Override
-    public Page<ProductSellListDTO> getProductSellListDTO(Long memberId, ProductProgress productProgress, Pageable pageable) {
-        return productRepository.findByMemberIdAndProductProgress(memberId, productProgress, pageable).map(ProductSellListDTO::new);
+    public Page<ProductSellListDTO> getProductSellListDTO(SearchRequirements searchRequirements) {
+        return productRepository.findAllBySearchRequirements(searchRequirements).map(ProductSellListDTO::new);
     }
     //개인 유저 상품 리스트
     @Override

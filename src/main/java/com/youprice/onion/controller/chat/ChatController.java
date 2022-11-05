@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -56,6 +57,7 @@ public class ChatController {
 		}
 	}
 
+	// 채팅 읽음
 	@PutMapping("readChat")
 	public void readChat(Long memberId, Long chatroomId) {
 		chatService.readChat(memberId, chatroomId);

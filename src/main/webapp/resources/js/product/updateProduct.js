@@ -13,7 +13,7 @@ $('#topCategory').change(function () {
 
             for(var i = 0; i < subCategory.length; i++) {
                 let subCategoryDTO = subCategory[i]
-                let option = $('<option value="' + subCategoryDTO.id + '">' + subCategoryDTO.categoryName + '</option>')
+                let option = $('<option value="' + subCategoryDTO.categoryId + '">' + subCategoryDTO.categoryName + '</option>')
 
                 $("#subCategory").append(option)
             }
@@ -84,13 +84,13 @@ $(document).ready(function () {
 $(document).ready(function() {
     $('.btnAdd').click(function () {
         $('.addInput').append(
-            '<input type="file" name="productImageName" id="productImageName"><button type="button" class="btnRemove">삭제</button><br>'
+            '<input type="file" name="newImageList" id="newImageList"><button type="button" class="btnRemove">삭제</button><br>'
         );//input file
-        $('.btnRemove').on('click',function(){//this='.btnRemove'
-            $(this).prev().remove();// .prev()=input file을 가리키고 remove()실행
-            $(this).next().remove();// br 삭제
-            $(this).remove();//버튼 삭제
-        });
+    });
+    $('.btnRemove').on('click',function(){//this='.btnRemove'
+        $(this).prev().remove();// .prev()=input file을 가리키고 remove()실행
+        $(this).next().remove();// br 삭제
+        $(this).remove();//버튼 삭제
     });
 });
 

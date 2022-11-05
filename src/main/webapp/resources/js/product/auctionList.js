@@ -1,4 +1,4 @@
-function remainedTime() {
+function remainedTimes() {
 
     var dead = document.getElementsByName("dead")
     var dHour = document.getElementsByName("d-day-hour")
@@ -9,11 +9,8 @@ function remainedTime() {
         var open = new Date(); //현재시간을 구한다.
         var deadline = new Date(dead[i].value);
 
-        var start = new Date(open.getFullYear(), open.getMonth(), open.getDay(), open.getHours(), open.getMinutes(), open.getSeconds());
-        var end = new Date(deadline.getFullYear(), deadline.getMonth(), deadline.getDay(), deadline.getHours(), deadline.getMinutes(), deadline.getSeconds());
-
-        var st = start.getTime(); // 현재의 시간
-        var et = end.getTime(); // 경매기한
+        var st = open.getTime(); // 현재의 시간
+        var et = deadline.getTime(); // 경매기한
         if (st < et) { //현재시간이 경매기한보다 이르면 경매기한까지의 남은 시간을 구한다.
             sec = parseInt(et - st) / 1000;
             hour = parseInt(sec / 60 / 60);
@@ -42,4 +39,4 @@ function remainedTime() {
         }
     }
 }
-setInterval(remainedTime,1000);
+setInterval(remainedTimes,1000);

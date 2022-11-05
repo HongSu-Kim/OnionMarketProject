@@ -13,7 +13,7 @@ $('#topCategory').change(function () {
             $('#subCategory').empty();
             for(let i = 0; i < subCategory.length; i++) {
                 let subCategoryDTO = subCategory[i]
-                let option = $('<option value="' + subCategoryDTO.id + '">' + subCategoryDTO.categoryName + '</option>')
+                let option = $('<option value="' + subCategoryDTO.categoryId + '">' + subCategoryDTO.categoryName + '</option>')
 
                 $("#subCategory").append(option)
             }
@@ -27,11 +27,17 @@ $('#topCategory').change(function () {
 $(document).ready(function () {
     //$('#registerForm').validate(); //유효성 검사를 적용
     // validate signup form on keyup and submit
+    $("#productForm").submit(function (){
+        if($("#topCategory").val()==0){
+            alert("카테고리를 선택해주세요.")
+
+            return false
+        }
+    });
     $('#productForm').validate({
 
         rules: {
             townId: "required",
-            categoryId: "required",
             subject: "required",
             content: { required:true },
             price: { required:true, digits:true, min:100, max:999999},
@@ -69,11 +75,11 @@ $(document).ready(function() {
         $('.addInput').append(
             '<input type="file" name="fileList" id="fileList" onchange="readURL(this);"><button type="button" class="btnRemove" style="border-width: thin;">삭제</button>'
         );//input file
-        $('.btnRemove').on('click',function(){//this='.btnRemove'
-            $(this).prev().remove();// .prev()=input file을 가리키고 remove()실행
-            $(this).next().remove();//<br> 삭제
-            $(this).remove();//버튼 삭제
-        });
+    });
+    $('.btnRemove').on('click',function(){//this='.btnRemove'
+        $(this).prev().remove();// .prev()=input file을 가리키고 remove()실행
+        $(this).next().remove();//<br> 삭제
+        $(this).remove();//버튼 삭제
     });
 });
 //이미지 미리보기

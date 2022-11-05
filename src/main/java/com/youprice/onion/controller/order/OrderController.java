@@ -7,6 +7,7 @@ import com.youprice.onion.dto.order.OrderAddDTO;
 import com.youprice.onion.dto.order.OrderDTO;
 import com.youprice.onion.dto.order.ProductSellListDTO;
 import com.youprice.onion.dto.product.ProductDTO;
+import com.youprice.onion.dto.product.SearchRequirements;
 import com.youprice.onion.entity.product.ProductProgress;
 import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.service.member.MemberService;
@@ -52,11 +53,11 @@ public class OrderController {
 		ProductDTO productDTO = productService.getProductDTO(productId);
 
 		if (productDTO == null) {
-			return AlertRedirect.warningMessage(response, "/", "상품정보가 존재하지 않습니다.");
+			return AlertRedirect.warningMessage(response, "상품정보가 존재하지 않습니다.");
 		} else if (productDTO.getMemberId() == sessionDTO.getId()) {
 			return AlertRedirect.warningMessage(response, "자신의 상품은 구매할수 없습니다.");
 		} else if (productDTO.getProductProgress() != ProductProgress.SALESON) {
-			return AlertRedirect.warningMessage(response, "/", productDTO.getProductProgress().getKor() + "(으)로 구매할 수 없는 상품입니다.");
+			return AlertRedirect.warningMessage(response, productDTO.getProductProgress().getKor() + "(으)로 구매할 수 없는 상품입니다.");
 		}
 
 		MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
@@ -146,8 +147,14 @@ public class OrderController {
 						   @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 		if (sessionDTO == null) return "redirect:/member/login";
 
+		SearchRequirements searchRequirements = SearchRequirements.builder()
+				.pageable(pageable)
+				.memberId(sessionDTO.getId())
+				.productProgress(productProgress)
+				.blindStatus(false)
+				.build();
 
-		Page<ProductSellListDTO> page = productService.getProductSellListDTO(sessionDTO.getId(), productProgress, pageable);
+		Page<ProductSellListDTO> page = productService.getProductSellListDTO(searchRequirements);
 
 		model.addAttribute("productProgress", productProgress);
 		model.addAttribute("page", page);

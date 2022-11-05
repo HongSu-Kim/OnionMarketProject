@@ -18,7 +18,7 @@ public interface ProductService {
     Long addProduct(ProductAddDTO productAddDTO, List<MultipartFile> fileList) throws Exception;
 
     //상품수정
-    Long updateProduct(Long productId, ProductUpdateDTO updateDTO) throws Exception;
+    void updateProduct(Long productId, ProductUpdateDTO updateDTO) throws Exception;
 
     //상품상태 수정
     void progressUpdate(Long productId, String productProgress);
@@ -28,9 +28,6 @@ public interface ProductService {
 
     //조회수 증가
     int updateView(Long productId);
-
-    //경매상품 전체 조회
-    List<ProductListDTO> getAuctionList(Boolean blindStatus);
 
     //상품 하나 조회
     ProductDTO getProductDTO(Long productId);
@@ -50,7 +47,7 @@ public interface ProductService {
     //동네번호 조회
     TownFindDTO findTownId(String townName);
 
-    Page<ProductSellListDTO> getProductSellListDTO(Long memberId, ProductProgress productProgress, Pageable pageable);
+    Page<ProductSellListDTO> getProductSellListDTO(SearchRequirements searchRequirements);
 
     Page<ProductListDTO> getPersonalList(Long memberId, Pageable pageable);
 }

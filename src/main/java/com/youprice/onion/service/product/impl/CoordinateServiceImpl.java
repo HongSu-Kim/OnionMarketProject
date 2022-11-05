@@ -1,30 +1,23 @@
 package com.youprice.onion.service.product.impl;
 
-import com.youprice.onion.dto.member.KeywordListDTO;
 import com.youprice.onion.dto.product.*;
-import com.youprice.onion.entity.member.Member;
 import com.youprice.onion.entity.product.Coordinate;
-import com.youprice.onion.entity.product.Product;
-import com.youprice.onion.entity.product.Town;
 import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.repository.product.CoordinateRepositoy;
 import com.youprice.onion.service.product.CoordinateService;
 import com.youprice.onion.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.awt.event.PaintEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class CoordinateServiceImpl implements CoordinateService {
 
     private final CoordinateRepositoy coordinateRepositoy;
@@ -69,60 +62,34 @@ public class CoordinateServiceImpl implements CoordinateService {
 
     @Transactional(readOnly = true)
     @Override
-    public void coordinateSearch(String townName, Double range, Model model, HttpSession session, HttpServletRequest request,
-                                 Long memberId, SearchRequirements searchRequirements) {
+    public List<Long> coordinateSearch(String townName, Double range) {
 
+        List<Long> rangeList = new ArrayList<>();
 
-        Coordinate coordinateId = new Coordinate();
-        List<CoordinateFindDTO> coordinateFindDTOList = new ArrayList<>();
-        List<Long> RangeList = new ArrayList<>();
-
-        coordinateId = coordinaterepositoy.findCoordinateId(townName);
-
-        Member member = memberRepository.findById(memberId).orElse(null);
+		Coordinate coordinate = coordinaterepositoy.findCoordinateId(townName);
 
         //전체 coordinate번호
-        coordinateFindDTOList = coordinateRepositoy.findAll()
-                .stream().map(CoordinateFindDTO::new)
-                .collect(Collectors.toList());
+		List<Coordinate> coordinateList = coordinateRepositoy.findAll();
 
-        for (int i = 0; i < coordinateFindDTOList.size(); i++) {
+        for (Coordinate coordinate1 : coordinateList) {
 
+            double resultX1 = coordinate.getLatitude();
+            double resultX2 = coordinate1.getLatitude();
 
-            double resultX1 = coordinateId.getLatitude();
-            double resultX2 = coordinateFindDTOList.get(i).getLatitude();
+            double resultY1 = coordinate.getLongitude();
+            double resultY2 = coordinate1.getLongitude();
 
-            double resultY1 = coordinateId.getLongitude();
-            double resultY2 = coordinateFindDTOList.get(i).getLongitude();
+            double distanceX = (Math.cos(resultX1) * 6400 * 2 * 3.14 / 360) * (Math.abs(resultY1 - resultY2));
+			double distanceY = 111 * (Math.abs(resultX1 - resultX2));
 
+            double distance = Math.round(Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2)));
 
-            double DistanceX = (Math.cos(resultX1) * 6400 * 2 * 3.14 / 360) * (Math.abs(resultY1 - resultY2));
-            double DistanceY = 111 * (Math.abs(resultX1 - resultX2));
-
-            double Distance = Math.round(Math.sqrt(Math.pow(DistanceX, 2) + Math.pow(DistanceY, 2)));
-
-            if (Distance <= range) {
-
-                RangeList.add(0, coordinateFindDTOList.get(i).getId());
-
-
+            if (distance <= range) {
+				rangeList.add(0, coordinate1.getId());
             }
-
         }
 
-        searchRequirements.setCoordinateIdList(RangeList);
-        Page<ProductListDTO> page = productService.getProductListDTO(memberId, searchRequirements);
-
-
-        model.addAttribute("page", page);
-        model.addAttribute("distancePagelist", page.getContent());
-
-
-        session.setAttribute("RangeList",RangeList);
-        session.setAttribute("distancePage",page);
-        session.setAttribute("distancelist", page.getContent());
-
-
+		return rangeList;
     }
 }
 
