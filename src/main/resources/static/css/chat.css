@@ -205,6 +205,15 @@
     border-radius:30px;
     word-break: break-all;
 }
+.cm-msg-text > a {
+    color: #666;
+}
+.cm-msg-text > a:hover {
+    color: #666;
+}
+.cm-msg-text > a:link {
+    color: #666;
+}
 .cm-msg-box {
     background:white;
     padding: 38px;

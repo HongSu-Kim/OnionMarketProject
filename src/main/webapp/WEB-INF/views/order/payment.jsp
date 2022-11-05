@@ -70,7 +70,6 @@
 								</li>
 								<input type="hidden" id="point" name="point" value="${memberDTO.point}">
 							</ul>
-<%--							<div class="checkout__order__total">사용 포인트 <span id="usePoint">0</span></div>--%>
 							<div class="checkout__order__total">
 								사용 포인트
 								<span><input type="text" id="usePoint" name="usePoint" value="0" onblur="blurUsePoint()"/></span>

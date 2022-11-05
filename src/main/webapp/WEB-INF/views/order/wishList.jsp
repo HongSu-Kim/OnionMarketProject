@@ -11,17 +11,18 @@
 					<div class="col-lg-12">
 						<div class="contact__form__title">
 							<h3>찜한 상품이 없습니다.</h3>
-							<button type="button" class="site-btn mt-5" onclick="location.href='/product/list'">상품 보러가기</button>
+							<button type="button" class="site-btn mt-5" onclick="location.href='/product/wishRangeList'">상품 보러가기</button>
 						</div>
 					</div>
 				</c:if>
 
 				<!-- 찜 리스트 -->
 				<c:forEach var="wishListDTO" items="${page.content}">
-					<div class="col-lg-4 col-md-6 col-sm-6">
+					<div class="col-lg-3 col-md-4 col-sm-6">
 						<div class="product__item">
 							<div class="product__item__pic set-bg pointer" data-setbg="/img/product/${wishListDTO.representativeImage}"
 									 onclick="location.href='/product/detail/${wishListDTO.productId}';">
+								<div style="margin-top:93%;"><img src="/template/img/product/pay.png"></div>
 							</div>
 							<div class="product__item__text">
 								<h6><a href="/product/detail/${wishListDTO.productId}">${wishListDTO.subject}</a></h6>
@@ -29,12 +30,8 @@
 								<h6 class="grey">${wishListDTO.memberNickname} / ${wishListDTO.townName}</h6>
 								<ul class="product__wish__item">
 									<input type="hidden" id="productId" value="${wishListDTO.productId}"/>
-									<c:if test="${wishListDTO.chatroomListSize > 0}">
-										<li class="chatroomBtn ${empty wishListDTO.chatroomId ? "" : "true"}"><a><i class="fa fa-weixin"></i></a></li>
-										<span id="chatroomListSize">${wishListDTO.chatroomListSize}</span><li></li>
-									</c:if>
+									<li class="chatroomBtn ${empty wishListDTO.chatroomId ? "" : "true"}"><a><i class="fa fa-weixin"></i></a></li>
 									<li class="wishBtn true"><a><i class="fa fa-heart"></i></a></li>
-									<span id="wishListSize">${wishListDTO.wishListSize}</span><li></li>
 								</ul>
 							</div>
 						</div>

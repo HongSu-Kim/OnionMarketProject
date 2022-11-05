@@ -43,6 +43,12 @@ public class ChatroomController {
 		if (sessionDTO == null) return new ResponseEntity<>("/member/login", HttpStatus.UNAUTHORIZED);
 
 		Long chatroomId = chatroomService.createChatroom(sessionDTO.getId(), productId);
+
+		// 채팅방 생성자와 대상자가 같을때
+		if (chatroomId == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+		}
+
 		return new ResponseEntity<>(chatroomId, HttpStatus.OK);
 	}
 

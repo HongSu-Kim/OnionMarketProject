@@ -58,6 +58,7 @@ public class ComplainServiceImpl implements ComplainService {
 
             if (member.getComplaintCount() >= 1) {
                 Product product = productRepository.findById(complain.getProduct().getId()).orElse(null);
+                product.blindProduct(true);
                 product.progressUpdate(ProductProgress.BLIND);
                 product.blindImage(null);
                 productRepository.save(product);
@@ -77,8 +78,9 @@ public class ComplainServiceImpl implements ComplainService {
 
             if (member.getComplaintCount() == 0) {
                 Product product = productRepository.findById(complain.getProduct().getId()).orElse(null);
-                product.progressUpdate(ProductProgress.SALESON);
 
+                product.blindProduct(false);
+                product.progressUpdate(ProductProgress.SALESON);
                 String productImageName = product.getProductImageList().get(0).getProductImageName();
                 product.blindImage(productImageName);
                 productRepository.save(product);
@@ -91,5 +93,11 @@ public class ComplainServiceImpl implements ComplainService {
     @Override
     public Page<ComplainDTO> findAll(Pageable pageable) {
         return complainRepository.findAll(pageable).map(ComplainDTO::new);
+    }
+
+    //개인별 신고 리스트
+    @Override
+    public Page<ComplainDTO> getPersonalList(Long memberId, Pageable pageable) {
+        return complainRepository.findAllByProductMemberId(memberId, pageable).map(ComplainDTO::new);
     }
 }

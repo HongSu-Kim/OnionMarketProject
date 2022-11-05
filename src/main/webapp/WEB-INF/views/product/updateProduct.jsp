@@ -90,7 +90,7 @@
 							<div class="wrap">
 								<textarea id="content" name="content" class="wrap"
 										  placeholder="여러 장의 상품 사진과 구입 연도, 브랜드, 사용감, 하자 유무 등 구매자에게 필요한 정보를 꼭 포함해 주세요. (10자 이상)">${productFindDTO.content}</textarea>
-								<div id="counter" align="right"/>
+								<div id="counter"/>
 							</div>
 							<hr/>
 							<br/>
@@ -101,7 +101,14 @@
 								<div class="checkout__input">
 									<div class='addInput'>
 										<p>상품 이미지<span>*</span></p>
-										<input type="file" name="productImageName" id="fileList">
+<%--										<input type="file" name="productImageName" id="fileList">--%>
+										<c:forEach var="imageList" items="${imageList}">
+<%--											<label for="fileList">${imageList.productImageName}</label>--%>
+											<input type="file" name="productImageName" id="fileList">
+											<button type="button" class="btnRemove">삭제</button><br>
+											<input type="hidden" name="newImageIdList" value="${imageList.productImageId}">
+											${imageList.productImageId}
+										</c:forEach>
 									</div>
 									<button type="button" class="btnAdd" style="border-width: thin;">이미지 추가</button>
 								</div>

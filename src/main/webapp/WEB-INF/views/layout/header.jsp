@@ -116,9 +116,9 @@
 			<div class="col-lg-6">
 				<nav class="header__menu">
 					<ul>
-						<li><a href="/product/list">상품</a>
+						<li><a href="/product/wishRangeList">상품</a>
 							<ul class="header__menu__dropdown">
-								<li><a href="/product/list">동네 상품</a></li>
+								<li><a href="/product/wishRangeList">동네 상품</a></li>
 								<li><a href="/product/auctionList">경매 상품</a></li>
 								<li><a href="/product/add">상품 등록</a></li>
 							</ul>
@@ -160,6 +160,7 @@
 							<li><a href="#">관리자페이지</a>
 								<ul class="header__menu__dropdown">
 									<li><a onclick="confirm('크롤링') ? location.href='/crawling' : false">crawling</a></li>
+									<li><a href="/member/manageMember">회원 관리</a></li>
 									<li><a href="/coordinate/coordinate">지역 관리</a></li>
 									<li><a href="/prohibitionkeyword/prohibitionkeyword">금지어 관리</a></li>
 									<li><a href="/category/category"> 카테고리 관리 </a></li>
@@ -179,12 +180,18 @@
 						<nav class="header__menu profile">
 							<ul>
 <%--								<li><img src="/img/member/<sec:authentication property="principal.sessionDTO.memberImageName"/>" class="header-img profile"></li>--%>
-								<li><a href="/member/mypage" class="header__nickname"><%--<img src="/img/member/<sec:authentication property="principal.sessionDTO.memberImageName"/>" class="header-img profile">--%>&nbsp;<sec:authentication property="principal.sessionDTO.nickname"/> 님</a>
+								<li><a href="/member/mypage" class="header__nickname"><sec:authentication property="principal.sessionDTO.nickname"/> 님</a>
 									<ul class="header__menu__dropdown nickname">
-										<li><a href="/member/mypage">마이페이지</a></li>
-										<li><a href="/review/mylist/<sec:authentication property="principal.sessionDTO.id"/>">나의 후기</a></li>
-										<li><a href="/inquiry/myList/<sec:authentication property="principal.sessionDTO.id"/>">나의 문의</a></li>
-										<li><a href="/wish/list">위시리스트</a></li>
+											<li><a href="/member/mypage">마이페이지</a></li>
+										<sec:authorize access="hasRole('USER')">
+											<li><a href="/member/cash/<sec:authentication property="principal.sessionDTO.id"/>">양파페이 충전</a></li>
+											<li><a href="/review/mylist/<sec:authentication property="principal.sessionDTO.id"/>">나의 후기</a></li>
+											<li><a href="/inquiry/myList/<sec:authentication property="principal.sessionDTO.id"/>">나의 문의</a></li>
+											<li><a href="/wish/list">위시리스트</a></li>
+										</sec:authorize>
+										<sec:authorize access="hasRole('ADMIN')">
+											<li><a href="/member/manageMember/">회원관리</a></li>
+										</sec:authorize>
 									</ul>
 								</li>
 							</ul>
@@ -196,6 +203,9 @@
 					</sec:authorize>
 					<sec:authorize access="isAuthenticated()">
 						<div class="header__profile"><a href="/member/logout" class="header__cart__price profile">로그아웃</a></div>
+					</sec:authorize>
+					<sec:authorize access="isAuthenticated()">
+<%--						<div class="header__cash">양파페이 잔액 : <sec:authentication property="principal.sessionDTO.cash"/> 원 <span><a href="/member/cash/<sec:authentication property="principal.sessionDTO.id"/>"> &nbsp;|&nbsp; 충전하기</a></span></div>--%>
 					</sec:authorize>
 				</div>
 			</div>
@@ -215,20 +225,20 @@
 						<span>All departments</span>
 					</div>
 					<ul>
-						<li><a href="/product/main/category?categoryId=1">디지털/가전</a></li>
-						<li><a href="/product/main/category?categoryId=9">가구/인테리어</a></li>
-						<li><a href="/product/main/category?categoryId=12">생활/가공식품</a></li>
-						<li><a href="/product/main/category?categoryId=17">유아동</a></li>
-						<li><a href="/product/main/category?categoryId=27">남성의류</a></li>
-						<li><a href="/product/main/category?categoryId=42">여성의류</a></li>
-						<li><a href="/product/main/category?categoryId=57">가방/잡화</a></li>
-						<li><a href="/product/main/category?categoryId=61">뷰티/미용</a></li>
-						<li><a href="/product/main/category?categoryId=71">스포츠/레저</a></li>
-						<li><a href="/product/main/category?categoryId=86">게임/음반</a></li>
-						<li><a href="/product/main/category?categoryId=90">도서/티켓</a></li>
-						<li><a href="/product/main/category?categoryId=96">반려동물용품</a></li>
-						<li><a href="/product/main/category?categoryId=105">식물</a></li>
-						<li><a href="/product/main/category?categoryId=114">기타</a></li>
+						<li><a href="/product/category?categoryId=1">디지털/가전</a></li>
+						<li><a href="/product/category?categoryId=9">가구/인테리어</a></li>
+						<li><a href="/product/category?categoryId=12">생활/가공식품</a></li>
+						<li><a href="/product/category?categoryId=17">유아동</a></li>
+						<li><a href="/product/category?categoryId=27">남성의류</a></li>
+						<li><a href="/product/category?categoryId=42">여성의류</a></li>
+						<li><a href="/product/category?categoryId=57">가방/잡화</a></li>
+						<li><a href="/product/category?categoryId=61">뷰티/미용</a></li>
+						<li><a href="/product/category?categoryId=71">스포츠/레저</a></li>
+						<li><a href="/product/category?categoryId=86">게임/음반</a></li>
+						<li><a href="/product/category?categoryId=90">도서/티켓</a></li>
+						<li><a href="/product/category?categoryId=96">반려동물용품</a></li>
+						<li><a href="/product/category?categoryId=105">식물</a></li>
+						<li><a href="/product/category?categoryId=114">기타</a></li>
 					</ul>
 				</div>
 			</div>
