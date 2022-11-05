@@ -105,24 +105,23 @@ public class ProductServiceImpl implements ProductService {
 		// 삭제안하는 이미지 id
 		List<Long> productImageIdList = updateDTO.getProductImageIdList();
 
-		int newSize = newImageList == null ? 0 : newImageList.size();
-		int idSize = productImageIdList == null ? 0 : productImageIdList.size();
-
 		// 이미지 개수 확인
-		if (newSize + idSize == 0) {
+		int newImageSize = newImageList == null ? 0 : newImageList.size();
+		int imageIdSize = productImageIdList == null ? 0 : productImageIdList.size();
+		if (newImageSize + imageIdSize == 0) {
 			throw new ArrayIndexOutOfBoundsException("이미지를 하나 이상 올려주세요");
 		}
 
 		// 이미지 삭제
         for(ProductImage oldImage : oldImageList) {
-            if(idSize == 0 || !productImageIdList.contains(oldImage.getId())) {
+            if(imageIdSize == 0 || !productImageIdList.contains(oldImage.getId())) {
                 ImageUtil.delete(oldImage.getProductImageName(),"product");
                 productImageRepository.deleteById(oldImage.getId());
             }
         }
 
 		// 이미지 저장
-		if (newSize != 0) {
+		if (newImageSize != 0) {
 			List<ProductImage> addList = new ArrayList<>();
 			
 			// 이미지 파일 저장
