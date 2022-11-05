@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -363,37 +364,37 @@ public class ProductController {
         return "product/updateProduct";
     }
 
-    // 상품상태 수정
-    @GetMapping("progressUpdate/{productId}/{productProgress}/{pageNumber}")
-    public String progressUpdate(@PathVariable Long productId, @PathVariable String productProgress, @PathVariable int pageNumber) {
-        productService.progressUpdate(productId, productProgress);
-        return "redirect:/order/sellList?productProgress=" + productProgress + "&page=" + pageNumber;
-    }
-
     @PostMapping("/update/{productId}")//실제 상품 업데이트 주소
-    public String updateProduct(Model model, Long productId, ProductUpdateDTO updateDTO, BindingResult bindingResult,
-                                @LoginUser SessionDTO userSession, HttpServletResponse response) throws Exception {
+	@PreAuthorize("isAuthenticated()")
+    public String updateProduct(@PathVariable Long productId, ProductUpdateDTO updateDTO, BindingResult bindingResult,
+								HttpServletResponse response) throws Exception {
 
         if (prohibitionKeywordService.ProhibitionKeywordFind(updateDTO.getSubject())) { //금지키워드가있으면 true
             bindingResult.addError(new FieldError("productAddDTO", "subject", "적합하지 않은 단어가 포함되어 있습니다."));
+        }
 
-            if (bindingResult.hasErrors()) {
-                return "product/updateProduct";
-            }
-        }
-        /*세션 없을 경우 로그인 처리*/
-        if (userSession == null) {
-            AlertRedirect.warningMessage(response, "/member/login", "로그인이 필요합니다.");
-            return "redirect:/member/login";
-        }
+		if (bindingResult.hasErrors()) {
+			return "product/updateProduct";
+		}
 
         /*상품 정보 업데이트*/
-        Long updateId = productService.updateProduct(productId, updateDTO);
+		try {
+        	productService.updateProduct(productId, updateDTO);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			// 이미지 없을떄 오류 처리
+			AlertRedirect.warningMessage(response, e.getMessage());
+		}
 
-        model.addAttribute("productId", updateId);
-
-        return "redirect:/product/detail/" + updateId;//상품 상세페이지로 이동
+        return "redirect:/product/detail/" + productId;//상품 상세페이지로 이동
     }
+
+	// 상품상태 수정
+	@GetMapping("progressUpdate/{productId}/{productProgress}/{pageNumber}")
+	@PreAuthorize("isAuthenticated()")
+	public String progressUpdate(@PathVariable Long productId, @PathVariable String productProgress, @PathVariable int pageNumber) {
+		productService.progressUpdate(productId, productProgress);
+		return "redirect:/order/sellList?productProgress=" + productProgress + "&page=" + pageNumber;
+	}
 
     @GetMapping("/delete/{productId}")//상품 삭제 주소
     public String removeProduct(@PathVariable("productId") Long productId, @LoginUser SessionDTO userSession, HttpServletResponse response)

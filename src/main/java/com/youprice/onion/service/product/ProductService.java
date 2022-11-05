@@ -18,7 +18,7 @@ public interface ProductService {
     Long addProduct(ProductAddDTO productAddDTO, List<MultipartFile> fileList) throws Exception;
 
     //상품수정
-    Long updateProduct(Long productId, ProductUpdateDTO updateDTO) throws Exception;
+    void updateProduct(Long productId, ProductUpdateDTO updateDTO) throws Exception;
 
     //상품상태 수정
     void progressUpdate(Long productId, String productProgress);
