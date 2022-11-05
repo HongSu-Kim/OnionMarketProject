@@ -102,70 +102,41 @@ public class ProductServiceImpl implements ProductService {
         List<ProductImage> oldImageList = product.getProductImageList();
         //업데이트할 이미지
         List<MultipartFile> newImageList = updateDTO.getProductImageName();
-        //새로 저장해야할 리스트
-        List<MultipartFile> addImageList = new ArrayList<>();
+
+        List<ProductImage> addList = new ArrayList<>();
 
         for(ProductImage oldImage : oldImageList) {
 
-            for(Long newImageId : updateDTO.getNewImageIdList()) {
+            if(updateDTO.getNewImageIdList().contains(oldImage.getId())) {
+                continue;
+            }else {
 
-                if(!oldImageList.contains(newImageId)) {
-                    ImageUtil.delete(oldImage.getProductImageName(),"product");
-                }
+//                for(ProductUpdateDTO newImage : updateDTO.getNewImageIdList()) {
+//
+//                    if()
+//
+//                    ImageUtil.store(newImage, "product");
+//
+//
+//                }
 
+                ImageUtil.delete(oldImage.getProductImageName(),"product");
+                productImageRepository.deleteById(oldImage.getId());
             }
         }
-
-        if(CollectionUtils.isEmpty(oldImageList)) {//DB에 없을 때
-            if(!CollectionUtils.isEmpty(newImageList)) {//전달해야할 파일이 하나라도 있을 시
-                for(MultipartFile multipartFile : newImageList)
-                    addImageList.add(multipartFile); //저장할 파일 목록에 추가
-            }
-        }//DB에 한 장 이상 존재할 시
-        else {
-            if (CollectionUtils.isEmpty(newImageList)) { //전달 될 파일이 없을 경우
-                //파일 삭제
-                for (ProductImage oldImage : oldImageList)
-                    ImageUtil.delete(oldImage.getProductImageName(), "product");
-            } else {//전달 된 파일이 하나 이상일 경우
-
-                //DB에 저장되어 있는 파일 목록
-                List<String> originalNameList = new ArrayList<>();
-
-                for (ProductImage oldImage : oldImageList) {
-                    ProductImage productImage = productImageRepository.findById(oldImage.getId()).orElse(null);
-                    //저장된 파일 중 전달 된게 없으면 삭제
-                    if (!newImageList.contains(productImage.getId())) {
-                        ImageUtil.delete(oldImage.getProductImageName(), "product");
-                    } else {//아니면 DB에 추가
-                        originalNameList.add(productImage.getProductImageName());
-                    }
-                }
-
-                for (MultipartFile multipartFile : newImageList) {
-
-                    if (!originalNameList.contains(multipartFile.getOriginalFilename())) {
-                        addImageList.add(multipartFile);
-                    }
-                }
-            }
-        }
-
-//        List<MultipartFile> productNewImageLIst = updateDTO.getProductImageName();
-        List<String> productImageList = ImageUtil.store(updateDTO.getProductImageName(),"product");
-
-        //상품 DB업데이트
-        updateDTO.setRepresentativeImage(productImageList.get(0));
+//        updateDTO.setRepresentativeImage(get(0));
         product.updateProduct(productId, town, category, updateDTO);
 
-        Long updateProductId = productRepository.save(product).getId();
 
-//        //상품이미지 DB등록
-//        List<ProductImage> productImages = productImages(productId,productImageList);
+        //상품 DB업데이트
+
+
+//        List<ProductImage> productImages = productImages(productId,list);
 //        for(ProductImage productImage : productImages){
 //            productImageRepository.save(productImage);
 //        }
 
+        Long updateProductId = productRepository.save(product).getId();
         return updateProductId;
     }
 
@@ -191,7 +162,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public void deleteProduct(Long productId) throws Exception {
         Product product = productRepository.findById(productId).orElse(null);
-        product.blindProduct(product.getBlindStatus());
+        product.blindProduct(true);
 
         productRepository.save(product);
     }
@@ -216,14 +187,6 @@ public class ProductServiceImpl implements ProductService {
         Collections.shuffle(subCategoryProduct);
 
         return subCategoryProduct;
-    }
-
-    //전체 경매 상품 조회
-    @Override
-    public List<ProductListDTO> getAuctionList(Boolean blindStatus) {
-        return productRepository.findByAuctionDeadlineNotNullAndBlindStatus(false).stream()
-                .map(product -> new ProductListDTO(product))
-                .collect(Collectors.toList());
     }
 
     //검색에 따른 조회(제목,카테고리,내용)

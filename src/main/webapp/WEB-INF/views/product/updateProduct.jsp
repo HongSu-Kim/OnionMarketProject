@@ -55,7 +55,7 @@
 									<option value="${topCategory.id}">${topCategory.categoryName}</option>
 								</c:forEach>
 								</select>
-							<select id="subCategory" name="categoryId">
+							<select id="subCategory" name="categoryId" c>
 								<option value="${productFindDTO.categoryId}">${productFindDTO.categoryName}</option>
 							</select>
 

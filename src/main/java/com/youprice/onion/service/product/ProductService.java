@@ -29,9 +29,6 @@ public interface ProductService {
     //조회수 증가
     int updateView(Long productId);
 
-    //경매상품 전체 조회
-    List<ProductListDTO> getAuctionList(Boolean blindStatus);
-
     //상품 하나 조회
     ProductDTO getProductDTO(Long productId);
 
