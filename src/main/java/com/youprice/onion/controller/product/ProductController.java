@@ -233,10 +233,14 @@ public class ProductController {
 //        if(userSession != null) {
 //            searchRequirements.setMemberId(userSession.getId());
 //        }
+		Long memberId = null;
+		if (userSession != null) {
+			memberId = userSession.getId();
+		}
 
         searchRequirements.setPageable(pageable);
 
-        Page<ProductListDTO> page = productService.getProductListDTO(userSession.getId(), searchRequirements);
+        Page<ProductListDTO> page = productService.getProductListDTO(memberId, searchRequirements);
 
         model.addAttribute("page", page);
         model.addAttribute("list", page.getContent());
