@@ -10,7 +10,7 @@ import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.repository.product.CategoryRepositoy;
 import com.youprice.onion.repository.product.ProductImageRepository;
 import com.youprice.onion.repository.product.ProductRepository;
-import com.youprice.onion.repository.product.TownRepositoy;
+import com.youprice.onion.repository.product.TownRepository;
 import com.youprice.onion.security.auth.LoginUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +38,7 @@ public class CrawlingController {
 	private final MemberRepository memberRepository;
 	private final ProductRepository productRepository;
 	private final ProductImageRepository productImageRepository;
-	private final TownRepositoy townRepositoy;
+	private final TownRepository townRepositoy;
 	private final CategoryRepositoy categoryRepositoy;
 
 	@GetMapping("crawling")
@@ -56,7 +56,6 @@ public class CrawlingController {
 		Member member = memberRepository.findById(sessionDTO.getId()).orElse(null);
 		Town defaultTown = townRepositoy.findById(1L).orElse(null);
 		Category category = categoryRepositoy.findById(115L).orElse(null);
-		boolean payStatus = true;
 
 		String path = System.getProperty("user.dir") + "/src/img/" + "product/";
 
@@ -109,14 +108,16 @@ public class CrawlingController {
 				log.info("townName : " + townName);
 				Town town = townRepositoy.findByMemberIdAndCoordinateTownNameContains(1L, townNameStr).orElse(defaultTown);
 
-				Product product = new Product(member, town, category, subject, content, price, representativeImage, payStatus);
+				boolean payStatus = Math.random() < 0.8;
+				boolean auctionStatus = Math.random() < 0.3;
+
+				Product product = new Product(member, town, category, subject, content, price, representativeImage, auctionStatus, payStatus);
 				productRepository.save(product);
 				log.info("Product 저장");
 				productImageRepository.save(new ProductImage(product, representativeImage));
 				log.info("ProductImage 저장");
 
 				log.info("DB 저장");
-				payStatus = !payStatus;
 
 			} catch (Exception e) {
 				e.getStackTrace();

@@ -20,5 +20,4 @@ public class TownAddDTO {
     private Long memberId; //회원번호 FK
 
 
-
 }

@@ -107,7 +107,8 @@ public class Product {
 
     }
 
-	public Product(Member member, Town town, Category category, String subject, String content, int price, String representativeImage, boolean payStatus) {
+	public Product(Member member, Town town, Category category, String subject, String content, int price,
+				   String representativeImage, boolean auctionStatus, boolean payStatus) {
 		this.member = member;
 		this.town = town;
 		this.category = category;
@@ -116,16 +117,15 @@ public class Product {
 		this.price = price;
 		this.representativeImage = representativeImage;
 		this.uploadDate = LocalDateTime.now();
-		this.auctionDeadline = null;
+		this.auctionDeadline = auctionStatus ? LocalDateTime.now().plusHours(12) : null;
 		this.productProgress = ProductProgress.SALESON;
 		this.payStatus = payStatus;
 		this.blindStatus = false;
 	}
 
     //상품 수정 시 정보 변경
-    public void updateProduct(Long productId, Town town, Category category, ProductUpdateDTO updateDTO) {
+    public void updateProduct(Town town, Category category, List<ProductImage> productImageList, ProductUpdateDTO updateDTO) {
 
-        this.id = productId;
         this.town = town;
         this.category = category;
         this.subject = updateDTO.getSubject();
@@ -141,6 +141,7 @@ public class Product {
         }
         this.auctionDeadline = updateDTO.getAuctionDeadline();
         this.payStatus = updateDTO.getPayStatus();
+		this.productImageList = productImageList;
     }
 
     //경매 상품 가격&블라인드 수정

@@ -8,11 +8,10 @@ import lombok.Setter;
 public class SearchAddDTO {
 
 
-
     private Long id; //키워드 번호 PK
-    
+
     private String searchName;//검색명
 
-    private  int searchCount; //검색수
+    private int searchCount; //검색수
 
 }

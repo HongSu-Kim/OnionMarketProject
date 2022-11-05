@@ -10,39 +10,30 @@ import javax.persistence.*;
 @Entity
 @Getter
 public class Town {
-        @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
-        @Column(name = "town_id")
-        private Long id; //동네번호 PK
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "town_id")
+    private Long id; //동네번호 PK
 
-        @ManyToOne(fetch = FetchType.LAZY )
-        @JoinColumn(name = "coordinate_id")
-        private Coordinate coordinate; //좌표번호 FK
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "coordinate_id")
+    private Coordinate coordinate; //좌표번호 FK
 
-        @ManyToOne(fetch = FetchType.LAZY )
-        @JoinColumn(name ="member_id") //회원번호 FK
-        private Member member;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id") //회원번호 FK
+    private Member member;
 
-        private Double wishDistance; //원하는 거리지역 상품조회
+    private Double wishDistance; //원하는 거리지역 상품조회
 
 
-        public Town townCreate(TownAddDTO townAddDTO, Coordinate coordinate, Member member){
+    public Town townCreate(TownAddDTO townAddDTO, Coordinate coordinate, Member member) {
 
-            this.id = townAddDTO.getId();
-            this.coordinate = coordinate;
-            this.member =member;
+        this.id = townAddDTO.getId();
+        this.coordinate = coordinate;
+        this.member = member;
 
-            return this;
-        }
-
-//    public Town townDistanceCreate(Double wishDistance, Coordinate coordinate){
-//
-//
-//        this.coordinate = coordinate;
-//        this.wishDistance = wishDistance;
-//
-//
-//        return this;
-//    }
+        return this;
+    }
 
 
 }
