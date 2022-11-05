@@ -47,11 +47,11 @@ public class KeywordController {
         if (sessionDTO == null) return "redirect:/member/login";
         MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
 
-        model.addAttribute("memberDTO",memberDTO);
+        model.addAttribute("memberDTO", memberDTO);
 
         List<KeywordListDTO> MykeywordList = keywordService.KeywordList(sessionDTO.getId());
 
-        model.addAttribute("MykeywordList",MykeywordList);
+        model.addAttribute("MykeywordList", MykeywordList);
 
         return "product/keyword";
     }
@@ -59,12 +59,12 @@ public class KeywordController {
 
     @PostMapping("keyword")
     public String KeywordCreate(Model model, HttpServletResponse response
-    , @Valid KeywordCreateDTO keywordCreateDto, BindingResult bindingResult,@LoginUser SessionDTO sessionDTO)throws IOException{
+            , @Valid KeywordCreateDTO keywordCreateDto, BindingResult bindingResult, @LoginUser SessionDTO sessionDTO) throws IOException {
 
 
-        if(prohibitionKeywordService.ProhibitionKeywordFind(keywordCreateDto.getKeywordName()) ) { //금지키워가있으면 true
+        if (prohibitionKeywordService.ProhibitionKeywordFind(keywordCreateDto.getKeywordName())) { //금지키워가있으면 true
 
-            bindingResult.addError(new FieldError("keywordCreateDto","keywordName","금지어입니다 다시입력!!"));
+            bindingResult.addError(new FieldError("keywordCreateDto", "keywordName", "금지어입니다 다시입력!!"));
             System.out.println(keywordCreateDto.getKeywordName());
 
 
@@ -73,19 +73,17 @@ public class KeywordController {
                 if (sessionDTO == null) return "redirect:/member/login";
                 MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
 
-                model.addAttribute("memberDTO",memberDTO);
+                model.addAttribute("memberDTO", memberDTO);
 
                 List<KeywordListDTO> MykeywordList = keywordService.KeywordList(sessionDTO.getId());
 
-                model.addAttribute("MykeywordList",MykeywordList);
+                model.addAttribute("MykeywordList", MykeywordList);
 
                 return "product/keyword";
 
             }
 
-        }
-
-        else {
+        } else {
 
             keywordService.KeywordCreate(keywordCreateDto, response);
 
@@ -94,12 +92,10 @@ public class KeywordController {
     }
 
 
-
     @PostMapping("kewordDelete")
-    public String MyKewordDelete(Model model,@RequestParam("id") Long keywordId) {
+    public String MyKewordDelete(Model model, @RequestParam("id") Long keywordId) {
 
         keywordService.KewordDelete(keywordId);
-
 
 
         return "redirect:/keyword/keyword";

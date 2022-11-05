@@ -25,26 +25,26 @@ import java.util.List;
 @RequestMapping("search")
 public class SearchController {
 
-    private  final MemberService memberService;
-    private  final CategoryService categoryService;
-    private  final SearchService  searchService;
-    private  final  ProductService productService;
-    private  final  ProhibitionKeywordService prohibitionKeywordService;
+    private final MemberService memberService;
+    private final CategoryService categoryService;
+    private final SearchService searchService;
+    private final ProductService productService;
+    private final ProhibitionKeywordService prohibitionKeywordService;
 
     @GetMapping("search")
-    public String SearchCreate(Model model){
+    public String SearchCreate(Model model) {
 
 
-       List<Search> popularSearch = searchService.findBySearchRank();
+        List<Search> popularSearch = searchService.findBySearchRank();
 
-       model.addAttribute("popularSearch",popularSearch);
+        model.addAttribute("popularSearch", popularSearch);
 
         return "product/popularSearch";
     }
 
     @GetMapping("list")
     public String KeywordCreate(Model model, SearchAddDTO searchAddDTO,
-                           @RequestParam("searchName") String searchName, HttpServletResponse response) throws IOException {
+                                @RequestParam("searchName") String searchName, HttpServletResponse response) throws IOException {
 
         try {
             if (searchService.findBySearchName(searchName) == null) {

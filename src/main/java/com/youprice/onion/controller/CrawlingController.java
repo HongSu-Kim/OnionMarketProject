@@ -10,7 +10,7 @@ import com.youprice.onion.repository.member.MemberRepository;
 import com.youprice.onion.repository.product.CategoryRepositoy;
 import com.youprice.onion.repository.product.ProductImageRepository;
 import com.youprice.onion.repository.product.ProductRepository;
-import com.youprice.onion.repository.product.TownRepositoy;
+import com.youprice.onion.repository.product.TownRepository;
 import com.youprice.onion.security.auth.LoginUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +38,7 @@ public class CrawlingController {
 	private final MemberRepository memberRepository;
 	private final ProductRepository productRepository;
 	private final ProductImageRepository productImageRepository;
-	private final TownRepositoy townRepositoy;
+	private final TownRepository townRepositoy;
 	private final CategoryRepositoy categoryRepositoy;
 
 	@GetMapping("crawling")

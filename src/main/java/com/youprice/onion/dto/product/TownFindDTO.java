@@ -27,11 +27,11 @@ public class TownFindDTO {
 
     public TownFindDTO(Town town) {
 
-        id =town.getId();
-        memberId =town.getMember().getId();
+        id = town.getId();
+        memberId = town.getMember().getId();
         coordinateId = town.getCoordinate().getId();
         latitude = town.getCoordinate().getLatitude(); //위도
-        longitude= town.getCoordinate().getLongitude(); //경도
+        longitude = town.getCoordinate().getLongitude(); //경도
         townName = town.getCoordinate().getTownName(); //동네이름
 
 

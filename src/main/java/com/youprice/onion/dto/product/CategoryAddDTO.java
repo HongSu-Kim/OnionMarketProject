@@ -18,6 +18,9 @@ public class CategoryAddDTO {
     @NotEmpty(message = "카테고리 이름을 쓰세요!")
     private String categoryName; //상위카테고리이름
 
+    @NotEmpty(message = "카테고리 이름을 쓰세요!")
+    private String subCategoryName; //하위카테고리이름
+
 
     private Category category; //하위카테고리번호
 

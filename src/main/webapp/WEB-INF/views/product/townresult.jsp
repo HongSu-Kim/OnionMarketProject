@@ -171,7 +171,7 @@
 
                     <input type="hidden" name="memberId" value="${memberDTO.id}">
 
-                    <input type="submit" value="동네검색하기" style="background-color: #47cd65; color: white"/><br/>
+                    <input type="submit" value="동네검색하기" style="background-color: #90C8AC; color: white"/><br/>
                 </form:form>
 
 
