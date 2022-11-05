@@ -123,7 +123,7 @@ public class ProductController {
             return "redirect:/product/wishRangeList";
         }
         /*리뷰 조회*/
-        Double reviewAvg = null;
+        Double reviewAvg = memberService.getMemberDTO(productFindDTO.getMemberId()).getUserGrade();
         if (memberService.avgGrade(productFindDTO.getMemberId()) != null) {
             reviewAvg = memberService.avgGrade(productFindDTO.getMemberId());
         }
@@ -231,9 +231,6 @@ public class ProductController {
                 .auctionStatus(true)
                 .build();
 
-//        if(userSession != null) {
-//            searchRequirements.setMemberId(userSession.getId());
-//        }
 		Long memberId = null;
 		if (userSession != null) {
 			memberId = userSession.getId();
