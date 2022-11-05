@@ -203,21 +203,27 @@ public class ProductController {
     }
 
     @PostMapping("wishRangeList")
-    public String allList(Model model, @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable, @RequestParam("range") Double range
-            , @RequestParam("townName") String townName, HttpSession session, HttpServletRequest request, @RequestParam("memberId") Long memberId) {
+    public String allList(@LoginUser SessionDTO sessionDTO, Model model, @PageableDefault(size = 12, sort = "uploadDate", direction = Sort.Direction.DESC) Pageable pageable, @RequestParam("range") Double range
+            , @RequestParam("townName") String townName, HttpSession session) {
 
+		List<Long> rangeList = coordinateService.coordinateSearch(townName, range);
+		session.setAttribute("rangeList", rangeList);
 
         SearchRequirements searchRequirements = SearchRequirements.builder()
+				.pageable(pageable)
                 .blindStatus(false)
+				.coordinateIdList(rangeList)
                 .build();
 
-        searchRequirements.setPageable(PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
-                pageable.getPageSize(), Sort.Direction.DESC, "uploadDate"));
+		Long memberId = null;
+		if (sessionDTO != null) {
+			memberId = sessionDTO.getId();
+		}
 
-        coordinateService.coordinateSearch(townName, range, model, session, request, memberId, searchRequirements);
+		Page<ProductListDTO> page = productService.getProductListDTO(memberId, searchRequirements);
 
-
-        return "product/wishRangeList";
+		model.addAttribute("page", page);
+		return "product/wishRangeList";
 
     }
 

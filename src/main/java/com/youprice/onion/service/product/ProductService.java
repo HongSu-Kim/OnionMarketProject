@@ -50,7 +50,7 @@ public interface ProductService {
     //동네번호 조회
     TownFindDTO findTownId(String townName);
 
-    Page<ProductSellListDTO> getProductSellListDTO(Long memberId, ProductProgress productProgress, Pageable pageable);
+    Page<ProductSellListDTO> getProductSellListDTO(SearchRequirements searchRequirements);
 
     Page<ProductListDTO> getPersonalList(Long memberId, Pageable pageable);
 }
