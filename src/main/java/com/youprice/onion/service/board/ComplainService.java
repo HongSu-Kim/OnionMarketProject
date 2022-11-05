@@ -13,4 +13,6 @@ public interface ComplainService {
     List<ComplainDTO> checkComplain(Long memberId);
     String modifyStatus(Long complainId, String select);
     Page<ComplainDTO> findAll(Pageable pageable);
+
+    Page<ComplainDTO> getPersonalList(Long memberId, Pageable pageable);
 }

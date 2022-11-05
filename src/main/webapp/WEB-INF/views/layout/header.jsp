@@ -183,8 +183,8 @@
 								<li><a href="/member/mypage" class="header__nickname"><sec:authentication property="principal.sessionDTO.nickname"/> 님</a>
 									<ul class="header__menu__dropdown nickname">
 											<li><a href="/member/mypage">마이페이지</a></li>
-											<li><a href="/member/cash/<sec:authentication property="principal.sessionDTO.id"/>">양파페이 충전</a></li>
 										<sec:authorize access="hasRole('USER')">
+											<li><a href="/member/cash/<sec:authentication property="principal.sessionDTO.id"/>">양파페이 충전</a></li>
 											<li><a href="/review/mylist/<sec:authentication property="principal.sessionDTO.id"/>">나의 후기</a></li>
 											<li><a href="/inquiry/myList/<sec:authentication property="principal.sessionDTO.id"/>">나의 문의</a></li>
 											<li><a href="/wish/list">위시리스트</a></li>
