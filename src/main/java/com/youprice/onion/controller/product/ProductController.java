@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -122,7 +123,7 @@ public class ProductController {
             return "redirect:/product/wishRangeList";
         }
         /*리뷰 조회*/
-        Double reviewAvg = null;
+        Double reviewAvg = memberService.getMemberDTO(productFindDTO.getMemberId()).getUserGrade();
         if (memberService.avgGrade(productFindDTO.getMemberId()) != null) {
             reviewAvg = memberService.avgGrade(productFindDTO.getMemberId());
         }
@@ -230,9 +231,6 @@ public class ProductController {
                 .auctionStatus(true)
                 .build();
 
-//        if(userSession != null) {
-//            searchRequirements.setMemberId(userSession.getId());
-//        }
 		Long memberId = null;
 		if (userSession != null) {
 			memberId = userSession.getId();
@@ -404,11 +402,11 @@ public class ProductController {
         if (userSession == null) {
             AlertRedirect.warningMessage(response, "/member/login", "로그인이 필요합니다.");
             return "redirect:/member/login";
+        }else {
+            //DB삭제가 아닌 boolean사용
+            productService.deleteProduct(productId);
+            return AlertRedirect.warningMessage(response,"/product/wishRangeList", "삭제가 완료되었습니다.");//삭제 후 메인 화면
         }
-        //DB삭제가 아닌 boolean사용
-        productService.deleteProduct(productId);
-
-        return "redirect:/product/main";//삭제 후 메인 화면
     }
 
     @GetMapping("/category/{topCategoryId}") //하위 카테고리 호출
