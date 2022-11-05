@@ -232,7 +232,6 @@
 
 
 
-
 <div style="text-align: center">
 
     <div id="modal" class="modal-overlay">
@@ -256,7 +255,7 @@
 
      <input type="text" name="wishtown" value="" style="background-color: white "  placeholder="동네설정은 최대 3곳 가능"/>
     <input type="hidden" name="memberId" value="${memberDTO.id}"><br/><br/>
-    <input type="submit" value="동네설정하기" style="background-color: #47cd65; color: white;"/><br/><br/>
+    <input type="submit" value="동네설정하기" style="background-color: #90C8AC; color: white;"/><br/><br/>
     </form:form>
 
     <strong><현재 등록된 동네></strong><br/>

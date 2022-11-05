@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -52,13 +53,12 @@ public class TownController {
         model.addAttribute("memberDTO", memberDTO);
         model.addAttribute("list", list);
 
-
         return "product/town";
     }
 
     @PostMapping("rangeProduct")
-    public String rangeProduct(Model model, @LoginUser SessionDTO sessionDTO,@RequestParam("range")String range
-                            ,@RequestParam("townName")String townName) {
+    public String rangeProduct(Model model, @LoginUser SessionDTO sessionDTO, @RequestParam("range") String range
+            , @RequestParam("townName") String townName) {
 
         if (sessionDTO == null) return "redirect:/member/login";
         MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
@@ -72,13 +72,8 @@ public class TownController {
         System.out.println(townName); //동네이름
 
 
-
         return "product/town";
     }
-
-
-
-
 
 
     @GetMapping("townresult")
@@ -105,7 +100,7 @@ public class TownController {
 
     @PostMapping("townresult")
     public String townResult(Town town, Model model, @RequestParam("wishtown") String wishtown,
-                             @LoginUser SessionDTO sessionDTO,HttpServletResponse response)throws IOException {
+                             @LoginUser SessionDTO sessionDTO, HttpServletResponse response) throws IOException {
         try {
 
             List<CoordinateFindDTO> Gangnam = coordinateService.FindGangnam();
@@ -123,10 +118,8 @@ public class TownController {
             return "product/townresult";
 
         } catch (RuntimeException e) {
-            return  AlertRedirect.warningMessage(response, "실패 ");
+            return AlertRedirect.warningMessage(response, "실패 ");
         }
-
-
 
 
     }

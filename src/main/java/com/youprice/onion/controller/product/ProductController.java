@@ -46,8 +46,8 @@ public class ProductController {
     private final BiddingService biddingService;
     private final MemberService memberService;
     private final ProhibitionKeywordService prohibitionKeywordService;
-	private final ChatService chatService;
-	private final SimpMessagingTemplate template;
+    private final ChatService chatService;
+    private final SimpMessagingTemplate template;
 
     @GetMapping("add")//상픔 등록 주소
     public String add(Model model, @LoginUser SessionDTO userSession, HttpServletResponse response) throws IOException {
@@ -99,7 +99,7 @@ public class ProductController {
         // 키워드 알림
         List<ChatDTO> chatDTOList = chatService.alertChat(productId, productAddDTO.getSubject());
         for (ChatDTO chatDTO : chatDTOList) {
-          template.convertAndSend("/sub/chat/" + chatDTO.getTargetId(), chatDTO);
+            template.convertAndSend("/sub/chat/" + chatDTO.getTargetId(), chatDTO);
         }
 
         model.addAttribute("productId", productId);
@@ -171,7 +171,7 @@ public class ProductController {
 
         /*세션아이디로 동네 조회*/
         List<Long> coordinateList = null;
-		Long memberId = null;
+        Long memberId = null;
 
         if (userSession != null) {
 
@@ -180,7 +180,7 @@ public class ProductController {
                     .map(TownFindDTO::getCoordinateId)
                     .collect(Collectors.toList());
 
-			memberId = userSession.getId();
+            memberId = userSession.getId();
         }
         SearchRequirements searchRequirements = SearchRequirements.builder()
                 .blindStatus(false)
@@ -249,48 +249,45 @@ public class ProductController {
 
     @GetMapping(value = "category")//상품 카테고리별 화면 주소
     public String main(Model model, @LoginUser SessionDTO userSession, HttpSession session, @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC)
-    Pageable pageable,@RequestParam(value = "categoryId",defaultValue = "1") int categoryId) throws Exception {
+    Pageable pageable, @RequestParam(value = "categoryId", defaultValue = "1") int categoryId) throws Exception {
 
-                if(categoryId == 1) {
+        if (categoryId == 1) {
 
-
-                    SearchRequirements searchRequirements = SearchRequirements.builder()
-                            .blindStatus(false)
-                            .build();
-
-                    searchRequirements.setPageable(PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
-                            pageable.getPageSize(), Sort.Direction.DESC, "uploadDate"));
+            SearchRequirements searchRequirements = SearchRequirements.builder()
+                    .blindStatus(false)
+                    .pageable(pageable)
+                    .build();
 
 
-                    List<ProductListDTO> categoryList1 = productService.getProductCategoryList(1L, 8L);
-                 //   List<ProductListDTO> categoryList1 = productService.getProductCategoryList(9L, 16L);
+            List<ProductListDTO> categoryList = productService.getProductCategoryList(1L, 8L);
+            //   List<ProductListDTO> categoryList1 = productService.getProductCategoryList(9L, 16L);
 
-                    List<Long> CategoryIdList = new ArrayList<>();
-
-
+            List<Long> CategoryIdList = new ArrayList<>();
 
 
-                    for (int i = 0; i < categoryList1.size(); i++) {
+            for (int i = 0; i < categoryList.size(); i++) {
 
-                      //  CategoryIdList.add(0, categoryList1.get(i).getCategoryId());
-                        System.out.println(categoryList1.get(i).getCategoryId());
-                    }
-
-                    searchRequirements.setCategoryIdList(CategoryIdList);
-
-                    Page<ProductListDTO> page = productService.getProductListDTO(userSession.getId(), searchRequirements);
+                CategoryIdList.add(0, categoryList.get(i).getCategoryId());
+                System.out.println(categoryList.get(i).getCategoryId());
+            }
 
 
-                    System.out.println(page.getSize());
+            searchRequirements.setCategoryIdList(CategoryIdList);
 
 
+            Page<ProductListDTO> page = productService.getProductListDTO(userSession.getId(), searchRequirements);
 
 
-                    model.addAttribute("page", page);
-                    model.addAttribute("list", page.getContent());
+            System.out.println(page.getSize());
 
 
-                    //  model.addAttribute("list",categoryList1)
+            model.addAttribute("page", page);
+            model.addAttribute("list", page.getContent());
+
+            session.setAttribute("CategoryIdList", CategoryIdList);
+
+
+            //  model.addAttribute("list",categoryList1)
 //               break;
 //
 //            case "9":
@@ -325,10 +322,10 @@ public class ProductController {
 //
 
 
-                }
+        }
 
-   return "product/list";
-}
+        return "product/list";
+    }
 
     @GetMapping("/personalList/{memberId}")
     public String productList(@PathVariable Long memberId, Model model, @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
