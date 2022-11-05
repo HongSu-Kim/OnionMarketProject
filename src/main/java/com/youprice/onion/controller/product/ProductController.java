@@ -400,13 +400,18 @@ public class ProductController {
     public String removeProduct(@PathVariable("productId") Long productId, @LoginUser SessionDTO userSession, HttpServletResponse response)
             throws Exception {
 
+        ProductFindDTO productFindDTO = productService.getProductFindDTO(productId);
+
         if (userSession == null) {
             AlertRedirect.warningMessage(response, "/member/login", "로그인이 필요합니다.");
             return "redirect:/member/login";
+        }
+        else if(productFindDTO.getProductProgress() != ProductProgress.SALESON) {
+            return AlertRedirect.warningMessage(response,"/order/sellList", "판매 중인 상품만 삭제가 가능합니다.");//거절 후 메인 화면
         }else {
             //DB삭제가 아닌 boolean사용
             productService.deleteProduct(productId);
-            return AlertRedirect.warningMessage(response,"/product/wishRangeList", "삭제가 완료되었습니다.");//삭제 후 메인 화면
+            return AlertRedirect.warningMessage(response,"/order/sellList", "삭제가 완료되었습니다.");//삭제 후 메인 화면
         }
     }
 

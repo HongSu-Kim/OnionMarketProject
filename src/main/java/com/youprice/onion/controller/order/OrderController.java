@@ -151,6 +151,7 @@ public class OrderController {
 				.pageable(pageable)
 				.memberId(sessionDTO.getId())
 				.productProgress(productProgress)
+				.blindStatus(false)
 				.build();
 
 		Page<ProductSellListDTO> page = productService.getProductSellListDTO(searchRequirements);
