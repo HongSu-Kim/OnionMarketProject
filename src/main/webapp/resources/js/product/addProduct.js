@@ -13,7 +13,7 @@ $('#topCategory').change(function () {
             $('#subCategory').empty();
             for(let i = 0; i < subCategory.length; i++) {
                 let subCategoryDTO = subCategory[i]
-                let option = $('<option value="' + subCategoryDTO.id + '">' + subCategoryDTO.categoryName + '</option>')
+                let option = $('<option value="' + subCategoryDTO.categoryId + '">' + subCategoryDTO.categoryName + '</option>')
 
                 $("#subCategory").append(option)
             }

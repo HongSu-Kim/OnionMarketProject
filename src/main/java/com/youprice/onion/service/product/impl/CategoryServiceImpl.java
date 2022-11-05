@@ -120,9 +120,9 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> findTopCategory() {
+    public List<CategoryFindDTO> findTopCategory() {
 
-        return categoryRepositoy.findTopCategory(); //parent_id가 null인 상위카테고리조회
+        return categoryRepositoy.findTopCategory().stream().map(CategoryFindDTO::new).collect(Collectors.toList()); //parent_id가 null인 상위카테고리조회
     }
 
 

@@ -7,7 +7,7 @@
 <!-- Product Details Section Begin -->
 <form action="/product/bid" method="post" id="productForm">
 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-<input type="hidden" name="productId" value="${productId}">
+<input type="hidden" name="productId" value="${productFindDTO.productId}">
 	<section class="product-details spad">
 	<div class="container">
 		<div class="row">
@@ -33,7 +33,7 @@
 					</div>
 					<div class="product__details__rating">
 						<c:choose>
-							<c:when test="${reviewAvg ne null}">
+							<c:when test="${reviewAvg ne 0.0}">
 								리뷰 평점: ${reviewAvg} / 5 점
 							</c:when>
 							<c:otherwise>
@@ -108,16 +108,15 @@
 										</dl>
 										<c:choose>
 											<c:when test="${not empty biddingList}">
-												<c:forEach var="biddingList" items="${biddingList}">
+												<c:forEach var="bidding" items="${biddingList}">
 													<hr/>
 													<dl>
-														<dd>${biddingList.userId}</dd>
-														<dd>${biddingList.bid}</dd>
+														<dd>${bidding.userId}</dd>
+														<dd>${bidding.bid}</dd>
 														<dd>
-															<fmt:parseDate var="biddingTime" value="${biddingList.biddingTime}" pattern="yyyy-MM-dd'T'HH:mm"/>
+															<fmt:parseDate var="biddingTime" value="${bidding.biddingTime}" pattern="yyyy-MM-dd'T'HH:mm"/>
 															<fmt:formatDate value="${biddingTime}" pattern="yyyy/MM/dd HH:mm"/>
 														</dd>
-														<br/>
 													</dl>
 												</c:forEach>
 											</c:when>
@@ -144,9 +143,9 @@
 								<div class="product__item__text">
 									<a href="#" class="primary-btn">채팅 목록</a>
 									<c:if test="${empty productFindDTO.auctionDeadline}">
-										<a href="/product/update/${productId}" class="primary-btn">상품 수정</a>
+										<a href="/product/update/${productFindDTO.productId}" class="primary-btn">상품 수정</a>
 									</c:if>
-									<a href="/product/delete/${productId}" class="primary-btn">삭 제</a>
+									<a href="/product/delete/${productFindDTO.productId}" class="primary-btn">삭 제</a>
 								</div>
 							</div>
 						</c:when>
@@ -162,12 +161,12 @@
 										<input type="submit" class="primary-btn" value="입찰하기"></a>
 										</c:when>
 										<c:otherwise>
-											<a href="/order/payment/${productId}" class="primary-btn">구매하기</a>
+											<a href="/order/payment/${productFindDTO.productId}" class="primary-btn">구매하기</a>
 										</c:otherwise>
 									</c:choose>
-									<a href="/complain/created/${productId}" class="primary-btn">신고하기</a>
-									<button type="button" class="primary-btn" onclick="createChatroom(${productId})">채팅하기</button>
-									<a href="/wish/addWish/${productId}"><div class="primary-btn"><i class="fa fa-heart wishBtn"></i>찜하기</div></a>
+									<a href="/complain/created/${productFindDTO.productId}" class="primary-btn">신고하기</a>
+									<button type="button" class="primary-btn" onclick="createChatroom(${productFindDTO.productId})">채팅하기</button>
+									<a href="/wish/addWish/${productFindDTO.productId}"><div class="primary-btn"><i class="fa fa-heart wishBtn"></i>찜하기</div></a>
 								</div>
 							</div>
 						</c:otherwise>
