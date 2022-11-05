@@ -52,7 +52,6 @@ public class MainController {
 				PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "uploadDate"));
 		List<ProductListDTO> auctionProductList = productService.getProductListDTO(memberId, searchRequirements).getContent();
 
-
 		model.addAttribute("newProductList", newProductList);
 		model.addAttribute("topViewProductList", topViewProductList);
 		model.addAttribute("lowPriceProductList", lowPriceProductList);
@@ -60,4 +59,11 @@ public class MainController {
 		model.addAttribute("pageName", "main");
 		return "main/main";
 	}
+
+	//접근 거부 페이지
+	@GetMapping("/main/denied")
+	public String deniedView() {
+		return "redirect:/";
+	}
+
 }

@@ -22,8 +22,8 @@ public class ProductUpdateDTO {
     private int price; //상품가격
 
     private String representativeImage; //대표이미지
-    private List<MultipartFile> productImageName;//이미지 이름
-    private List<Long> newImageIdList;//이미지 pk
+    private List<MultipartFile> newImageList;//이미지 이름
+    private List<Long> productImageIdList;//이미지 pk
     private Boolean payStatus; //페이현황
 
     private LocalDateTime auctionDeadline; //경매기한

@@ -271,12 +271,6 @@ public class MemberController {
 		return new ResponseEntity<>(memberDTOList, HttpStatus.OK);
 	}
 
-    //접근 거부 페이지
-    @GetMapping("/denied")
-    public String deniedView() {
-        return "member/denied";
-    }
-
     //양파페이 충전 페이지
     @Transactional
     @GetMapping("/cash/{memberId}")
