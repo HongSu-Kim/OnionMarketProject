@@ -61,4 +61,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
 
     boolean existsBySubject(String subject);
 
+	@Modifying
+	@Query("update Product p set p.blindStatus = true where p.auctionDeadline < current_timestamp")
+	void actionBlind();
 }
