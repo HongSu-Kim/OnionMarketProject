@@ -111,7 +111,7 @@ public class CoordinateServiceImpl implements CoordinateService {
         }
 
         searchRequirements.setCoordinateIdList(RangeList);
-        Page<ProductListDTO> page = productService.getProductListDTO(searchRequirements);
+        Page<ProductListDTO> page = productService.getProductListDTO(memberId, searchRequirements);
 
 
         model.addAttribute("page", page);
