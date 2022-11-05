@@ -5,6 +5,7 @@ import com.youprice.onion.dto.board.ComplainFormDTO;
 import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.product.ProductDTO;
+import com.youprice.onion.dto.product.ProductListDTO;
 import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.service.board.ComplainService;
 import com.youprice.onion.service.member.MemberService;
@@ -114,4 +115,11 @@ public class ComplainController {
         return "redirect:/complain/list";
     }
 
+    //개인별 신고 리스트
+    @GetMapping("/personalList/{memberId}")
+    public String productList(@PathVariable Long memberId, Model model, @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<ComplainDTO> page = complainService.getPersonalList(memberId, pageable);
+        model.addAttribute("complainList", page);
+        return "board/complainList";
+    }
 }

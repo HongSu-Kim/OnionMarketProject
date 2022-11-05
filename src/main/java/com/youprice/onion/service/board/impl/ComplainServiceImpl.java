@@ -94,4 +94,10 @@ public class ComplainServiceImpl implements ComplainService {
     public Page<ComplainDTO> findAll(Pageable pageable) {
         return complainRepository.findAll(pageable).map(ComplainDTO::new);
     }
+
+    //개인별 신고 리스트
+    @Override
+    public Page<ComplainDTO> getPersonalList(Long memberId, Pageable pageable) {
+        return complainRepository.findAllByProductMemberId(memberId, pageable).map(ComplainDTO::new);
+    }
 }

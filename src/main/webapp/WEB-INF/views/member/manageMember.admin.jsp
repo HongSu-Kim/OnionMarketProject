@@ -41,7 +41,7 @@
                                     <td><a href="/member/profile/${memberDTO.id}">${memberDTO.nickname}</a></td>
                                     <td><a href="/product/personalList/${memberDTO.id}">보러 가기</a></td>
                                     <td>${memberDTO.userGrade}</td>
-                                    <td><a href="/complain/list">${memberDTO.complaintCount}</a></td>
+                                    <td><a href="/complain/personalList/${memberDTO.id}">${memberDTO.complaintCount}</a></td>
                                     <td>
                                         <c:choose>
                                             <c:when test="${memberDTO.role == 'USER'}">
