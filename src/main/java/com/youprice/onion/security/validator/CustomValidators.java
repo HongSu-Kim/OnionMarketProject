@@ -17,7 +17,7 @@ public class CustomValidators {
 
         @Override
         protected void doValidate(MemberJoinDTO memberJoinDTO, Errors errors) {
-            if (memberRepository.existsByUserId(memberJoinDTO.toEntity().getUserId())) {
+            if (memberRepository.existsByUserId(memberJoinDTO.getUserId())) {
                 errors.rejectValue("userId", "아이디 중복 오류", "이미 사용중인 아이디 입니다.");
             }
         }
@@ -30,7 +30,7 @@ public class CustomValidators {
 
         @Override
         protected void doValidate(MemberJoinDTO memberJoinDTO, Errors errors) {
-            if (memberRepository.existsByNickname(memberJoinDTO.toEntity().getNickname())) {
+            if (memberRepository.existsByNickname(memberJoinDTO.getNickname())) {
                 errors.rejectValue("nickname", "닉네임 중복 오류", "이미 사용중인 닉네임 입니다.");
             }
         }
@@ -43,7 +43,7 @@ public class CustomValidators {
 
         @Override
         protected void doValidate(MemberJoinDTO memberJoinDTO, Errors errors) {
-            if (memberRepository.existsByEmail(memberJoinDTO.toEntity().getEmail())) {
+            if (memberRepository.existsByEmail(memberJoinDTO.getEmail())) {
                 errors.rejectValue("email", "이메일 중복 오류", "이미 사용중인 이메일 입니다.");
             }
         }

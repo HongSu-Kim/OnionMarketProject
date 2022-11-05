@@ -95,6 +95,8 @@ public class ChatServiceImpl implements ChatService {
 				Chatroom chatroom1 = new Chatroom(member, product);
 				return chatroomRepository.save(chatroom1);
 			});
+			// 수정시간 갱신
+			chatroom.setModifyDate(LocalDateTime.now());
 
 			// 메세지 저장
 			String message =

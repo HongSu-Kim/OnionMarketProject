@@ -69,7 +69,7 @@
 														<a href="/review/created/${orderDTO.orderId}" class="primary-btn">구매후기등록</a>
 													</c:if>
 													<c:if test="${!empty orderDTO.reviewId}">
-														<a href="/review/update/<sec:authentication property="principal.sessionDTO.id"/>/${orderDTO.reviewId}" class="primary-btn">판매후기수정</a>
+														<a href="/review/update/<sec:authentication property="principal.sessionDTO.id"/>/${orderDTO.reviewId}" class="primary-btn">구매후기수정</a>
 													</c:if>
 												</c:if>
 											</p>

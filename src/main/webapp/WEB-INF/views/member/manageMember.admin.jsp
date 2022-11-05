@@ -15,6 +15,7 @@
                             <tr>
                                 <th>프로필 사진</th>
                                 <th>권한</th>
+                                <th>아이디</th>
                                 <th>닉네임</th>
                                 <th>판매중인 물품</th>
                                 <th>평점</th>
@@ -38,6 +39,7 @@
                                         <img src="/img/member/${memberDTO.memberImageName}" class="list-img profile">
                                     </td>
                                     <td>${memberDTO.role}</td>
+                                    <td>${memberDTO.userId}</td>
                                     <td><a href="/member/profile/${memberDTO.id}">${memberDTO.nickname}</a></td>
                                     <td><a href="/product/personalList/${memberDTO.id}">보러 가기</a></td>
                                     <td>${memberDTO.userGrade}</td>
