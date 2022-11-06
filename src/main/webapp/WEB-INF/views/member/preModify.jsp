@@ -14,7 +14,7 @@
                     <div class="col-lg-6 col-md-6">
                         <div class="checkout__input">
                             <p>비밀번호<span>*</span></p>
-                            <input type="password" class="form-control" name="preModifypwd" placeholder="비밀번호를 입력해주세요">
+                            <input type="password" class="form-control" name="preModifypwd" placeholder="비밀번호를 입력해주세요" autofocus>
                         </div>
                         <button type="submit" class="site-btn">확인</button>
                         <a href="/member/mypage" class="site-btn">마이 페이지</a>
