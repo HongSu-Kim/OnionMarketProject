@@ -13,18 +13,18 @@
 }
 
 #modal .modal-window {
-    overflow-y: auto;
+    /*overflow-y: auto;*/
 
-    width: 850px;
+    width: 800px;
     height: 600px;
     position: relative;
-    top: 0px;
+    top: -40px;
     padding: 10px;
     border-radius: 25px;
     background-color: whitesmoke;
     border: 1px black;
 
-    box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);;
+    box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
 
 
 }
@@ -95,5 +95,19 @@ input {
     padding-left: 15px;
     border: 1px solid #e1e1e1;
     border-radius: 20px;
+
+
 }
 
+button {
+
+    font-size: 16px;
+    color: white;
+    padding-left: 15px;
+    background-color: #90C8AC;
+
+    border: 3px solid #90C8AC;
+    border-radius: 20px;
+
+
+}

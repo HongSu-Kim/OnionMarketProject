@@ -21,9 +21,16 @@
 
 <div class="container">
     <div class="checkout__form" style="width: 800px; margin: auto">
-        <br/><br/><br/>
-        <h4>상위 카테고리<span style="font-size: small;color:#FF5058;margin: 0px 0px 0px 32px">*상위카테고리 입력</span></h4>
+        <br/><br/><br/><br/><br/><br/><br/><br/>
 
+        <h4>상위 카테고리<span style="font-size: small;color:#FF5058;margin: 0px 0px 0px 32px">*상위카테고리 입력 </span></h4>
+        <div style="text-align: right ">
+            <form:form action="categoryupdate" method="get">
+            <input type="submit" value="카테고리 수정" onclick="select();"
+                   style="font-size: 16px; width: 15%; height: 43px; margin-top: -30px;
+                 border-style: solid ; border-color: #90C8AC; background-color: #90C8AC; color: white"/>
+        </div>
+        </form:form>
 
         <div class="row">
             <div class="col-lg-12">
@@ -38,6 +45,8 @@
 
                     <input type="submit" value="상위카테고리 추가"
                            style="width: 25%; background-color: #90C8AC;; color: white"/>
+
+
                     <br/><br/>
                 </div>
             </div>
@@ -86,6 +95,7 @@
     </div>
 
     </form:form>
+
 
     <br/><br/><br/><br/>
 

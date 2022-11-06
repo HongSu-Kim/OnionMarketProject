@@ -1,3 +1,17 @@
+
+function check_submit() {
+
+    if (isc.wishtown.value == "") {
+        alert("동네를 입력하세요!");
+        isc.wishtown.focus();
+        return false;
+    }
+
+
+}
+
+
+
 function statusChange(statusItem) {
 
 

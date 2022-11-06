@@ -246,10 +246,7 @@
                 <div class="hero__search">
                     <div class="hero__search__form">
                         <form:form action="/search/list" method="get">
-                            <%--							<div class="hero__search__categories">--%>
-                            <%--								All Categories--%>
-                            <%--								<span class="arrow_carrot-down"></span>--%>
-                            <%--							</div>--%>
+
                             <input type="text" name="searchName" placeholder="원하는 상품을 검색하세요">
                             <button type="submit" class="site-btn">SEARCH</button>
                         </form:form>
