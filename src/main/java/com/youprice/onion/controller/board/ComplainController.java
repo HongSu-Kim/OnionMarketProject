@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,6 +37,7 @@ public class ComplainController {
     private final ProductService productService;
 
     @GetMapping("created/{productId}")
+    @PreAuthorize("isAuthenticated()")
     public String complainForm(@PathVariable Long productId, Model model, @LoginUser SessionDTO sessionDTO,
                                @ModelAttribute("form") ComplainFormDTO form, HttpServletResponse response) throws IOException {
         if(sessionDTO != null){
