@@ -86,12 +86,13 @@ $(document).ready(function() {
         $('.addInput').append(
             '<input type="file" name="newImageList" id="newImageList"><button type="button" class="btnRemove">삭제</button><br>'
         );//input file
+        $('.btnRemove').on('click',function(){//this='.btnRemove'
+            $(this).prev().remove();// .prev()=input file을 가리키고 remove()실행
+            $(this).next().remove();// br 삭제
+            $(this).remove();//버튼 삭제
+        });
     });
-    $('.btnRemove').on('click',function(){//this='.btnRemove'
-        $(this).prev().remove();// .prev()=input file을 가리키고 remove()실행
-        $(this).next().remove();// br 삭제
-        $(this).remove();//버튼 삭제
-    });
+
 });
 
 function setImageFromFile(input, expression) {
