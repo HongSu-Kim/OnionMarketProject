@@ -18,9 +18,6 @@ public interface CoordinateRepositoy extends JpaRepository<Coordinate, Long> {
 
     List<Coordinate> findByTownNameContaining(String townName);
 
-
-    Coordinate findAllByTownNameContaining(String townName);
-
     List<Coordinate> findAllById(Long coordinateId);
 
 
