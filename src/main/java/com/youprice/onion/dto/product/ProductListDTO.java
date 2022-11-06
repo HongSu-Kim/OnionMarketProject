@@ -1,19 +1,12 @@
 package com.youprice.onion.dto.product;
 
-import com.youprice.onion.dto.order.WishDTO;
-import com.youprice.onion.dto.order.WishListDTO;
-import com.youprice.onion.entity.member.Member;
-import com.youprice.onion.entity.order.Wish;
 import com.youprice.onion.entity.product.Product;
 import com.youprice.onion.entity.product.ProductProgress;
-import com.youprice.onion.repository.order.WishRepository;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
