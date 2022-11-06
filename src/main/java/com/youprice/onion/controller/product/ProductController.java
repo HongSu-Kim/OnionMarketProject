@@ -13,7 +13,6 @@ import com.youprice.onion.util.AlertRedirect;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -29,7 +28,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,7 +39,6 @@ public class ProductController {
     private final ProductService productService;
     private final TownService townService;
     private final CategoryService categoryService;
-    private final ProductImageService productImageService;
     private final CoordinateService coordinateService;
     private final BiddingService biddingService;
     private final MemberService memberService;
@@ -193,7 +190,6 @@ public class ProductController {
         Page<ProductListDTO> distancePage = productService.getProductListDTO(memberId, searchRequirements);
 
         model.addAttribute("distancePage", distancePage);
-        model.addAttribute("distancePagelist", distancePage.getContent());
 
         return "product/wishRangeList";
     }
@@ -242,7 +238,6 @@ public class ProductController {
         Page<ProductListDTO> page = productService.getProductListDTO(memberId, searchRequirements);
 
         model.addAttribute("page", page);
-        model.addAttribute("list", page.getContent());
 
         return "product/auctionList";//상품 리스트 메인 화면페이지
     }
@@ -274,7 +269,7 @@ public class ProductController {
     @GetMapping("/personalList/{memberId}")
     public String productList(@PathVariable Long memberId, Model model, @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<ProductListDTO> page = productService.getPersonalList(memberId, pageable);
-        model.addAttribute("list", page.getContent());
+        model.addAttribute("page", page);
         return "product/list";
     }
 

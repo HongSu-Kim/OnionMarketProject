@@ -25,7 +25,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-6 col-md-6">
+			<div class="col-lg-6 col-md-6 content">
 				<div class="product__details__text">
 					<h3>${productFindDTO.subject}</h3>
 					<div>
@@ -42,7 +42,6 @@
 						</c:choose>
 					</div>
 					<div>
-
 						<c:choose>
 							<c:when test="${not empty productFindDTO.auctionDeadline}">
 								<fmt:parseDate var="uploadDate" value="${productFindDTO.uploadDate}" pattern="yyyy-MM-dd'T'HH:mm"/>
@@ -129,11 +128,11 @@
 							</c:when>
 							<c:when test="${productFindDTO.updateDate ne productFindDTO.uploadDate}">
 								<fmt:parseDate var="updateDate" value="${productFindDTO.updateDate}" pattern="yyyy-MM-dd'T'HH:mm"/>
-								<p><fmt:formatDate value="${updateDate}" pattern="yyyy/MM/dd HH:mm"/></p>
+								<p> 등록일 : <fmt:formatDate value="${updateDate}" pattern="yyyy/MM/dd HH:mm"/></p>
 							</c:when>
 							<c:otherwise>
 								<fmt:parseDate var="uploadDate" value="${productFindDTO.uploadDate}" pattern="yyyy-MM-dd'T'HH:mm"/>
-								<p><fmt:formatDate value="${uploadDate}" pattern="yyyy-MM-dd HH:mm"/></p>
+								<p> 등록일 :  <fmt:formatDate value="${uploadDate}" pattern="yyyy-MM-dd HH:mm"/></p>
 							</c:otherwise>
 						</c:choose>
 					</div>
@@ -172,9 +171,9 @@
 						</c:otherwise>
 					</c:choose>
 					<ul>
-						<li><b>Availability</b> <span>${productFindDTO.productProgress}</span></li>
-						<li><b>Payment</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li>
-						<li><b>Share on</b>
+						<li><b>상품상태</b> <span>${productFindDTO.productProgress}</span></li>
+						<li><b>결제방법</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li>
+						<li><b>공유하기</b>
 							<div class="share">
 								<a href="#"><i class="fa fa-facebook"></i></a>
 								<a href="#"><i class="fa fa-twitter"></i></a>
