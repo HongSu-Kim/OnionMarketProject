@@ -30,18 +30,6 @@
                                 </c:if>
                         </p>
                         <ul class="list_modify">
-<%--                                <c:if test="${!memberDTO.followCheck}">
-                                    <li><button type="button" class="site-btn-follow" onclick="location.href='/follow/addFollow/${memberDTO.id}'">팔로우</button></li>
-                                </c:if>
-                                <c:if test="${memberDTO.followCheck}">
-                                    <li><button type="button" class="site-btn-ing"  onclick="location.href='/follow/removeFollow/${memberDTO.id}'">팔로잉</button></li>
-                                </c:if>
-                                <c:if test="${!memberDTO.blockCheck}">
-                                    <li><button type="button" class="site-btn-follow"  onclick="location.href='/block/addBlock/${memberDTO.id}'">차단하기</button></li>
-                                </c:if>
-                                <c:if test="${memberDTO.blockCheck}">
-                                    <li><button type="button" class="site-btn-ing"  onclick="location.href='/block/removeBlock/${memberDTO.id}'">차단해제</button></li>
-                                </c:if>--%>
                                 <li><button type="button" class="site-btn"  onclick="location.href='/product/personalList/${memberDTO.id}'">판매 리스트</button></li>
                         </ul>
                     </span>
