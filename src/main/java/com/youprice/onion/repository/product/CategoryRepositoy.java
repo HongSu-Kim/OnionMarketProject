@@ -40,6 +40,8 @@ public interface CategoryRepositoy extends JpaRepository<Category, Long> {
 
     Category deleteById(CategoryUpdateDTO id);
 
+    Category deleteByCategoryName(String categoryName);
+
     List<Category> findByParentId(Long categoryId);
 
     @Query("select o from Category o where o.parent is null")

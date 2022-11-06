@@ -31,7 +31,7 @@
             <div class="title">
                 <div style="text-align: right">
 
-                    <a href="/product/list"><span class="icon_close"></span></a>
+                    <a href="/product/wishRangeList"><span class="icon_close"></span></a>
                 </div>
                 <div style="text-align: center">
 

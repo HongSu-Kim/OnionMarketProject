@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Path;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -59,23 +60,30 @@ public class CategoryController {
     }
 
     @GetMapping("categoryupdate") //카테고리 수정
-    public String create(Model model) {
-
-        List<CategoryFindDTO> Topcategory =categoryService.findTopCategory();
+    public String create(Model model,HttpSession session) {
 
 
-        model.addAttribute("Topcategory", Topcategory);
-
+        List<CategoryFindDTO> topCategoryList = categoryService.findTopCategory();
+        model.addAttribute("topCategoryList", topCategoryList);
+        model.addAttribute("topCategoryList2", topCategoryList);
 
         return "product/categoryupdate";
     }
+    @GetMapping("/category/{topCategoryId}") //하위 카테고리 호출
+    @ResponseBody
+    public List<CategoryFindDTO> findSubCategory(@PathVariable("topCategoryId") Long topCategoryId) {
+        List<CategoryFindDTO> subCategory = categoryService.findSubCategory(topCategoryId);
+
+        return subCategory;
+    }
+
+    @GetMapping("categoryDelete") //카테고리 삭제
+    public String update(@RequestParam("categoryId") Long categoryId) {
 
 
-    @PostMapping("categoryupdate") //카테고리 삭제
-    public String update(@RequestParam("id") Long id) {
+    //  Category categoryFindDTOList = categoryService.CategoryDelete(categoryId);
 
-
-        categoryService.CategoryDelete(id);
+        System.out.println(categoryId);
 
         return "redirect:/category/categoryupdate";
 

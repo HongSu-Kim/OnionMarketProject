@@ -123,7 +123,7 @@ a:hover {
     width: 850px;
     height: 600px;
     position: relative;
-    top: -40px;
+    top: 0px;
     padding: 10px;
     border-radius: 25px;
     background-color: whitesmoke;
@@ -198,11 +198,11 @@ input {
 }
 
 button {
-
+    margin-right: -50px;
     font-size: 16px;
-    color: #6f6f6f;
-    padding-left: 15px;
-    border: 10px solid #e1e1e1;
+    /*color: #6f6f6f;*/
+    text-align: right;
+    border: 16px solid white;
 
 
 }

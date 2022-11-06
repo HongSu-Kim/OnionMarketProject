@@ -3,12 +3,15 @@ package com.youprice.onion.dto.product;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
+
 @Setter
 @Getter
 public class SearchAddDTO {
 
 
     private Long id; //키워드 번호 PK
+
 
     private String searchName;//검색명
 

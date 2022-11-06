@@ -39,7 +39,7 @@
 
                 <br/>
 
-                <form:form action="/town/townresult" method="post">
+                <form:form action="" name="isc" onsubmit="return check_submit();" method="get">
 
                     <input type="text" name="wishtown" value="" placeholder="  원하는 동네 검색"/>
                     <br/><br/>
