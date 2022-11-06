@@ -30,7 +30,7 @@
                                             ${productDTO.productProgress}
                                     </div>
                                 </c:if>
-                                <div style="margin-top:93%;">
+                                <div class="pay__auction__image">
                                     <c:if test="${productDTO.payStatus eq true}"><img
                                             src="/template/img/product/pay.png"></c:if>
                                     <c:if test="${productDTO.auctionDeadline ne null}"><img
@@ -40,15 +40,7 @@
                         </div>
                         <div class="product__item__text">
                             <h6><a href="/product/detail/${productDTO.productId}">${productDTO.subject}</a></h6>
-                                <%--남은 시간--%>
-                            <input type="hidden" name="dead" value="${productDTO.auctionDeadline}"/>
-                            <div class="time__list">
-                                <span name="d-day-hour"></span>
-                                <span class="col">:</span>
-                                <span name="d-day-min"></span>
-                                <span class="col">:</span>
-                                <span name="d-day-sec"></span>
-                            </div>
+                          
                             <fmt:parseDate var="uploadDate" value="${productDTO.uploadDate}"
                                            pattern="yyyy-MM-dd'T'HH:mm"/>
                             <div>
@@ -82,7 +74,6 @@
     <!-- List Paging -->
     <div class="row">
         <div class="col-lg-12">
-
             <!-- 페이징 -->
             <c:if test="${!empty page.content && page.totalPages != 1}">
                 <input type="hidden" id="pageNumber" value="${page.number + 1}"/>

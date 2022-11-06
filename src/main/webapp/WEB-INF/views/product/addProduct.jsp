@@ -9,8 +9,8 @@
 <!-- Checkout Section Begin -->
 <section class="checkout spad">
 	<div class="container">
-		<div class="checkout__form" style="width: 800px; margin: auto">
-			<h4>기본 정보<span style="font-size: small;color:#FF5058;margin: 0px 0px 0px 32px">*필수항목</span></h4>
+		<div class="product__form">
+			<h4>기본 정보<span class="essential__content">*필수항목</span></h4>
 			<form action="/product/add" method="post" enctype="multipart/form-data" id="productForm">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 				<div class="row">
@@ -28,7 +28,7 @@
 							<p>거래 지역<span>*</span></p><%--townList foreach로 설정--%>
 							<label for="townId">
 								<c:forEach var="townList" items="${townList}">
-									<p>${townList.townName}<input type="radio" style="width: 15px;height: 15px; margin-left:6px" id="townId" name="townId" value="${townList.id}"></p>
+									<p>${townList.townName}<input type="radio" id="townId" name="townId" value="${townList.id}"></p>
 								</c:forEach>
 							</label>
 							<p><button type="button" class="primary-btn border-0" onclick="location.href='/town/town'">내 동네 설정하러 가기</button></p>
@@ -38,7 +38,7 @@
 							<p>경매 등록</p><%--true/false로 변경--%>
 							<div>
 								경매 기간은 12시간입니다.(상품 수정 불가)
-								<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="auctionStatus" value="true">
+								<input type="checkbox" name="auctionStatus" value="true">
 								<input type="hidden" name="auctionStatus" value="false">
 								<hr/>
 							</div>
@@ -64,8 +64,8 @@
 						</div>
 						<div class="checkout__input">
 							<p>페이 결제</p><%--true/false로 변경--%>
-							<div style="color: #aaaaaa">
-								<input type="checkbox" style="width: 15px;height: 15px;margin: 8px;" name="payStatus" value="true">
+							<div>
+								<input type="checkbox" name="payStatus" value="true">
 								<input type="hidden" name="payStatus" value="false">
 								 안전결제 환영
 								<img src="/template/img/product/pay.png">
@@ -91,7 +91,7 @@
 										<p>상품 이미지<span>*</span></p>
 										<input type="file" name="fileList" id="fileList" onchange="readURL(this);">
 									</div>
-									<button type="button" class="btnAdd" style="border-width: thin;">이미지 추가</button>
+									<button type="button" class="btnAdd">이미지 추가</button>
 								</div>
 							</div>
 							<div class="col-lg-8">
@@ -104,10 +104,10 @@
 							</div>
 						</div>
 						<div>
-							<input type="submit" value="상품 등록" style="color: black">
+							<input type="submit" value="상품 등록">
 						</div>
 						<div>
-							<input type="button" value="뒤로가기" onclick="goBack();" style="color: black">
+							<input type="button" value="뒤로가기" onclick="goBack();">
 						</div>
 					</div>
 				</div>
