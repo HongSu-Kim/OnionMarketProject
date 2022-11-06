@@ -28,6 +28,7 @@
 			<div class="col-lg-6 col-md-6 content">
 				<div class="product__details__text">
 					<h3>${productFindDTO.subject}</h3>
+					<h2 class="now__price"><fmt:formatNumber maxFractionDigits="3" value="${productFindDTO.price}"/> 원</h2>
 					<div>
 						<span>판매자: <a href="/member/profile/${productFindDTO.memberId}">${productFindDTO.nickname}</a></span>
 					</div>
@@ -128,11 +129,13 @@
 							</c:when>
 							<c:when test="${productFindDTO.updateDate ne productFindDTO.uploadDate}">
 								<fmt:parseDate var="updateDate" value="${productFindDTO.updateDate}" pattern="yyyy-MM-dd'T'HH:mm"/>
-								<p> 등록일 : <fmt:formatDate value="${updateDate}" pattern="yyyy/MM/dd HH:mm"/></p>
+								<h6> 등록일 : <fmt:formatDate value="${updateDate}" pattern="yyyy/MM/dd HH:mm"/></h6>
+								<h6> 카테고리 : ${productFindDTO.categoryName}</h6>
 							</c:when>
 							<c:otherwise>
 								<fmt:parseDate var="uploadDate" value="${productFindDTO.uploadDate}" pattern="yyyy-MM-dd'T'HH:mm"/>
-								<p> 등록일 :  <fmt:formatDate value="${uploadDate}" pattern="yyyy-MM-dd HH:mm"/></p>
+								<h6> 등록일 :  <fmt:formatDate value="${uploadDate}" pattern="yyyy-MM-dd HH:mm"/></h6>
+								<h6> 카테고리 :  ${productFindDTO.categoryName}</h6>
 							</c:otherwise>
 						</c:choose>
 					</div>
@@ -178,7 +181,6 @@
 								<a href="#"><i class="fa fa-facebook"></i></a>
 								<a href="#"><i class="fa fa-twitter"></i></a>
 								<a href="#"><i class="fa fa-instagram"></i></a>
-								<a href="#"><i class="fa fa-pinterest"></i></a>
 							</div>
 						</li>
 					</ul>
