@@ -182,8 +182,7 @@
                         </ul>
                         <nav class="header__menu profile">
                             <ul>
-                                <li><a href="/member/mypage" class="header__nickname"><sec:authentication
-                                        property="principal.sessionDTO.nickname"/> 님</a>
+                                <li><a href="/member/mypage" class="header__nickname"><img src="/img/member/${memberImageName}" class="header-img profile">&nbsp;<sec:authentication property="principal.sessionDTO.nickname"/> 님</a>
                                     <ul class="header__menu__dropdown nickname">
                                         <li><a href="/member/mypage">마이페이지</a></li>
                                         <sec:authorize access="hasRole('USER')">
@@ -213,8 +212,8 @@
                                                                     class="header__cart__price profile">로그인</a></div>
                     </sec:authorize>
                     <sec:authorize access="isAuthenticated()">
-                        <div class="header__profile"><a href="/member/logout"
-                                                        class="header__cart__price profile">로그아웃</a></div>
+                        <div class="header__profile"><a href="/member/logout" class="header__cart__price profile">로그아웃</a></div>
+                        <div class="header__cash">양파페이 잔액 : <a href="/member/cash/<sec:authentication property="principal.sessionDTO.id"/>">${cash}</a></div>
                     </sec:authorize>
                 </div>
             </div>

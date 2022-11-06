@@ -5,7 +5,7 @@
 <c:set var = "cp" value = "<%=request.getContextPath()%>"/>
 
 <section class="spad">
-    <div class="container">
+    <div class="container charge">
         <div class="charge">
             <img class="card-img-top" src="/template/img/paylogo.png"/>&nbsp;
             <p>양파페이 충전</p>
@@ -18,8 +18,9 @@
             <label class="box-radio-input"><input type="radio" name="cp_item" value="35000"><span>35,000원</span></label>
             <label class="box-radio-input"><input type="radio" name="cp_item" value="40000"><span>40,000원</span></label>
             <label class="box-radio-input"><input type="radio" name="cp_item" value="50000"><span>50,000원</span></label>
+            <p>&nbsp;</p>
             <p>양파페이의 최소 충전금액은 5,000원이며 <br/>최대 충전금액은 50,000원 입니다.</p>
-            <button type="button" class="btn btn-outline-dark" id="charge_kakao">충 전 하 기</button>
+            <button type="button" class="site-btn" id="charge_kakao">충 전 하 기</button>
         </div>
     </div>
 </section>
