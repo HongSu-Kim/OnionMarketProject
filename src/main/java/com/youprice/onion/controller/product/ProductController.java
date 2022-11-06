@@ -248,81 +248,25 @@ public class ProductController {
     }
 
     @GetMapping(value = "category")//상품 카테고리별 화면 주소
-    public String main(Model model, @LoginUser SessionDTO userSession, HttpSession session, @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC)
-    Pageable pageable, @RequestParam(value = "categoryId", defaultValue = "1") int categoryId) throws Exception {
+    public String category(@LoginUser SessionDTO sessionDTO, Model model, Long categoryId,
+						   @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        if (categoryId == 1) {
+		List<Long> categoryIdList = categoryService.findSubCategory(categoryId)
+				.stream().map(CategoryFindDTO::getCategoryId)
+				.collect(Collectors.toList());
 
-            SearchRequirements searchRequirements = SearchRequirements.builder()
-                    .blindStatus(false)
-                    .pageable(pageable)
-                    .build();
+		SearchRequirements searchRequirements = SearchRequirements.builder()
+				.pageable(pageable)
+				.blindStatus(false)
+				.categoryIdList(categoryIdList)
+				.build();
 
+		Long memberId = sessionDTO == null ? null : sessionDTO.getId();
 
-            List<ProductListDTO> categoryList = productService.getProductCategoryList(1L, 8L);
-            //   List<ProductListDTO> categoryList1 = productService.getProductCategoryList(9L, 16L);
+		Page<ProductListDTO> page = productService.getProductListDTO(memberId, searchRequirements);
 
-            List<Long> CategoryIdList = new ArrayList<>();
-
-
-            for (int i = 0; i < categoryList.size(); i++) {
-
-                CategoryIdList.add(0, categoryList.get(i).getCategoryId());
-                System.out.println(categoryList.get(i).getCategoryId());
-            }
-
-
-            searchRequirements.setCategoryIdList(CategoryIdList);
-
-
-            Page<ProductListDTO> page = productService.getProductListDTO(userSession.getId(), searchRequirements);
-
-
-            System.out.println(page.getSize());
-
-
-            model.addAttribute("page", page);
-            model.addAttribute("list", page.getContent());
-
-            session.setAttribute("CategoryIdList", CategoryIdList);
-
-
-            //  model.addAttribute("list",categoryList1)
-//               break;
-//
-//            case "9":
-//                List<ProductListDTO> categoryList2 = productService.getProductCategoryList(9L, 11L);
-//                model.addAttribute("list", categoryList2);
-//                break;
-//
-//            case 12: List<ProductListDTO> categoryList3 = productService.getProductCategoryList(12L, 16L);
-//                model.addAttribute("list",categoryList3);break;
-//            case 17: List<ProductListDTO> categoryList4 = productService.getProductCategoryList(17L, 26L);
-//                model.addAttribute("list",categoryList4);break;
-//            case 27: List<ProductListDTO> categoryList5 = productService.getProductCategoryList(27L, 41L);
-//                model.addAttribute("list",categoryList5);break;
-//            case 42: List<ProductListDTO> categoryList6 = productService.getProductCategoryList(42L, 56L);
-//                model.addAttribute("list",categoryList6);break;
-//            case 57: List<ProductListDTO> categoryList7 = productService.getProductCategoryList(57L, 60L);
-//                model.addAttribute("list",categoryList7);break;
-//            case 61: List<ProductListDTO> categoryList8 = productService.getProductCategoryList(61L, 70L);
-//                model.addAttribute("list",categoryList8);break;
-//            case 71: List<ProductListDTO> categoryList9 = productService.getProductCategoryList(71L, 85L);
-//                model.addAttribute("list",categoryList9);break;
-//            case 86: List<ProductListDTO> categoryList10 = productService.getProductCategoryList(86L, 89L);
-//                model.addAttribute("list",categoryList10);break;
-//            case 90: List<ProductListDTO> categoryList11 = productService.getProductCategoryList(90L, 95L);
-//                model.addAttribute("list",categoryList11);break;
-//            case 96: List<ProductListDTO> categoryList12 = productService.getProductCategoryList(96L, 104L);
-//                model.addAttribute("list",categoryList12);break;
-//            case 105: List<ProductListDTO> categoryList13 = productService.getProductCategoryList(105L, 113L);
-//                model.addAttribute("list",categoryList13);break;
-//            case 114: List<ProductListDTO> categoryList14 = productService.getProductCategoryList(114L, 115L);
-//                model.addAttribute("list",categoryList14);break;
-//
-
-
-        }
+		model.addAttribute("categoryId", categoryId);
+		model.addAttribute("page", page);
 
         return "product/list";
     }
