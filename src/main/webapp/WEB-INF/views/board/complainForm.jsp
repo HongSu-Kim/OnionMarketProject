@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
 <section class="hero hero-normal">
     <div class="container" style="width: 700px; margin-top: 200px">
@@ -16,12 +17,12 @@
                     <form:form method="post" action="/complain/created/${productDTO.productId}" id="myForm"
                                modelAttribute="form">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-                        <input type="hidden" name="memberId" value="${memberDTO.id}">
+                        <input type="hidden" name="memberId" value="<sec:authentication property="principal.sessionDTO.id"/>">
                         <input type="hidden" name="productId" value="${productDTO.productId}">
 
                         <div>
                             <div class="input-container">
-                                <p class="comInfo">신 고 자 &nbsp;&nbsp;|&nbsp; ${memberDTO.name}</p>
+                                <p class="comInfo">신 고 자 &nbsp;&nbsp;|&nbsp; <sec:authentication property="principal.sessionDTO.userId"/></p>
                                 <p class="comInfo">신고대상 |&nbsp; ${targetDTO.userId}</p>
                                 <p class="comInfo">상 품 명 &nbsp;&nbsp;&nbsp;|&nbsp; ${productDTO.subject}</p>
                             </div>

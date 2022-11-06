@@ -183,6 +183,7 @@ public class MemberServiceImpl implements MemberService {
 		return grade;
 	}
 
+
     //양파페이 충전
     @Override
     public void chargeCash(Long memberId, int amount) {
