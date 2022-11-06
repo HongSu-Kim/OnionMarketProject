@@ -55,7 +55,7 @@
                         <div class="checkout__input"><label class="labels">포인트</label><input type="text" class="form-control" value="${memberDTO.point}" readonly="readonly"></div>
                         <div class="checkout__input"><label class="labels">평점</label><input type="text" class="form-control" value="${memberDTO.userGrade}" readonly="readonly"></div>
                     </div>
-                        <div class="mt-5 text-center"><button class="site-btn-modify" type="button" onclick="location.href='/'">홈으로</button></div>
+                        <div class="mt-5 text-center"><button class="site-btn" type="button" onclick="location.href='/'">홈으로</button></div>
                 </div>
             </div>
         </div>

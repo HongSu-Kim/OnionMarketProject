@@ -20,7 +20,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +38,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -135,14 +139,10 @@ public class MemberController {
     }
 
     @PostMapping("modifyProfileImg")
-    public String modifyProfileImg(@LoginUser SessionDTO sessionDTO, MultipartFile profileImg) throws IOException {
-        memberService.modifyProfileImg(sessionDTO.getId(), profileImg);
-/*
-         //아래의 코드 적용 후 프로필 사진 변경 시, 로그아웃 되는 문제 발생
-        //변경된 세션 등록
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(sessionDTO.getUserId(), sessionDTO.getPwd()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        */
+    public String modifyProfileImg(@LoginUser SessionDTO sessionDTO, HttpSession session, MultipartFile profileImg) throws IOException {
+        String memberImageName = memberService.modifyProfileImg(sessionDTO.getId(), profileImg);
+        session.setAttribute("memberImageName", memberImageName);
+
         return "redirect:/member/mypage";
     }
 
