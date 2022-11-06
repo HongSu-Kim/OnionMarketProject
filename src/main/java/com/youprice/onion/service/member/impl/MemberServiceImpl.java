@@ -177,12 +177,12 @@ public class MemberServiceImpl implements MemberService {
     public Double avgGrade(Long salesId) {
         Member member = memberRepository.findById(salesId).orElse(null);
         Double grade = reviewRepository.gradeAverage(salesId);
-        System.out.println("grade = " + grade);
 
         member.updateGrade(grade);
         memberRepository.save(member);
         return grade;
     }
+
 
     //양파페이 충전
     @Override
