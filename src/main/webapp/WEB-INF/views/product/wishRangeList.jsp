@@ -58,6 +58,7 @@
 		<div class="col-lg-12">
 
 			<!-- 페이징 -->
+			<c:set var="page" value="${distancePage}"/>
 			<c:if test="${!empty page.content && page.totalPages != 1}">
 				<input type="hidden" id="pageNumber" value="${page.number + 1}"/>
 				<div class="product__pagination text-center">
