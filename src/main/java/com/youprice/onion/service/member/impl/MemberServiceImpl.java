@@ -173,16 +173,6 @@ public class MemberServiceImpl implements MemberService {
         }).orElse(null);
     }
 
-    // 평점 찾기
-	public Double avgGrade(Long salesId) {
-		Member member = memberRepository.findById(salesId).orElse(null);
-		Double grade = reviewRepository.gradeAverage(salesId);
-
-		member.updateGrade(grade);
-		memberRepository.save(member);
-		return grade;
-	}
-
     //양파페이 충전
     @Override
     public void chargeCash(Long memberId, int amount) {

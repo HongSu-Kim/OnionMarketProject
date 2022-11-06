@@ -72,13 +72,15 @@
                                     </div>
 
                                     <div style="display: inline-block">
-                                        <div>- ${dto.productFindDTO.subject}</div>
+                                        <div>- <a href="/product/detail/${dto.productFindDTO.productId}" style="color: black">${dto.productFindDTO.subject}</a></div>
                                     </div>
 
                                     <div style="margin-top: 20px;" class="d-flex">
-                                        <div><img src="/img/product/${dto.productFindDTO.representativeImage}"
-                                                  width="150" height="120" style="border-radius: 20px;"/>
+                                        <div><a href="/product/detail/${dto.productFindDTO.productId}"><img
+                                                src="/img/product/${dto.productFindDTO.representativeImage}"
+                                                width="150" height="120" style="border-radius: 20px;"/></a>
                                         </div>
+
                                         <div style="margin-left: 30px">
                                             <a style="font-weight: bold;">${dto.productFindDTO.content}</a><br/><br/>
 

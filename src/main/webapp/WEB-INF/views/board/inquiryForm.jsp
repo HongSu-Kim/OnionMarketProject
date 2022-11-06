@@ -50,24 +50,20 @@
 
                 <div class="col-lg-12" style="margin-bottom: 40px;">
                     <div><!-- 문의유형 선택 -->
-                        <label for="inquiryType">문의 유형 &nbsp;<form:errors path="detailType" cssClass="field-error"
-                                                                          cssStyle="margin-left: 12px"/></label><br/>
-                        <form:select class="form-select" id="inquiryType" path="inquiryType" onchange="selectType();"
-                                     style="width: 300px;">
-                            <form:option selected="selected" value="">문의유형을 선택해주세요</form:option>
+                        <label for="inquiryType">문의 유형</label>
+                        <div>
+                        <form:select class="required" id="inquiryType" path="inquiryType" title="유형을 선택해주세요." onchange="selectType();" style="width: 300px;">
+                            <form:option value="">문의유형을 선택해주세요</form:option>
                             <form:option value="회원정보">회원정보/계정</form:option>
                             <form:option value="거래">거래</form:option>
                             <form:option value="기타서비스">기타 서비스</form:option>
                         </form:select>
+                        </div>
                     </div>
-
-                    <select id="formD" class="dtoValue detailSelect nice-select" onchange="selectDetail(this);">
-                        <option selected="selected">${form.detailType}</option>
-                    </select>
 
                     <div>
                         <select id="type_회원정보" class="detailSelect nice-select" onchange="selectDetail(this);">
-                            <option selected="selected" value="">상세유형을 선택해주세요</option>
+                            <option disabled="disabled" selected="selected" value="">상세유형을 선택해주세요</option>
                             <option value="회원가입,정보수정">회원가입,정보수정</option>
                             <option value="아이디,비밀번호">아이디,비밀번호</option>
                             <option value="로그인">로그인</option>
@@ -75,43 +71,44 @@
                         </select>
 
                         <select id="type_거래" class="detailSelect nice-select" onchange="selectDetail(this);">
-                            <option selected="selected" value="">상세유형을 선택해주세요</option>
+                            <option disabled="disabled" selected="selected" value="">상세유형을 선택해주세요</option>
                             <option value="거래방법">거래방법</option>
                             <option value="거래내역확인">거래내역확인</option>
                             <option value="상품찾기">상품찾기</option>
                             <option value="거래확정,후기">거래확정,후기</option>
                         </select>
                         <select id="type_기타서비스" class="detailSelect nice-select" onchange="selectDetail(this);">
-                            <option selected="selected" value="">상세유형을 선택해주세요</option>
+                            <option disabled="disabled" selected="selected" value="">상세유형을 선택해주세요</option>
                             <option value="양파페이,포인트">양파페이,포인트</option>
                             <option value="경매이용">경매이용</option>
                             <option value="채팅이용">채팅이용</option>
                         </select>
-                        <form:input type="hidden" id="detail" path="detailType"/>
+                        <input type="hidden" id="detail" name="detailType"/>
                     </div>
                 </div>
+                <br/><br/>
 
                 <div class="col-lg-12">
-                    <div>문의제목 &nbsp;&nbsp;&nbsp;<form:errors path="inquirySubject" cssClass="field-error"/></div>
-                    <form:input type="text" path="inquirySubject" style="color: black; font-weight: bold"
-                                placeholder="* 문의제목을 입력해주세요"/>
+                    <div class="text-left">문의제목</div>
+                    <div><input type="text" name="inquirySubject" style="color: black; font-weight: bold"
+                                placeholder="* 문의제목을 입력해주세요"/></div>
                 </div>
 
                 <div class="col-lg-12 text-center">
-                    <div class="text-left">문의내용 &nbsp;&nbsp;<form:errors path="inquiryContent"
-                                                                         cssClass="field-error"/></div>
+                    <div class="text-left">문의내용</div>
                     <div>
-                        <form:textarea path="inquiryContent" placeholder="* 문의내용을 입력하세요"
-                                       style="color: black; font-weight: bold"></form:textarea>
+                        <textarea name="inquiryContent" placeholder="* 문의내용을 입력하세요"
+                                  style="color: black; font-weight: bold"></textarea>
                     </div>
                 </div>
 
-                <div class="css-kd8yp0">
+                <div class="css-kd8yp0" style="padding-top: 20px">
+                    <div></div>
                     <div class="d-flex" style="height: 30px">
-                        <input type="checkbox" name="agreement" id="agreement" style="width: 20px; height: 20px" value="info" required
-                               oninvalid="this.setCustomValidity('개인정보이용에 동의해주세요')" oninput="this.setCustomValidity('')"/>
+                        <input type="checkbox" name="agreement" id="agreement" style="width: 20px; height: 20px"/>
                         <label for="agreement" class="checkTitle">개인정보 수집 및 이용동의</label>
                     </div>
+
 
                     <p class="css-478t8i">1. 수집하는 개인정보 항목 : 이름, 이메일<br/>2. 수집 목적 : 문의자 확인, 문의에 대한 회신 등의 처리<br/>3.
                         보유 기간 : <em>목적 달성 후 파기</em>, 단, 관계법령에 따라 또는 회사 정책에 따른 정보보유사유가 발생하여 보존할 필요가 있는 경우에는 필요한 기간 동안 해당
