@@ -63,11 +63,10 @@ public class MainController {
         model.addAttribute("auctionProductList", auctionProductList);
         model.addAttribute("pageName", "main");
 
-
         List<CategoryFindDTO> topCategory = categoryService.findTopCategory();
         session.setAttribute("topCategory", topCategory);
 
-        return "main/main";
+        return "main/mainPage";
     }
 
 	//접근 거부 페이지

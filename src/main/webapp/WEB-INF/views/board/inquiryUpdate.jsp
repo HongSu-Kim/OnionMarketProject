@@ -17,6 +17,7 @@
         width: 20px;
         height: 20px;
     }
+
     .inquiryline {
         border-bottom: 2px solid #47CD65;
     }
@@ -33,7 +34,8 @@
             </div>
         </div>
 
-        <form:form method="post" action="/inquiry/update/${inquiryDTO.inquiryId}" modelAttribute="form">
+        <form:form method="post" action="/inquiry/update/${inquiryDTO.inquiryId}" id="inquiryForm"
+                   modelAttribute="form">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
             <input type="hidden" name="memberId" value="${memberDTO.id}">
 
@@ -67,50 +69,29 @@
                 </div>
             </div>
 
-            <div class="col-lg-12" style="padding-bottom: 50px">
-                <div><!-- 문의유형 선택 -->
-                    <label for="inquiryType">문의 유형 &nbsp;<form:errors path="detailType" cssClass="field-error"
-                                                                      cssStyle="margin-left: 12px"/></label><br/>
-                    <form:select class="form-select" id="inquiryType" path="inquiryType" onchange="selectType();"
-                                 style="width: 300px;">
-                        <form:option selected="selected"
-                                     value="${inquiryDTO.inquiryType}">${inquiryDTO.inquiryType}</form:option>
+            <div class="col-lg-12">
+                <div>
+                    <label for="inquiryType">문의 유형</label><br/>
+                    <input type="hidden" id="dtoType" value="${inquiryDTO.inquiryType}">
+                    <form:select id="inquiryType" path="inquiryType" onchange="selectType(this.value);" style="width: 400px;">
+                        <form:option selected="selected" value="${inquiryDTO.inquiryType}">${inquiryDTO.inquiryType}</form:option>
                         <form:option value="회원정보">회원정보/계정</form:option>
                         <form:option value="거래">거래</form:option>
                         <form:option value="기타서비스">기타 서비스</form:option>
                     </form:select>
-                </div>
-
-                <select class="dtoValue" onchange="selectDetail(this);">
-                    <option selected="selected"
-                            value="${form.detailType == null ? inquiryDTO.detailType : form.detailType}">${form.detailType == null ? inquiryDTO.detailType : form.detailType}</option>
-                </select>
+                </div><br/><br/>
 
                 <div>
-                    <select id="type_회원정보" class="detailSelect nice-select" onchange="selectDetail(this);">
-                        <option selected="selected" value="">상세유형을 선택해주세요</option>
-                        <option value="회원가입,정보수정">회원가입/정보수정</option>
-                        <option value="아이디,비밀번호">아이디/비밀번호</option>
-                        <option value="로그인">로그인</option>
-                        <option value="회원등급">회원등급</option>
-                    </select>
-
-                    <select id="type_거래" class="detailSelect nice-select" onchange="selectDetail(this);">
-                        <option selected="selected" value="">상세유형을 선택해주세요</option>
-                        <option value="거래방법">거래방법</option>
-                        <option value="거래내역확인">거래내역확인</option>
-                        <option value="상품찾기,문의">상품찾기/문의</option>
-                        <option value="거래확정,후기">거래확정/후기</option>
-                    </select>
-                    <select id="type_기타서비스" class="detailSelect nice-select" onchange="selectDetail(this);">
-                        <option selected="selected" value="">상세유형을 선택해주세요</option>
-                        <option value="양파페이,포인트">양파페이/포인트</option>
-                        <option value="경매이용">경매이용</option>
-                        <option value="채팅이용">채팅이용</option>
-                    </select>
-                    <form:input type="hidden" id="detail" path="detailType"/>
+                    <form:select id="detailType" class="nice-select" path="detailType">
+                        <c:if test="${form.detailType != null}">
+                            <form:option value="${form.detailType}">${form.detailType}</form:option>
+                        </c:if>
+                        <form:option id="dtoV" value="${inquiryDTO.detailType}">${inquiryDTO.detailType}</form:option>
+                    </form:select>
                 </div>
-            </div>
+            </div><br/><br/>
+            <br/><br/>
+
 
             <div class="col-lg-12">
                 <div>문의제목 &nbsp;<form:errors path="inquirySubject" cssClass="field-error"/></div>

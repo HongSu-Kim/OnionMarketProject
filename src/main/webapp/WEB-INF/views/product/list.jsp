@@ -9,7 +9,7 @@
 	<div class="container">
 		<div class="row featured__filter">
 			<!-- 주문없음 -->
-			<c:if test="${empty list}">
+			<c:if test="${empty page.content}">
 				<div class="col-lg-12">
 					<div class="contact__form__title">
 						<h3>등록된 상품이 없습니다.</h3>
@@ -17,14 +17,21 @@
 					</div>
 				</div>
 			</c:if>
-			<c:forEach var="productDTO" items="${list}">
-				<div class="col-lg-3 col-md-4 col-sm-6" style="padding: 15px;">
+			<c:forEach var="productDTO" items="${page.content}">
+				<div class="col-lg-3 col-md-4 col-sm-6">
 					<div class="featured__item">
-						<div class="featured__item__pic set-bg" data-setbg="/img/product/${productDTO.productImageName}"
-							 onclick="location.href='/product/detail/${productDTO.productId}';">
-							<div style="margin-top:93%;">
-								<c:if test="${productDTO.payStatus eq true}"><img src="/template/img/product/pay.png"></c:if>
-								<c:if test="${productDTO.auctionDeadline ne null}"><img src="/template/img/product/auction.png"></c:if>
+						<div class="product__progress">
+							<div class="product__item__pic set-bg" data-setbg="/img/product/${productDTO.productImageName}"
+								 onclick="location.href='/product/detail/${productDTO.productId}';">
+								<c:if test="${productDTO.productProgress ne 'SALESON'}">
+									<div class="product__progress__not__saleson">
+											${productDTO.productProgress}
+									</div>
+								</c:if>
+								<div style="margin-top:93%;">
+									<c:if test="${productDTO.payStatus eq true}"><img src="/template/img/product/pay.png"></c:if>
+									<c:if test="${productDTO.auctionDeadline ne null}"><img src="/template/img/product/auction.png"></c:if>
+								</div>
 							</div>
 						</div>
 						<div class="product__item__text">
@@ -61,21 +68,21 @@
 			<c:if test="${!empty page.content && page.totalPages != 1}">
 				<input type="hidden" id="pageNumber" value="${page.number + 1}"/>
 				<div class="product__pagination text-center">
-					<c:set var="size" value="${page.pageable.pageSize}"/><%-- 12 --%>
-					<fmt:parseNumber var="pageNumber" integerOnly="true" value="${page.number / size}"/><%-- 현재페이지 : 0 ~ --%>
-					<c:set var="startNumber" value="${pageNumber * size}"/><%-- 0 * size ~ --%>
-					<c:set var="endNumber" value="${page.totalPages > (pageNumber + 1) * size ? (pageNumber + 1) * size - 1 : page.totalPages - 1}"/>
+					<c:set var="block" value="10"/>
+					<fmt:parseNumber var="pageNumber" integerOnly="true" value="${page.number / block}"/><%-- 현재페이지 : 0 ~ --%>
+					<c:set var="startNumber" value="${pageNumber * block}"/><%-- 0 * size ~ --%>
+					<c:set var="endNumber" value="${page.totalPages > (pageNumber + 1) * block ? (pageNumber + 1) * block - 1 : page.totalPages - 1}"/>
 
-					<c:if test="${page.totalPages > size && page.number + 1 > size}">
-						<a href="?page=0"><<</a>
-						<a href="?page=${startNumber - 1}"><</a>
+					<c:if test="${page.totalPages > block && page.number + 1 > block}">
+						<a href="?categoryId=${categoryId}&page=0"><<</a>
+						<a href="?categoryId=${categoryId}&page=${startNumber - 1}"><</a>
 					</c:if>
 					<c:forEach var="currentNumber" begin="${startNumber}" end="${endNumber}">
-						<a href="?page=${currentNumber}">${currentNumber + 1}</a>
+						<a href="?categoryId=${categoryId}&page=${currentNumber}">${currentNumber + 1}</a>
 					</c:forEach>
 					<c:if test="${page.totalPages - 1 > endNumber}">
-						<a href="?page=${endNumber + 1}">></a>
-						<a href="?page=${page.totalPages - 1}">>></a>
+						<a href="?categoryId=${categoryId}&page=${endNumber + 1}">></a>
+						<a href="?categoryId=${categoryId}&page=${page.totalPages - 1}">>></a>
 					</c:if>
 				</div>
 			</c:if>

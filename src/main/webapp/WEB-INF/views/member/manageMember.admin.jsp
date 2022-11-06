@@ -47,10 +47,10 @@
                                     <td>
                                         <c:choose>
                                             <c:when test="${memberDTO.role == 'USER'}">
-                                                <button onclick="location.href='/member/addLock/${memberDTO.id}'">계정 잠금</button>
+                                                <button class="site-btn-follow" onclick="location.href='/member/addLock/${memberDTO.id}'">계정 잠금</button>
                                             </c:when>
                                             <c:when test="${memberDTO.role == 'LOCK'}">
-                                                <button onclick="location.href='/member/removeLock/${memberDTO.id}'">잠금 해제</button>
+                                                <button class="site-btn-ing" onclick="location.href='/member/removeLock/${memberDTO.id}'">잠금 해제</button>
                                             </c:when>
                                             <c:when test="${memberDTO.role == 'ADMIN' || 'WITHDRAWL'}">
 
