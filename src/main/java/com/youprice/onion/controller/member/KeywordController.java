@@ -53,7 +53,7 @@ public class KeywordController {
 
         model.addAttribute("MykeywordList", MykeywordList);
 
-        return "product/keyword";
+        return "member/keyword";
     }
 
 
@@ -79,7 +79,7 @@ public class KeywordController {
 
                 model.addAttribute("MykeywordList", MykeywordList);
 
-                return "product/keyword";
+                return "member/keyword";
 
             }
 
