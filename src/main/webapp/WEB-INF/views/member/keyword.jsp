@@ -5,20 +5,21 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="cp" value="<%=request.getContextPath()%>"/>
 
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>게 시 판</title>
+    <title></title>
 
 
 </head>
-<body>
+
 
 <br/><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 
-${categoryList}
 <div style=background-color:white;">
     <div id="container">
 
@@ -36,46 +37,43 @@ ${categoryList}
 
                 </div>
                 <div style="text-align: center">
-                    <div style="position: center"><h3>금지 키워드 설정</h3></div>
+                    <div style="position: center"><h3>키워드 알림 설정</h3></div>
                     <br/><br/>
                 </div>
-                <form:form action="" method="post" modelAttribute="">
+                <form:form action="" method="post" modelAttribute="keywordCreateDto">
 
 
                     <input type="hidden" name="memberId" value="${memberDTO.id}">
 
 
-                    <input type="text" name="prohibitionKeywordName" placeholder="금지키워드를 입력해주세요 (예: 담배)" size="33"
+                    <input type="text" name="keywordName" placeholder="키워드를 입력해주세요 (예: 유니폼)" size="33"
                            style="color: black; margin-right: 10cm;"/><br/><br/>
-                    <form:errors path="prohibitionKeywordName"/>
-                    <strong> <input type="submit" value="금지키워드 등록"
+                    <form:errors path="keywordName"/>
+                    <strong> <input type="submit" value="키워드등록"
                                     style="background-color: #90C8AC; color: white"/><br/></strong>
 
                 </form:form>
 
-                <form:form action="/prohibitionkeyword/prohibitionkeywordDelete" method="post">
+                <form:form action="kewordDelete" method="post">
 
-                    <br/><br/>
+                <br/><br/>
 
-                    <c:forEach var="prohibitionKeywordList" items="${prohibitionKeywordList}">
+                <c:forEach var="MykeywordList" items="${MykeywordList}">
 
 
-                        <button type="submit" class="btn btnEvent" name="id" value="${prohibitionKeywordList.id}
+                <button type="submit" class="btn btnEvent" name="id" value="${MykeywordList.id}
                             " style="background-color:#90C8AC; color: white;  border-radius: 20px;">
-                            <div>
-                                    ${prohibitionKeywordList.prohibitionKeywordName}
-                                <a href="/product/prohibitionkeywordDelete"><span class="icon_close "
-                                                                                  style="color: black"></span></a>
+                    <div>
+                            ${MykeywordList.keywordName}
+                        <a href="/product/list"><span class="icon_close"></span></a>
 
-                            </div>
-
-                        </button>
+                    </div>
 
 
                     </c:forEach>
 
 
-                </form:form>
+                    </form:form>
 
 
             </div>
@@ -85,6 +83,8 @@ ${categoryList}
 
 
 </div>
+</body>
+</html>
 
 
 <br/><br/>

@@ -86,8 +86,11 @@ public class CoordinateServiceImpl implements CoordinateService {
 
             if (distance <= range) {
 				rangeList.add(0, coordinate1.getId());
+
             }
         }
+
+
 
 		return rangeList;
     }
