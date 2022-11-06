@@ -348,13 +348,13 @@ CREATE TABLE notice_image (
 
 INSERT INTO member VALUES(0, 'ADMIN', 'admin0', '$2a$10$8gkJSCifAA3aWUAZJazhnuYLi2JVSbC7D2UtDmu0cUG9NScriVtZ6', --pwd : admin123
                           'onion', '양파 마켓', SYSDATE, '01012341234', '06234', '서울 강남구 역삼동 823',
-                          '4층 아이티윌', '디글디글0', 'onion@gmail.com', 'onion.png', 1000000, 10000, 0, 0);
+                          '4층 아이티윌', '', 'onion@gmail.com', 'onion.png', 1000000, 10000, 0, 0);
 INSERT INTO member VALUES(1, 'ADMIN', 'admin', '$2a$10$8gkJSCifAA3aWUAZJazhnuYLi2JVSbC7D2UtDmu0cUG9NScriVtZ6', --pwd : admin123
                           'admin', '관리자', SYSDATE, '01012341234', '06234', '서울 강남구 역삼동 823',
-                          '4층 아이티윌', '디글디글', 'youprice.onion.email@gmail.com', 'null.png', 1000000, 10000, 0, 0);
+                          '4층 아이티윌', '', 'youprice.onion.email@gmail.com', 'null.png', 1000000, 10000, 0, 0);
 INSERT INTO member VALUES(2, 'USER', 'user1', '$2a$10$X5ICHy3CCqtWl0su87UzMuCe.v2V92TBIH5szmZ.hBJd/tD/7o8LW', --pwd : user1
-                          'user1', '유저1', SYSDATE, '01011111111', '06253', '서울 강남구 역삼동 838',
-                          '1', '', 'user1@naver.com', 'null.png', 1000000000, 10000, 0, 0);
+                          '디굴디굴', '김디굴', SYSDATE, '01011111111', '06253', '서울 강남구 역삼동 823',
+                          '4층', '', 'user1@naver.com', 'null.png', 200000, 10000, 0, 0);
 INSERT INTO member VALUES(3, 'USER', 'user2', '$2a$10$yCBZmjwdiIsWneGJll69X.Z7DGnGx4pSgeBw1oNVZkbxvg4w./uUy', --pwd : user2
                           'user2', '유저2', SYSDATE, '01022222222', '06120', '서울 강남구 논현동 200-7',
                           '2', '', 'user2@naver.com', 'null.png', 20000, 1000, 0, 0);
@@ -443,26 +443,7 @@ INSERT INTO Coordinate VALUES(65, '서울특별시 강동구 둔촌2동',  '37.5
 
 ----------------------------------------------------------------------------------------------------
 
-INSERT INTO town VALUES(1, 1, 1,'');
-INSERT INTO town VALUES(2, 1, 2,'');
-INSERT INTO town VALUES(3, 1, 3,'');
-INSERT INTO town VALUES(4, 1, 4,'');
-INSERT INTO town VALUES(5, 1, 5,'');
-INSERT INTO town VALUES(6, 1, 6,'');
-INSERT INTO town VALUES(7, 1, 7,'');
-INSERT INTO town VALUES(8, 1, 8,'');
-INSERT INTO town VALUES(9, 1, 9,'');
-INSERT INTO town VALUES(10, 1, 10,'');
-INSERT INTO town VALUES(11, 1, 11,'');
-INSERT INTO town VALUES(12, 1, 12,'');
-INSERT INTO town VALUES(13, 1, 13,'');
-INSERT INTO town VALUES(14, 1, 14,'');
-INSERT INTO town VALUES(15, 1, 15,'');
-INSERT INTO town VALUES(16, 1, 16,'');
-INSERT INTO town VALUES(17, 1, 17,'');
-INSERT INTO town VALUES(18, 1, 18,'');
-INSERT INTO town VALUES(19, 1, 19,'');
-INSERT INTO town VALUES(20, 1, 20,'');
+INSERT INTO town VALUES(1, 0, 1,'');
 
 ----------------------------------------------------------------------------------------------------
 
