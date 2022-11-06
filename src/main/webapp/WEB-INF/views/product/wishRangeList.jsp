@@ -9,7 +9,7 @@
 	<div class="container">
 		<div class="row featured__filter">
 			<!-- 주문없음 -->
-			<c:if test="${empty distancePagelist}">
+			<c:if test="${empty distancePage.content}">
 				<div class="col-lg-12">
 					<div class="contact__form__title">
 						<h3>등록된 상품이 없습니다.</h3>
@@ -17,15 +17,25 @@
 					</div>
 				</div>
 			</c:if>
-			<c:forEach var="productDTO" items="${distancePagelist}">
-				<div class="col-lg-3 col-md-4 col-sm-6" style="padding: 15px;">
+			<c:forEach var="productDTO" items="${distancePage.content}">
+				<div class="col-lg-3 col-md-4 col-sm-6">
 					<div class="featured__item">
-						<div class="product__item__pic set-bg" data-setbg="/img/product/${productDTO.productImageName}"
-							 onclick="location.href='/product/detail/${productDTO.productId}';">
-							<div style="margin-top:93%;">
-								<c:if test="${productDTO.payStatus eq true}"><img src="/template/img/product/pay.png"></c:if>
-								<c:if test="${productDTO.auctionDeadline ne null}"><img src="/template/img/product/auction.png"></c:if>
+						<div class="product__progress">
+							<div class="product__item__pic set-bg" data-setbg="/img/product/${productDTO.productImageName}"
+								 onclick="location.href='/product/detail/${productDTO.productId}';">
+								<c:if test="${productDTO.productProgress ne 'SALESON'}">
+									<div class="product__progress__not__saleson">
+										${productDTO.productProgress}
+									</div>
+								</c:if>
+								<div style="margin-top:93%;">
+									<c:if test="${productDTO.payStatus eq true}"><img src="/template/img/product/pay.png"></c:if>
+									<c:if test="${productDTO.auctionDeadline ne null}"><img src="/template/img/product/auction.png"></c:if>
+								</div>
 							</div>
+						</div>
+						<div>
+
 						</div>
 						<div class="product__item__text">
 							<h6><a href="/product/detail/${productDTO.productId}">${productDTO.subject}</a></h6>

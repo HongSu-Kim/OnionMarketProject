@@ -35,7 +35,6 @@ public class ReviewController {
     private final MemberService memberService;
 
     @GetMapping("/created/{orderId}")
-    @PreAuthorize("isAuthenticated()")
     public String createdForm(@PathVariable("orderId") Long orderId, Model model,
                               @LoginUser SessionDTO sessionDTO) {
         OrderDTO orderDTO = orderService.getOrderDTO(orderId);

@@ -15,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,7 +36,6 @@ public class ComplainController {
     private final ProductService productService;
 
     @GetMapping("created/{productId}")
-    @PreAuthorize("isAuthenticated()")
     public String complainForm(@PathVariable Long productId, Model model, @LoginUser SessionDTO sessionDTO,
                                @ModelAttribute("form") ComplainFormDTO form, HttpServletResponse response) throws IOException {
         if(sessionDTO != null){
@@ -109,6 +107,14 @@ public class ComplainController {
             return AlertRedirect.warningMessage(response, "/complain/list", "신고 처리를 취소하였습니다.");
         }
         return "redirect:/complain/list";
+    }
+
+    //개인별 신고 리스트
+    @GetMapping("/personalList/{memberId}")
+    public String productList(@PathVariable Long memberId, Model model, @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<ComplainDTO> page = complainService.getPersonalList(memberId, pageable);
+        model.addAttribute("complainList", page);
+        return "board/complainList";
     }
 
 }
