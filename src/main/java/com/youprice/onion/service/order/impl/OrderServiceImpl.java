@@ -21,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -36,6 +37,7 @@ public class OrderServiceImpl implements OrderService {
 	private final DeliveryRepository deliveryRepository;
 	private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
+	private final HttpSession session;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -63,6 +65,7 @@ public class OrderServiceImpl implements OrderService {
 				log.error("양파페이 부족");
 				throw new RuntimeException("양파페이가 부족합니다");
 			}
+			session.setAttribute("cash", member.getCash());
 			product.getMember().addCash(product.getPrice());
 		}
 //		memberRepository.save(member);
@@ -154,12 +157,14 @@ public class OrderServiceImpl implements OrderService {
 				// 양파페이 결제시 환불
 			} else {
 				order.getMember().addCash(order.getOrderPayment());
+				session.setAttribute("cash", order.getMember().getCash());
 			}
 			
 			return order;
 		}).orElse(null);
 	}
 
+	// 거래완료
 	@Override
 	public void orderComplete(Long productId, Long memberId) {
 
