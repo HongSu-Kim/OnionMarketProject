@@ -185,7 +185,7 @@ public class ProductController {
                 .build();
 
         searchRequirements.setPageable(pageable);
-        searchRequirements.setCoordinateIdList((List<Long>) session.getAttribute("RangeList"));
+        searchRequirements.setCoordinateIdList((List<Long>) session.getAttribute("rangeList"));
 
         Page<ProductListDTO> distancePage = productService.getProductListDTO(memberId, searchRequirements);
 
@@ -207,14 +207,13 @@ public class ProductController {
 				.coordinateIdList(rangeList)
                 .build();
 
-		Long memberId = null;
-		if (sessionDTO != null) {
-			memberId = sessionDTO.getId();
-		}
+		Long memberId = sessionDTO == null ? null : sessionDTO.getId();
 
 		Page<ProductListDTO> page = productService.getProductListDTO(memberId, searchRequirements);
 
-		model.addAttribute("page", page);
+//		model.addAttribute("page", page);
+		model.addAttribute("distancePage", page);
+		model.addAttribute("distancePagelist", page.getContent());
 		return "product/wishRangeList";
 
     }

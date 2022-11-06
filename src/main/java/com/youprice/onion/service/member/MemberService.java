@@ -33,7 +33,7 @@ public interface MemberService {
 
     public MemberDTO findPwd(String email) throws Exception;
 
-    void modifyProfileImg(Long memberId, MultipartFile profileImg) throws IOException;
+    String modifyProfileImg(Long memberId, MultipartFile profileImg) throws IOException;
 
 	List<MemberDTO> getChatMemberList(Long memberId);
 

@@ -96,12 +96,12 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
-    //프로필
+    //프로필 변경
     @Override
-    public void modifyProfileImg(Long memberId, MultipartFile profileImg) throws IOException {
+    public String modifyProfileImg(Long memberId, MultipartFile profileImg) throws IOException {
         Member member = memberRepository.findById(memberId).orElse(null);
         member.modifyProfileImg(ImageUtil.store(profileImg, "member"));
-        memberRepository.save(member);
+        return memberRepository.save(member).getMemberImageName();
     }
 
     //아이디 찾기
