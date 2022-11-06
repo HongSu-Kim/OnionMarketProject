@@ -152,6 +152,8 @@
                             <li><a href="/member/mypage">마이페이지</a>
                                 <ul class="header__menu__dropdown">
                                     <li><a href="/member/mypage">마이페이지</a></li>
+                                    <li><a href="/member/preModify">회원정보 수정</a></li>
+                                    <li><a href="/member/cash/<sec:authentication property="principal.sessionDTO.id"/>">양파페이 충전</a></li>
                                     <li><a href="/town/town">동네 설정</a></li>
                                     <li><a href="/keyword/keyword">키워드 설정</a></li>
                                 </ul>
@@ -180,7 +182,6 @@
                         </ul>
                         <nav class="header__menu profile">
                             <ul>
-                                    <%--								<li><img src="/img/member/<sec:authentication property="principal.sessionDTO.memberImageName"/>" class="header-img profile"></li>--%>
                                 <li><a href="/member/mypage" class="header__nickname"><sec:authentication
                                         property="principal.sessionDTO.nickname"/> 님</a>
                                     <ul class="header__menu__dropdown nickname">
@@ -214,9 +215,6 @@
                     <sec:authorize access="isAuthenticated()">
                         <div class="header__profile"><a href="/member/logout"
                                                         class="header__cart__price profile">로그아웃</a></div>
-                    </sec:authorize>
-                    <sec:authorize access="isAuthenticated()">
-                        <%--						<div class="header__cash">양파페이 잔액 : <sec:authentication property="principal.sessionDTO.cash"/> 원 <span><a href="/member/cash/<sec:authentication property="principal.sessionDTO.id"/>"> &nbsp;|&nbsp; 충전하기</a></span></div>--%>
                     </sec:authorize>
                 </div>
             </div>

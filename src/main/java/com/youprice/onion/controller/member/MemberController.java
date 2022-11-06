@@ -117,6 +117,7 @@ public class MemberController {
 
 
     //회원정보 수정 - 수정할 회원 정보를 받아 model에 담음
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify")
     public String modify(@LoginUser SessionDTO sessionDTO, Model model) {
         if (sessionDTO != null) {
@@ -127,6 +128,7 @@ public class MemberController {
     }
 
     //프로필 사진 수정
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/modifyProfileImg")
     public String modifyProfileImgView() {
         return "member/modifyProfileImg";
@@ -145,6 +147,7 @@ public class MemberController {
     }
 
     //회원정보 수정 전 비밀번호 확인 페이지
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/preModify")
     public String preModifyView() {
         return "member/preModify";
@@ -165,7 +168,7 @@ public class MemberController {
     }
 
     //마이페이지
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/mypage")
     public String mypageView(@LoginUser SessionDTO sessionDTO,  Model model) {
         MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
@@ -174,6 +177,7 @@ public class MemberController {
         return "member/mypage";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("profile/{memberId}")
     public String profileView(@PathVariable("memberId") Long memberId, @LoginUser SessionDTO sessionDTO, Model model) {
         if (sessionDTO == null) return "redirect:/member/login";
@@ -226,6 +230,7 @@ public class MemberController {
     }
 
     //회원탈퇴
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/withdraw")
     public String withdrawView() {
         return "member/withdraw";
@@ -245,6 +250,7 @@ public class MemberController {
     }
 
     //관심 카테고리
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/category")
     public String categoryView() {
         return "member/category";
@@ -261,6 +267,7 @@ public class MemberController {
         return new ModelAndView("category", "category", categoryList);
     }
 
+    @PreAuthorize("isAuthenticated()")
 	@GetMapping("chatMemberList")
 	@ResponseBody
 	public ResponseEntity chatMemberList(@LoginUser SessionDTO sessionDTO) {
@@ -272,6 +279,7 @@ public class MemberController {
 	}
 
     //양파페이 충전 페이지
+    @PreAuthorize("isAuthenticated()")
     @Transactional
     @GetMapping("/cash/{memberId}")
     public String myCash(@LoginUser SessionDTO sessionDTO, @PathVariable("memberId") Long memberId, Model model) {
@@ -293,6 +301,7 @@ public class MemberController {
     }
 
     //관리자권한 - 회원관리 페이지
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/manageMember")
     public String memberList(@LoginUser SessionDTO sessionDTO, Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable, HttpServletResponse response) throws IOException {
         if (!sessionDTO.getRole().equals(Role.ADMIN))
@@ -305,8 +314,11 @@ public class MemberController {
     }
 
     //계정 잠금
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("addLock/{targetId}")
-    public String addLockGet(@PathVariable Long targetId, HttpServletResponse response) throws IOException {
+    public String addLockGet(@LoginUser SessionDTO sessionDTO, @PathVariable Long targetId, HttpServletResponse response) throws IOException {
+        if (!sessionDTO.getRole().equals(Role.ADMIN))
+            return AlertRedirect.warningMessage(response, "/", "관리자만 접근 가능한 페이지 입니다.");
 
         try {
             memberService.accountLock(targetId);
@@ -318,8 +330,12 @@ public class MemberController {
     }
 
     //계정 잠금 해제
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("removeLock/{targetId}")
-    public String removeLockGet(@PathVariable Long targetId, HttpServletResponse response) throws IOException {
+    public String removeLockGet(@LoginUser SessionDTO sessionDTO, @PathVariable Long targetId, HttpServletResponse response) throws IOException {
+        if (!sessionDTO.getRole().equals(Role.ADMIN))
+            return AlertRedirect.warningMessage(response, "/", "관리자만 접근 가능한 페이지 입니다.");
+
         memberService.removeLock(targetId);
 
         return AlertRedirect.warningMessage(response, "/member/manageMember/", "해당 회원의 계정을 잠금 해제하였습니다.");

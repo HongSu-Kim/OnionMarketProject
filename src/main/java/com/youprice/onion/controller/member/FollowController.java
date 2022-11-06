@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +29,7 @@ public class FollowController {
     private final FollowService followService;
 
     //팔로우 목록 페이지
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("list")
     public String followList(@LoginUser SessionDTO sessionDTO, Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         if (sessionDTO == null)
@@ -40,6 +42,7 @@ public class FollowController {
     }
 
     //팔로우 추가
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("addFollow/{targetId}")
     public String addFollowGet(@LoginUser SessionDTO sessionDTO, @PathVariable Long targetId, HttpServletResponse response) throws IOException {
 
@@ -53,6 +56,7 @@ public class FollowController {
     }
 
     //팔로우 삭제
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("removeFollow/{targetId}")
     @ResponseBody
     public String removeFollowGet(@LoginUser SessionDTO sessionDTO, @PathVariable Long targetId, HttpServletResponse response) throws IOException {
