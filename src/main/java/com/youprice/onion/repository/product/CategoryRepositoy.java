@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 //import org.apache.ibatis.annotations.Delete;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -50,6 +51,11 @@ public interface CategoryRepositoy extends JpaRepository<Category, Long> {
 
     List<Category> findByIdBetween(Long start, Long end);
 
+	@Query("select c " +
+			"from Category c " +
+			"where :subject like concat('%', c.categoryName, '%') " +
+			"and c.parent is not null")
+	List<Category> findBySubjectContains(@Param("subject") String subject);
 }
 
 
