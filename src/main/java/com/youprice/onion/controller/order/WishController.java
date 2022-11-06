@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,7 @@ public class WishController {
 
     // 찜 목록 페이지
     @GetMapping("list")
+	@PreAuthorize("isAuthenticated()")
     public String wishList(@LoginUser SessionDTO sessionDTO, Model model,
 						   @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 		if (sessionDTO == null) return "redirect:/member/login";

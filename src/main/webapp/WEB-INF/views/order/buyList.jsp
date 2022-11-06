@@ -92,12 +92,12 @@
 					<c:if test="${!empty page.content && page.totalPages != 1}">
 						<input type="hidden" id="pageNumber" value="${page.number + 1}"/>
 						<div class="product__pagination text-center">
-							<c:set var="size" value="${page.pageable.pageSize}"/><%-- 10 --%>
-							<fmt:parseNumber var="pageNumber" integerOnly="true" value="${page.number / size}"/><%-- 현재페이지 : 0 ~ --%>
-							<c:set var="startNumber" value="${pageNumber * size}"/><%-- 0 * size ~ --%>
-							<c:set var="endNumber" value="${page.totalPages > (pageNumber + 1) * size ? (pageNumber + 1) * size - 1 : page.totalPages - 1}"/>
+							<c:set var="block" value="10"/><%-- 10 --%>
+							<fmt:parseNumber var="pageNumber" integerOnly="true" value="${page.number / block}"/><%-- 현재페이지 : 0 ~ --%>
+							<c:set var="startNumber" value="${pageNumber * block}"/><%-- 0 * size ~ --%>
+							<c:set var="endNumber" value="${page.totalPages > (pageNumber + 1) * block ? (pageNumber + 1) * block - 1 : page.totalPages - 1}"/>
 
-							<c:if test="${page.totalPages > size && page.number + 1 > size}">
+							<c:if test="${page.totalPages > block && page.number + 1 > block}">
 								<a href="?page=0"><<</a>
 								<a href="?page=${startNumber - 1}"><</a>
 							</c:if>

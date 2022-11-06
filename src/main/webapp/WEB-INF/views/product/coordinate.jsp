@@ -52,10 +52,10 @@
     <input id="address" name="" type="text" placeholder="검색할 주소">
 
 
-    <input id="submit" type="button" value="주소검색" style=" width: 5%; height: 40px;">
+    <input id="submit" type="button" value="주소검색" style=" background-color:#90C8AC;  color:white; width: 5%; height: 40px;">
 
     <a href="/coordinate/coordinate">
-        <input type="submit" value="다시입력" style="width: 5%; height: 40px;"/>
+        <input type="submit" value="다시입력" style=" background-color:#90C8AC; color: white; width: 5%; height: 40px;"/>
     </a>
 </div>
 

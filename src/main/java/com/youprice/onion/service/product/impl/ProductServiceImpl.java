@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
 
     private final MemberRepository memberRepository;
-    private final TownRepositoy townRepositoy;
+    private final TownRepository townRepositoy;
     private final CategoryRepositoy categoryRepository;
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
@@ -76,7 +76,7 @@ public class ProductServiceImpl implements ProductService {
         Long productId = productRepository.save(product).getId();
 
         //상품이미지 DB등록
-        List<ProductImage> productImages = productImages(productId,productImageList);
+        List<ProductImage> productImages = productImages(product, productImageList);
         for(ProductImage productImage : productImages){
             productImageRepository.save(productImage);
         }
@@ -87,7 +87,7 @@ public class ProductServiceImpl implements ProductService {
     //상품 수정
     @Override
     @Transactional
-    public Long updateProduct(Long productId, ProductUpdateDTO updateDTO) throws Exception {
+    public void updateProduct(Long productId, ProductUpdateDTO updateDTO) throws Exception {
 
         //수정한 동네번호
         Town town = townRepositoy.findById(updateDTO.getTownId()).orElse(null);
@@ -97,47 +97,48 @@ public class ProductServiceImpl implements ProductService {
 
         Product product = productRepository.findById(productId).orElse(null);
 
-        //상품 경로에 파일이 없으면 저장 있으면 삭제
-        //DB에 저장된 파일
+        // 상품 경로에 파일이 없으면 저장 있으면 삭제
+        //  저장된 파일
         List<ProductImage> oldImageList = product.getProductImageList();
-        //업데이트할 이미지
-        List<MultipartFile> newImageList = updateDTO.getProductImageName();
+		// 새로운 이미지
+		List<MultipartFile> newImageList = updateDTO.getNewImageList();
+		// 삭제안하는 이미지 id
+		List<Long> productImageIdList = updateDTO.getProductImageIdList();
 
-        List<ProductImage> addList = new ArrayList<>();
+		// 이미지 개수 확인
+		int newImageSize = newImageList == null ? 0 : newImageList.size();
+		int imageIdSize = productImageIdList == null ? 0 : productImageIdList.size();
+		if (newImageSize + imageIdSize == 0) {
+			throw new ArrayIndexOutOfBoundsException("이미지를 하나 이상 올려주세요");
+		}
 
+		// 이미지 삭제
         for(ProductImage oldImage : oldImageList) {
-
-            if(updateDTO.getNewImageIdList().contains(oldImage.getId())) {
-                continue;
-            }else {
-
-//                for(ProductUpdateDTO newImage : updateDTO.getNewImageIdList()) {
-//
-//                    if()
-//
-//                    ImageUtil.store(newImage, "product");
-//
-//
-//                }
-
+            if(imageIdSize == 0 || !productImageIdList.contains(oldImage.getId())) {
                 ImageUtil.delete(oldImage.getProductImageName(),"product");
                 productImageRepository.deleteById(oldImage.getId());
             }
         }
-//        updateDTO.setRepresentativeImage(get(0));
-        product.updateProduct(productId, town, category, updateDTO);
 
+		// 이미지 저장
+		if (newImageSize != 0) {
+			List<ProductImage> addList = new ArrayList<>();
+			
+			// 이미지 파일 저장
+			List<String> imageNameList = ImageUtil.store(newImageList, "product");
 
-        //상품 DB업데이트
+			// 이미지 DB 저장
+			List<ProductImage> productImageList = productImages(product, imageNameList);
+			productImageRepository.saveAll(productImageList);
+		}
 
+		// 대표 이미지 설정
+		List<ProductImage> productImageList = productImageRepository.findByProductId(productId);
+		updateDTO.setRepresentativeImage(productImageList.get(0).getProductImageName());
 
-//        List<ProductImage> productImages = productImages(productId,list);
-//        for(ProductImage productImage : productImages){
-//            productImageRepository.save(productImage);
-//        }
-
-        Long updateProductId = productRepository.save(product).getId();
-        return updateProductId;
+		// 업데이트
+        product.updateProduct(town, category, productImageList, updateDTO);
+		productRepository.save(product);
     }
 
     // 상품상태 수정
@@ -210,9 +211,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     //이미지리스트 저장
-    private List<ProductImage> productImages(Long productId, List<String> productImageList) throws Exception {
+    private List<ProductImage> productImages(Product product, List<String> productImageList) {
         List<ProductImage> productImages = new ArrayList<>();
-        Product product = productRepository.findById(productId).orElse(null);
 
         for (String imageName: productImageList) {
 

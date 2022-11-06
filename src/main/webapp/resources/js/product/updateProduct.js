@@ -84,7 +84,7 @@ $(document).ready(function () {
 $(document).ready(function() {
     $('.btnAdd').click(function () {
         $('.addInput').append(
-            '<input type="file" name="productImageName" id="productImageName"><button type="button" class="btnRemove">삭제</button><br>'
+            '<input type="file" name="newImageList" id="newImageList"><button type="button" class="btnRemove">삭제</button><br>'
         );//input file
     });
     $('.btnRemove').on('click',function(){//this='.btnRemove'

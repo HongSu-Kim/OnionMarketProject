@@ -63,16 +63,6 @@ $(document).ready(function () {
     });
 });
 
-function clickImage(){
-    var bigPic = document.querySelector("#big");
-    var smallPic = document.querySelectorAll(".small")
-
-    for(var i=0;i<smallPic.length;i++){
-        smallPic[i].addEventListener("click",changepic);
-    }
-
-    function changepic() {
-        var smallPicAttr = this.getAttribute("src");
-        bigPic.setAttribute("src",smallPicAttr);
-    }
-}
+$('.product__image').mouseover(function () {
+	$('#big').attr("src", $(this).attr("src"))
+})

@@ -11,61 +11,116 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>카테고리 생성</title>
-<style>
+    <style>
 
     </style>
 
 </head>
 <body>
 
+
 <div class="container">
     <div class="checkout__form" style="width: 800px; margin: auto">
         <br/><br/><br/>
-        <h4>TOP Category<span style="font-size: small;color:#FF5058;margin: 0px 0px 0px 32px">*상위카테고리 입력</span></h4>
+        <h4>상위 카테고리<span style="font-size: small;color:#FF5058;margin: 0px 0px 0px 32px">*상위카테고리 입력</span></h4>
 
 
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="checkout__input">
-                                <p> 상위 카테고리 <span>*</span></p>
-                                <form:form action="" method="post" modelAttribute="categoryAddDTO">
-                                <input type="text" name="topcategoryName"  placeholder="상위 카테고리 이름을 입력해주세요."/>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="checkout__input">
+                    <p> 상위 카테고리 <span>*</span></p>
+                    <form:form action="" method="post" modelAttribute="categoryCreatedto">
+                    <input type="text" name="categoryName" placeholder="상위 카테고리 이름을 입력해주세요."/>
 
-                                <input type="hidden" name="categoryName" value=""/>
-                                    <form:errors path="categoryName"/>
+                    <input type="hidden" name="subCategoryName"/>
+                    <form:errors path="subCategoryName"/>
 
 
-                                <input type="submit" value="상위카테고리 추가" style="width: 25%; background-color: #47cd65; color: white"/>
-                                <br/><br/>
-                            </div>
-                        </div>
-                    </div>
+                    <input type="submit" value="상위카테고리 추가"
+                           style="width: 25%; background-color: #90C8AC;; color: white"/>
+                    <br/><br/>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
 </form:form>
 
+<script type="text/javascript">
+    function statusChange(statusItem) {
 
+
+        //   var townName = $(statusItem).text();
+        var topCategoryName = $("#topCategoryName option:selected").val();
+        //townName = $.trim(townName);
+        $("#TopName").val(topCategoryName);
+
+        if (confirm(topCategoryName + "카테고리 등록하시겠습니까?") == true) {    //확인
+
+            document.categoryAdd.submit();
+
+        } else {   //취소
+
+            return false;
+
+        }
+
+
+    }
+
+
+    function check_submit() {
+
+        if (isc.categoryName.value == "선택하세요") {
+            alert("상위카테고리를 선택해 주세요!.");
+            isc.categoryName.focus();
+            return false;
+        }
+
+        if (isc.subCategoryName.value == "") {
+            alert("하위카테고리 입력해 주세요!.");
+            isc.subCategoryName.focus();
+            return false;
+        }
+
+
+    }
+
+
+</script>
 
 
 <div class="container">
     <div class="checkout__form" style="width: 800px; margin: auto">
-        <br/><br/><br/>
-        <h4>TOP Category & Sub Category<span style="font-size: small;color:#FF5058;margin: 0px 0px 0px 32px">*상위카테고리 입력 &nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;*하위카테고리 입력</span></h4>
+        <br/>
+        <h4> 상위 카테고리 & 하위 카테고리<span style="font-size: small;color:#FF5058;margin: 0px 0px 0px 32px">*상위카테고리 선택 필수 &nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;*하위카테고리 선택 필수</span></h4>
 
-            <div class="row">
-                <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="checkout__input">
+
+                    <form:form action="" name="isc" onsubmit="return check_submit();" method="post"
+                               modelAttribute="categoryCreatedto">
+                        <%--                            <input type="text" name="TopName" id="TopName" style="width: 15%;">--%>
                     <div class="checkout__input">
-                        <p> 상위 카테고리 <span>*</span></p>
-                        <form:form action="" method="post" modelAttribute="categoryAddDTO">
-                            <input type="text" name="topcategoryName" placeholder="상위 카테고리 이름을 입력해주세요."/>
-                            <br/>   <br/>
-                            <p> 하위 카테고리 <span>*</span></p> <input type="text" name="categoryName"
-                                                                  placeholder="하위 카테고리 이름을 입력해주세요."/>
-                            <form:errors path="categoryName"/>
+                        <p>상위카테고리 선택<span>*</span></p>
+                        <select id="topCategoryName" name="categoryName" size="1">
+                            <option>선택하세요</option>
+                            <c:forEach var="topCategory" items="${topCategory}">
+                                <option value="${topCategory.categoryName}"
+                                        onclick="statusChange();">${topCategory.categoryName}</option>
+
+                            </c:forEach>
+                        </select>
+                        <br/><br/><br/>
+                        <p> 하위 카테고리 <span>*</span></p> <input type="text" name="subCategoryName"
+                                                              placeholder="하위 카테고리 이름을 입력해주세요."/>
+                        <form:errors path="subCategoryName"/>
 
 
-                        <input type="submit" value="하위카테고리 추가" style="width: 25%; background-color: #47cd65; color: white"/>
+                        <input type="submit" value="하위카테고리 추가" onclick="select();"
+                               style="width: 25%; background-color: #90C8AC;; color: white"/>
                         <br/><br/>
                     </div>
                 </div>
@@ -73,44 +128,10 @@
         </div>
     </div>
 
-</form:form>
+    </form:form>
 
 
-
-
-<%--                                -------------------------------------------------------------------------<br/>--%>
-<%--                                상위카테고리 이름: <input type="text" name="topcategoryName"/>--%>
-<%--                                <input type="hidden" name="categoryName" value=""/>--%>
-<%--                                <form:errors path="categoryName"/>--%>
-<%--                                <input type="submit" value="상위카테고리 추가"/>--%>
-<%--                                <br/><br/>--%>
-<%--&lt;%&ndash;                            </form:form>&ndash;%&gt;--%>
-<%--                            -------------------------------------------------------------------------<br/>--%>
-<%--                            <form:form action="" method="post">--%>
-<%--                                상위카테고리 이름: <input type="text" name="topcategoryName"/><br/>--%>
-<%--                                하위카테고리 이름: <input type="text" name="categoryName"/>--%>
-
-
-<%--                                <input type="submit" value="하위카테고리 추가"/><br/>--%>
-
-<%--                                ---------------------------------------------------------------------------%>
-<%--                            </form:form>--%>
-
-<%--                            <form:form action="categoryupdate" method="get">--%>
-<%--                               카테고리 수정하기 <input type="submit" value="수정">--%>
-<%--                            </form:form>--%>
-
-<%--                            <strong>현재 상위카데고리</strong>--%>
-<%--                            <c:forEach var="category" items="${category}">--%>
-
-<%--                                [${category.categoryName}]--%>
-
-<%--                            </c:forEach>--%>
-
-
-
-
-<br/><br/><br/><br/>
+    <br/><br/><br/><br/>
 
 </body>
 </html>

@@ -58,24 +58,25 @@
 		<div class="col-lg-12">
 
 			<!-- 페이징 -->
-			<c:if test="${!empty distancePage.content && distancePage.totalPages != 1}">
-				<input type="hidden" id="pageNumber" value="${distancePage.number + 1}"/>
+			<c:set var="page" value="${distancePage}"/>
+			<c:if test="${!empty page.content && page.totalPages != 1}">
+				<input type="hidden" id="pageNumber" value="${page.number + 1}"/>
 				<div class="product__pagination text-center">
-					<c:set var="size" value="${distancePage.pageable.pageSize}"/><%-- 12 --%>
-					<fmt:parseNumber var="pageNumber" integerOnly="true" value="${distancePage.number / size}"/><%-- 현재페이지 : 0 ~ --%>
-					<c:set var="startNumber" value="${pageNumber * size}"/><%-- 0 * size ~ --%>
-					<c:set var="endNumber" value="${distancePage.totalPages > (pageNumber + 1) * size ? (pageNumber + 1) * size - 1 : distancePage.totalPages - 1}"/>
+					<c:set var="block" value="10"/><%-- 10 --%>
+					<fmt:parseNumber var="pageNumber" integerOnly="true" value="${page.number / block}"/><%-- 현재페이지 : 0 ~ --%>
+					<c:set var="startNumber" value="${pageNumber * block}"/><%-- 0 * size ~ --%>
+					<c:set var="endNumber" value="${page.totalPages > (pageNumber + 1) * block ? (pageNumber + 1) * block - 1 : page.totalPages - 1}"/>
 
-					<c:if test="${distancePage.totalPages > size && distancePage.number + 1 > size}">
+					<c:if test="${page.totalPages > block && page.number + 1 > block}">
 						<a href="?page=0"><<</a>
 						<a href="?page=${startNumber - 1}"><</a>
 					</c:if>
 					<c:forEach var="currentNumber" begin="${startNumber}" end="${endNumber}">
 						<a href="?page=${currentNumber}">${currentNumber + 1}</a>
 					</c:forEach>
-					<c:if test="${distancePage.totalPages - 1 > endNumber}">
+					<c:if test="${page.totalPages - 1 > endNumber}">
 						<a href="?page=${endNumber + 1}">></a>
-						<a href="?page=${distancePage.totalPages - 1}">>></a>
+						<a href="?page=${page.totalPages - 1}">>></a>
 					</c:if>
 				</div>
 			</c:if>

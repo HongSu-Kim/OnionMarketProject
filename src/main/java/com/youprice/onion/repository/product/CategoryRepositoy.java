@@ -20,14 +20,20 @@ import java.util.Optional;
 
 public interface CategoryRepositoy extends JpaRepository<Category, Long> {
 
-    Optional<Category> findByCategoryName(String topcategoryName);
+    Optional<Category> findByCategoryName(String categoryName);
     Optional<Category> findByCategoryNameAndParent(String topcategoryName,Category category);
 
-     Category findAllByCategoryName(String categoryName);
+   List<Category> findAllByCategoryName(String categoryName);
+
+   //  Optional<Category> findByCategoryName(String categoryName);
 
    List<Category> findAllByParent(Long id);
 
    List<Category> findAllByParentId(Long id);
+
+   //List<CategoryFindDTO> findByCategoryName(String categoryName);
+
+
 
 
 
@@ -40,6 +46,7 @@ public interface CategoryRepositoy extends JpaRepository<Category, Long> {
 
 	@Query("select o from Category o  where o.parent is not null")
 	List<Category> findAllSubcategory();
+
 
     List<Category> findByIdBetween(Long start, Long end);
 

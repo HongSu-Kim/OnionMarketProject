@@ -12,116 +12,116 @@
     <title>게 시 판</title>
 
     <style type="text/css">
-    #modal.modal-overlay {
-    width: 100%;
-    height: 100%;
-    position: center;
-    left: 0;
-    top: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+        #modal.modal-overlay {
+            width: 100%;
+            height: 100%;
+            position: center;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
 
 
-    }
+        }
 
-    #modal .modal-window {
-    /*overflow-y: auto;*/
+        #modal .modal-window {
+            /*overflow-y: auto;*/
 
-    width: 800px;
-    height: 600px;
-    position: relative;
-    top: -40px;
-    padding: 10px;
-    border-radius: 25px;
-    background-color: whitesmoke;
-    border: 1px black;
+            width: 800px;
+            height: 600px;
+            position: relative;
+            top: -40px;
+            padding: 10px;
+            border-radius: 25px;
+            background-color: whitesmoke;
+            border: 1px black;
 
-    box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
-
-
-    }
-
-    #modal .title {
-    padding-left: 10px;
-    display: inline;
-
-    color: black;
-    }
-
-    #modal .title h2 {
-    display: inline;
-    }
-
-    #modal .close-area {
-    display: inline;
-    float: right;
-    padding-right: 10px;
-    cursor: pointer;
-
-    color: white;
-    }
-
-    #modal .content {
-    margin-top: 20px;
-    padding: 10px;
-    text-shadow: 1px 1px 2px gray;
-    color: black;
-    }
-
-    a {
-    color: black;
-    text-decoration-line: none;
-    text-decoration: none;
-
-    }
-
-    a:link {
-    color: red;
-    text-decoration: none;
-    }
-
-    a:visited {
-    color: black;
-    text-decoration: none;
-    }
-
-    a:hover {
-    text-decoration: underline;
-    }
+            box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
 
 
-    p {
-    color: black;
-    border-top: 1px solid #d7d7d7;
-    border-left: 1px solid #e0e0e0;
-    border-right: 1px solid #e0e0e0;
-    border-bottom: 0 none;
+        }
 
-    }
+        #modal .title {
+            padding-left: 10px;
+            display: inline;
 
-    input {
-    width: 100%;
-    height: 46px;
-    font-size: 16px;
-    color: #6f6f6f;
-    padding-left: 15px;
-    border: 1px solid #e1e1e1;
-    border-radius: 20px;
+            color: black;
+        }
+
+        #modal .title h2 {
+            display: inline;
+        }
+
+        #modal .close-area {
+            display: inline;
+            float: right;
+            padding-right: 10px;
+            cursor: pointer;
+
+            color: white;
+        }
+
+        #modal .content {
+            margin-top: 20px;
+            padding: 10px;
+            text-shadow: 1px 1px 2px gray;
+            color: black;
+        }
+
+        a {
+            color: black;
+            text-decoration-line: none;
+            text-decoration: none;
+
+        }
+
+        a:link {
+            color: red;
+            text-decoration: none;
+        }
+
+        a:visited {
+            color: black;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
 
 
-    }
+        p {
+            color: black;
+            border-top: 1px solid #d7d7d7;
+            border-left: 1px solid #e0e0e0;
+            border-right: 1px solid #e0e0e0;
+            border-bottom: 0 none;
 
-    button {
+        }
 
-    font-size: 16px;
-    color: #6f6f6f;
-    padding-left: 15px;
-    border: 10px solid #e1e1e1;
+        input {
+            width: 100%;
+            height: 46px;
+            font-size: 16px;
+            color: #6f6f6f;
+            padding-left: 15px;
+            border: 1px solid #e1e1e1;
+            border-radius: 20px;
 
 
-    }
+        }
+
+        button {
+
+            font-size: 16px;
+            color: #6f6f6f;
+            padding-left: 15px;
+            border: 10px solid #e1e1e1;
+
+
+        }
     </style>
 
 
@@ -129,10 +129,9 @@
 <body>
 
 <br/><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 
-
+${categoryList}
 <div style=background-color:white;">
     <div id="container">
 
@@ -150,7 +149,7 @@
 
                 </div>
                 <div style="text-align: center">
-                    <div style="position: center"> <h3>키워드 알림 설정</h3></div><br/><br/>
+                    <div style="position: center"> <h3>금지 키워드 설정</h3></div><br/><br/>
                 </div>
                 <form:form action="" method="post" modelAttribute="">
 
@@ -162,7 +161,7 @@
                     <input type="text" name="prohibitionKeywordName"  placeholder="금지키워드를 입력해주세요 (예: 담배)" size="33"
                            style="color: black; margin-right: 10cm;"    /><br/><br/>
                     <form:errors path="prohibitionKeywordName"/>
-                    <strong> <input type="submit" value="금지키워드 등록" style="background-color: #47cd65; color: white"/><br/></strong>
+                    <strong> <input type="submit" value="금지키워드 등록" style="background-color: #90C8AC; color: white"/><br/></strong>
 
                 </form:form>
 
@@ -175,10 +174,10 @@
 
 
                         <button type="submit"  class="btn btnEvent" name="id" value="${prohibitionKeywordList.id}
-                            " style="background-color:#47cd65; color: white;  border-radius: 20px;">
+                            " style="background-color:#90C8AC; color: white;  border-radius: 20px;">
                             <div>
                                     ${prohibitionKeywordList.prohibitionKeywordName}
-                                <a href="/product/prohibitionkeywordDelete"><span class="icon_close"></span></a>
+                                <a href="/product/prohibitionkeywordDelete"><span class="icon_close " style="color: black"></span></a>
 
                             </div>
 

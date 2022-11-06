@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,8 +46,8 @@ public class ProductController {
     private final BiddingService biddingService;
     private final MemberService memberService;
     private final ProhibitionKeywordService prohibitionKeywordService;
-	private final ChatService chatService;
-	private final SimpMessagingTemplate template;
+    private final ChatService chatService;
+    private final SimpMessagingTemplate template;
 
     @GetMapping("add")//상픔 등록 주소
     public String add(Model model, @LoginUser SessionDTO userSession, HttpServletResponse response) throws IOException {
@@ -98,7 +99,7 @@ public class ProductController {
         // 키워드 알림
         List<ChatDTO> chatDTOList = chatService.alertChat(productId, productAddDTO.getSubject());
         for (ChatDTO chatDTO : chatDTOList) {
-          template.convertAndSend("/sub/chat/" + chatDTO.getTargetId(), chatDTO);
+            template.convertAndSend("/sub/chat/" + chatDTO.getTargetId(), chatDTO);
         }
 
         model.addAttribute("productId", productId);
@@ -170,7 +171,7 @@ public class ProductController {
 
         /*세션아이디로 동네 조회*/
         List<Long> coordinateList = null;
-		Long memberId = null;
+        Long memberId = null;
 
         if (userSession != null) {
 
@@ -179,7 +180,7 @@ public class ProductController {
                     .map(TownFindDTO::getCoordinateId)
                     .collect(Collectors.toList());
 
-			memberId = userSession.getId();
+            memberId = userSession.getId();
         }
         SearchRequirements searchRequirements = SearchRequirements.builder()
                 .blindStatus(false)
@@ -247,87 +248,28 @@ public class ProductController {
     }
 
     @GetMapping(value = "category")//상품 카테고리별 화면 주소
-    public String main(Model model, @LoginUser SessionDTO userSession, HttpSession session, @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC)
-    Pageable pageable,@RequestParam(value = "categoryId",defaultValue = "1") int categoryId) throws Exception {
+    public String category(@LoginUser SessionDTO sessionDTO, Model model, Long categoryId,
+						   @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
-                if(categoryId == 1) {
+		List<Long> categoryIdList = categoryService.findSubCategory(categoryId)
+				.stream().map(CategoryFindDTO::getCategoryId)
+				.collect(Collectors.toList());
 
+		SearchRequirements searchRequirements = SearchRequirements.builder()
+				.pageable(pageable)
+				.blindStatus(false)
+				.categoryIdList(categoryIdList)
+				.build();
 
-                    SearchRequirements searchRequirements = SearchRequirements.builder()
-                            .blindStatus(false)
-                            .build();
+		Long memberId = sessionDTO == null ? null : sessionDTO.getId();
 
-                    searchRequirements.setPageable(PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
-                            pageable.getPageSize(), Sort.Direction.DESC, "uploadDate"));
+		Page<ProductListDTO> page = productService.getProductListDTO(memberId, searchRequirements);
 
+		model.addAttribute("categoryId", categoryId);
+		model.addAttribute("page", page);
 
-                    List<ProductListDTO> categoryList1 = productService.getProductCategoryList(1L, 8L);
-                 //   List<ProductListDTO> categoryList1 = productService.getProductCategoryList(9L, 16L);
-
-                    List<Long> CategoryIdList = new ArrayList<>();
-
-
-
-
-                    for (int i = 0; i < categoryList1.size(); i++) {
-
-                      //  CategoryIdList.add(0, categoryList1.get(i).getCategoryId());
-                        System.out.println(categoryList1.get(i).getCategoryId());
-                    }
-
-                    searchRequirements.setCategoryIdList(CategoryIdList);
-
-                    Page<ProductListDTO> page = productService.getProductListDTO(userSession.getId(), searchRequirements);
-
-
-                    System.out.println(page.getSize());
-
-
-
-
-                    model.addAttribute("page", page);
-                    model.addAttribute("list", page.getContent());
-
-
-                    //  model.addAttribute("list",categoryList1)
-//               break;
-//
-//            case "9":
-//                List<ProductListDTO> categoryList2 = productService.getProductCategoryList(9L, 11L);
-//                model.addAttribute("list", categoryList2);
-//                break;
-//
-//            case 12: List<ProductListDTO> categoryList3 = productService.getProductCategoryList(12L, 16L);
-//                model.addAttribute("list",categoryList3);break;
-//            case 17: List<ProductListDTO> categoryList4 = productService.getProductCategoryList(17L, 26L);
-//                model.addAttribute("list",categoryList4);break;
-//            case 27: List<ProductListDTO> categoryList5 = productService.getProductCategoryList(27L, 41L);
-//                model.addAttribute("list",categoryList5);break;
-//            case 42: List<ProductListDTO> categoryList6 = productService.getProductCategoryList(42L, 56L);
-//                model.addAttribute("list",categoryList6);break;
-//            case 57: List<ProductListDTO> categoryList7 = productService.getProductCategoryList(57L, 60L);
-//                model.addAttribute("list",categoryList7);break;
-//            case 61: List<ProductListDTO> categoryList8 = productService.getProductCategoryList(61L, 70L);
-//                model.addAttribute("list",categoryList8);break;
-//            case 71: List<ProductListDTO> categoryList9 = productService.getProductCategoryList(71L, 85L);
-//                model.addAttribute("list",categoryList9);break;
-//            case 86: List<ProductListDTO> categoryList10 = productService.getProductCategoryList(86L, 89L);
-//                model.addAttribute("list",categoryList10);break;
-//            case 90: List<ProductListDTO> categoryList11 = productService.getProductCategoryList(90L, 95L);
-//                model.addAttribute("list",categoryList11);break;
-//            case 96: List<ProductListDTO> categoryList12 = productService.getProductCategoryList(96L, 104L);
-//                model.addAttribute("list",categoryList12);break;
-//            case 105: List<ProductListDTO> categoryList13 = productService.getProductCategoryList(105L, 113L);
-//                model.addAttribute("list",categoryList13);break;
-//            case 114: List<ProductListDTO> categoryList14 = productService.getProductCategoryList(114L, 115L);
-//                model.addAttribute("list",categoryList14);break;
-//
-
-
-                }
-
-   return "product/list";
-}
+        return "product/list";
+    }
 
     @GetMapping("/personalList/{memberId}")
     public String productList(@PathVariable Long memberId, Model model, @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
@@ -363,49 +305,54 @@ public class ProductController {
         return "product/updateProduct";
     }
 
-    // 상품상태 수정
-    @GetMapping("progressUpdate/{productId}/{productProgress}/{pageNumber}")
-    public String progressUpdate(@PathVariable Long productId, @PathVariable String productProgress, @PathVariable int pageNumber) {
-        productService.progressUpdate(productId, productProgress);
-        return "redirect:/order/sellList?productProgress=" + productProgress + "&page=" + pageNumber;
-    }
-
     @PostMapping("/update/{productId}")//실제 상품 업데이트 주소
-    public String updateProduct(Model model, Long productId, ProductUpdateDTO updateDTO, BindingResult bindingResult,
-                                @LoginUser SessionDTO userSession, HttpServletResponse response) throws Exception {
+	@PreAuthorize("isAuthenticated()")
+    public String updateProduct(@PathVariable Long productId, ProductUpdateDTO updateDTO, BindingResult bindingResult,
+								HttpServletResponse response) throws Exception {
 
         if (prohibitionKeywordService.ProhibitionKeywordFind(updateDTO.getSubject())) { //금지키워드가있으면 true
             bindingResult.addError(new FieldError("productAddDTO", "subject", "적합하지 않은 단어가 포함되어 있습니다."));
+        }
 
-            if (bindingResult.hasErrors()) {
-                return "product/updateProduct";
-            }
-        }
-        /*세션 없을 경우 로그인 처리*/
-        if (userSession == null) {
-            AlertRedirect.warningMessage(response, "/member/login", "로그인이 필요합니다.");
-            return "redirect:/member/login";
-        }
+		if (bindingResult.hasErrors()) {
+			return "product/updateProduct";
+		}
 
         /*상품 정보 업데이트*/
-        Long updateId = productService.updateProduct(productId, updateDTO);
+		try {
+        	productService.updateProduct(productId, updateDTO);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			// 이미지 없을떄 오류 처리
+			AlertRedirect.warningMessage(response, e.getMessage());
+		}
 
-        model.addAttribute("productId", updateId);
-
-        return "redirect:/product/detail/" + updateId;//상품 상세페이지로 이동
+        return "redirect:/product/detail/" + productId;//상품 상세페이지로 이동
     }
+
+	// 상품상태 수정
+	@GetMapping("progressUpdate/{productId}/{productProgress}/{pageNumber}")
+	@PreAuthorize("isAuthenticated()")
+	public String progressUpdate(@PathVariable Long productId, @PathVariable String productProgress, @PathVariable int pageNumber) {
+		productService.progressUpdate(productId, productProgress);
+		return "redirect:/order/sellList?productProgress=" + productProgress + "&page=" + pageNumber;
+	}
 
     @GetMapping("/delete/{productId}")//상품 삭제 주소
     public String removeProduct(@PathVariable("productId") Long productId, @LoginUser SessionDTO userSession, HttpServletResponse response)
             throws Exception {
 
+        ProductFindDTO productFindDTO = productService.getProductFindDTO(productId);
+
         if (userSession == null) {
             AlertRedirect.warningMessage(response, "/member/login", "로그인이 필요합니다.");
             return "redirect:/member/login";
+        }
+        else if(productFindDTO.getProductProgress() != ProductProgress.SALESON) {
+            return AlertRedirect.warningMessage(response,"/order/sellList", "판매 중인 상품만 삭제가 가능합니다.");//거절 후 메인 화면
         }else {
             //DB삭제가 아닌 boolean사용
             productService.deleteProduct(productId);
-            return AlertRedirect.warningMessage(response,"/product/wishRangeList", "삭제가 완료되었습니다.");//삭제 후 메인 화면
+            return AlertRedirect.warningMessage(response,"/order/sellList", "삭제가 완료되었습니다.");//삭제 후 메인 화면
         }
     }
 

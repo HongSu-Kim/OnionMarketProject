@@ -27,11 +27,17 @@ $('#topCategory').change(function () {
 $(document).ready(function () {
     //$('#registerForm').validate(); //유효성 검사를 적용
     // validate signup form on keyup and submit
+    $("#productForm").submit(function (){
+        if($("#topCategory").val()==0){
+            alert("카테고리를 선택해주세요.")
+
+            return false
+        }
+    });
     $('#productForm').validate({
 
         rules: {
             townId: "required",
-            categoryId: "required",
             subject: "required",
             content: { required:true },
             price: { required:true, digits:true, min:100, max:999999},
