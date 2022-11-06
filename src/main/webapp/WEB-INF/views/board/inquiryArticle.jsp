@@ -18,21 +18,26 @@
                 <div class="qna-question">
 
                     <!-- 회원정보시작 -->
-                    <div class="qna-memberinfo">
+                    <div class="qna-memberinfo" style="margin-bottom: 20px">
                         <div class="profile-image">
-                            <img src="/template/img/product/product-2.jpg" width="100px;" height="100px" alt="프로필사진"/>
+                            <img src="/img/member/${inquiryDTO.memberDTO.memberImageName}" width="100px;" height="100px" alt="프로필사진"/>
                             <%-- /${inquiryDTO.memberDTO.memberImageName} --%>
                         </div>
                         <!-- 아이디 -->
                         <div class="qna-memberId">
-                            <span>${inquiryDTO.memberDTO.userId}</span>
+                            <span>${inquiryDTO.memberDTO.userId} </span>
                         </div>
+
                     </div>
                     <!-- 회원정보끝 -->
 
+
                     <!-- 질문영역 -->
                     <div class="qna-answer">
-                        <div>[ ${inquiryDTO.inquirySubject} ]</div>
+                        <div>
+                            [ ${inquiryDTO.inquirySubject} ]&nbsp;&nbsp;&nbsp;&nbsp;
+                            ${inquiryDTO.inquiryType}/${inquiryDTO.detailType}
+                        </div><br/>
                         ${inquiryDTO.inquiryContent}
 
 
@@ -46,6 +51,8 @@
                                 </button>
                             </c:if>
                         </div>
+
+
                     </div>
                     <hr/>
 

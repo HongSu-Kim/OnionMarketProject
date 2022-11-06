@@ -48,11 +48,7 @@
                 <div class="d-inline-flex" style="margin-left: 20px">
                     <div style="margin-left: 15px; display: inline">
                         <div style="display: inline;">
-                            <p><em style="color: #5a6268">* 사진을 첨부해주세요</em></p>
-
-                            <label for="noticeImageName">
-                                <img src="/img/notice/uploadImage.png" style="width:100px; height:100px; cursor: pointer;">
-                            </label>
+                            <label class="primary-btn cart-btn" for="noticeImageName">사진 첨부하기</label>
                             <input type="file" id="noticeImageName" name="noticeImageName" multiple
                                    style="display: none" onchange="fileInfo(this)"/>
                             <div id="preview"></div>

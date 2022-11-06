@@ -96,12 +96,12 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
-    //프로필
+    //프로필 변경
     @Override
-    public void modifyProfileImg(Long memberId, MultipartFile profileImg) throws IOException {
+    public String modifyProfileImg(Long memberId, MultipartFile profileImg) throws IOException {
         Member member = memberRepository.findById(memberId).orElse(null);
         member.modifyProfileImg(ImageUtil.store(profileImg, "member"));
-        memberRepository.save(member);
+        return memberRepository.save(member).getMemberImageName();
     }
 
     //아이디 찾기
@@ -172,16 +172,6 @@ public class MemberServiceImpl implements MemberService {
             return memberDTO;
         }).orElse(null);
     }
-
-    // 평점 찾기
-	public Double avgGrade(Long salesId) {
-		Member member = memberRepository.findById(salesId).orElse(null);
-		Double grade = reviewRepository.gradeAverage(salesId);
-
-		member.updateGrade(grade);
-		memberRepository.save(member);
-		return grade;
-	}
 
     //양파페이 충전
     @Override

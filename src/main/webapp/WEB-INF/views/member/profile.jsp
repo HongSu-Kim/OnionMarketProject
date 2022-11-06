@@ -30,18 +30,6 @@
                                 </c:if>
                         </p>
                         <ul class="list_modify">
-<%--                                <c:if test="${!memberDTO.followCheck}">
-                                    <li><button type="button" class="site-btn-follow" onclick="location.href='/follow/addFollow/${memberDTO.id}'">팔로우</button></li>
-                                </c:if>
-                                <c:if test="${memberDTO.followCheck}">
-                                    <li><button type="button" class="site-btn-ing"  onclick="location.href='/follow/removeFollow/${memberDTO.id}'">팔로잉</button></li>
-                                </c:if>
-                                <c:if test="${!memberDTO.blockCheck}">
-                                    <li><button type="button" class="site-btn-follow"  onclick="location.href='/block/addBlock/${memberDTO.id}'">차단하기</button></li>
-                                </c:if>
-                                <c:if test="${memberDTO.blockCheck}">
-                                    <li><button type="button" class="site-btn-ing"  onclick="location.href='/block/removeBlock/${memberDTO.id}'">차단해제</button></li>
-                                </c:if>--%>
                                 <li><button type="button" class="site-btn"  onclick="location.href='/product/personalList/${memberDTO.id}'">판매 리스트</button></li>
                         </ul>
                     </span>
@@ -67,7 +55,7 @@
                         <div class="checkout__input"><label class="labels">포인트</label><input type="text" class="form-control" value="${memberDTO.point}" readonly="readonly"></div>
                         <div class="checkout__input"><label class="labels">평점</label><input type="text" class="form-control" value="${memberDTO.userGrade}" readonly="readonly"></div>
                     </div>
-                        <div class="mt-5 text-center"><button class="site-btn-modify" type="button" onclick="location.href='/'">홈으로</button></div>
+                        <div class="mt-5 text-center"><button class="site-btn" type="button" onclick="location.href='/'">홈으로</button></div>
                 </div>
             </div>
         </div>

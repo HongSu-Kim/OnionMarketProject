@@ -39,6 +39,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         SessionDTO sessionDTO = new SessionDTO(member);
 
         session.setAttribute("wishCount", wishRepository.countByMemberId(member.getId()));
+        session.setAttribute("memberImageName", member.getMemberImageName());
+        session.setAttribute("cash", member.getCash());
 
         //시큐리티 세션에 유저 정보 저장
         return new CustomUserDetails(sessionDTO);
