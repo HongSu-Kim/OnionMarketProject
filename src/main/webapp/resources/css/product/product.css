@@ -50,7 +50,7 @@ label.error{display:block;color:red;}
     height:100%;
     text-align: center;
     color: white;
-
+    padding-top: 40%;
 }
 .product__item__pic {
     height: 270px;
