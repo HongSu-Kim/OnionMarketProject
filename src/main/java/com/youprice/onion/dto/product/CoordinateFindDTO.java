@@ -19,16 +19,13 @@ public class CoordinateFindDTO {
     private Double longitude; //경도
 
 
-
     public CoordinateFindDTO(Coordinate coordinate) {
 
-        id =coordinate.getId();
+        id = coordinate.getId();
         townName = coordinate.getTownName();
         latitude = coordinate.getLatitude();
         longitude = coordinate.getLongitude();
     }
-
-
 
 
 }

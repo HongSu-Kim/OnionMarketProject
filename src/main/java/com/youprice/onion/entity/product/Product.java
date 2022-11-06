@@ -107,7 +107,8 @@ public class Product {
 
     }
 
-	public Product(Member member, Town town, Category category, String subject, String content, int price, String representativeImage, boolean payStatus) {
+	public Product(Member member, Town town, Category category, String subject, String content, int price,
+				   String representativeImage, boolean auctionStatus, boolean payStatus) {
 		this.member = member;
 		this.town = town;
 		this.category = category;
@@ -116,7 +117,7 @@ public class Product {
 		this.price = price;
 		this.representativeImage = representativeImage;
 		this.uploadDate = LocalDateTime.now();
-		this.auctionDeadline = null;
+		this.auctionDeadline = auctionStatus ? LocalDateTime.now().plusHours(12) : null;
 		this.productProgress = ProductProgress.SALESON;
 		this.payStatus = payStatus;
 		this.blindStatus = false;
