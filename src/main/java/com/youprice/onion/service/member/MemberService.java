@@ -37,7 +37,6 @@ public interface MemberService {
 
 	List<MemberDTO> getChatMemberList(Long memberId);
 
-    Double avgGrade(Long salesId);
 
     void chargeCash(Long memberId, int amount);
 

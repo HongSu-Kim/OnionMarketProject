@@ -5,7 +5,6 @@ import com.youprice.onion.dto.board.ComplainFormDTO;
 import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.product.ProductDTO;
-import com.youprice.onion.dto.product.ProductListDTO;
 import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.service.board.ComplainService;
 import com.youprice.onion.service.member.MemberService;
@@ -16,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,25 +37,23 @@ public class ComplainController {
     private final ProductService productService;
 
     @GetMapping("created/{productId}")
+    @PreAuthorize("isAuthenticated()")
     public String complainForm(@PathVariable Long productId, Model model, @LoginUser SessionDTO sessionDTO,
                                @ModelAttribute("form") ComplainFormDTO form, HttpServletResponse response) throws IOException {
+        if(sessionDTO != null){
+            ProductDTO productDTO = productService.getProductDTO(productId);
+            MemberDTO targetDTO = memberService.getMemberDTO(productDTO.getMemberId());
+
+            model.addAttribute("targetDTO",targetDTO);
+            model.addAttribute("productDTO", productDTO);
+        } else return "redirect:/member/login";
+
         List<ComplainDTO> list = complainService.checkComplain(sessionDTO.getId());
         for(ComplainDTO complainDTO : list){
             if(Objects.equals(complainDTO.getProductId(), productId)){
                 return AlertRedirect.warningMessage(response, "/product/detail/" + productId, "이미 신고한 게시물입니다.");
             }
         }
-
-        if(sessionDTO != null){
-            MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
-            ProductDTO productDTO = productService.getProductDTO(productId);
-            MemberDTO targetDTO = memberService.getMemberDTO(productDTO.getMemberId());
-
-            model.addAttribute("targetDTO",targetDTO);
-            model.addAttribute("memberDTO", memberDTO);
-            model.addAttribute("productDTO", productDTO);
-        } else return "member/login";
-
         return "board/complainForm";
     }
 
@@ -64,12 +62,10 @@ public class ComplainController {
                                   @LoginUser SessionDTO sessionDTO, Model model, @PathVariable Long productId,
                                   HttpServletResponse response) throws IOException {
         if(bindingResult.hasErrors()){
-            MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
             ProductDTO productDTO = productService.getProductDTO(productId);
             MemberDTO targetDTO = memberService.getMemberDTO(productDTO.getMemberId());
 
             model.addAttribute("targetDTO",targetDTO);
-            model.addAttribute("memberDTO", memberDTO);
             model.addAttribute("productDTO", productDTO);
             return "board/complainForm";
         }
@@ -115,11 +111,4 @@ public class ComplainController {
         return "redirect:/complain/list";
     }
 
-    //개인별 신고 리스트
-    @GetMapping("/personalList/{memberId}")
-    public String productList(@PathVariable Long memberId, Model model, @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<ComplainDTO> page = complainService.getPersonalList(memberId, pageable);
-        model.addAttribute("complainList", page);
-        return "board/complainList";
-    }
 }
