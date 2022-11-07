@@ -190,12 +190,23 @@
 	</section>
 	<!-- /광고 -->
 
+	<section class="from-blog spad">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="section-title from-blog__title">
+						<a href="/search/search">   <h2>중고거래 인기 검색어</h2></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 	<div id="wrap">
 		<div class="container">
 			<ul id="best_search">
 				<li><p>실시간 인기검색어</p></li>
 				<li>
-					<dl class="time1" style="display:">
+					<dl class="time1" style="display: block">
 						<dd><a class="t" href="#"><div class="num">1</div>자전거</a></dd>
 						<dd><a class="t" href="#"><div class="num">2</div>전동킥보드</a></dd>
 						<dd><a class="t" href="#"><div class="num">3</div>비키니</a></dd>
@@ -409,8 +420,7 @@
 	<!-- Latest Product Section End -->
 
 	<!-- Blog Section Begin -->
-	<section class="from-blog spad">
-		<%--
+	<%--<section class="from-blog spad">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
@@ -468,24 +478,9 @@
 			</div>
 		</div>
 
-	</section>
+	</section>--%>
 	<!-- Blog Section End -->
-
-
-
-	<section class="from-blog spad">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="section-title from-blog__title">
-					<a href="/search/search">   <h2>중고거래 인기 검색어</h2></a>
-				</div>
-			</div>
-		</div>
-
-
-
-</div>
+</section>
 
 </body>
 </html>
