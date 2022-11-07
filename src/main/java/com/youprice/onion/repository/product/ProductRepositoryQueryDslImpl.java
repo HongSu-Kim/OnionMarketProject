@@ -42,7 +42,8 @@ public class ProductRepositoryQueryDslImpl implements ProductRepositoryQueryDsl{
 						searchValueContains(searchRequirements.getSearchValue()),
 						auctionStatus(searchRequirements.getAuctionStatus()),
 						coordinateIdListIn(searchRequirements.getCoordinateIdList()),
-						categoryIdListIn(searchRequirements.getCategoryIdList())
+						categoryIdListIn(searchRequirements.getCategoryIdList()),
+						blockIdListNotIn(searchRequirements.getBlockIdList())
 				)
 				.orderBy(orderBy(searchRequirements.getPageable()))
 				.offset(searchRequirements.getPageable().getOffset())
@@ -61,7 +62,9 @@ public class ProductRepositoryQueryDslImpl implements ProductRepositoryQueryDsl{
 						searchValueContains(searchRequirements.getSearchValue()),
 						auctionStatus(searchRequirements.getAuctionStatus()),
 						coordinateIdListIn(searchRequirements.getCoordinateIdList()),
-						categoryIdListIn(searchRequirements.getCategoryIdList())
+						categoryIdListIn(searchRequirements.getCategoryIdList()),
+						blockIdListNotIn(searchRequirements.getBlockIdList())
+
 				)
 				.fetchOne();
 
@@ -113,5 +116,9 @@ public class ProductRepositoryQueryDslImpl implements ProductRepositoryQueryDsl{
 
 	private BooleanExpression categoryIdListIn(List<Long> categoryIdList) {
 		return categoryIdList == null || categoryIdList.size() == 0 ? null : product.category.id.in(categoryIdList);
+	}
+
+	private BooleanExpression blockIdListNotIn(List<Long> blockIdList) {
+		return  blockIdList == null || blockIdList.size() == 0 ? null : product.member.id.notIn(blockIdList);
 	}
 }

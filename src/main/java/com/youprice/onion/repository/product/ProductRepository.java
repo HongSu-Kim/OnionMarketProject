@@ -31,12 +31,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
     // 하위 카테고리 상품 리스트
     List<Product> findByCategoryId(Long categoryId);
 
-    //
-    List<Product> findByCategoryIdBetween(Long start, Long end);
-
-    //제목과 내용으로 검색한 리스트 조회
-    List<Product> findBySubjectContainingOrContentContaining(String subject, String content);
-
     boolean existsBySubject(String subject);
 
 	@Modifying

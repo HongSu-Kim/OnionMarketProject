@@ -11,6 +11,7 @@ import lombok.Setter;
 public class BlockDTO {
 
     private Long blockId;
+    private Long targetId;
     private MemberDTO memberDTO;
     private MemberDTO targetDTO;
 
@@ -18,6 +19,7 @@ public class BlockDTO {
         blockId = block.getId();
         memberDTO = new MemberDTO(block.getMember());
         targetDTO = new MemberDTO(block.getTarget());
+        targetId = targetDTO.getId();
 
         memberDTO = new MemberDTO(block.getMember());
     }

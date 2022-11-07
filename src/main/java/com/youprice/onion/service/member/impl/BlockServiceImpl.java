@@ -14,6 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -47,5 +49,10 @@ public class BlockServiceImpl implements BlockService {
     @Override
     public void removeBlock(Long memberId, Long targetId) {
         blockRepository.deleteByMemberIdAndTargetId(memberId, targetId);
+    }
+
+    @Override
+    public List<Long> blockIdList(Long memberId) {
+        return blockRepository.findBlockIdList(memberId);
     }
 }

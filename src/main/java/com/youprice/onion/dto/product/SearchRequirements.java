@@ -24,5 +24,6 @@ public class SearchRequirements {
 	private Boolean auctionStatus;//경매여부
 	private List<Long> coordinateIdList;//지역PK목록
 	private List<Long> categoryIdList;//카테고리PK목록
+	private List<Long> blockIdList;//차단목록
 
 }
