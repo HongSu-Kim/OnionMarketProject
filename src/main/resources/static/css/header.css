@@ -10,6 +10,12 @@
     color: black;
     text-align: center;
 }
+.header__cart__price.logout {
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    display: inline-block;
+}
 
 .site-btn.mypage {
     height: 50px;
