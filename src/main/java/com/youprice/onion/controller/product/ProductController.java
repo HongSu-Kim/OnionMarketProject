@@ -346,11 +346,11 @@ public class ProductController {
     }
 
     // 상품상태 수정
-    @GetMapping("progressUpdate/{productId}/{productProgress}/{pageNumber}")
+    @GetMapping("progressUpdate/{productId}/{productProgress}")
     @PreAuthorize("isAuthenticated()")
-    public String progressUpdate(@PathVariable Long productId, @PathVariable String productProgress, @PathVariable int pageNumber) {
+    public String progressUpdate(@PathVariable Long productId, @PathVariable String productProgress) {
         productService.progressUpdate(productId, productProgress);
-        return "redirect:/order/sellList?productProgress=" + productProgress + "&page=" + pageNumber;
+        return "redirect:/order/sellList?productProgress=" + productProgress;
     }
 
     @GetMapping("/delete/{productId}")//상품 삭제 주소
