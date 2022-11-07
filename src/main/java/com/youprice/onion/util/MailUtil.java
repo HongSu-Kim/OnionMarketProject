@@ -4,8 +4,6 @@ package com.youprice.onion.util;
 import com.youprice.onion.entity.member.Member;
 import org.apache.commons.mail.HtmlEmail;
 
-import javax.servlet.http.HttpServletRequest;
-
 public class MailUtil {
 
     public static void sendMail(Member member, String url) {
