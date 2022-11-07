@@ -7,7 +7,7 @@
     <div class="container">
         <div class="row featured__filter">
             <!-- 주문없음 -->
-            <c:if test="${not empty page.content}">
+            <c:if test="${empty page.content}">
                 <div class="col-lg-12">
                     <div class="contact__form__title">
                         <h3>등록된 상품이 없습니다.</h3>
