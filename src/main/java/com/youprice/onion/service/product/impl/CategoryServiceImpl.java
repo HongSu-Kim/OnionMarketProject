@@ -101,14 +101,10 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category CategoryDelete(Long categoryId) { //카테고리삭제
-        Category category = new Category();
-       Category categoryFindDTOList =categoryRepositoy.findById(categoryId).orElse(null);
-      categoryFindDTOList = categoryRepositoy.deleteByCategoryName(categoryFindDTOList.getCategoryName());
+    public void CategoryDelete(Long categoryId) { //카테고리삭제
 
+   categoryRepositoy.deleteAllById(categoryId);
 
-
-        return  categoryFindDTOList;
 
     }
 
@@ -142,6 +138,14 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     public List<CategoryFindDTO> findSubCategory(Long categoryId) { // parent_id가 null이 아닌 상위카테고리에 해당하는 하위 카테고리조회
+
+        return categoryRepositoy.findByParentId(categoryId)
+                .stream().map(CategoryFindDTO::new)
+                .collect(Collectors.toList());
+
+    }
+
+    public List<CategoryFindDTO> findSubCategoryName(Long categoryId) { // parent_id가 null이 아닌 상위카테고리에 해당하는 하위 카테고리조회
 
         return categoryRepositoy.findByParentId(categoryId)
                 .stream().map(CategoryFindDTO::new)

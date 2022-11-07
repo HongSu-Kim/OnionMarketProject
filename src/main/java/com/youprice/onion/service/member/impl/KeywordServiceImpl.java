@@ -42,7 +42,6 @@ public class KeywordServiceImpl implements KeywordService {
    return;
   }
 
-
   if(keywordCreateDto.getKeywordName() == ""){
 
 
@@ -51,19 +50,16 @@ public class KeywordServiceImpl implements KeywordService {
    return ;
   }
 
-
-
   Member member = memberRepositoy.findById(keywordCreateDto.getMemberId()).orElse(null);
 
   keyword = keyword.keywordCreate(keywordCreateDto,member);
 
   if(keywordRepositoy.findByKeywordNameAndMember(keywordCreateDto.getKeywordName(),member) ==null){
    keywordRepositoy.save(keyword);
-   out.println("<script>alert('등록완료!!');history.go(-1); </script>");
+   out.println("<script>alert('키워드 등록완료!!');history.go(-1); </script>");
    out.flush();
   }
   else  return;
-
  }
 
  @Override
@@ -71,22 +67,14 @@ public class KeywordServiceImpl implements KeywordService {
  public void KewordDelete(Long keywordId) {
    keywordRepositoy.deleteById(keywordId);
  }
-
  @Override
  public List<KeywordListDTO> KeywordList(Long memberDTO) {
-
 
 return keywordRepositoy.findAllByMemberId(memberDTO)
                 .stream().map(keyword -> new KeywordListDTO(keyword))
                 .collect(Collectors.toList());
 
-
  }
 
 
-
-
-
-
 }
-
