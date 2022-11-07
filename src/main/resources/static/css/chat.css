@@ -38,6 +38,24 @@
     color: #90C8AC;
 }
 
+#notRead {
+    height: 20px;
+    width: 20px;
+    background: red;
+    /*font-size: 10px;*/
+    color: #ffffff;
+    line-height: 13px;
+    text-align: center;
+    font-weight: 700;
+    display: none;
+    /*display: inline-block;*/
+    border-radius: 50%;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    padding-top: 5px;
+}
+
 #chat-overlay {
     background: rgba(255,255,255,0.1);
     position: absolute;

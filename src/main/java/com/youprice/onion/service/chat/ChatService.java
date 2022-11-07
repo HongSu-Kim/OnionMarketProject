@@ -12,4 +12,5 @@ public interface ChatService {
 	ChatDTO uploadImage(ChatImageDTO chatImageDto) throws IOException;
 	void readChat(Long memberId, Long chatroomId);
 	List<ChatDTO> alertChat(Long productId, String subject);
+	int getAllNotRead(Long memberId);
 }

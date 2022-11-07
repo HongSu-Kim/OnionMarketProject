@@ -70,6 +70,11 @@ public class ChatServiceImpl implements ChatService {
 		
 		return chatDTO;
 	}
+
+	@Override
+	public int getAllNotRead(Long memberId) {
+		return chatRepository.countAllNotRead(memberId);
+	}
 	
 	// 채팅 읽음 
 	@Override

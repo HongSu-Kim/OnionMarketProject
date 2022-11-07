@@ -25,10 +25,6 @@ DROP TABLE wish PURGE;
 DROP TABLE chat PURGE;
 DROP TABLE chatroom PURGE;
 
-DROP TABLE member_category PURGE;
-
-DROP TABLE product_tag PURGE;
-DROP TABLE tag PURGE;
 DROP TABLE bidding PURGE;
 DROP TABLE product_image PURGE;
 DROP TABLE product PURGE;
@@ -116,18 +112,14 @@ CREATE TABLE coordinate (
 	CONSTRAINT PK_COORDINATE PRIMARY KEY (coordinate_id)
 );
 
-CREATE TABLE town
-(
+CREATE TABLE town (
     town_id       NUMBER NOT NULL,
     member_id     NUMBER NOT NULL,
     coordinate_id NUMBER NOT NULL,
-    wish_distance NUMBER NULL,
-
     CONSTRAINT PK_TOWN PRIMARY KEY (town_id),
     CONSTRAINT FK_TOWN_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member (member_id),
     CONSTRAINT FK_TOWN_COORDINATE_ID FOREIGN KEY (coordinate_id) REFERENCES coordinate (coordinate_id)
 );
-
 
 CREATE TABLE category (
     category_id     	NUMBER          NOT NULL,
@@ -176,31 +168,6 @@ CREATE TABLE bidding (
     CONSTRAINT PK_BIDDING PRIMARY KEY (bidding_id),
     CONSTRAINT FK_BIDDING_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id),
     CONSTRAINT FK_BIDDING_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id)
-);
-
-CREATE TABLE tag (
-	tag_id      		NUMBER        	NOT NULL,
-	tag_name    		VARCHAR2(50)  	NOT NULL,
-	tag_count   		NUMBER        	NOT NULL,
-	CONSTRAINT PK_TAG PRIMARY KEY (tag_id)
-);
-
-CREATE TABLE product_tag (
-	product_tag_id  	NUMBER  		NOT NULL,
-	tag_id          	NUMBER  		NOT NULL,
-	product_id      	NUMBER  		NOT NULL,
-	CONSTRAINT PK_PRODUCT_TAG PRIMARY KEY (product_tag_id),
-	CONSTRAINT FK_PRODUCT_TAG_TAG_ID FOREIGN KEY (tag_id) REFERENCES tag(tag_id),
-	CONSTRAINT FK_PRODUCT_TAG_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id)
-);
-
-CREATE TABLE member_category (
-	member_category_id  NUMBER  		NOT NULL,
-	member_id           NUMBER  		NOT NULL,
-	category_id         NUMBER  		NOT NULL,
-	CONSTRAINT PK_MEMBER_CATEGORY PRIMARY KEY (member_category_id),
-	CONSTRAINT FK_MC_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id),
-	CONSTRAINT FK_MC_CATEGORY_ID FOREIGN KEY (category_id) REFERENCES category(category_id)
 );
 
 CREATE TABLE chatroom (
@@ -440,10 +407,175 @@ INSERT INTO Coordinate VALUES(62, '서울특별시 강동구 성내1동',  '37.5
 INSERT INTO Coordinate VALUES(63, '서울특별시 강동구 성내2동',  '37.532425',  '127.129563');
 INSERT INTO Coordinate VALUES(64, '서울특별시 강동구 둔촌1동',  '37.5333656', '127.1419851');
 INSERT INTO Coordinate VALUES(65, '서울특별시 강동구 둔촌2동',  '37.5332885', '127.1419221');
+--------------------------------------------------
+INSERT INTO Coordinate VALUES(66,'서울특별시 서초구 방배동',37.4941452,126.988785);
+INSERT INTO Coordinate VALUES(67,'서울특별시 서초구 양재동',37.470101,127.039888);
+INSERT INTO Coordinate VALUES(68,'서울특별시 서초구 우면동',37.466,127.0169);
+INSERT INTO Coordinate VALUES(69,'서울특별시 서초구 원지동',37.4452,127.0476);
+INSERT INTO Coordinate VALUES(70,'서울특별시 서초구 잠원동',37.5149619,127.0140771);
+INSERT INTO Coordinate VALUES(71,'서울특별시 서초구 반포동',37.5021441,126.9868224);
+INSERT INTO Coordinate VALUES(72,'서울특별시 서초구 서초동',37.4901186,127.0195082);
+INSERT INTO Coordinate VALUES(73,'서울특별시 서초구 내곡동',37.4493583,127.0583103);
+INSERT INTO Coordinate VALUES(74,'서울특별시 서초구 염곡동',37.462035,127.054288);
+INSERT INTO Coordinate VALUES(75,'서울특별시 서초구 신원동',37.4448,127.0641);
+INSERT INTO Coordinate VALUES(76,'서울특별시 서초구 서초1동',37.4901186,127.0195082);
+INSERT INTO Coordinate VALUES(77,'서울특별시 서초구 서초2동',37.49208,127.02496);
+INSERT INTO Coordinate VALUES(78,'서울특별시 서초구 서초3동',37.4836682,127.0119725);
+INSERT INTO Coordinate VALUES(79,'서울특별시 서초구 서초4동',37.5026685,127.0221589);
+INSERT INTO Coordinate VALUES(80,'서울특별시 서초구 반포본동',37.5021441,126.9868224);
+INSERT INTO Coordinate VALUES(81,'서울특별시 서초구 반포1동',37.5050895,127.0135073);
+INSERT INTO Coordinate VALUES(82,'서울특별시 서초구 반포2동',37.5046022,126.9945091);
+INSERT INTO Coordinate VALUES(83,'서울특별시 서초구 반포3동',37.5120925,127.0056289);
+INSERT INTO Coordinate VALUES(84,'서울특별시 서초구 반포4동',37.4974314,127.0003853);
+INSERT INTO Coordinate VALUES(85,'서울특별시 서초구 방배본동',37.4941452,126.988785);
+INSERT INTO Coordinate VALUES(86,'서울특별시 서초구 방배1동',37.4832801,126.9945569);
+INSERT INTO Coordinate VALUES(87,'서울특별시 서초구 방배2동',37.4797439,126.9855106);
+INSERT INTO Coordinate VALUES(88,'서울특별시 서초구 방배3동',37.4784409,126.9999918);
+INSERT INTO Coordinate VALUES(89,'서울특별시 서초구 방배4동',37.489007,126.9923344);
+INSERT INTO Coordinate VALUES(90,'서울특별시 서초구 양재1동',37.4716412,127.026744);
+INSERT INTO Coordinate VALUES(91,'서울특별시 서초구 양재2동',37.470601,127.041188);
+--------------------------------------------------
+INSERT INTO Coordinate VALUES(92,'서울특별시 동작구 노량진동',37.512308,126.942013);
+INSERT INTO Coordinate VALUES(93,'서울특별시 동작구 상도동',37.4981,126.953089);
+INSERT INTO Coordinate VALUES(94,'서울특별시 동작구 상도1동',37.4981,126.953089);
+INSERT INTO Coordinate VALUES(95,'서울특별시 동작구 본동',37.5124285,126.9536286);
+INSERT INTO Coordinate VALUES(96,'서울특별시 동작구 흑석동',37.5058617,126.966612);
+INSERT INTO Coordinate VALUES(97,'서울특별시 동작구 동작동',37.4991998,126.9738471);
+INSERT INTO Coordinate VALUES(98,'서울특별시 동작구 사당동',37.4830639,126.9786682);
+INSERT INTO Coordinate VALUES(99,'서울특별시 동작구 대방동',37.508133,126.92635);
+INSERT INTO Coordinate VALUES(100,'서울특별시 동작구 신대방동',37.488943,126.91005);
+INSERT INTO Coordinate VALUES(101,'서울특별시 동작구 노량진1동',37.512308,126.942013);
+INSERT INTO Coordinate VALUES(102,'서울특별시 동작구 노량진2동',37.508509,126.937352);
+INSERT INTO Coordinate VALUES(103,'서울특별시 동작구 상도2동',37.5055197,126.942296);
+INSERT INTO Coordinate VALUES(104,'서울특별시 동작구 상도3동',37.4991123,126.9313793);
+INSERT INTO Coordinate VALUES(105,'서울특별시 동작구 상도4동',37.4994203,126.941422);
+INSERT INTO Coordinate VALUES(106,'서울특별시 동작구 사당1동',37.4830639,126.9786682);
+INSERT INTO Coordinate VALUES(107,'서울특별시 동작구 사당2동',37.4887323,126.9792598);
+INSERT INTO Coordinate VALUES(108,'서울특별시 동작구 사당3동',37.4845247,126.9734908);
+INSERT INTO Coordinate VALUES(109,'서울특별시 동작구 사당4동',37.4809888,126.9716704);
+INSERT INTO Coordinate VALUES(110,'서울특별시 동작구 사당5동',37.4857521,126.9668658);
+INSERT INTO Coordinate VALUES(111,'서울특별시 동작구 신대방1동',37.488943,126.91005);
+INSERT INTO Coordinate VALUES(112,'서울특별시 동작구 신대방2동',37.4984422,126.9244085);
+--------------------------------------------------
+INSERT INTO Coordinate VALUES(113,'서울특별시 관악구 봉천동',37.4779619,126.9534602);
+INSERT INTO Coordinate VALUES(114,'서울특별시 관악구 신림동',37.487426,126.927075);
+INSERT INTO Coordinate VALUES(115,'서울특별시 관악구 남현동',37.4745394,126.9778366);
+INSERT INTO Coordinate VALUES(116,'서울특별시 관악구 보라매동',37.4881456,126.9327389);
+INSERT INTO Coordinate VALUES(117,'서울특별시 관악구 청림동',37.4918329,126.9585773);
+INSERT INTO Coordinate VALUES(118,'서울특별시 관악구 성현동',37.4895366,126.9481271);
+INSERT INTO Coordinate VALUES(119,'서울특별시 관악구 행운동',37.4806541,126.9570456);
+INSERT INTO Coordinate VALUES(120,'서울특별시 관악구 낙성대동',37.4762971,126.9583884);
+INSERT INTO Coordinate VALUES(121,'서울특별시 관악구 청룡동',37.4791304,126.9416518);
+INSERT INTO Coordinate VALUES(122,'서울특별시 관악구 은천동',37.4853086,126.9424278);
+INSERT INTO Coordinate VALUES(123,'서울특별시 관악구 중앙동',37.4842598,126.9497133);
+INSERT INTO Coordinate VALUES(124,'서울특별시 관악구 인헌동',37.4750974,126.9652628);
+INSERT INTO Coordinate VALUES(125,'서울특별시 관악구 서원동',37.4797346,126.9313);
+INSERT INTO Coordinate VALUES(126,'서울특별시 관악구 신원동',37.4815883,126.9273519);
+INSERT INTO Coordinate VALUES(127,'서울특별시 관악구 서림동',37.4749956,126.9349995);
+INSERT INTO Coordinate VALUES(128,'서울특별시 관악구 신사동',37.5240101,127.0227814);
+INSERT INTO Coordinate VALUES(129,'서울특별시 관악구 난향동',37.461429,126.918842);
+INSERT INTO Coordinate VALUES(130,'서울특별시 관악구 조원동',37.4826299,126.9078649);
+INSERT INTO Coordinate VALUES(131,'서울특별시 관악구 대학동',37.4706145,126.9369907);
+INSERT INTO Coordinate VALUES(132,'서울특별시 관악구 삼성동',37.470101,126.932963);
+INSERT INTO Coordinate VALUES(133,'서울특별시 관악구 미성동',37.4761761,126.9155534);
+INSERT INTO Coordinate VALUES(134,'서울특별시 관악구 난곡동',37.4709634,126.9216507);
+--------------------------------------------------
+INSERT INTO Coordinate VALUES(135,'서울특별시 광진구 중곡동',37.560675,127.080038);
+INSERT INTO Coordinate VALUES(136,'서울특별시 광진구 능동',37.5537803,127.0804994);
+INSERT INTO Coordinate VALUES(137,'서울특별시 광진구 구의동',37.5424917,127.0856756);
+INSERT INTO Coordinate VALUES(138,'서울특별시 광진구 광장동',37.546892,127.103025);
+INSERT INTO Coordinate VALUES(139,'서울특별시 광진구 자양동',37.534508,127.082438);
+INSERT INTO Coordinate VALUES(140,'서울특별시 광진구 화양동',37.5465421,127.0713152);
+INSERT INTO Coordinate VALUES(141,'서울특별시 광진구 군자동',37.5554853,127.0753494);
+INSERT INTO Coordinate VALUES(142,'서울특별시 광진구 중곡1동',37.560675,127.080038);
+INSERT INTO Coordinate VALUES(143,'서울특별시 광진구 중곡2동',37.560308,127.081487);
+INSERT INTO Coordinate VALUES(144,'서울특별시 광진구 중곡3동',37.5688084,127.0801736);
+INSERT INTO Coordinate VALUES(145,'서울특별시 광진구 중곡4동',37.5590865,127.0894538);
+INSERT INTO Coordinate VALUES(146,'서울특별시 광진구 자양1동',37.534508,127.082438);
+INSERT INTO Coordinate VALUES(147,'서울특별시 광진구 자양2동',37.528825,127.084438);
+INSERT INTO Coordinate VALUES(148,'서울특별시 광진구 자양3동',37.533842,127.072913);
+INSERT INTO Coordinate VALUES(149,'서울특별시 광진구 자양4동',37.5341115,127.0662969);
+INSERT INTO Coordinate VALUES(150,'서울특별시 광진구 구의1동 ',37.5424917,127.0856756);
+INSERT INTO Coordinate VALUES(151,'서울특별시 광진구 구의2동',37.5472481,127.0899111);
+INSERT INTO Coordinate VALUES(152,'서울특별시 광진구 구의3동',37.5380706,127.0920204);
+--------------------------------------------------
+INSERT INTO Coordinate VALUES(153,'서울특별시 성동구 상왕십리동',37.568375 ,127.0245375);
+INSERT INTO Coordinate VALUES(154,'서울특별시 성동구 하왕십리동',37.5641583 ,127.02875);
+INSERT INTO Coordinate VALUES(155,'서울특별시 성동구 홍익동',37.56695,127.031975);
+INSERT INTO Coordinate VALUES(156,'서울특별시 성동구 도선동',37.563542,127.033725);
+INSERT INTO Coordinate VALUES(157,'서울특별시 성동구 마장동',37.566325,127.045388);
+INSERT INTO Coordinate VALUES(158,'서울특별시 성동구 사근동',37.5614846,127.0453315);
+INSERT INTO Coordinate VALUES(159,'서울특별시 성동구 행당동',37.558567,127.036188);
+INSERT INTO Coordinate VALUES(160,'서울특별시 성동구 응봉동',37.5531636,127.0334357);
+INSERT INTO Coordinate VALUES(161,'서울특별시 성동구 금호동1가',37.553,127.0263);
+INSERT INTO Coordinate VALUES(162,'서울특별시 성동구 금호동2가',37.553808,127.01885);
+INSERT INTO Coordinate VALUES(163,'서울특별시 성동구 금호동3가',37.5498,127.0193);
+INSERT INTO Coordinate VALUES(164,'서울특별시 성동구 금호동4가',37.5453855,127.0241155);
+INSERT INTO Coordinate VALUES(165,'서울특별시 성동구 옥수동',37.5436386,127.0134622);
+INSERT INTO Coordinate VALUES(166,'서울특별시 성동구 성수동1가',37.542108,127.04965);
+INSERT INTO Coordinate VALUES(167,'서울특별시 성동구 성수동2가',37.539817,127.056888);
+INSERT INTO Coordinate VALUES(168,'서울특별시 성동구 송정동',37.5545217,127.0696004);
+INSERT INTO Coordinate VALUES(169,'서울특별시 성동구 용답동',37.5640618,127.0555515);
+INSERT INTO Coordinate VALUES(170,'서울특별시 성동구 왕십리2동',37.5617987,127.0310207);
+INSERT INTO Coordinate VALUES(171,'서울특별시 성동구 왕십리도선동',37.5678257,127.0255501);
+INSERT INTO Coordinate VALUES(172,'서울특별시 성동구 행당1동',37.558567,127.036188);
+INSERT INTO Coordinate VALUES(173,'서울특별시 성동구 행당2동',37.558208,127.02935);
+INSERT INTO Coordinate VALUES(174,'서울특별시 성동구 금호1가동',37.5549008,127.0216354);
+INSERT INTO Coordinate VALUES(175,'서울특별시 성동구 금호2.3가동',37.5532922,127.0209487);
+INSERT INTO Coordinate VALUES(176,'서울특별시 성동구 금호4가동',37.5471987,127.02241);
+INSERT INTO Coordinate VALUES(177,'서울특별시 성동구 성수1가1동',37.542108,127.04965);
+INSERT INTO Coordinate VALUES(178,'서울특별시 성동구 성수1가2동',37.5464774,127.0443034);
+INSERT INTO Coordinate VALUES(179,'서울특별시 성동구 성수2가1동',37.5395907,127.0540659);
+INSERT INTO Coordinate VALUES(180,'서울특별시 성동구 성수2가3동',37.5482223,127.0552645);
+--------------------------------------------------
+INSERT INTO Coordinate VALUES(181,'서울특별시 용산구 후암동',37.5486375,126.9781344);
+INSERT INTO Coordinate VALUES(182,'서울특별시 용산구 용산동2가',37.54295,126.98405);
+INSERT INTO Coordinate VALUES(183,'서울특별시 용산구 용산동4가',37.5306,126.9854);
+INSERT INTO Coordinate VALUES(184,'서울특별시 용산구 갈월동',37.5425333,126.9717625);
+INSERT INTO Coordinate VALUES(185,'서울특별시 용산구 남영동',37.5457586,126.9748403);
+INSERT INTO Coordinate VALUES(186,'서울특별시 용산구 용산동1가',37.5401,126.977);
+INSERT INTO Coordinate VALUES(187,'서울특별시 용산구 동자동',37.5520533,126.9723999);
+INSERT INTO Coordinate VALUES(188,'서울특별시 용산구 서계동',37.5524583,126.9664);
+INSERT INTO Coordinate VALUES(189,'서울특별시 용산구 청파동1가',37.5488,126.9674);
+INSERT INTO Coordinate VALUES(190,'서울특별시 용산구 청파동2가',37.5462,126.9667);
+INSERT INTO Coordinate VALUES(191,'서울특별시 용산구 청파동3가',37.5432,126.9668);
+INSERT INTO Coordinate VALUES(192,'서울특별시 용산구 원효로1가',37.5398,126.9673625);
+INSERT INTO Coordinate VALUES(193,'서울특별시 용산구 원효로2가',37.536775,126.963225);
+INSERT INTO Coordinate VALUES(194,'서울특별시 용산구 신창동',37.5358417,126.9547);
+INSERT INTO Coordinate VALUES(195,'서울특별시 용산구 산천동',37.5353,126.9513);
+INSERT INTO Coordinate VALUES(196,'서울특별시 용산구 청암동',37.5344784,126.9466319);
+INSERT INTO Coordinate VALUES(197,'서울특별시 용산구 원효로3가',37.5344,126.9581);
+INSERT INTO Coordinate VALUES(198,'서울특별시 용산구 원효로4가',37.5328,126.9504);
+INSERT INTO Coordinate VALUES(199,'서울특별시 용산구 효창동',37.5424569,126.9618498);
+INSERT INTO Coordinate VALUES(200,'서울특별시 용산구 도원동',37.5388,126.9561);
+INSERT INTO Coordinate VALUES(201,'서울특별시 용산구 용문동',37.5389,126.957562);
+INSERT INTO Coordinate VALUES(202,'서울특별시 용산구 문배동',37.537,126.969088);
+INSERT INTO Coordinate VALUES(203,'서울특별시 용산구 신계동',37.5358,126.9667);
+INSERT INTO Coordinate VALUES(204,'서울특별시 용산구 한강로1가',37.5362,126.973488);
+INSERT INTO Coordinate VALUES(205,'서울특별시 용산구 한강로2가',37.5316667,126.968725);
+INSERT INTO Coordinate VALUES(206,'서울특별시 용산구 용산동3가',37.532,126.9768);
+INSERT INTO Coordinate VALUES(207,'서울특별시 용산구 용산동5가',37.5257,126.9747);
+INSERT INTO Coordinate VALUES(208,'서울특별시 용산구 한강로3가',37.5278,126.9602);
+INSERT INTO Coordinate VALUES(209,'서울특별시 용산구 이촌동',37.5214167,126.9732);
+INSERT INTO Coordinate VALUES(210,'서울특별시 용산구 이태원동',37.5325225,126.9950384);
+INSERT INTO Coordinate VALUES(211,'서울특별시 용산구 동빙고동',37.5237,126.9957);
+INSERT INTO Coordinate VALUES(212,'서울특별시 용산구 서빙고동',37.520458,126.994663);
+INSERT INTO Coordinate VALUES(213,'서울특별시 용산구 주성동',37.5214781,126.9995663);
+INSERT INTO Coordinate VALUES(214,'서울특별시 용산구 용산동6가',37.5169,126.984);
+INSERT INTO Coordinate VALUES(215,'서울특별시 용산구 보광동',37.5263257,127.0001818);
+INSERT INTO Coordinate VALUES(216,'서울특별시 용산구 용산2가동',37.5461327,126.9855777);
+INSERT INTO Coordinate VALUES(217,'서울특별시 용산구 청파동1가',37.5488,126.9674);
+INSERT INTO Coordinate VALUES(218,'서울특별시 용산구 원효로1동',37.5372185,126.9676811);
+INSERT INTO Coordinate VALUES(219,'서울특별시 용산구 원효로2동',37.53435,126.951538);
+INSERT INTO Coordinate VALUES(220,'서울특별시 용산구 한강로동',37.5281071,126.9692332);
+INSERT INTO Coordinate VALUES(221,'서울특별시 용산구 이촌1동',37.5214167,126.9732);
+INSERT INTO Coordinate VALUES(222,'서울특별시 용산구 이촌2동',37.5262575,126.9547071);
+INSERT INTO Coordinate VALUES(223,'서울특별시 용산구 이태원1동',37.5325225,126.9950384);
+INSERT INTO Coordinate VALUES(224,'서울특별시 용산구 이태원2동',37.5418962,126.9901481);
 
-----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
 
-INSERT INTO town VALUES(1, 0, 1,'');
+INSERT INTO town VALUES(1, 0, 1);
 
 ----------------------------------------------------------------------------------------------------
 
@@ -591,7 +723,9 @@ INSERT INTO category VALUES(115,'기타상품',114);
 
 ----------------------------------------------------------------------------------------------------
 
-----------------------------------------------------------------------------------------------------
+INSERT INTO product VALUES (0, 0, 1, 114, '양파마켓 키워드 알림', '키워드 알림', 0, 'onion.png', SYSDATE, NULL, NULL, 0, 'SOLDOUT', 0, 1);
+
+--------------------------------------------------
 
 INSERT INTO product VALUES(101,1,1,43,'코오롱스포츠 구스다운 여성 롱패딩 블랙','하자없이 상태좋은편입니다 드라이 한번 하고 입으시면 될 것 같아요 사이즈 95 택포',65000,'42여성패딩1.png',SYSDATE , '', '' ,0,'SALESON','',0);
 INSERT INTO product VALUES(102,1,1,44,'트렌치코트','소매부분은 끈으로 리본 묶을 수 있어요 뒷부분은 케이프 형태입니다.',50000,'42여성코트1.png',SYSDATE , '', '' ,0,'SALESON','1',0);
@@ -624,7 +758,7 @@ INSERT INTO product VALUES(128,1,1,107,'식물/염자 다육식물 화초 새토
 INSERT INTO product VALUES(129,1,1,107,'다육이','고급진 화분에 붉게 물든 다육 넘이쁘죠',13000,'105다육4.png',SYSDATE , '', '' ,0,'SALESON','',0);
 INSERT INTO product VALUES(130,1,1,107,'다육 모듬입니다~','사이즈 확인하시고 상대원3동 주민센터 앞으로 오시면 되요',7000,'105다육5.png',SYSDATE , '', '' ,0,'SALESON','1',0);
 
-INSERT INTO product VALUES (0, 0, 1, 114, '양파마켓 키워드 알림', '키워드 알림', 0, 'onion.png', SYSDATE, NULL, NULL, 0, 'SOLDOUT', 0, 1);
+INSERT INTO product VALUES(999,1,1,115,'ㄷrㅁㅂrlㅍrㅁㄴiㄷr','남은거 3개비 팜',1000,'115금지품목1.png',SYSDATE , '', '' ,0,'SALESON','1',0);
 
 ----------------------------------------------------------------------------------------------------
 

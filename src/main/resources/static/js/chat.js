@@ -12,6 +12,17 @@ let page
 let hasNext
 let lastDate
 
+// 안읽은 채팅수 표시
+$(function () {
+	$.ajax({
+		url: "/chat/notRead?memberId=" + memberId,
+		method: "GET",
+		success: function (notRead) {
+			notReadChat(notRead)
+		}
+	})
+})
+
 // data-target
 $('.trigger').click(function () {
 	let id = $(this).data("target")
@@ -45,6 +56,27 @@ let modalChange = function (page) { // page - circle, list, room
 	}
 }
 
+
+// 안읽은 채팅 수 출력
+let notReadChat = function (notRead) {
+	if (notRead == 0) {
+		$('#notRead').css('display', 'none')
+	} else {
+
+		if (notRead > 99) {
+			notRead = 99
+		}
+
+		if (notRead < 10) {
+			$('#notRead').css('font-size', '14px')
+		} else if (notRead < 100) {
+			$('#notRead').css('font-size', '12px')
+		}
+
+		$('#notRead').css('display', 'inline-block')
+		$('#notRead').html(notRead)
+	}
+}
 
 // 채팅 출력
 let printChat = function () {
@@ -194,7 +226,8 @@ let openChatroomList = function () {
 					content = "오류"
 				}
 
-				let notRead = (chatroomDTO.notRead != 0 ? `<div class="not-read">${chatroomDTO.notRead}</div>` : "")
+				let notRead = (chatroomDTO.notRead == 0 ? ""
+					: `<div class="not-read">${chatroomDTO.notRead > 99 ? 99 : chatroomDTO.notRead}</div>`)
 
 				let str =
 					`<div class="chat-room" id="chatroom${chatroomDTO.chatroomId}">` +
@@ -319,19 +352,16 @@ $('#chatImageName').change(function () {
 	})
 })
 
-// 메세지 출력
+// 메세지 수신
 stomp.connect({}, function () {
-	stomp.subscribe("/sub/chat/" + memberId, function (chat) {
+
+	// 메세지 출력
+	stomp.subscribe("/sub/chat/message/" + memberId, function (chat) {
 
 		let chatDTO = JSON.parse(chat.body)
 
-		// 채팅방 리스트에 있을 때
-		if (chatroomId == 0) {
-			openChatroomList()
-		}
-		
 		// 메세지가 온 채팅방에 있을때
-		else if (chatroomId == chatDTO.chatroomId) {
+		if (chatroomId == chatDTO.chatroomId) {
 
 			// 채팅 읽음
 			$.ajax({
@@ -362,8 +392,23 @@ stomp.connect({}, function () {
 				$('#msgArea').scrollTop($('#msgArea')[0].scrollHeight)
 			}, 50)
 		}
+
+		// 채팅방 리스트에 있을 때
+		else if ($('#chatList').css("display") == 'block') {
+			openChatroomList()
+		}
+
+		// 채팅 아이콘
+		else if ($('#chat-circle').css("display") == 'block') {
+			stomp.send("/pub/chat/notRead", {}, JSON.stringify({ memberId: memberId }));
+		}
 	})
 
+	// 안읽은 채팅
+	stomp.subscribe("/sub/chat/notRead/" + memberId, function (data) {
+		let notRead = JSON.parse(data.body)
+		notReadChat(notRead)
+	})
 })
 
 // modal에서 body 스크롤 방지 // 수정 필요

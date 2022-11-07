@@ -3,9 +3,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<meta name="_csrf" content="${_csrf.token}">
-<meta name="_csrf_header" content="${_csrf.headerName}">
-
 <!-- Checkout Section Begin -->
 <section class="checkout spad">
 
