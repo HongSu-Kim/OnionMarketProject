@@ -1,98 +1,72 @@
-<%@ page import="javax.validation.constraints.NotEmpty" %>
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<c:set var = "cp" value = "<%=request.getContextPath()%>"/>
 
-<%
+<!-- Checkout Section Begin -->
+<section class="checkout spad">
 
-    String userId = request.getParameter("userId");
+    <div style=background-color:white;">
+        <div id="container">
 
-%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>카테고리 생성</title>
-
-</head>
-<body>
+        </div>
 
 
-<br/>
-<br/>
-<br/>
+        <div id="modal" class="modal-overlay">
+            <div class="modal-window">
+                <div class="title">
+                    <div style="text-align: right">
 
+                        <a href="/product/wishRangeList"><span class="icon_close"></span></a>
+                    </div>
+                    <div style="text-align: center">
 
-
-
-<form:form action=""  method="post">
-    <input type="text" name="id" value="삭제할 번호 입력!"/>
-    <input type="submit"  value="삭제하기"/>
-
-
-    <br/>
-
-</form:form>
-
--------------------------------------------------------------------------<br/>
-   <strong><상위카테고리></상위카테고리></strong><br/>
-    <c:forEach var="Topcategory" items="${Topcategory}">
-        <strong>${Topcategory.id}.${Topcategory.categoryName}</strong><br/>
+                    </div>
+                    <div style="text-align: center">
+                        <div style="position: center"><h3>카테고리 조회 및 수정</h3></div>
+                        <br/><br/>
+                    </div>
 
 
 
-
-    </c:forEach>
--------------------------------------------------------------------------<br/>
-<strong ><하위카테고리></하위카테고리></strong><br/>
-<c:forEach var="Subcategory" items="${Subcategory}">
-    <strong>${Subcategory.id}.${Subcategory.categoryName}</strong><br/>
+                        <input type="hidden" name="memberId" value="${memberDTO.id}">
 
 
-</c:forEach>
-
--------------------------------------------------------------------------<br/>
-
-<%--    <c:forEach var="uniformPARENT_ID" items="${uniformPARENT_ID}">--%>
-<%--    <input type="text" name="id" value="${uniformPARENT_ID.id} ${uniformPARENT_ID.categoryName}"/><br/>--%>
-<%--    </c:forEach>--%>
-
-
-<%--        <select name="categoryName">--%>
-<%--            <c:forEach var="uniformPARENT_ID" items="${uniformPARENT_ID}">--%>
-
-<%--            <option value="${uniformPARENT_ID.categoryName}">${uniformPARENT_ID.categoryName} </option>--%>
-<%--                <br/>--%>
-
-<%--            </c:forEach>--%>
-<%--        </select>--%>
-<%--                <br/>  <br/>  <br/>--%>
-
-<%--                <strong>축구화</strong><br/>--%>
-
-<%--                <c:forEach var="footballbootPARENT_ID" items="${footballbootPARENT_ID}">--%>
-<%--                <input type="text" name="id" value="${footballbootPARENT_ID.id} ${footballbootPARENT_ID.categoryName}"/><br/>--%>
-<%--                </c:forEach>--%>
-
-
-<%--                <select name="categoryName">--%>
-<%--                    <c:forEach var="footballbootPARENT_ID" items="${footballbootPARENT_ID}">--%>
-
-<%--                        <option value="${footballbootPARENT_ID.categoryName}">${footballbootPARENT_ID.categoryName} </option>--%>
-
-
-<%--                    </c:forEach>--%>
-<%--                </select>--%>
-
-<%--                    <br/>  <br/>  <br/> <br/>  <br/>  <br/>--%>
+                        <select id="topCategory">
+                            <option value="">선택하세요</option>
+                            <c:forEach var="topCategory" items="${topCategoryList}">
+                                <option value="${topCategory.categoryId}">${topCategory.categoryName}</option>
+                            </c:forEach>
+                        </select>
 
 
 
 
 
 
+<%--                        <strong> <input type="submit" value=" 등록"--%>
+<%--                                        style="background-color: #90C8AC; color: white"/><br/></strong>--%>
+
+                    <br/>  <br/>
+<%--                    <form:form action="/category/categoryDelete" method="get">--%>
+                     <button  id="subCategory" name="categoryId"></button>
+
+<%--                    </form:form>--%>
 
 
-</body>
-</html>
+
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+
+
+
+
+</section>
+<!-- Checkout Section End -->
+

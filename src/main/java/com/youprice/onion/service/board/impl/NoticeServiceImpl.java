@@ -32,13 +32,13 @@ public class NoticeServiceImpl implements NoticeService {
     private final NoticeImageRepository noticeImageRepository;
 
     @Transactional
-    public Long saveNotice(NoticeFormDTO form, List<MultipartFile> noticeImageName) throws IOException {
+    public Long saveNotice(NoticeFormDTO form) throws IOException {
 
         Member member = memberRepository.findById(form.getMemberId()).orElse(null);
         Notice notice = new Notice(member, form.getNoticeType(), form.getNoticeSubject(), form.getNoticeContent());
         Notice save = noticeRepository.save(notice);
 
-        List<String> storeName = ImageUtil.store(noticeImageName, "notice");
+        List<String> storeName = ImageUtil.store(form.getNoticeImageName(), "notice");
         for (String storeImageName : storeName) {
             NoticeImage noticeImage = new NoticeImage(save, storeImageName);
             noticeImageRepository.save(noticeImage);

@@ -9,7 +9,9 @@
 		<!-- chat btn -->
 		<div id="chat-circle" class="btn btn-raised">
 			<div id="chat-overlay"></div>
-			<i class="fa fa-solid fa-comment"></i>
+			<i class="fa fa-solid fa-comment">
+				<span id="notRead"></span>
+			</i>
 		</div>
 
 		<div id="chat-modal">

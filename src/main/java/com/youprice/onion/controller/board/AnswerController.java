@@ -10,6 +10,7 @@ import com.youprice.onion.service.board.AnswerService;
 import com.youprice.onion.service.board.InquiryService;
 import com.youprice.onion.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,6 +28,7 @@ public class AnswerController {
     private final MemberService memberService;
 
     @GetMapping("/created/{id}")
+    @PreAuthorize("isAuthenticated()")
     public String answerForm(@PathVariable("id") Long inquiryId, Model model,
                              @LoginUser SessionDTO sessionDTO){
         if(sessionDTO != null){

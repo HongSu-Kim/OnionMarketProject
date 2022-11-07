@@ -1,5 +1,7 @@
 package com.youprice.onion.controller.product;
 
+import com.youprice.onion.dto.board.AnswerFormDTO;
+import com.youprice.onion.dto.board.InquiryFormDTO;
 import com.youprice.onion.dto.member.MemberDTO;
 import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.product.CoordinateFindDTO;
@@ -21,13 +23,13 @@ import com.youprice.onion.util.AlertRedirect;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
@@ -39,7 +41,6 @@ public class TownController {
 
     private final TownService townService;
     private final MemberService memberService;
-    private final CategoryService categoryService;
     private final CoordinateService coordinateService;
 
     @GetMapping("town")
@@ -57,8 +58,7 @@ public class TownController {
     }
 
     @PostMapping("rangeProduct")
-    public String rangeProduct(Model model, @LoginUser SessionDTO sessionDTO, @RequestParam("range") String range
-            , @RequestParam("townName") String townName) {
+    public String rangeProduct(Model model, @LoginUser SessionDTO sessionDTO, @RequestParam("range") String range) {
 
         if (sessionDTO == null) return "redirect:/member/login";
         MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
@@ -68,69 +68,47 @@ public class TownController {
         model.addAttribute("list", list);
         model.addAttribute("range", range);
 
-        System.out.println(range); //거리범위
-        System.out.println(townName); //동네이름
-
-
         return "product/town";
     }
 
-
     @GetMapping("townresult")
-    public String find(Town town, Model model, @RequestParam("wishtown") String wishtown,
+    public String find(Model model, @RequestParam("wishtown") String wishtown,
                        @LoginUser SessionDTO sessionDTO) {
 
 
-        List<CoordinateFindDTO> Gangnam = coordinateService.FindGangnam();
-        List<CoordinateFindDTO> Songpa = coordinateService.FindSongpa();
-        List<CoordinateFindDTO> Gangdong = coordinateService.FindGangdong();
+        List<CoordinateFindDTO> townList = coordinateService.findTownList(wishtown);
         MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
 
         model.addAttribute("memberDTO", memberDTO);
-
-        model.addAttribute("Gangnam", Gangnam);
-        model.addAttribute("Songpa", Songpa);
-        model.addAttribute("Gangdong", Gangdong);
+        model.addAttribute("townList", townList);
         model.addAttribute("wishtown", wishtown);
-
 
         return "product/townresult";
     }
 
 
-    @PostMapping("townresult")
-    public String townResult(Town town, Model model, @RequestParam("wishtown") String wishtown,
-                             @LoginUser SessionDTO sessionDTO, HttpServletResponse response) throws IOException {
-        try {
+    @GetMapping("searchTownresult")
+    public String townResult() {
 
-            List<CoordinateFindDTO> Gangnam = coordinateService.FindGangnam();
-            List<CoordinateFindDTO> Songpa = coordinateService.FindSongpa();
-            List<CoordinateFindDTO> Gangdong = coordinateService.FindGangdong();
-            MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
-
-            model.addAttribute("memberDTO", memberDTO);
-
-            model.addAttribute("Gangnam", Gangnam);
-            model.addAttribute("Songpa", Songpa);
-            model.addAttribute("Gangdong", Gangdong);
-            model.addAttribute("wishtown", wishtown);
-
-            return "product/townresult";
-
-        } catch (RuntimeException e) {
-            return AlertRedirect.warningMessage(response, "실패 ");
-        }
-
+        return "redirect:/town/townresult";
 
     }
 
     @PostMapping("town")
-    public String townAdd(Model model, TownAddDTO townAddDTO, @RequestParam("townName") String townName, HttpServletResponse response) throws IOException {
+    public String townAdd(TownAddDTO townAddDTO, @RequestParam("townName") String townName, HttpServletResponse response) throws IOException {
 
 
         townService.townAdd(townAddDTO, response, townName);
         return "redirect:/town/town";
 
+    }
+
+    @GetMapping("townDelete")
+    public String townDelte(@RequestParam("id") Long id) {
+
+        townService.townDelete(id);
+
+        return "redirect:/town/town";
 
     }
 }

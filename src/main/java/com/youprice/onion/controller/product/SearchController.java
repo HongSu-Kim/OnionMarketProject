@@ -20,10 +20,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
@@ -32,11 +35,10 @@ import java.util.List;
 @RequestMapping("search")
 public class SearchController {
 
-    private final MemberService memberService;
-    private final CategoryService categoryService;
+
     private final SearchService searchService;
     private final ProductService productService;
-    private final ProhibitionKeywordService prohibitionKeywordService;
+
 
     @GetMapping("search")
     public String SearchCreate(Model model) {
@@ -50,21 +52,29 @@ public class SearchController {
     }
 
     @GetMapping("list")
-    public String KeywordCreate(Model model, SearchAddDTO searchAddDTO, @RequestParam("searchName") String searchName,
-								HttpServletResponse response, @LoginUser SessionDTO sessionDTO,
+    public String KeywordCreate(Model model, @Valid SearchAddDTO searchAddDTO, @RequestParam("searchName") String searchName,
+                                HttpServletResponse response, @LoginUser SessionDTO sessionDTO, HttpSession session,
+
 								@PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) throws IOException {
 
+
         try {
+
+            if(searchName ==""){
+                return  "redirect:/";
+            }
+
             if (searchService.findBySearchName(searchName) == null) {
                 searchService.SearchCreate(searchAddDTO, searchName, response);
             } else {
 				searchService.searchupdatecount(searchName);
 			}
 
+
 			SearchRequirements searchRequirements = SearchRequirements.builder()
 					.pageable(pageable)
-					.searchValue(searchName)
 					.blindStatus(false)
+                    .searchValue(searchName)
 					.build();
 
 			Long memberId = sessionDTO == null ? null : sessionDTO.getId();
@@ -72,8 +82,9 @@ public class SearchController {
             Page<ProductListDTO> page = productService.getProductListDTO(memberId, searchRequirements);
 
             model.addAttribute("page", page);
-
-            return "product/list";
+            model.addAttribute("searchName", searchName);
+            System.out.println(searchName);
+            return "product/searchlist";
 
         } catch (RuntimeException e) {
             return AlertRedirect.warningMessage(response, "검색중 오류입니다\n");

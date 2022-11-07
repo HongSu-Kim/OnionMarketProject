@@ -77,7 +77,7 @@ public class InquiryServiceImpl implements InquiryService {
     }
 
     // 회원 1명의 전체 문의 기간 검색
-    public Page<InquiryDTO> getPeriodSearch(String dt_fr, String dt_to, Long memberId, Pageable pageable){
+    public Page<InquiryDTO> getPeriodSearch(String dt_fr, String dt_to, String status, Long memberId, Pageable pageable){
 
         String from = dt_fr.replace(".", "-");
         String to = dt_to.replace(".", "-");
@@ -86,7 +86,14 @@ public class InquiryServiceImpl implements InquiryService {
         LocalDate fromDate = LocalDate.parse(from, dateTimeFormatter);
         LocalDate toDate = LocalDate.parse(to, dateTimeFormatter);
 
-        return inquiryRepository.findPeriod(fromDate, toDate, memberId, pageable).map(InquiryDTO::new);
+        if(status.equals("")){
+            return inquiryRepository.findPeriod(fromDate, toDate, memberId, pageable).map(InquiryDTO::new);
+        } else {
+            return inquiryRepository.findByPeriodandStatus(fromDate,toDate,status,memberId,pageable).map(InquiryDTO::new);
+        }
+    }
+    public Page<InquiryDTO> listByStatus(String status, Long memberId, Pageable pageable){
+        return inquiryRepository.findByStatus(status, memberId, pageable).map(InquiryDTO::new);
     }
 
     // 모든 문의 기간 검색

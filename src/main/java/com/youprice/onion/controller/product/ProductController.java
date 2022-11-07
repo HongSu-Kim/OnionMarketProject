@@ -187,9 +187,10 @@ public class ProductController {
         searchRequirements.setPageable(pageable);
         searchRequirements.setCoordinateIdList((List<Long>) session.getAttribute("rangeList"));
 
-        Page<ProductListDTO> distancePage = productService.getProductListDTO(memberId, searchRequirements);
+        Page<ProductListDTO> page = productService.getProductListDTO(memberId, searchRequirements);
 
-        model.addAttribute("distancePage", distancePage);
+        model.addAttribute("page", page);
+
 
         return "product/wishRangeList";
     }
@@ -198,39 +199,39 @@ public class ProductController {
     public String allList(@LoginUser SessionDTO sessionDTO, Model model, @PageableDefault(size = 12, sort = "uploadDate", direction = Sort.Direction.DESC) Pageable pageable, @RequestParam("range") Double range
             , @RequestParam("townName") String townName, HttpSession session) {
 
-		List<Long> rangeList = coordinateService.coordinateSearch(townName, range);
-		session.setAttribute("rangeList", rangeList);
+        List<Long> rangeList = coordinateService.coordinateSearch(townName, range);
+        session.setAttribute("rangeList", rangeList);
 
         SearchRequirements searchRequirements = SearchRequirements.builder()
-				.pageable(pageable)
+                .pageable(pageable)
                 .blindStatus(false)
-				.coordinateIdList(rangeList)
+                .coordinateIdList(rangeList)
                 .build();
 
-		Long memberId = sessionDTO == null ? null : sessionDTO.getId();
+        Long memberId = sessionDTO == null ? null : sessionDTO.getId();
 
-		Page<ProductListDTO> page = productService.getProductListDTO(memberId, searchRequirements);
+        Page<ProductListDTO> page = productService.getProductListDTO(memberId, searchRequirements);
 
-//		model.addAttribute("page", page);
-		model.addAttribute("distancePage", page);
-		model.addAttribute("distancePagelist", page.getContent());
-		return "product/wishRangeList";
+        model.addAttribute("page", page);
+
+
+        return "product/wishRangeList";
 
     }
 
     @GetMapping("auctionList") //경매 상품 리스트
     public String auctionList(@LoginUser SessionDTO userSession, HttpSession session, Model model,
-                              @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
+                              @PageableDefault(size = 12, sort = "auctionDeadline", direction = Sort.Direction.ASC) Pageable pageable) throws Exception {
 
         SearchRequirements searchRequirements = SearchRequirements.builder()
                 .blindStatus(false)
                 .auctionStatus(true)
                 .build();
 
-		Long memberId = null;
-		if (userSession != null) {
-			memberId = userSession.getId();
-		}
+        Long memberId = null;
+        if (userSession != null) {
+            memberId = userSession.getId();
+        }
 
         searchRequirements.setPageable(pageable);
 
@@ -243,24 +244,24 @@ public class ProductController {
 
     @GetMapping(value = "category")//상품 카테고리별 화면 주소
     public String category(@LoginUser SessionDTO sessionDTO, Model model, Long categoryId,
-						   @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+                           @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
-		List<Long> categoryIdList = categoryService.findSubCategory(categoryId)
-				.stream().map(CategoryFindDTO::getCategoryId)
-				.collect(Collectors.toList());
+        List<Long> categoryIdList = categoryService.findSubCategory(categoryId)
+                .stream().map(CategoryFindDTO::getCategoryId)
+                .collect(Collectors.toList());
 
-		SearchRequirements searchRequirements = SearchRequirements.builder()
-				.pageable(pageable)
-				.blindStatus(false)
-				.categoryIdList(categoryIdList)
-				.build();
+        SearchRequirements searchRequirements = SearchRequirements.builder()
+                .pageable(pageable)
+                .blindStatus(false)
+                .categoryIdList(categoryIdList)
+                .build();
 
-		Long memberId = sessionDTO == null ? null : sessionDTO.getId();
+        Long memberId = sessionDTO == null ? null : sessionDTO.getId();
 
-		Page<ProductListDTO> page = productService.getProductListDTO(memberId, searchRequirements);
+        Page<ProductListDTO> page = productService.getProductListDTO(memberId, searchRequirements);
 
-		model.addAttribute("categoryId", categoryId);
-		model.addAttribute("page", page);
+        model.addAttribute("categoryId", categoryId);
+        model.addAttribute("page", page);
 
         return "product/list";
     }
@@ -300,36 +301,36 @@ public class ProductController {
     }
 
     @PostMapping("/update/{productId}")//실제 상품 업데이트 주소
-	@PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated()")
     public String updateProduct(@PathVariable Long productId, ProductUpdateDTO updateDTO, BindingResult bindingResult,
-								HttpServletResponse response) throws Exception {
+                                HttpServletResponse response) throws Exception {
 
         if (prohibitionKeywordService.ProhibitionKeywordFind(updateDTO.getSubject())) { //금지키워드가있으면 true
             bindingResult.addError(new FieldError("productAddDTO", "subject", "적합하지 않은 단어가 포함되어 있습니다."));
         }
 
-		if (bindingResult.hasErrors()) {
-			return "product/updateProduct";
-		}
+        if (bindingResult.hasErrors()) {
+            return "product/updateProduct";
+        }
 
         /*상품 정보 업데이트*/
-		try {
-        	productService.updateProduct(productId, updateDTO);
-		} catch (ArrayIndexOutOfBoundsException e) {
-			// 이미지 없을떄 오류 처리
-			AlertRedirect.warningMessage(response, e.getMessage());
-		}
+        try {
+            productService.updateProduct(productId, updateDTO);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            // 이미지 없을떄 오류 처리
+            AlertRedirect.warningMessage(response, e.getMessage());
+        }
 
         return "redirect:/product/detail/" + productId;//상품 상세페이지로 이동
     }
 
-	// 상품상태 수정
-	@GetMapping("progressUpdate/{productId}/{productProgress}/{pageNumber}")
-	@PreAuthorize("isAuthenticated()")
-	public String progressUpdate(@PathVariable Long productId, @PathVariable String productProgress, @PathVariable int pageNumber) {
-		productService.progressUpdate(productId, productProgress);
-		return "redirect:/order/sellList?productProgress=" + productProgress + "&page=" + pageNumber;
-	}
+    // 상품상태 수정
+    @GetMapping("progressUpdate/{productId}/{productProgress}/{pageNumber}")
+    @PreAuthorize("isAuthenticated()")
+    public String progressUpdate(@PathVariable Long productId, @PathVariable String productProgress, @PathVariable int pageNumber) {
+        productService.progressUpdate(productId, productProgress);
+        return "redirect:/order/sellList?productProgress=" + productProgress + "&page=" + pageNumber;
+    }
 
     @GetMapping("/delete/{productId}")//상품 삭제 주소
     public String removeProduct(@PathVariable("productId") Long productId, @LoginUser SessionDTO userSession, HttpServletResponse response)
@@ -340,13 +341,12 @@ public class ProductController {
         if (userSession == null) {
             AlertRedirect.warningMessage(response, "/member/login", "로그인이 필요합니다.");
             return "redirect:/member/login";
-        }
-        else if(productFindDTO.getProductProgress() != ProductProgress.SALESON) {
-            return AlertRedirect.warningMessage(response,"/order/sellList", "판매 중인 상품만 삭제가 가능합니다.");//거절 후 메인 화면
-        }else {
+        } else if (productFindDTO.getProductProgress() != ProductProgress.SALESON) {
+            return AlertRedirect.warningMessage(response, "/order/sellList", "판매 중인 상품만 삭제가 가능합니다.");//거절 후 메인 화면
+        } else {
             //DB삭제가 아닌 boolean사용
             productService.deleteProduct(productId);
-            return AlertRedirect.warningMessage(response,"/order/sellList", "삭제가 완료되었습니다.");//삭제 후 메인 화면
+            return AlertRedirect.warningMessage(response, "/order/sellList", "삭제가 완료되었습니다.");//삭제 후 메인 화면
         }
     }
 

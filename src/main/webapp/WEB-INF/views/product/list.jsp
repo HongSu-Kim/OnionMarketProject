@@ -1,8 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<meta name="_csrf" content="${_csrf.token}">
-<meta name="_csrf_header" content="${_csrf.headerName}">
 
 <!-- Featured Section Begin -->
 <section class="featured spad">
@@ -28,7 +26,7 @@
 											${productDTO.productProgress}
 									</div>
 								</c:if>
-								<div style="margin-top:93%;">
+								<div class="pay__auction__image">
 									<c:if test="${productDTO.payStatus eq true}"><img src="/template/img/product/pay.png"></c:if>
 									<c:if test="${productDTO.auctionDeadline ne null}"><img src="/template/img/product/auction.png"></c:if>
 								</div>

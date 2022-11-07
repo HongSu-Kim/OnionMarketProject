@@ -5,8 +5,8 @@
 #myPage > ul > li > a {
     color: black;
 }
-.linkcolor > td > a{
-    color: #155724;
+table > tbody > tr > td > a{
+    color: #5db88a;
     align-items: flex-start;
 }
 .searchIn{
@@ -26,7 +26,7 @@
     bottom: -15px;
     right: 0;
     height: 4px;
-    width: 170px;
+    width: 330px;
     background: #90C8AC;
     content: "";
     margin-left: 285px;

@@ -4,7 +4,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
-<section class="hero hero-normal">
+<section class="hero hero-normal" style="margin-top: 250px">
     <div class="container" style="width: 700px; margin-top: 200px">
         <div class="row">
             <div class="col-lg-12">

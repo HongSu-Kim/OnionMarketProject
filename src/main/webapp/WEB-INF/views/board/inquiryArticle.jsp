@@ -1,9 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
-<c:set var="cp" value="<%=request.getContextPath()%>"/>
 
 <section class="hero hero-normal">
     <div class="container" style="width: 800px;">
@@ -21,7 +19,6 @@
                     <div class="qna-memberinfo" style="margin-bottom: 20px">
                         <div class="profile-image">
                             <img src="/img/member/${inquiryDTO.memberDTO.memberImageName}" width="100px;" height="100px" alt="프로필사진"/>
-                            <%-- /${inquiryDTO.memberDTO.memberImageName} --%>
                         </div>
                         <!-- 아이디 -->
                         <div class="qna-memberId">
@@ -118,9 +115,7 @@
                                         <div class="qna-answer-dateline">
                                         <span class="answer-date-left">
                                             <span class="answer-date">
-                                                <fmt:parseDate value="${dto.answerDate}" var="dateFmt"
-                                                               pattern="yyyy-MM-dd'T'HH:mm:ss"/>
-                                                <fmt:formatDate value="${dateFmt}" pattern="YYYY-MM-dd HH:mm"/>
+                                                ${dto.answerDate}
                                             </span>
                                         </span>
                                         </div>
@@ -138,10 +133,21 @@
         </div>
 
         <div align="center" style="margin-top: 20px">
-            <button type="submit"
-                    onclick="location.href='/inquiry/list?field=${param.field}&word=${param.word}&page=${param.page}'"
-                    class="site-btn-answer">목록으로
-            </button>
+            <c:choose>
+                <c:when test="${memberDTO.id eq inquiryDTO.memberDTO.id}">
+                    <button type="submit"
+                            onclick="location.href='/inquiry/myList/${memberDTO.id}'" class="site-btn-answer">목록으로
+                    </button>
+                </c:when>
+                <c:otherwise>
+                    <button type="submit"
+                            onclick="location.href='/inquiry/list?field=${param.field}&word=${param.word}&page=${param.page}'"
+                            class="site-btn-answer">목록으로
+                    </button>
+                </c:otherwise>
+            </c:choose>
+
+
         </div>
     </div>
 </section>

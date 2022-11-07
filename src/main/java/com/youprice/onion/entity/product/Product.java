@@ -63,10 +63,6 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<ProductImage> productImageList = new ArrayList<>();
 
-    //태그 참조 양방향
-    @OneToMany(mappedBy = "product")
-    private List<ProductTag> productTagList = new ArrayList<>();
-
     //찜 참조 양방향
     @OneToMany(mappedBy = "product")
     private  List<Wish> wishList = new ArrayList<>();
@@ -142,12 +138,6 @@ public class Product {
         this.auctionDeadline = updateDTO.getAuctionDeadline();
         this.payStatus = updateDTO.getPayStatus();
 		this.productImageList = productImageList;
-    }
-
-    //경매 상품 가격&블라인드 수정
-    public void updateAuctionProduct(ProductListDTO productListDTO){
-        this.price = productListDTO.getPrice();
-        this.blindStatus = productListDTO.getBlindStatus();
     }
 
 	// 상품상태 수정

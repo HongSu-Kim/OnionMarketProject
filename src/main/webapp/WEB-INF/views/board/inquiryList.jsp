@@ -4,8 +4,8 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
-<section class="hero-normal" style="margin-top: 200px">
-    <div class="container" style="width: 1000px;">
+<section class="hero-normal" style="margin-top: 240px">
+    <div class="container" style="width: 1200px;">
         <div class="section-title">
             <h3 style="margin-left: 100px">1:1 문의 게시판
                 <div style="float: right;">
@@ -95,7 +95,7 @@
                 <c:otherwise>
                     <c:forEach var="dto" items="${questionlist.content }">
                         <tr>
-                            <td><a style="margin-left: 30px;">${questionlist.totalElements - (questionlist.number * questionlist.size) - questionlist.content.indexOf(dto)}</a></td>
+                            <td><a style="margin-left:35px;">${questionlist.totalElements - (questionlist.number * questionlist.size) - questionlist.content.indexOf(dto)}</a></td>
                             <td><a style="margin-left: 75px;">${dto.inquiryType}/${dto.detailType}</a></td>
 
 
@@ -106,16 +106,16 @@
                                     <c:when test="${dto.memberId eq memberDTO.id || memberDTO.role eq 'ADMIN'}">
                                         <%--|| sessionDTO.role eq 'ROLE_ADMIN'--%>
                                         <!-- 작성자이거나 관리자일 때 볼 수 있는 링크 -->
-                                        <td>Q <a href="/inquiry/article/${dto.inquiryId}?field=${param.field}&word=${param.word}&page=${param.page}">
+                                        <td><i class="fa-solid fa-lock-open"></i>&nbsp; <a href="/inquiry/article/${dto.inquiryId}?field=${param.field}&word=${param.word}&page=${param.page}">
                                             <c:out value="${dto.inquirySubject}"/><c:if
-                                                test="${dto.answer.size() != 0}">[${dto.answer.size()}]</c:if>
+                                                test="${dto.answer.size() != 0}"> &nbsp;[${dto.answer.size()}]</c:if>
                                         </a></td>
                                     </c:when>
 
                                     <c:otherwise>
-                                        <td class="text-secondary"><a><i class="icofont-lock"></i>
-                                            🔒<c:out value="${dto.inquirySubject}"/><c:if
-                                                    test="${dto.answer.size() != 0}">[${dto.answer.size()}]</c:if>
+                                        <td class="text-secondary">
+                                            <a><i class="fa-solid fa-lock"></i>&nbsp; <c:out value="${dto.inquirySubject}"/><c:if
+                                                    test="${dto.answer.size() != 0}"> [${dto.answer.size()}]</c:if>
                                         </a></td>
                                     </c:otherwise>
                                 </c:choose>
@@ -125,21 +125,21 @@
                                 <td>
                                     <a href="/inquiry/article/${dto.inquiryId}?field=${param.field}&word=${param.word}&page=${param.page}"
                                        class="secretColor">
-                                        Q ${dto.inquirySubject}
+                                        ${dto.inquirySubject}
                                         <c:if test="${dto.answer.size() != 0}">[${dto.answer.size()}]</c:if>
                                     </a>
                                 </td>
                             </c:if>
 
-                            <td><a style="margin-left: 15px">${dto.memberDTO.userId}</a></td>
+                            <td><a style="margin-left: 25px">${dto.memberDTO.userId}</a></td>
 
-                            <td><a style="margin-left: 30px">${dto.inquiryDate}</a></td>
-                            <td>
+                            <td><a style="margin-left: 40px">${dto.inquiryDate}</a></td>
+                            <td style="text-align: center">
                                 <c:if test="${dto.status == 'complete'}">
-                                    <a style="margin-left: 40px"><span style="color: #00c73c">complete</span></a>
+                                    <a><span style="color: #00c73c">complete</span></a>
                                 </c:if>
                                 <c:if test="${dto.status == 'wait'}">
-                                    <a style="margin-left: 40px"><span style="color: #7e828f">wait</span></a>
+                                    <a><span style="color: #7e828f">wait</span></a>
                                 </c:if>
                             </td>
                         </tr>

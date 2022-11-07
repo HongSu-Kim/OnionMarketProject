@@ -16,8 +16,6 @@ import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
-import static com.youprice.onion.entity.order.QDelivery.delivery;
-import static com.youprice.onion.entity.order.QOrder.order;
 import static com.youprice.onion.entity.product.QCategory.category;
 import static com.youprice.onion.entity.product.QProduct.product;
 import static com.youprice.onion.entity.product.QTown.town;
