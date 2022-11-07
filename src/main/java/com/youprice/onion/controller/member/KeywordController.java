@@ -36,13 +36,11 @@ public class KeywordController {
 
     private final CategoryService categoryService;
     private final MemberService memberService;
-
     private final KeywordService keywordService;
-    private final ProhibitionKeywordService prohibitionKeywordService;
+
 
     @GetMapping("keyword")
     public String KeywordCreate(Model model, @LoginUser SessionDTO sessionDTO) {
-
 
         if (sessionDTO == null) return "redirect:/member/login";
         MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
@@ -57,49 +55,20 @@ public class KeywordController {
     }
 
 
-    @PostMapping("keyword")
-    public String KeywordCreate(Model model, HttpServletResponse response
-            , @Valid KeywordCreateDTO keywordCreateDto, BindingResult bindingResult, @LoginUser SessionDTO sessionDTO) throws IOException {
+    @GetMapping("keywordAdd")
+    public String KeywordCreate(HttpServletResponse response, KeywordCreateDTO keywordCreateDto) throws IOException {
 
+        keywordService.KeywordCreate(keywordCreateDto, response);
 
-        if (prohibitionKeywordService.ProhibitionKeywordFind(keywordCreateDto.getKeywordName())) { //금지키워가있으면 true
-
-            bindingResult.addError(new FieldError("keywordCreateDto", "keywordName", "금지어입니다 다시입력!!"));
-            System.out.println(keywordCreateDto.getKeywordName());
-
-
-            if (bindingResult.hasErrors()) {
-
-                if (sessionDTO == null) return "redirect:/member/login";
-                MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
-
-                model.addAttribute("memberDTO", memberDTO);
-
-                List<KeywordListDTO> MykeywordList = keywordService.KeywordList(sessionDTO.getId());
-
-                model.addAttribute("MykeywordList", MykeywordList);
-
-                return "member/keyword";
-
-            }
-
-        } else {
-
-            keywordService.KeywordCreate(keywordCreateDto, response);
-
-        }
         return "redirect:/keyword/keyword";
     }
-
 
     @PostMapping("kewordDelete")
     public String MyKewordDelete(Model model, @RequestParam("id") Long keywordId) {
 
         keywordService.KewordDelete(keywordId);
 
-
         return "redirect:/keyword/keyword";
     }
-
 
 }
