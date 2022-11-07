@@ -37,7 +37,6 @@ public class ProductRangeDTO {
     private Double wishDistance; //원하는 거리범위
 
     public ProductRangeDTO(Product product) {
-
         productId = product.getId();
         memberId = product.getMember().getId();
         townId = product.getTown().getId();
@@ -55,10 +54,5 @@ public class ProductRangeDTO {
         blindStatus = product.getBlindStatus();
         latitude = product.getTown().getCoordinate().getLatitude();
         longitude = product.getTown().getCoordinate().getLongitude();
-        wishDistance = product.getTown().getWishDistance();
-
     }
-
-
-
 }

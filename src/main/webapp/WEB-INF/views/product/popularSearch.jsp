@@ -5,16 +5,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var = "cp" value = "<%=request.getContextPath()%>"/>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title></title>
-
-
-</head>
-<body>
-
 <h2 class="head-title">오늘의 중고 인기 검색어</h2>
 
 
@@ -142,6 +132,3 @@
             </p>
         </a>      </li>
 </ol>
-
-</body>
-</html>

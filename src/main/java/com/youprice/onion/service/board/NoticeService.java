@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface NoticeService {
 
-    Long saveNotice(NoticeFormDTO noticeFormDTO, List<MultipartFile> noticeImageName) throws IOException;
+    Long saveNotice(NoticeFormDTO noticeFormDTO) throws IOException;
     NoticeDTO findNoticeDTO(Long id);
     Page<NoticeDTO> searchNotice(String word, Pageable pageable);
     void update(Long noticeId, NoticeUpdateDTO noticeUpdateDTO) throws IOException;

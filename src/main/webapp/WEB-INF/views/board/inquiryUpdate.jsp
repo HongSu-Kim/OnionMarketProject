@@ -9,17 +9,13 @@
         color: #dc3545;
         font-weight: bold;
     }
-    .detailSelect {
-        display: none;
-    }
     #secretBox {
         zoom: 1;
         width: 20px;
         height: 20px;
     }
-
     .inquiryline {
-        border-bottom: 2px solid #47CD65;
+        border-bottom: 2px solid #90C8AC;
     }
 </style>
 
@@ -69,28 +65,26 @@
                 </div>
             </div>
 
-            <div class="col-lg-12">
+            <div class="col-lg-12" style="margin-bottom: 40px">
                 <div>
                     <label for="inquiryType">문의 유형</label><br/>
-                    <input type="hidden" id="dtoType" value="${inquiryDTO.inquiryType}">
-                    <form:select id="inquiryType" path="inquiryType" onchange="selectType(this.value);" style="width: 400px;">
-                        <form:option selected="selected" value="${inquiryDTO.inquiryType}">${inquiryDTO.inquiryType}</form:option>
-                        <form:option value="회원정보">회원정보/계정</form:option>
-                        <form:option value="거래">거래</form:option>
-                        <form:option value="기타서비스">기타 서비스</form:option>
-                    </form:select>
+                    <select id="inquiryType" name="inquiryType" onchange="selectType(this.value);" style="width: 400px;">
+                        <option selected="selected" value="${inquiryDTO.inquiryType}">${inquiryDTO.inquiryType}</option>
+                        <option value="회원정보">회원정보/계정</option>
+                        <option value="거래">거래</option>
+                        <option value="기타서비스">기타 서비스</option>
+                    </select>
                 </div><br/><br/>
 
                 <div>
-                    <form:select id="detailType" class="nice-select" path="detailType">
+                    <select id="detailType" class="nice-select" name="detailType">
                         <c:if test="${form.detailType != null}">
-                            <form:option value="${form.detailType}">${form.detailType}</form:option>
+                            <option selected="selected" value="${form.detailType}">${form.detailType}</option>
                         </c:if>
-                        <form:option id="dtoV" value="${inquiryDTO.detailType}">${inquiryDTO.detailType}</form:option>
-                    </form:select>
+                        <option selected="selected" value="${inquiryDTO.detailType}">${inquiryDTO.detailType}</option>
+                    </select>
                 </div>
             </div><br/><br/>
-            <br/><br/>
 
 
             <div class="col-lg-12">

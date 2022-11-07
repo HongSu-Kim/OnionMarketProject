@@ -76,9 +76,6 @@ public class Member {
     private List<Product> productList = new ArrayList<>(); //상품-회원번호 FK
 
     @OneToMany(mappedBy = "member")
-    private List<MemberCategory> memberCategoryList = new ArrayList<>(); //회원카테고리설정-회원번호 FK
-
-    @OneToMany(mappedBy = "member")
     private List<Keyword> keywordList = new ArrayList<>(); //키워드-회원번호 FK
 
     @OneToMany(mappedBy = "member")

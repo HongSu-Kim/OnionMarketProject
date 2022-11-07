@@ -35,6 +35,7 @@ public class ReviewController {
     private final MemberService memberService;
 
     @GetMapping("/created/{orderId}")
+    @PreAuthorize("isAuthenticated()")
     public String createdForm(@PathVariable("orderId") Long orderId, Model model,
                               @LoginUser SessionDTO sessionDTO) {
         OrderDTO orderDTO = orderService.getOrderDTO(orderId);
@@ -90,6 +91,7 @@ public class ReviewController {
 
     // 내가 작성한 후기 목록
     @GetMapping("/mylist/{memberId}")
+    @PreAuthorize("isAuthenticated()")
     public String myReviewList(@PathVariable Long memberId, Model model, @PageableDefault(size = 5) Pageable pageable) {
 
         MemberDTO memberDTO = memberService.getMemberDTO(memberId);
