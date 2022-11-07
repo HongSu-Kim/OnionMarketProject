@@ -115,13 +115,11 @@ a:hover {
     align-items: center;
     justify-content: center;
 
-
 }
-
 #modal .modal-window {
     /*overflow-y: auto;*/
     width: 850px;
-    height: 600px;
+    height: 650px;
     position: relative;
     top: 0px;
     padding: 10px;
@@ -130,7 +128,6 @@ a:hover {
     border: 1px black;
 
     box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
-
 
 }
 
@@ -183,8 +180,6 @@ a:hover {
 }
 
 
-
-
 input {
     width: 100%;
     height: 46px;
@@ -193,7 +188,6 @@ input {
     padding-left: 15px;
     border: 1px solid #e1e1e1;
     border-radius: 20px;
-
 
 }
 
@@ -204,11 +198,9 @@ button {
     border: 1px solid whitesmoke;
     border-radius: 5px;
 
-
 }
 
 span{
 
     color: black;
 }
-
