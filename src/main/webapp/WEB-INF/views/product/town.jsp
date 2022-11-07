@@ -17,7 +17,7 @@
 
 </head>
 <body>
-
+<br/><br/>
 <div style="text-align: center">
 
     <div id="modal" class="modal-overlay">
@@ -30,19 +30,18 @@
                     <a href="/product/wishRangeList"><span class="icon_close"></span></a>
                 </div>
 
-                <br/>
+                <br/> <br/>
 
+                <form:form action="/town/townresult" modelAttribute="townFindDTO" name="isc"
+                           onsubmit="return check_submit();" method="get">
 
-                <form:form action="/town/townresult"  modelAttribute="townFindDTO" name="isc" onsubmit="return check_submit();"  method="get">
-
-                    <input type="text" name="wishtown" value=""  style="background-color: white "
+                    <input type="text" name="wishtown" value="" style="background-color: white "
                            placeholder="동네설정은 최대 3곳 가능">
 
                     <form:errors path="wishtown"/>
                     <input type="hidden" name="memberId" value="${memberDTO.id}"><br/><br/>
                     <input type="submit" value="동네설정하기" style="background-color: #90C8AC; color: white;"/><br/><br/>
                 </form:form>
-
 
                 <strong>
                     <현재 등록된 동네>
@@ -55,24 +54,20 @@
                             <br/>
                             <strong> ${list.townName}</strong>
 
-
                         </a>
-                        <button type="submit"  name="id" value="${list.id}" style="">
-                    <a href="/town/townDelete"><span class="icon_close"></span></a>
+                        <button type="submit" name="id" value="${list.id}" style="">
+                            <a href="/town/townDelete"><span class="icon_close"></span></a>
 
-                </button>
-
-
+                        </button>
 
 
                     </c:forEach>
 
-
                 </form:form>
 
-                <br/>    <br/>
+                <br/> <br/>
                 <strong> [동네예시]
-                    강남구/ 송파구/ 강동구
+                    강남구/ 서초구/ 동작구/ 관악구/ 송파구/ 강동구/ 광진구/ 성동구/ 용산구
 
                 </strong>
                 <br/>
@@ -93,12 +88,8 @@
 
                         <output> 거리설정</output>
 
-
                     </form:form>
-
                 </c:if>
-
-
             </div>
         </div>
     </div>

@@ -60,46 +60,15 @@
 
                 </form:form><br/>
                 <div style="text-align: center">
-                    <c:if test="${wishtown ==  '강남구'}">
 
-                        <c:forEach var="Gangnam" items="${Gangnam}">
-
+                        <c:forEach var="townList" items="${townList}">
 
                             <a href="#" onclick="statusChange(this)"><p
-                                    style="margin-top: 10px; margin-bottom: 10px"> ${Gangnam.townName} </p></a>
+                                    style="margin-top: 10px; margin-bottom: 10px"> ${townList.townName} </p></a>
 
                             <p></p>
 
                         </c:forEach>
-
-
-                    </c:if>
-
-                    <c:if test="${wishtown == '송파구'}">
-
-                        <c:forEach var="Songpa" items="${Songpa}">
-
-
-                            <a href="#" onclick="statusChange(this)"><p
-                                    style="margin-top: 10px; margin-bottom: 10px"> ${Songpa.townName}</p></a>
-                            <p></p>
-                        </c:forEach>
-
-                    </c:if>
-
-
-                    <c:if test="${wishtown ==  '강동구'}">
-
-                        <c:forEach var="Gangdong" items="${Gangdong}">
-
-
-                            <a href="#" onclick="statusChange(this)"><p
-                                    style="margin-top: 10px; margin-bottom: 10px"> ${Gangdong.townName}</p></a>
-                            <p></p>
-                        </c:forEach>
-
-                    </c:if>
-
 
                 </div>
 
