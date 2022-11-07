@@ -63,10 +63,6 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<ProductImage> productImageList = new ArrayList<>();
 
-    //태그 참조 양방향
-    @OneToMany(mappedBy = "product")
-    private List<ProductTag> productTagList = new ArrayList<>();
-
     //찜 참조 양방향
     @OneToMany(mappedBy = "product")
     private  List<Wish> wishList = new ArrayList<>();
