@@ -2,7 +2,6 @@ package com.youprice.onion.entity.product;
 
 
 import com.youprice.onion.dto.product.ProductAddDTO;
-import com.youprice.onion.dto.product.ProductListDTO;
 import com.youprice.onion.dto.product.ProductUpdateDTO;
 import com.youprice.onion.entity.chat.Chatroom;
 import com.youprice.onion.entity.order.Order;
@@ -94,7 +93,7 @@ public class Product {
         if(productAddDTO.getAuctionStatus()!=true) {
             productAddDTO.setAuctionDeadline(null);
         }else{
-            productAddDTO.setAuctionDeadline(LocalDateTime.now().plusHours(12));
+            productAddDTO.setAuctionDeadline(LocalDateTime.now().plusHours(24));
         }
         this.auctionDeadline = productAddDTO.getAuctionDeadline();
         this.productProgress = ProductProgress.SALESON;
@@ -113,7 +112,7 @@ public class Product {
 		this.price = price;
 		this.representativeImage = representativeImage;
 		this.uploadDate = LocalDateTime.now();
-		this.auctionDeadline = auctionStatus ? LocalDateTime.now().plusHours(12) : null;
+		this.auctionDeadline = auctionStatus ? LocalDateTime.now().plusHours(24) : null;
 		this.productProgress = ProductProgress.SALESON;
 		this.payStatus = payStatus;
 		this.blindStatus = false;
@@ -133,7 +132,7 @@ public class Product {
         if(updateDTO.getAuctionStatus()!=true) {
            updateDTO.setAuctionDeadline(null);
         }else{
-           updateDTO.setAuctionDeadline(LocalDateTime.now().plusHours(12));
+           updateDTO.setAuctionDeadline(LocalDateTime.now().plusHours(24));
         }
         this.auctionDeadline = updateDTO.getAuctionDeadline();
         this.payStatus = updateDTO.getPayStatus();

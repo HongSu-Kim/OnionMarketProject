@@ -80,10 +80,14 @@ public class CategoryController {
     @GetMapping("categoryDelete") //카테고리 삭제
     public String update(@RequestParam("categoryId") Long categoryId) {
 
+        List<CategoryFindDTO> categoryFindDTOList = categoryService.findSubCategory(categoryId);
+        System.out.println(categoryId);
 
-        //  Category categoryFindDTOList = categoryService.CategoryDelete(categoryId);
 
-         System.out.println(categoryId);
+
+          categoryService.CategoryDelete(categoryId);
+
+
 
         return "redirect:/category/categoryupdate";
 

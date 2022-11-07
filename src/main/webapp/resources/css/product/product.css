@@ -26,6 +26,12 @@
 .checkout__input input[type=button]{
     border-width: thin; color: black;
 }
+.btnAdd {
+    border-width: thin;
+}
+.btnRemove {
+    border-width: thin;
+}
 .checkout__input input[type=submit]{
     color: black;
 }

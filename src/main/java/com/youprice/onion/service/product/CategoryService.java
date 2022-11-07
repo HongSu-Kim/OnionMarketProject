@@ -13,11 +13,11 @@ import java.util.List;
 public interface CategoryService {
 
 
-  List<CategoryFindDTO> topCategoryAdd(CategoryAddDTO categoryAddDTO, String topcategoryName, HttpSession session, HttpServletResponse response) throws IOException;
+    List<CategoryFindDTO> topCategoryAdd(CategoryAddDTO categoryAddDTO, String topcategoryName, HttpSession session, HttpServletResponse response) throws IOException;
 
     void SubCategoryAdd(CategoryAddDTO categoryAddDTO, String topcategoryName, String subCategoryName, HttpServletResponse response) throws IOException;
 
-   Category CategoryDelete(Long categoryId);
+    void CategoryDelete(Long categoryId);
 
     void CategoryUpdate(CategoryUpdateDTO categoryUpdatedto);
 
@@ -26,7 +26,6 @@ public interface CategoryService {
     List<CategoryFindDTO> findSubCategory(Long categoryId); //특정 상위카테고리에 해당하는 하위 카테고리찾기
 
     List<CategoryFindDTO> CategoryIdFind(String name);
-
 
 
 }

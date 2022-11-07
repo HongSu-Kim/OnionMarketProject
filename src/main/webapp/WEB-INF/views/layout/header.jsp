@@ -187,14 +187,11 @@
                                         <li><a href="/member/mypage">마이페이지</a></li>
                                         <sec:authorize access="hasRole('USER')">
                                             <li>
-                                                <a href="/member/cash/<sec:authentication property="principal.sessionDTO.id"/>">양파페이
-                                                    충전</a></li>
+                                                <a href="/member/cash/<sec:authentication property="principal.sessionDTO.id"/>">양파페이 충전</a></li>
                                             <li>
-                                                <a href="/review/mylist/<sec:authentication property="principal.sessionDTO.id"/>">나의
-                                                    후기</a></li>
+                                                <a href="/review/mylist/<sec:authentication property="principal.sessionDTO.id"/>">나의 후기</a></li>
                                             <li>
-                                                <a href="/inquiry/myList/<sec:authentication property="principal.sessionDTO.id"/>">나의
-                                                    문의</a></li>
+                                                <a href="/inquiry/myList/<sec:authentication property="principal.sessionDTO.id"/>">나의 문의</a></li>
                                             <li><a href="/wish/list">위시리스트</a></li>
                                         </sec:authorize>
                                         <sec:authorize access="hasRole('ADMIN')">
@@ -212,7 +209,7 @@
                                                                     class="header__cart__price profile">로그인</a></div>
                     </sec:authorize>
                     <sec:authorize access="isAuthenticated()">
-                        <div class="header__profile"><a href="/member/logout" class="header__cart__price profile">로그아웃</a></div>
+                        <div class="header__profile"><a href="/member/logout" class="header__cart__price logout">로그아웃</a></div>
                         <div class="header__cash">양파페이 잔액 : <a href="/member/cash/<sec:authentication property="principal.sessionDTO.id"/>">${cash}</a></div>
                     </sec:authorize>
                 </div>

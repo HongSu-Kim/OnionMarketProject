@@ -1,0 +1,124 @@
+.header__menu.profile {
+    display: inline-block;
+    padding: 0;
+    text-align: center;
+}
+
+.header__cart__price.profile {
+    margin-left: 15px;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+}
+
+.site-btn.mypage {
+    height: 50px;
+    width: 210px;
+    margin-left: 25px;
+}
+
+.header__nickname {
+    text-align: center;
+    display: inline-block;
+}
+
+.header-img.profile {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+.header__logo {
+    text-align: center;
+}
+
+.header__profile {
+    display: inline-block;
+}
+
+.header__cash {
+    text-align: right;
+    font-weight: normal;
+    font-size: 13px;
+}
+
+
+@import url(https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css);
+.normal     { font-weight: 400 }
+.bold       { font-weight: 700 }
+.bolder     { font-weight: 800 }
+.light      { font-weight: 300 }
+
+
+#wrap {
+    margin:0px;
+    padding:0px;
+    width:100%;
+}
+
+
+h1 {
+    color:#525252;
+    font-size:40px;
+    font-weight:100;
+    text-align:center;
+    margin:0px;
+    margin-top:193px;
+}
+h1 > b {
+    font-weight:900;
+}
+
+#best_search {
+    width:740px;
+    margin:0 auto;
+    text-align:center;
+}
+#best_search li,dd {
+    display:inline-block;
+    vertical-align:middle;
+}
+
+#best_search li p {
+    color:#393939;
+    font-size:17px;
+    font-weight:bold;
+    margin:0px;
+    padding-right:30px;
+}
+dd {
+    margin:0px;
+}
+dd  a.t{
+    cursor:pointer;
+    margin:0px;
+    color:#4b4b4b;
+    text-overflow:ellipsis;
+    overflow:hidden;
+    width:94px;
+    white-space:nowrap;
+    display:inline-block;
+    font-size:17px;
+    text-align:left;
+    padding-right:13px;
+    font-weight:700;
+    vertical-align:middle;
+}
+dd .num {
+    background-color:#4b4b4b;
+    color:#fff;
+    font-size:10px;
+    margin-right:10px;
+    vertical-align:middle;
+    width:18px;
+    height:18px;
+    float:left;
+    line-height:18px;
+    text-align:center;
+}
+.best_add {
+    border:1px solid #bebebe;
+    color:#4b4b4b;
+    padding:0px 4px;
+    margin-left:10px;
+}

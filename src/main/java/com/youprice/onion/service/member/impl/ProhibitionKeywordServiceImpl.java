@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-
 @RequiredArgsConstructor
 @Service
 @Transactional
@@ -57,7 +56,6 @@ public class ProhibitionKeywordServiceImpl implements ProhibitionKeywordService 
         out.println("<script>alert('금지 키워드 등록완료!');history.go(-1); </script>");
         out.flush();
     }
-
     @Override
     @Transactional
     public void ProhibitionKeywordUpdate(ProhibitionKeywordUpdateDTO prohibitionKeywordUpdateDTO, String updatekeyword, HttpServletResponse response) throws IOException {
@@ -81,9 +79,7 @@ public class ProhibitionKeywordServiceImpl implements ProhibitionKeywordService 
 
         } else
 
-           // prohibitionKeywordRepositoy.deleteByProhibitionKeywordName(updatekeyword);
-
-        prohibitionKeyword.prohibitionKeywordUpdate(prohibitionKeywordUpdateDTO);
+            prohibitionKeyword.prohibitionKeywordUpdate(prohibitionKeywordUpdateDTO);
 
         prohibitionKeywordRepositoy.save(prohibitionKeyword);
         out.println("<script>alert('금지키워드를 수정완료!');history.go(-1); </script>");
@@ -98,7 +94,6 @@ public class ProhibitionKeywordServiceImpl implements ProhibitionKeywordService 
 
     }
 
-
     @Override
     public List<ProhibitionKeywordFindDTO> prohibitionKewordList() {
         return prohibitionKeywordRepositoy.findAll()
@@ -106,7 +101,6 @@ public class ProhibitionKeywordServiceImpl implements ProhibitionKeywordService 
                 .collect(Collectors.toList());
 
     }
-
     @Override
     public boolean ProhibitionKeywordFind(String ProhibitionKeywordName) { //금지어 체크 메소드
 

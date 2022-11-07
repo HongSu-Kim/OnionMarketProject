@@ -117,7 +117,7 @@ public class MemberServiceImpl implements MemberService {
 
     //비밀번호 찾기
     @Override
-    public MemberDTO findPwd(String email) throws Exception {
+    public MemberDTO findPwd(String email, String url) throws Exception {
 
         //회원정보 불러오기
         Member member = memberRepository.findByEmail(email).orElse(null);
@@ -134,7 +134,7 @@ public class MemberServiceImpl implements MemberService {
         member.findPwd(tempPwd);
 
         //이메일 전송
-        MailUtil.sendMail(member);
+        MailUtil.sendMail(member, url);
 
         //암호화된 임시 비밀번호 저장
         member.findPwd(passwordEncoder.encode(member.getPwd()));
