@@ -86,6 +86,12 @@ public class CrawlingController {
 					// 상품가격 int
 					log.info("price : " + priceStr);
 					int price = Integer.parseInt(priceStr.replaceAll(",", "").replaceAll("원", "").replaceAll("만", "0000"));
+					if (price < 10)
+						price *= 1000;
+					else if (price < 100)
+						price *= 100;
+					else if (price < 1000)
+						price *= 10;
 
 					String[] townNameSplit = townName.split(" ");//동내이름 - split
 					String townNameStr = townNameSplit[townNameSplit.length - 1];
