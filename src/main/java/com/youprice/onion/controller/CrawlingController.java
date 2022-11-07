@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -113,7 +112,7 @@ public class CrawlingController {
 					List<Category> categoryList = categoryRepositoy.findBySubjectContains(categoryStr);
 					Category category = categoryList.size() == 0 ? defaultCategory : categoryList.get(0);
 
-					boolean payStatus = Math.random() < 0.8;
+					boolean payStatus = price < 500 ? false : Math.random() < 0.8;
 					boolean auctionStatus = Math.random() < 0.3;
 
 					try {
@@ -158,7 +157,7 @@ public class CrawlingController {
 		return subject;
 	}
 
-	private Map<String, String> categoryStr = new LinkedHashMap<>(){{
+	private Map<String, String> categoryStr = new HashMap<>(){{
 		put("갤럭시", "모바일");
 		put("아이폰", "모바일");
 		put("플립", "모바일");
