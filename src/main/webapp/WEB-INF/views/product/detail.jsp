@@ -28,7 +28,9 @@
 			<div class="col-lg-6 col-md-6 content">
 				<div class="product__details__text">
 					<h3>${productFindDTO.subject}</h3>
-					<h2 class="now__price"><fmt:formatNumber maxFractionDigits="3" value="${productFindDTO.price}"/> 원</h2>
+					<c:if test="${empty productFindDTO.auctionDeadline}">
+						<h2 class="now__price"><fmt:formatNumber maxFractionDigits="3" value="${productFindDTO.price}"/> 원</h2>
+					</c:if>
 					<div>
 						<span>판매자: <a href="/member/profile/${productFindDTO.memberId}">${productFindDTO.nickname}</a></span>
 					</div>
@@ -127,15 +129,13 @@
 									</div>
 								</div>
 							</c:when>
-							<c:when test="${productFindDTO.updateDate ne productFindDTO.uploadDate}">
+							<c:when test="${not empty productFindDTO.updateDate}">
 								<fmt:parseDate var="updateDate" value="${productFindDTO.updateDate}" pattern="yyyy-MM-dd'T'HH:mm"/>
 								<h6> 등록일 : <fmt:formatDate value="${updateDate}" pattern="yyyy/MM/dd HH:mm"/></h6>
-								<h6> 카테고리 : ${productFindDTO.categoryName}</h6>
 							</c:when>
 							<c:otherwise>
 								<fmt:parseDate var="uploadDate" value="${productFindDTO.uploadDate}" pattern="yyyy-MM-dd'T'HH:mm"/>
 								<h6> 등록일 :  <fmt:formatDate value="${uploadDate}" pattern="yyyy-MM-dd HH:mm"/></h6>
-								<h6> 카테고리 :  ${productFindDTO.categoryName}</h6>
 							</c:otherwise>
 						</c:choose>
 					</div>
@@ -143,7 +143,7 @@
 						<c:when test="${productFindDTO.memberId eq userSession.id}">
 							<div class="product__item">
 								<div class="product__item__text">
-									<a href="#" class="primary-btn">채팅 목록</a>
+									<button type="button" class="primary-btn" onclick="createChatroom(${productFindDTO.productId})">채팅 목록</button>
 									<c:if test="${empty productFindDTO.auctionDeadline}">
 										<a href="/product/update/${productFindDTO.productId}" class="primary-btn">상품 수정</a>
 									</c:if>
@@ -174,8 +174,16 @@
 						</c:otherwise>
 					</c:choose>
 					<ul>
-						<li><b>상품상태</b> <span>${productFindDTO.productProgress}</span></li>
-						<li><b>결제방법</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li>
+						<li><b>판매상태</b> <span>${productFindDTO.productProgress}</span></li>
+						<li>
+							<b>카테고리</b>
+							<span>
+								<a href="/product/category?categoryId=${productFindDTO.categoryParentId}">
+								${productFindDTO.categoryParentName}
+								</a>
+							</span>
+						</li>
+						<li><b>거래지역</b> <span>${productFindDTO.townName}</span></li>
 						<li><b>공유하기</b>
 							<div class="share">
 								<a href="#"><i class="fa fa-facebook"></i></a>

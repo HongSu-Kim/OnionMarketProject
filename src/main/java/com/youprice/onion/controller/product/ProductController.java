@@ -221,7 +221,7 @@ public class ProductController {
 
     @GetMapping("auctionList") //경매 상품 리스트
     public String auctionList(@LoginUser SessionDTO userSession, HttpSession session, Model model,
-                              @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
+                              @PageableDefault(size = 12, sort = "auctionDeadline", direction = Sort.Direction.ASC) Pageable pageable) throws Exception {
 
         SearchRequirements searchRequirements = SearchRequirements.builder()
                 .blindStatus(false)
