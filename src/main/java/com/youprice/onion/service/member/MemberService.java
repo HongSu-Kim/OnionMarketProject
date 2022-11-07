@@ -31,7 +31,7 @@ public interface MemberService {
 
     public void withdraw(String userId);
 
-    public MemberDTO findPwd(String email) throws Exception;
+    public MemberDTO findPwd(String email, String url) throws Exception;
 
     String modifyProfileImg(Long memberId, MultipartFile profileImg) throws IOException;
 

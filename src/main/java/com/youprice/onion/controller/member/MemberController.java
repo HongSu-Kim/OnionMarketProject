@@ -216,12 +216,16 @@ public class MemberController {
     }
 
     @PostMapping("/findPwd")
-    public String findPwd(MemberDTO memberDTO, BindingResult bindingResult, HttpServletResponse response) throws Exception {
+    public String findPwd(MemberDTO memberDTO, BindingResult bindingResult, HttpServletResponse response, HttpServletRequest request) throws Exception {
 
         if (bindingResult.hasErrors()) {
             return AlertRedirect.warningMessage(response, "/member/findPwd", "존재하지 않는 이메일 입니다. 다시 확인해 주세요.");
         }
-       memberDTO = memberService.findPwd(memberDTO.getEmail());
+
+		String requestURL = request.getRequestURL().toString();
+		String url = requestURL.substring(0, requestURL.indexOf("/", 10));
+
+		memberDTO = memberService.findPwd(memberDTO.getEmail(), url);
 
         if (memberDTO == null) {
             return AlertRedirect.warningMessage(response, "/member/findPwd", "존재하지 않는 이메일 입니다. 다시 확인해 주세요.");
