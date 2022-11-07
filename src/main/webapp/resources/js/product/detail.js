@@ -49,7 +49,7 @@ $(document).ready(function () {
                 required:true,
                 digits:true,
                 min:now,
-                max:999999
+                max:2100000000
             }
         },
         messages: {
@@ -57,7 +57,7 @@ $(document).ready(function () {
                 required: "가격을 입력해주세요.",
                 digits: "숫자만 입력 가능합니다.",
                 min: "최소 입찰가보다 커야합니다",
-                max: "최대 가격은 999,999원입니다."
+                max: "최대 가격을 넘을 수 없습니다."
             }
         }
     });
