@@ -39,7 +39,7 @@ public class ChatController {
 	// 이미지 전송
 	@PostMapping("/image")
 	@ResponseBody
-	public ResponseEntity<?> chatImage(@RequestBody ChatImageDTO chatImageDTO) {
+	public ResponseEntity<?> chatImage(ChatImageDTO chatImageDTO) {
 		try {
 			// 이미지 저장
 			ChatDTO chatDTO = chatService.uploadImage(chatImageDTO);
@@ -61,10 +61,6 @@ public class ChatController {
 		int notRead = chatService.getAllNotRead(chatDTO.getMemberId());
 		template.convertAndSend("/sub/chat/notRead/" + chatDTO.getMemberId(), notRead);
 	}
-//	public void chatNotRead(Long memberId) {
-//		int notRead = chatService.getAllNotRead(memberId);
-//		template.convertAndSend("/sub/chat/notRead/" + memberId, notRead);
-//	}
 
 	@GetMapping("notRead")
 	@ResponseBody
