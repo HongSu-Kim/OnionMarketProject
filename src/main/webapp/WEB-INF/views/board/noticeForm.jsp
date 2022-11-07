@@ -49,8 +49,7 @@
                     <div style="margin-left: 15px; display: inline">
                         <div style="display: inline;">
                             <label class="primary-btn cart-btn" for="noticeImageName">사진 첨부하기</label>
-                            <input type="file" id="noticeImageName" name="noticeImageName" multiple
-                                   style="display: none" onchange="fileInfo(this)"/>
+                            <form:input type="file" id="noticeImageName" path="noticeImageName" multiple="multiple" style="display: none"/>
                             <div id="preview"></div>
                         </div>
                     </div>
@@ -68,3 +67,6 @@
     </form:form>
 </div>
 <!-- Contact Form End -->
+<style>
+    li{list-style: none;}
+</style>

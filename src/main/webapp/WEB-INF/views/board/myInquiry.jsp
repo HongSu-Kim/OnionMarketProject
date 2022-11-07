@@ -4,10 +4,10 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 
 
-<section class="mypage-cont mypage-counsel">
-    <div class="container" style="width: 1000px;">
+<section class="mypage-cont mypage-counsel" style="margin-top: 240px">
+    <div class="container" style="width: 1200px;">
         <div class="n-section-title">
-            <h1 class="tit">나의 1:1문의</h1>
+            <h1 class="tit"><a href="/inquiry/myList/${memberId}" style="color: black">나의 1:1문의</a></h1>
         </div>
 
         <form name="searchForm" id="searchForm" method="get" action="/inquiry/myList/${memberId}">
@@ -33,10 +33,10 @@
                            onblur="checkDateFormat(this);">
                 </div>
                 <div class="n-select">
-                    <select id="state">
+                    <select name="status">
                         <option value="">전체보기</option>
-                        <option value="답변대기">답변대기</option>
-                        <option value="답변완료">답변완료</option>
+                        <option value="wait">답변대기</option>
+                        <option value="complete">답변완료</option>
                     </select>
                 </div>
 

@@ -4,7 +4,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<section class="ftco-section">
+<section class="ftco-section" style="margin-top: 210px">
     <div class="container">
         <div class="row justify-content-center">
             <div class="section-title">
