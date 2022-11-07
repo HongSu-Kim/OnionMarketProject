@@ -93,7 +93,7 @@ public class NoticeController {
         if (sessionDTO != null) {
             MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
             model.addAttribute("memberDTO", memberDTO);
-        } else return "member/login";
+        }
 
         NoticeDTO noticeDTO = noticeService.findNoticeDTO(id);
         noticeService.updateView(id);
