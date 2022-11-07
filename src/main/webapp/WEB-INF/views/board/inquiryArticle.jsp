@@ -3,7 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 
-<section class="hero hero-normal">
+<section class="hero hero-normal" style="margin-top: 240px">
     <div class="container" style="width: 800px;">
         <div class="qna-container">
             <div class="n-section-title">
