@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -26,18 +26,18 @@ public class Answer {
     private Member member; // 회원번호 FK
 
     private String answerContent; // 답변내용
-    private LocalDateTime answerDate; // 답변등록일
+    private LocalDate answerDate; // 답변등록일
 
     public Answer(Inquiry inquiry, Member member, String answerContent) {
         this.inquiry = inquiry;
         this.member = member;
         this.answerContent = answerContent;
-        this.answerDate = LocalDateTime.now();
+        this.answerDate = LocalDate.now();
     }
 
     public void updateAnswer(Long id, String answerContent){
         this.id = id;
         this.answerContent = answerContent;
-        this.answerDate = LocalDateTime.now();
+        this.answerDate = LocalDate.now();
     }
 }

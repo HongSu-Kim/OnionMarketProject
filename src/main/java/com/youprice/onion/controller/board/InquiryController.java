@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,6 +32,7 @@ public class InquiryController {
     private final ProhibitionKeywordService prohibitionKeywordService;
 
     @GetMapping("/created")
+    @PreAuthorize("isAuthenticated()")
     public String inquiryForm(@ModelAttribute("form") InquiryFormDTO form, Model model,
                               @LoginUser SessionDTO sessionDTO) {
         if (sessionDTO != null) {
@@ -97,12 +99,17 @@ public class InquiryController {
 
     // 나의 문의 목록
     @GetMapping("/myList/{memberId}")
+    @PreAuthorize("isAuthenticated()")
     public String myList(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
-                         @PathVariable Long memberId, Model model, @RequestParam(required = false) String dt_fr,
-                         @RequestParam(required = false) String dt_to) {
+                         @PathVariable Long memberId, Model model, @RequestParam(required = false, defaultValue = "") String dt_fr,
+                         @RequestParam(required = false, defaultValue = "") String dt_to,
+                         @RequestParam(required = false, defaultValue = "") String status) {
+
         Page<InquiryDTO> questionlist = inquiryService.MemberReviewList(memberId, pageable);
-        if(dt_fr != null){
-            questionlist = inquiryService.getPeriodSearch(dt_fr, dt_to, memberId, pageable);
+        if(!dt_fr.equals("")){
+            questionlist = inquiryService.getPeriodSearch(dt_fr, dt_to, status, memberId, pageable);
+        } else if (dt_fr.equals("") && !status.equals("")){
+            questionlist = inquiryService.listByStatus(status,memberId,pageable);
         }
 
         int pageNumber = questionlist.getPageable().getPageNumber();

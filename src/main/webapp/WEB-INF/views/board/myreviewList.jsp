@@ -57,15 +57,18 @@
                             </div>
 
                             <div style="display: flex">
-                                <div class="col-lg-6" style="margin-top: 20px; margin-left: 35px;">
+                                <div class="col-lg-5" style="margin-top: 20px; margin-left: 35px;">
                                     <p style="height: 10px; color: #003eff; font-weight: bold;">
                                         구매상품: ${dto.productDTO.subject}</p>
                                     <p>${dto.reviewContent}</p>
                                 </div>
-                                <div class="col-lg-5 text-right">
+
+
+                                <div class="col-lg-7 text-right">
                                     <c:forEach items="${dto.reviewImageList}" var="reviewImageDTO">
                                         <img src="/img/review/${reviewImageDTO.storeImageName}" width="100px;"
-                                             height="110px;"/>
+                                             height="110px;" onmouseenter="zoomIn(event)"
+                                             onmouseleave="zoomOut(event)"/>
                                     </c:forEach>
                                 </div>
                             </div>
