@@ -5,8 +5,10 @@ import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.product.ProductListDTO;
 import com.youprice.onion.dto.product.SearchAddDTO;
 import com.youprice.onion.dto.product.SearchRequirements;
+import com.youprice.onion.dto.product.TownFindDTO;
 import com.youprice.onion.entity.product.Search;
 import com.youprice.onion.security.auth.LoginUser;
+import com.youprice.onion.service.member.BlockService;
 import com.youprice.onion.service.member.MemberService;
 import com.youprice.onion.service.member.ProhibitionKeywordService;
 import com.youprice.onion.service.product.CategoryService;
@@ -29,6 +31,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Controller
@@ -38,6 +41,7 @@ public class SearchController {
 
     private final SearchService searchService;
     private final ProductService productService;
+    private final BlockService blockService;
 
 
     @GetMapping("search")
@@ -70,10 +74,15 @@ public class SearchController {
 				searchService.searchupdatecount(searchName);
 			}
 
+            List<Long> blockIdList = null;
+            if (sessionDTO != null) {
+                blockIdList = blockService.blockIdList(sessionDTO.getId());
+            }
 
 			SearchRequirements searchRequirements = SearchRequirements.builder()
 					.pageable(pageable)
 					.blindStatus(false)
+                    .blockIdList(blockIdList)
                     .searchValue(searchName)
 					.build();
 
