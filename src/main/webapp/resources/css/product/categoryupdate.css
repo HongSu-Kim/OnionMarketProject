@@ -1,113 +1,17 @@
-#modal.modal-overlay {
-    width: 100%;
-    height: 100%;
-    position: center;
-    left: 0;
-    top: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-
-}
-
-#modal .modal-window {
-    /*overflow-y: auto;*/
-
-    width: 800px;
-    height: 600px;
-    position: relative;
-    top: -40px;
-    padding: 10px;
-    border-radius: 25px;
-    background-color: whitesmoke;
-    border: 1px black;
-
-    box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
-
-
-}
-
-#modal .title {
-    padding-left: 10px;
-    display: inline;
-
-    color: black;
-}
-
-#modal .title h2 {
-    display: inline;
-}
-
-#modal .close-area {
-    display: inline;
-    float: right;
-    padding-right: 10px;
-    cursor: pointer;
-
+button{
+    border-bottom-color: white;
     color: white;
-}
-
-#modal .content {
-    margin-top: 20px;
-    padding: 10px;
-    text-shadow: 1px 1px 2px gray;
-    color: black;
-}
-
-a {
-    color: black;
-    text-decoration-line: none;
-    text-decoration: none;
-
-}
-
-a:link {
-    color: red;
-    text-decoration: none;
-}
-
-a:visited {
-    color: black;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-
-p {
-    color: black;
-    border-top: 1px solid #d7d7d7;
-    border-left: 1px solid #e0e0e0;
-    border-right: 1px solid #e0e0e0;
-    border-bottom: 0 none;
-
-}
-
-input {
-    width: 100%;
-    height: 46px;
-    font-size: 16px;
-    color: #6f6f6f;
-    padding-left: 15px;
-    border: 1px solid #e1e1e1;
-    border-radius: 20px;
-
-
-}
-
-button {
-
-    font-size: 16px;
-    color: white;
-    padding-left: 15px;
     background-color: #90C8AC;
+    border-color:white;
+    font-family: "Cairo", sans-serif;
+    font-size: 18px;
+    width: 250px;
 
-    border: 3px solid #90C8AC;
-    border-radius: 20px;
+
+}
+
+span{
+    color: black;
 
 
 }
