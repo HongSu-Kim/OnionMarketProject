@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,6 +34,7 @@ public class NoticeController {
     private final MemberService memberService;
 
     @GetMapping("/created")
+    @PreAuthorize("isAuthenticated()")
     public String createdForm(@ModelAttribute("form") NoticeFormDTO form, Model model,@LoginUser SessionDTO sessionDTO){
         if (sessionDTO != null) {
             MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
@@ -43,15 +45,14 @@ public class NoticeController {
 
     @PostMapping("/created")
     public String createNotice(@Valid @ModelAttribute("form") NoticeFormDTO form, BindingResult bindingResult,
-                               Model model, @LoginUser SessionDTO sessionDTO,
-                                @RequestParam("noticeImageName")List<MultipartFile> noticeImageName) throws IOException {
+                               Model model, @LoginUser SessionDTO sessionDTO) throws IOException {
         if(sessionDTO == null) return "member/login";
         if(bindingResult.hasErrors()){
             MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
             model.addAttribute("memberDTO", memberDTO);
             return "board/noticeForm";
         }
-        noticeService.saveNotice(form, noticeImageName);
+        noticeService.saveNotice(form);
 
         return "redirect:/notice/list";
     }

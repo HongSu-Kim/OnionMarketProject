@@ -100,10 +100,7 @@ function search() {
     let fromDate = $("#searchForm [name='dt_fr']").val();
     let toDate = $("#searchForm [name='dt_to']").val();
 
-    if (fromDate == '' || toDate == '') {
-        alert("검색 기간을 설정해 주세요");
-        return false;
-    }
+
     if (fromDate > toDate) {
         alert("기간이 잘못되었습니다. 확인해주세요");
         return false;
