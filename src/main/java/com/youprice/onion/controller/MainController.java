@@ -4,8 +4,6 @@ import com.youprice.onion.dto.member.SessionDTO;
 import com.youprice.onion.dto.product.CategoryFindDTO;
 import com.youprice.onion.dto.product.ProductListDTO;
 import com.youprice.onion.dto.product.SearchRequirements;
-import com.youprice.onion.entity.member.Block;
-import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.entity.product.ProductProgress;
 import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.service.member.BlockService;
