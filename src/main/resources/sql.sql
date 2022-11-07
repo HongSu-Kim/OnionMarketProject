@@ -722,7 +722,35 @@ INSERT INTO category VALUES(114,'기타','');
 INSERT INTO category VALUES(115,'기타상품',114);
 
 ----------------------------------------------------------------------------------------------------
-
+INSERT INTO KEYWORD VALUES(1,2,'디지털');
+INSERT INTO KEYWORD VALUES(2,2,'가구');
+INSERT INTO KEYWORD VALUES(3,2,'생활');
+INSERT INTO KEYWORD VALUES(4,2,'유아');
+INSERT INTO KEYWORD VALUES(5,2,'남성');
+INSERT INTO KEYWORD VALUES(6,3,'여성');
+INSERT INTO KEYWORD VALUES(7,3,'의류');
+INSERT INTO KEYWORD VALUES(8,3,'뷰티');
+INSERT INTO KEYWORD VALUES(9,3,'미용');
+INSERT INTO KEYWORD VALUES(10,3,'스포츠');
+INSERT INTO KEYWORD VALUES(11,4,'게임');
+INSERT INTO KEYWORD VALUES(12,4,'음반');
+INSERT INTO KEYWORD VALUES(13,4,'도서');
+INSERT INTO KEYWORD VALUES(14,4,'티켓');
+INSERT INTO KEYWORD VALUES(15,4,'반려동물');
+INSERT INTO KEYWORD VALUES(16,5,'강아지');
+INSERT INTO KEYWORD VALUES(17,5,'고양이');
+INSERT INTO KEYWORD VALUES(18,5,'중고');
+INSERT INTO KEYWORD VALUES(19,5,'유니폼');
+INSERT INTO KEYWORD VALUES(20,5,'신발');
+----------------------------------------------------------------------------------------------------
+INSERT INTO prohibition_keyword VALUES(1,'담배');
+INSERT INTO prohibition_keyword VALUES(2,'술');
+INSERT INTO prohibition_keyword VALUES(3,'소주');
+INSERT INTO prohibition_keyword VALUES(4,'맥주');
+INSERT INTO prohibition_keyword VALUES(5,'마약');
+INSERT INTO prohibition_keyword VALUES(6,'성인');
+INSERT INTO prohibition_keyword VALUES(7,'음란물');
+----------------------------------------------------------------------------------------------------
 INSERT INTO product VALUES (0, 0, 1, 114, '양파마켓 키워드 알림', '키워드 알림', 0, 'onion.png', SYSDATE, NULL, NULL, 0, 'SOLDOUT', 0, 1);
 
 --------------------------------------------------

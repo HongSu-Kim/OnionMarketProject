@@ -14,11 +14,14 @@ $('#topCategory').change(function () {
             for(let i = 0; i < subCategory.length; i++) {
                 let subCategoryDTO = subCategory[i]
                 let option = $('<button   value="' + subCategoryDTO.categoryId + '">' +
-                    ''+  subCategoryDTO.categoryName +' <a href="/category/categoryDelete?categoryId='+subCategoryDTO.categoryId +' "><span class="icon_close"></span></a>'
+                    ''+  subCategoryDTO.categoryName +' <a href="/category/categoryDelete?categoryId='+subCategoryDTO.categoryId +'"></a>'
               +  ' &nbsp'+'&nbsp' + '</button>')
 
                 $("#subCategory").append(option)
+                // < span
+                // className = "icon_close" > < /span>
             }
+
 
             $('#subCategory').niceSelect('update');
         }

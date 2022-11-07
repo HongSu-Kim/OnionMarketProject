@@ -11,20 +11,14 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title></title>
-
-
 </head>
 
-
-<br/><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
+<br/><br/><br/><br/>
 
 <div style=background-color:white;">
     <div id="container">
 
     </div>
-
 
     <div id="modal" class="modal-overlay">
         <div class="modal-window">
@@ -40,15 +34,13 @@
                     <div style="position: center"><h3>키워드 알림 설정</h3></div>
                     <br/><br/>
                 </div>
-                <form:form action="" method="post" modelAttribute="keywordCreateDto">
-
+                <form:form action="keywordAdd" method="get" name="isc" onsubmit="return check_submit();" modelAttribute="keywordCreateDto">
 
                     <input type="hidden" name="memberId" value="${memberDTO.id}">
 
-
                     <input type="text" name="keywordName" placeholder="키워드를 입력해주세요 (예: 유니폼)" size="33"
                            style="color: black; margin-right: 10cm;"/><br/><br/>
-                    <form:errors path="keywordName"/>
+
                     <strong> <input type="submit" value="키워드등록"
                                     style="background-color: #90C8AC; color: white"/><br/></strong>
 
@@ -63,32 +55,19 @@
 
                 <button type="submit" class="btn btnEvent" name="id" value="${MykeywordList.id}
                             " style="background-color:#90C8AC; color: white;  border-radius: 20px;">
-                    <div>
+
                             ${MykeywordList.keywordName}
                         <a href="/product/list"><span class="icon_close"></span></a>
 
-                    </div>
-
-
                     </c:forEach>
-
-
                     </form:form>
-
-
             </div>
-
         </div>
     </div>
-
 
 </div>
 </body>
 </html>
-
-
-<br/><br/>
-
-
+<br/><br/><br/><br/><br/><br/>
 </body>
 </html>

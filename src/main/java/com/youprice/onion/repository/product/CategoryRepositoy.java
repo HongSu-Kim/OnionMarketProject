@@ -22,42 +22,27 @@ import java.util.Optional;
 public interface CategoryRepositoy extends JpaRepository<Category, Long> {
 
     Optional<Category> findByCategoryName(String categoryName);
-    Optional<Category> findByCategoryNameAndParent(String topcategoryName,Category category);
 
-   List<Category> findAllByCategoryName(String categoryName);
+    Optional<Category> findByCategoryNameAndParent(String topcategoryName, Category category);
 
-   //  Optional<Category> findByCategoryName(String categoryName);
+    List<Category> findAllByParentId(Long id);
 
-   List<Category> findAllByParent(Long id);
-
-   List<Category> findAllByParentId(Long id);
-
-   //List<CategoryFindDTO> findByCategoryName(String categoryName);
-
-
-
-
-
-    Category deleteById(CategoryUpdateDTO id);
-
-    Category deleteByCategoryName(String categoryName);
+    @Transactional
+    Long deleteAllById(Long id);
 
     List<Category> findByParentId(Long categoryId);
 
     @Query("select o from Category o where o.parent is null")
     List<Category> findTopCategory();
 
-	@Query("select o from Category o  where o.parent is not null")
-	List<Category> findAllSubcategory();
+    @Query("select o from Category o  where o.parent is not null")
+    List<Category> findAllSubcategory();
 
-
-    List<Category> findByIdBetween(Long start, Long end);
-
-	@Query("select c " +
-			"from Category c " +
-			"where :subject like concat('%', c.categoryName, '%') " +
-			"and c.parent is not null")
-	List<Category> findBySubjectContains(@Param("subject") String subject);
+    @Query("select c " +
+            "from Category c " +
+            "where :subject like concat('%', c.categoryName, '%') " +
+            "and c.parent is not null")
+    List<Category> findBySubjectContains(@Param("subject") String subject);
 }
 
 
