@@ -37,7 +37,8 @@
 
             <div>
                 <c:forEach items="${noticeDTO.noticeImageList}" var="noticeImageDTO">
-                    <img src="/img/notice/${noticeImageDTO.noticeImageName}" width="770" height="500"/>
+                    <img src="/img/notice/${noticeImageDTO.noticeImageName}" width="770" height="500"
+                    style="margin-top: 30px; margin-bottom: 30px"/>
                 </c:forEach>
             </div>
         </div>
