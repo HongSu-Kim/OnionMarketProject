@@ -262,6 +262,7 @@
 	</section>
 	<!-- Featured Section End -->
 
+<%--
 	<!-- Banner Begin -->
 	<div class="banner">
 		<div class="container">
@@ -280,6 +281,7 @@
 		</div>
 	</div>
 	<!-- Banner End -->
+--%>
 
 	<!-- Latest Product Section Begin -->
 	<section class="latest-product spad">
@@ -374,6 +376,7 @@
 
 	<!-- Blog Section Begin -->
 	<section class="from-blog spad">
+		<%--
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
@@ -430,7 +433,7 @@
 				</div>
 			</div>
 		</div>
-
+--%>
 		<div id="wrap">
 			<div class="container">
 				<ul id="best_search">
