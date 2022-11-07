@@ -27,7 +27,6 @@ public class TownFindDTO {
     private String townName; //동네이름
 
 
-
     private String wishtown; //원하는 동네이름
 
     private Double latitude; //위도

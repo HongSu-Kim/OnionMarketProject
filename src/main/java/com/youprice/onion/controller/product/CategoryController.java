@@ -81,9 +81,9 @@ public class CategoryController {
     public String update(@RequestParam("categoryId") Long categoryId) {
 
 
-    //  Category categoryFindDTOList = categoryService.CategoryDelete(categoryId);
+        //  Category categoryFindDTOList = categoryService.CategoryDelete(categoryId);
 
-        System.out.println(categoryId);
+         System.out.println(categoryId);
 
         return "redirect:/category/categoryupdate";
 

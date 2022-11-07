@@ -41,7 +41,6 @@ public class TownController {
 
     private final TownService townService;
     private final MemberService memberService;
-    private final CategoryService categoryService;
     private final CoordinateService coordinateService;
 
     @GetMapping("town")
@@ -59,8 +58,7 @@ public class TownController {
     }
 
     @PostMapping("rangeProduct")
-    public String rangeProduct(Model model, @LoginUser SessionDTO sessionDTO, @RequestParam("range") String range
-            , @RequestParam("townName") String townName) {
+    public String rangeProduct(Model model, @LoginUser SessionDTO sessionDTO, @RequestParam("range") String range) {
 
         if (sessionDTO == null) return "redirect:/member/login";
         MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
@@ -70,86 +68,47 @@ public class TownController {
         model.addAttribute("list", list);
         model.addAttribute("range", range);
 
-        System.out.println(range); //거리범위
-        System.out.println(townName); //동네이름
-
-
         return "product/town";
     }
-
 
     @GetMapping("townresult")
     public String find(Model model, @RequestParam("wishtown") String wishtown,
                        @LoginUser SessionDTO sessionDTO) {
-//        @Valid @ModelAttribute TownFindDTO townFindDTO,BindingResult bindingResult
-//        if(bindingResult.hasErrors()){
-//            MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
-//            List<TownFindDTO> list = townService.townLists(memberDTO.getId());
-//
-//
-//            model.addAttribute("memberDTO", memberDTO);
-//            model.addAttribute("list", list);
-//            model.addAttribute("townFindDTO",townFindDTO);
-//            return "product/town";
-//        }
 
 
-        List<CoordinateFindDTO> Gangnam = coordinateService.FindGangnam();
-        List<CoordinateFindDTO> Songpa = coordinateService.FindSongpa();
-        List<CoordinateFindDTO> Gangdong = coordinateService.FindGangdong();
+        List<CoordinateFindDTO> townList = coordinateService.findTownList(wishtown);
         MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
 
         model.addAttribute("memberDTO", memberDTO);
-
-        model.addAttribute("Gangnam", Gangnam);
-        model.addAttribute("Songpa", Songpa);
-        model.addAttribute("Gangdong", Gangdong);
+        model.addAttribute("townList", townList);
         model.addAttribute("wishtown", wishtown);
-
 
         return "product/townresult";
     }
 
 
     @GetMapping("searchTownresult")
-    public String townResult(Model model, @RequestParam("wishtown")String wishtown,
-                             @LoginUser SessionDTO sessionDTO) {
-
-        List<CoordinateFindDTO> Gangnam = coordinateService.FindGangnam();
-        List<CoordinateFindDTO> Songpa = coordinateService.FindSongpa();
-        List<CoordinateFindDTO> Gangdong = coordinateService.FindGangdong();
-        MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
-
-        model.addAttribute("memberDTO", memberDTO);
-
-        model.addAttribute("Gangnam", Gangnam);
-        model.addAttribute("Songpa", Songpa);
-        model.addAttribute("Gangdong", Gangdong);
-        model.addAttribute("wishtown", wishtown);
+    public String townResult() {
 
         return "redirect:/town/townresult";
-
 
     }
 
     @PostMapping("town")
-    public String townAdd(Model model, TownAddDTO townAddDTO, @RequestParam("townName") String townName, HttpServletResponse response) throws IOException {
+    public String townAdd(TownAddDTO townAddDTO, @RequestParam("townName") String townName, HttpServletResponse response) throws IOException {
 
 
         townService.townAdd(townAddDTO, response, townName);
         return "redirect:/town/town";
-
 
     }
 
     @GetMapping("townDelete")
     public String townDelte(@RequestParam("id") Long id) {
 
-
         townService.townDelete(id);
 
         return "redirect:/town/town";
-
 
     }
 }
