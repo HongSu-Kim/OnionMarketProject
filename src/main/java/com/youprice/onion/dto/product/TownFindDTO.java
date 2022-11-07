@@ -3,11 +3,20 @@ package com.youprice.onion.dto.product;
 
 import com.youprice.onion.entity.product.Town;
 import com.youprice.onion.entity.product.Coordinate;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+
 
 @Getter
 @Setter
+@NoArgsConstructor
+
+
 public class TownFindDTO {
 
 
@@ -17,13 +26,16 @@ public class TownFindDTO {
 
     private String townName; //동네이름
 
+
+
+    private String wishtown; //원하는 동네이름
+
     private Double latitude; //위도
 
     private Double longitude; //경도
 
 
     private Long memberId; //회원번호 FK
-
 
     public TownFindDTO(Town town) {
 

@@ -31,6 +31,8 @@ public interface TownRepository extends JpaRepository<Town, Long> {
 
     int countByMemberId(Long memberId);
 
+    void  deleteById(Long townId);
+
 
 }
 

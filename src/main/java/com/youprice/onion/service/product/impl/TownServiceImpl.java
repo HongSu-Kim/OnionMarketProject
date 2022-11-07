@@ -25,7 +25,9 @@ import java.util.stream.Collectors;
 @Transactional
 public class TownServiceImpl implements TownService {
 
-    private final TownRepository townRepositoryRepositoy;
+    private final TownRepository townRepository;
+
+
 
     private final CoordinateRepositoy coordinateRepositoy;
     private final CoordinateRepositoy.Coordinaterepositoy coordinaterepositoy;
@@ -53,13 +55,13 @@ public class TownServiceImpl implements TownService {
         }
 
 
-        if (townRepositoryRepositoy.countByMemberId(member.getId()) >= 3) {
+        if (townRepository.countByMemberId(member.getId()) >= 3) {
             out.println("<script>alert('가능한 동네설정개수를 초과하셨습니다(최대 3개)');history.go(-3); </script>");
             out.flush();
             return;
         }
 
-        Optional<com.youprice.onion.entity.product.Town> DuplicatechecktopcategoryName = townRepositoryRepositoy.findByMemberIdAndCoordinateTownNameContains(member.getId(), coordinate.getTownName());
+        Optional<com.youprice.onion.entity.product.Town> DuplicatechecktopcategoryName = townRepository.findByMemberIdAndCoordinateTownNameContains(member.getId(), coordinate.getTownName());
         if (DuplicatechecktopcategoryName.isPresent()) {
             out.println("<script>alert('이미설정한 동네입니다 다시입력하세요');history.go(-3); </script>");
             out.flush();
@@ -68,9 +70,15 @@ public class TownServiceImpl implements TownService {
 
         town.townCreate(townAddDTO, coordinate, member);
 
-        townRepositoryRepositoy.save(town);
+        townRepository.save(town);
         out.println("<script>alert('동네 설정 완료!');history.go(-3); </script>");
         out.flush();
+
+    }
+
+    @Override
+    public void townDelete(Long townId) {
+        townRepository.deleteById(townId);
 
     }
 
@@ -78,7 +86,7 @@ public class TownServiceImpl implements TownService {
     @Override
     public List<TownFindDTO> townList(Long townId) { //townId로 전체리스트 조회
 
-        return townRepositoryRepositoy.findAllById(townId)
+        return townRepository.findAllById(townId)
                 .stream().map(town -> new TownFindDTO(town))
                 .collect(Collectors.toList());
     }
@@ -86,7 +94,7 @@ public class TownServiceImpl implements TownService {
     @Override
     public List<TownFindDTO> townLists(Long memberId) { //memberId로 전체리스트 조회
 
-        return townRepositoryRepositoy.findAllByMemberId(memberId)
+        return townRepository.findAllByMemberId(memberId)
                 .stream().map(town -> new TownFindDTO(town))
                 .collect(Collectors.toList());
     }

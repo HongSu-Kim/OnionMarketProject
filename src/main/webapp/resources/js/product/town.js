@@ -1,3 +1,14 @@
+function check_submit() {
+
+    if (isc.wishtown.value == "") {
+        alert("동네를 입력하세요!");
+        isc.wishtown.focus();
+        return false;
+    }
+
+
+}
+
 function statusChange(statusItem) {
 
 
@@ -10,7 +21,7 @@ function statusChange(statusItem) {
 
     $("#coordinateId").val(townName);
 
-    if (confirm(townName + " 전방 " + range + "km 이내의 주변 상품을 보시겠습니까?") == true) {    //확인
+    if (confirm(townName + " 반경 " + range + "km 이내의 주변 상품을 보시겠습니까?") == true) {    //확인
 
         document.townadd.submit();
 

@@ -27,45 +27,65 @@
                 <h3>동네 설정</h3>
 
                 <div style="text-align: right">
-                    <a href="/product/list"><span class="icon_close"></span></a>
+                    <a href="/product/wishRangeList"><span class="icon_close"></span></a>
                 </div>
 
-        <br/>
+                <br/>
+
+
+                <form:form action="/town/townresult"  modelAttribute="townFindDTO" name="isc" onsubmit="return check_submit();"  method="get">
+
+                    <input type="text" name="wishtown" value=""  style="background-color: white "
+                           placeholder="동네설정은 최대 3곳 가능">
+
+                    <form:errors path="wishtown"/>
+                    <input type="hidden" name="memberId" value="${memberDTO.id}"><br/><br/>
+                    <input type="submit" value="동네설정하기" style="background-color: #90C8AC; color: white;"/><br/><br/>
+                </form:form>
+
+
+                <strong>
+                    <현재 등록된 동네>
+                </strong><br/>
+                <form:form action="townDelete" method="get">
+
+                    <c:forEach var="list" items="${list}">
+
+                        <a href="#" onclick="statusChange(this)">
+                            <br/>
+                            <strong> ${list.townName}</strong>
+
+
+                        </a>
+                        <button type="submit"  name="id" value="${list.id}" style="">
+                    <a href="/town/townDelete"><span class="icon_close"></span></a>
+
+                </button>
 
 
 
-    <form:form action="/town/townresult" method="get">
 
-     <input type="text" name="wishtown" value="" style="background-color: white "  placeholder="동네설정은 최대 3곳 가능"/>
-    <input type="hidden" name="memberId" value="${memberDTO.id}"><br/><br/>
-    <input type="submit" value="동네설정하기" style="background-color: #90C8AC; color: white;"/><br/><br/>
-    </form:form>
-
-    <strong><현재 등록된 동네></strong><br/>
-    <c:forEach var="list" items="${list}">
-
-    <a href="#" onclick="statusChange(this)">
-        <strong> ${list.townName}</strong><br/>
+                    </c:forEach>
 
 
-    </a>
-    </c:forEach>
-<br/>
-    <strong> [동네예시]
-        강남구/ 송파구/ 강동구
+                </form:form>
 
-    </strong>
-                <br/><br/>
+                <br/>    <br/>
+                <strong> [동네예시]
+                    강남구/ 송파구/ 강동구
+
+                </strong>
+                <br/>
                 <c:if test="${empty range}">
 
 
-                <form:form action="/product/wishRangeList" name="townadd" method="post">
+                    <form:form action="/product/wishRangeList" name="townadd" method="post">
 
 
-
-                            <div id="js-example-disabled">
-                       <input type="range" name="range" id="range" min="0" max="10" step="1" value="0" data-rangeslider
-                        class="seek-bar"/>
+                        <div id="js-example-disabled">
+                            <input type="range" name="range" id="range" min="0" max="10" step="1" value="0"
+                                   data-rangeslider
+                                   class="seek-bar"/>
                         </div>
                         <input type="hidden" name="townName" id="coordinateId" style="width: 15%;"/>
 
@@ -74,20 +94,16 @@
                         <output> 거리설정</output>
 
 
-
-
-                    <%--    <button type="submit">해당 범위 설정</button>--%>
-                </form:form>
+                    </form:form>
 
                 </c:if>
 
 
-
-                </div>
             </div>
         </div>
     </div>
-
+</div>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 
 </body>
 </html>
