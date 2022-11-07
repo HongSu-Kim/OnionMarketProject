@@ -19,6 +19,7 @@ public class ProductFindDTO {
     private Long memberId; //Member FK
     private String nickname; //member nickname
     private Long townId; //Town FK
+    private String townName; //동네 이름
     private Long categoryId; //Category FK
     private Long categoryParentId; //부모 Category FK
     private String categoryParentName; //부모 Category이름
@@ -43,6 +44,7 @@ public class ProductFindDTO {
         memberId = product.getMember().getId();
         nickname = product.getMember().getNickname();
         townId = product.getTown().getId();
+        townName = product.getTown().getCoordinate().getTownName();
         categoryId = product.getCategory().getId();
         categoryParentId = product.getCategory().getParent().getId();
         categoryParentName = product.getCategory().getParent().getCategoryName();

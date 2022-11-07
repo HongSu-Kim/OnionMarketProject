@@ -2,6 +2,7 @@ package com.youprice.onion.controller.chat;
 
 import com.youprice.onion.dto.chat.ChatDTO;
 import com.youprice.onion.dto.chat.ChatImageDTO;
+import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.service.chat.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,10 +12,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -27,34 +25,52 @@ public class ChatController {
 
 	// 메세지 전송
 	@MessageMapping("/chat/message")
-	public void message(ChatDTO chatDTO) {
+	public void chatMessage(ChatDTO chatDTO) {
 		Long targetId = chatDTO.getTargetId();
 
 		// 메세지 저장
 		chatDTO = chatService.writeChat(chatDTO);
 
 		// 메세지 전송
-		template.convertAndSend("/sub/chat/" + chatDTO.getMemberId(), chatDTO);
-		template.convertAndSend("/sub/chat/" + targetId, chatDTO);
+		template.convertAndSend("/sub/chat/message/" + chatDTO.getMemberId(), chatDTO);
+		template.convertAndSend("/sub/chat/message/" + targetId, chatDTO);
 	}
 
 	// 이미지 전송
 	@PostMapping("/image")
 	@ResponseBody
-	public ResponseEntity<?> chatImage(ChatImageDTO chatImageDTO) {
+	public ResponseEntity<?> chatImage(@RequestBody ChatImageDTO chatImageDTO) {
 		try {
 			// 이미지 저장
 			ChatDTO chatDTO = chatService.uploadImage(chatImageDTO);
 
 			// 이미지 전송
-			template.convertAndSend("/sub/chat/" + chatImageDTO.getMemberId(), chatDTO);
-			template.convertAndSend("/sub/chat/" + chatImageDTO.getTargetId(), chatDTO);
+			template.convertAndSend("/sub/chat/message/" + chatImageDTO.getMemberId(), chatDTO);
+			template.convertAndSend("/sub/chat/message/" + chatImageDTO.getTargetId(), chatDTO);
 
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
 			log.error("채팅 이미지 저장 에러 :" + e.toString());
 			return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
 		}
+	}
+
+	// 안읽은 채팅 수
+	@MessageMapping("/chat/notRead")
+	public void chatNotRead(ChatDTO chatDTO) {
+		int notRead = chatService.getAllNotRead(chatDTO.getMemberId());
+		template.convertAndSend("/sub/chat/notRead/" + chatDTO.getMemberId(), notRead);
+	}
+//	public void chatNotRead(Long memberId) {
+//		int notRead = chatService.getAllNotRead(memberId);
+//		template.convertAndSend("/sub/chat/notRead/" + memberId, notRead);
+//	}
+
+	@GetMapping("notRead")
+	@ResponseBody
+	public ResponseEntity<?> notRead(Long memberId) {
+		int notRead = chatService.getAllNotRead(memberId);
+		return new ResponseEntity<>(notRead, HttpStatus.OK);
 	}
 
 	// 채팅 읽음

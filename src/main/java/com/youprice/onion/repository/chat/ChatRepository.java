@@ -34,6 +34,12 @@ public interface ChatRepository extends JpaRepository<Chat, Long> {
 			"and c.read = false")
 	int countNotRead(@Param("chatroomId") Long chatroomId, @Param("memberId")  Long memberId);
 
+	@Query("select count(c) " +
+			"from Chat c " +
+			"where c.member.id <> :memberId " +
+			"and c.read = false")
+	int countAllNotRead(@Param("memberId") Long memberId);
+
 	@Modifying
 	@Query("update Chat c " +
 			"set c.read = true " +
