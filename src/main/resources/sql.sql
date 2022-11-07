@@ -25,10 +25,6 @@ DROP TABLE wish PURGE;
 DROP TABLE chat PURGE;
 DROP TABLE chatroom PURGE;
 
-DROP TABLE member_category PURGE;
-
-DROP TABLE product_tag PURGE;
-DROP TABLE tag PURGE;
 DROP TABLE bidding PURGE;
 DROP TABLE product_image PURGE;
 DROP TABLE product PURGE;
@@ -116,18 +112,14 @@ CREATE TABLE coordinate (
 	CONSTRAINT PK_COORDINATE PRIMARY KEY (coordinate_id)
 );
 
-CREATE TABLE town
-(
+CREATE TABLE town (
     town_id       NUMBER NOT NULL,
     member_id     NUMBER NOT NULL,
     coordinate_id NUMBER NOT NULL,
-    wish_distance NUMBER NULL,
-
     CONSTRAINT PK_TOWN PRIMARY KEY (town_id),
     CONSTRAINT FK_TOWN_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member (member_id),
     CONSTRAINT FK_TOWN_COORDINATE_ID FOREIGN KEY (coordinate_id) REFERENCES coordinate (coordinate_id)
 );
-
 
 CREATE TABLE category (
     category_id     	NUMBER          NOT NULL,
@@ -176,31 +168,6 @@ CREATE TABLE bidding (
     CONSTRAINT PK_BIDDING PRIMARY KEY (bidding_id),
     CONSTRAINT FK_BIDDING_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id),
     CONSTRAINT FK_BIDDING_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id)
-);
-
-CREATE TABLE tag (
-	tag_id      		NUMBER        	NOT NULL,
-	tag_name    		VARCHAR2(50)  	NOT NULL,
-	tag_count   		NUMBER        	NOT NULL,
-	CONSTRAINT PK_TAG PRIMARY KEY (tag_id)
-);
-
-CREATE TABLE product_tag (
-	product_tag_id  	NUMBER  		NOT NULL,
-	tag_id          	NUMBER  		NOT NULL,
-	product_id      	NUMBER  		NOT NULL,
-	CONSTRAINT PK_PRODUCT_TAG PRIMARY KEY (product_tag_id),
-	CONSTRAINT FK_PRODUCT_TAG_TAG_ID FOREIGN KEY (tag_id) REFERENCES tag(tag_id),
-	CONSTRAINT FK_PRODUCT_TAG_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id)
-);
-
-CREATE TABLE member_category (
-	member_category_id  NUMBER  		NOT NULL,
-	member_id           NUMBER  		NOT NULL,
-	category_id         NUMBER  		NOT NULL,
-	CONSTRAINT PK_MEMBER_CATEGORY PRIMARY KEY (member_category_id),
-	CONSTRAINT FK_MC_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id),
-	CONSTRAINT FK_MC_CATEGORY_ID FOREIGN KEY (category_id) REFERENCES category(category_id)
 );
 
 CREATE TABLE chatroom (
@@ -304,7 +271,7 @@ CREATE TABLE inquiry (
 	member_id	    	NUMBER	        NOT NULL,
 	inquiry_type        VARCHAR2(50)	NOT NULL,
 	detail_type         VARCHAR2(50)	NOT NULL,
-	inquiry_subject     VARCHAR2(100)	NOT NULL,
+	inquiry_subject     VARCHAR2(255)	NOT NULL,
 	inquiry_content     VARCHAR2(255)	NOT NULL,
 	inquiry_date    	DATE            DEFAULT SYSDATE,
 	status          	VARCHAR2(20)	DEFAULT 'wait',
@@ -440,11 +407,7 @@ INSERT INTO Coordinate VALUES(62, '서울특별시 강동구 성내1동',  '37.5
 INSERT INTO Coordinate VALUES(63, '서울특별시 강동구 성내2동',  '37.532425',  '127.129563');
 INSERT INTO Coordinate VALUES(64, '서울특별시 강동구 둔촌1동',  '37.5333656', '127.1419851');
 INSERT INTO Coordinate VALUES(65, '서울특별시 강동구 둔촌2동',  '37.5332885', '127.1419221');
-
-----------------------------------------------------------------------------------------------------
-
--- 서초구
-
+--------------------------------------------------
 INSERT INTO Coordinate VALUES(66,'서울특별시 서초구 방배동',37.4941452,126.988785);
 INSERT INTO Coordinate VALUES(67,'서울특별시 서초구 양재동',37.470101,127.039888);
 INSERT INTO Coordinate VALUES(68,'서울특별시 서초구 우면동',37.466,127.0169);
@@ -471,14 +434,7 @@ INSERT INTO Coordinate VALUES(88,'서울특별시 서초구 방배3동',37.47844
 INSERT INTO Coordinate VALUES(89,'서울특별시 서초구 방배4동',37.489007,126.9923344);
 INSERT INTO Coordinate VALUES(90,'서울특별시 서초구 양재1동',37.4716412,127.026744);
 INSERT INTO Coordinate VALUES(91,'서울특별시 서초구 양재2동',37.470601,127.041188);
-
-
-
-
---------------------------------------------------------------------------------------------
-
---동작구
-
+--------------------------------------------------
 INSERT INTO Coordinate VALUES(92,'서울특별시 동작구 노량진동',37.512308,126.942013);
 INSERT INTO Coordinate VALUES(93,'서울특별시 동작구 상도동',37.4981,126.953089);
 INSERT INTO Coordinate VALUES(94,'서울특별시 동작구 상도1동',37.4981,126.953089);
@@ -500,14 +456,7 @@ INSERT INTO Coordinate VALUES(109,'서울특별시 동작구 사당4동',37.4809
 INSERT INTO Coordinate VALUES(110,'서울특별시 동작구 사당5동',37.4857521,126.9668658);
 INSERT INTO Coordinate VALUES(111,'서울특별시 동작구 신대방1동',37.488943,126.91005);
 INSERT INTO Coordinate VALUES(112,'서울특별시 동작구 신대방2동',37.4984422,126.9244085);
-
-
-
-
---------------------------------------------------------------------------------------------
-
---관악구
-
+--------------------------------------------------
 INSERT INTO Coordinate VALUES(113,'서울특별시 관악구 봉천동',37.4779619,126.9534602);
 INSERT INTO Coordinate VALUES(114,'서울특별시 관악구 신림동',37.487426,126.927075);
 INSERT INTO Coordinate VALUES(115,'서울특별시 관악구 남현동',37.4745394,126.9778366);
@@ -523,19 +472,14 @@ INSERT INTO Coordinate VALUES(124,'서울특별시 관악구 인헌동',37.47509
 INSERT INTO Coordinate VALUES(125,'서울특별시 관악구 서원동',37.4797346,126.9313);
 INSERT INTO Coordinate VALUES(126,'서울특별시 관악구 신원동',37.4815883,126.9273519);
 INSERT INTO Coordinate VALUES(127,'서울특별시 관악구 서림동',37.4749956,126.9349995);
-INSERT INTO Coordinate VALUES(128,'서울특별시 강남구 신사동',37.5240101,127.0227814);
+INSERT INTO Coordinate VALUES(128,'서울특별시 관악구 신사동',37.5240101,127.0227814);
 INSERT INTO Coordinate VALUES(129,'서울특별시 관악구 난향동',37.461429,126.918842);
 INSERT INTO Coordinate VALUES(130,'서울특별시 관악구 조원동',37.4826299,126.9078649);
 INSERT INTO Coordinate VALUES(131,'서울특별시 관악구 대학동',37.4706145,126.9369907);
 INSERT INTO Coordinate VALUES(132,'서울특별시 관악구 삼성동',37.470101,126.932963);
 INSERT INTO Coordinate VALUES(133,'서울특별시 관악구 미성동',37.4761761,126.9155534);
 INSERT INTO Coordinate VALUES(134,'서울특별시 관악구 난곡동',37.4709634,126.9216507);
-
-
---------------------------------------------------------------------------------------------
-
---강진구
-
+--------------------------------------------------
 INSERT INTO Coordinate VALUES(135,'서울특별시 광진구 중곡동',37.560675,127.080038);
 INSERT INTO Coordinate VALUES(136,'서울특별시 광진구 능동',37.5537803,127.0804994);
 INSERT INTO Coordinate VALUES(137,'서울특별시 광진구 구의동',37.5424917,127.0856756);
@@ -554,13 +498,7 @@ INSERT INTO Coordinate VALUES(149,'서울특별시 광진구 자양4동',37.5341
 INSERT INTO Coordinate VALUES(150,'서울특별시 광진구 구의1동 ',37.5424917,127.0856756);
 INSERT INTO Coordinate VALUES(151,'서울특별시 광진구 구의2동',37.5472481,127.0899111);
 INSERT INTO Coordinate VALUES(152,'서울특별시 광진구 구의3동',37.5380706,127.0920204);
-
-
-
---------------------------------------------------------------------------------------------
-
---성동구
-
+--------------------------------------------------
 INSERT INTO Coordinate VALUES(153,'서울특별시 성동구 상왕십리동',37.568375 ,127.0245375);
 INSERT INTO Coordinate VALUES(154,'서울특별시 성동구 하왕십리동',37.5641583 ,127.02875);
 INSERT INTO Coordinate VALUES(155,'서울특별시 성동구 홍익동',37.56695,127.031975);
@@ -589,11 +527,7 @@ INSERT INTO Coordinate VALUES(177,'서울특별시 성동구 성수1가1동',37.
 INSERT INTO Coordinate VALUES(178,'서울특별시 성동구 성수1가2동',37.5464774,127.0443034);
 INSERT INTO Coordinate VALUES(179,'서울특별시 성동구 성수2가1동',37.5395907,127.0540659);
 INSERT INTO Coordinate VALUES(180,'서울특별시 성동구 성수2가3동',37.5482223,127.0552645);
-
---------------------------------------------------------------------------------------------
-
---용산구
-
+--------------------------------------------------
 INSERT INTO Coordinate VALUES(181,'서울특별시 용산구 후암동',37.5486375,126.9781344);
 INSERT INTO Coordinate VALUES(182,'서울특별시 용산구 용산동2가',37.54295,126.98405);
 INSERT INTO Coordinate VALUES(183,'서울특별시 용산구 용산동4가',37.5306,126.9854);
@@ -641,8 +575,7 @@ INSERT INTO Coordinate VALUES(224,'서울특별시 용산구 이태원2동',37.5
 
 --------------------------------------------------------------------------------------------
 
-
-INSERT INTO town VALUES(1, 0, 1,'');
+INSERT INTO town VALUES(1, 0, 1);
 
 ----------------------------------------------------------------------------------------------------
 
@@ -790,7 +723,9 @@ INSERT INTO category VALUES(115,'기타상품',114);
 
 ----------------------------------------------------------------------------------------------------
 
-----------------------------------------------------------------------------------------------------
+INSERT INTO product VALUES (0, 0, 1, 114, '양파마켓 키워드 알림', '키워드 알림', 0, 'onion.png', SYSDATE, NULL, NULL, 0, 'SOLDOUT', 0, 1);
+
+--------------------------------------------------
 
 INSERT INTO product VALUES(101,1,1,43,'코오롱스포츠 구스다운 여성 롱패딩 블랙','하자없이 상태좋은편입니다 드라이 한번 하고 입으시면 될 것 같아요 사이즈 95 택포',65000,'42여성패딩1.png',SYSDATE , '', '' ,0,'SALESON','',0);
 INSERT INTO product VALUES(102,1,1,44,'트렌치코트','소매부분은 끈으로 리본 묶을 수 있어요 뒷부분은 케이프 형태입니다.',50000,'42여성코트1.png',SYSDATE , '', '' ,0,'SALESON','1',0);
@@ -823,8 +758,7 @@ INSERT INTO product VALUES(128,1,1,107,'식물/염자 다육식물 화초 새토
 INSERT INTO product VALUES(129,1,1,107,'다육이','고급진 화분에 붉게 물든 다육 넘이쁘죠',13000,'105다육4.png',SYSDATE , '', '' ,0,'SALESON','',0);
 INSERT INTO product VALUES(130,1,1,107,'다육 모듬입니다~','사이즈 확인하시고 상대원3동 주민센터 앞으로 오시면 되요',7000,'105다육5.png',SYSDATE , '', '' ,0,'SALESON','1',0);
 
-----------------------------------------------------------------------------------------------------
-INSERT INTO product VALUES (0, 0, 1, 114, '양파마켓 키워드 알림', '키워드 알림', 0, 'onion.png', SYSDATE, NULL, NULL, 0, 'SOLDOUT', 0, 1);
+INSERT INTO product VALUES(999,1,1,115,'ㄷrㅁㅂrlㅍrㅁㄴiㄷr','남은거 3개비 팜',1000,'115금지품목1.png',SYSDATE , '', '' ,0,'SALESON','1',0);
 
 ----------------------------------------------------------------------------------------------------
 
@@ -836,5 +770,13 @@ INSERT INTO notice VALUES (104, 1, 'QNA', '게시중단 대상 게시물 유형'
 INSERT INTO notice VALUES (105, 1, 'QNA', '유해 게시물 정의 - 불법성 게시물', '※ 불법성 게시물은 현행법에 위배되거나 범죄 및 불법 행위에 악용될 수 있는 정보를 담은 게시물입니다. ※<br/><br/><br/>[ 양파마켓에서 제한하는 음란성 게시물의 대표적인 대상은 아래와 같습니다. ]<br/><br/>- 성 관련 범죄 정보 (타인의 신체를 본인의 의사에 반해 촬영 및 게시하여 성적 수치심을 유발하는 경우, 원조교제/성매매 관련 정보 등)<br/>- 생명 관련 범죄 정보 (자살 조장, 임신중절 알선/소개, 난자/대리모/장기/신생아 매매 및 알선, 살인청부 관련 내용 등)<br/>- 개인정보 관련 범죄 정보 (개인정보의 매매 시도, 개인 계좌 대여, 개인정보 위조 변경 관련 내용 등)' , '2022-11-02', default);
 INSERT INTO notice VALUES (106, 1, 'QNA', '유해 게시물 정의 - 청소년 유해 게시물', '※ 청소년유해 게시물은 어린이와 청소년의 정신적, 신체적 건강을 해칠 우려가 있는 선정적인 내용을 담은 게시물입니다. ※<br/><br/><br/>청소년보호법 제10조에 의해 19세 이상의 성인만 이용할 수 있도록 별도의 청소년유해표시를 하도록 법으로 정해져있습니다.<br/><br/>[ 양파마켓에서 제한하는 음란성 게시물의 대표적인 대상은 아래와 같습니다. ]<br/><br/>- 전신전라 노출, 둔부, 유두·유륜(여성)의 노출을 포함한 게시글<br/>- 성행위 및 자위행위에 대한 노골적인 묘사 및 내용이 포함된 게시글<br/>- 성행위 파트너, 성인물을 구하는 내용이 포함된 게시글<br/>- 청소년유해매체로 고시된 물건을 판매하거나, 거래를 알선하는 게시글 (담배, 주류, 성인 용품, 별지시기, 아이템 거래, 게임 ID 계정 거래 등)<br/>- 혐오스럽거나 불쾌감을 유발하여(신체가 훼손, 혈흔 낭자) 사회 통념상 청소년에게 유해하다고 인정되는 게시글<br/>- 기타 청소년의 건전한 생활태도 및 정신건강을 저해시킬 수 있는 게시글 ' , '2022-11-02', default);
 INSERT INTO notice VALUES (107, 1, 'QNA', '유해 게시물 정의 - 음란성 게시물', '※ 음란성 게시물은 성적 수치심을 유발하여 선량한 성적 관점에 반하는 내용을 담은 게시물입니다. ※<br/><br/>또한, 현행법상 정보통신망을 통한 유통이 금지된 불법정보입니다.<br/><br/><br/>[ 양파마켓에서 제한하는 음란성 게시물의 대표적인 대상은 아래와 같습니다. ]<br/><br/>- 성기, 음모, 항문의 노출을 포함한 게시글<br/>- 성기, 음모, 항문에 대한 성행위가 노골적으로 묘사되거나 관련 내용을 포함한 게시글<br/>- 반인륜적 성행위(시간, 수간, 스와핑) 및 이상 성행위가 묘사되거나 관련 내용을 포함한 게시글<br/>- 아동청소년을 성적 유희의 대상으로 직접적으로 묘사하거나 관련 내용을 포함한 게시글' , '2022-11-02', default);
+INSERT INTO notice VALUES (120, 1, 'NOTICE', '[공지] 양파마켓 서비스 운영정책 개정 안내', '안녕하세요. 양파마켓입니다. 양파마켓 서비스 운영정책 개정 안내드립니다.<br/><br/> <p style="font-weight: bold;">01. 운영 정책 개정 사항</p><br/> • 상품이미지, 상품명, 상품설명, 양파채팅에 외부 채널로의 결제 및 대화를 유도하는 행위는 금지됩니다.<br/>• 도매판매 또는 대량 주문/발주를 받는 상품 판매를 금지합니다.<br/>• 사기 또는 아이디 도용은 무기한 활동 정지됩니다.<br/>• 다른 회원을 공격하거나 기분을 불쾌하게 하는 행위를 했을 시 이용에 제재가 따르니 유의하시기 바랍니다.<br/>' , '2022-11-02', default);
+INSERT INTO notice VALUES (121, 1, 'NOTICE', '[공지] 양파마켓 이용약관 개정 안내', '안녕하세요. 양파마켓입니다.<br/><br/> 양파마켓 서비스를 이용해주시는 회원분들께 감사드리며, 예정된 이용약관 개정에 대한 주요 내용을 안내드리오니 서비스 이용에 참고하시기 바랍니다.<br/><br/> <i class="fa-regular fa-flag"></i>이용약관 개정일정<br/><br/> - 개정 이용약관 안내 기간<br/>&nbsp;&nbsp; 2022년 10월 1일 ~ 2022년 11월 8일<br/><br/> - 개정 시행일<br/> &nbsp;&nbsp; 안내기간에 따른 날짜로 시행하게됩니다.' , '2022-11-03', default);
+INSERT INTO notice VALUES (122, 1, 'NOTICE', '양파마켓 채팅이용 안내', '채팅을 이용하려는 고객님들께 알려드립니다<br/> <p style="font-weight: bold; color: ">01. 채팅을 하고싶은 상대의 게시물에서 채팅방에 진입합니다.</p><p style="font-weight: bold; color: ">02. 채팅방 하단에서 [''+'' 버튼 > 사진 버튼]을 선택하여 내 pc에 저장된 사진을 올리면 됩니다.</p><br/> * 아래 사진 참고 *<br/>' , '2022-11-05', default);
+INSERT INTO notice VALUES (123, 1, 'NOTICE', '양파마켓 이용정책을 확인하세요', '안녕하세요. 양파마켓입니다. 양파마켓 홈페이지 이용정책을 안내해 드리니 아래의 항목을 준수해주시기 바랍니다.<br/><br/> <p style="font-weight: bold; color: #e4606d;">01. 거래 제한 품목 등록 금지</p>- 거래 제한 품목 등록 시 게시글 무통보 삭제 및 양파마켓 이용제재 처리됩니다.<br/><br/><p style="font-weight: bold; color: #e4606d;">02. 욕설, 비매너 행위 금지</p>- 다른 회원의 거래를 악의적으로 방해하는 행위 및 비하, 욕설이 포함된 게시글 작성을 금지합니다. 양파마켓은 따뜻한 거래 문화를 만들기 위해 노력하고 있습니다. 이에 동참해주시기 바랍니다.<br/><br/><p style="font-weight: bold; color: #e4606d;">03. 도배글, 스팸글 금지</p>- 지속적으로 노출되는 도배 게시물, 스팸성 홍보 등의 행위는 금지합니다.<br/><br/><p style="font-weight: bold; color: #e4606d;">04. 신고에 따른 계정 정치</p>- 신고가 처리되면 무통보 이용정지가 되오니 이를 유의하여 건전한 마켓이용을 권장합니다.' , '2022-11-02', default);
+INSERT INTO notice VALUES (124, 1, 'NOTICE', '[공지] 양파마켓 개인정보 처리방침', '<p style="color: #4c4c4c; font-weight: bold;">안녕하세요. 양파마켓입니다.</p> <p style="color: #003eff; font-weight: bold;"><i class="fa-solid fa-check"></i> 양파마켓을 이용하는 고객님들께 알립니다.</p> 아래의 안내 사항을 읽어주세요<br/><br/>' , '2022-11-03', default);
+INSERT INTO notice_image VALUES (500, 124, 'onionNotice1.png');
+INSERT INTO notice_image VALUES (501, 124, 'onionNotice2.png');
+INSERT INTO notice_image VALUES (502, 122, 'chatEx1.png');
 
 commit;

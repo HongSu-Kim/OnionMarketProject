@@ -21,7 +21,7 @@
                     <c:forEach var="dto" items="${reviewList.content }">
                         <hr/>
                         <div class="col-lg-12">
-                            <div style="display: flex;">
+                            <div style="display: flex; margin-bottom: 20px">
                                     <%--<div>No.${reviewList.totalElements - (reviewList.number * reviewList.size) - reviewList.content.indexOf(dto)}</div> --%>
                                 <div class="col-lg-1">
                                     <img alt="프로필사진" style="border-radius: 50%"
@@ -42,14 +42,12 @@
                                 </div>
                                 <div class="text-right">
                                     <c:if test="${dto.memberId == memberDTO.id}">
-                                        <button class="review-btn"
-                                                onclick="location.href='/review/update/${memberDTO.id}/${dto.reviewId}'"
-                                                style="background-color: #47cd65; border-radius: 20px; border: none; font-size: 10pt; padding: 10px; color: white">
+                                        <button onclick="location.href='/review/update/${memberDTO.id}/${dto.reviewId}'"
+                                                style="background-color: #90C8AC; border-radius: 20px; border: none; font-size: 10pt; padding: 8px; color: white">
                                             수정
                                         </button>
-                                        <button class="review-btn"
-                                                onclick="location.href='/review/delete/${memberDTO.id}/${dto.reviewId}'"
-                                                style="background-color: #7e828f; border-radius: 20px; border: none; font-size: 10pt; padding: 10px; color: white">
+                                        <button onclick="location.href='/review/delete/${memberDTO.id}/${dto.reviewId}'"
+                                                style="background-color: #7e828f; border-radius: 20px; border: none; font-size: 10pt; padding: 8px; color: white">
                                             삭제
                                         </button>
                                     </c:if>
@@ -57,15 +55,18 @@
                             </div>
 
                             <div style="display: flex">
-                                <div class="col-lg-6" style="margin-top: 20px; margin-left: 35px;">
-                                    <p style="height: 10px; color: #003eff; font-weight: bold;">
+                                <div class="col-lg-5" style="margin-top: 20px; margin-left: 35px;">
+                                    <p style="height: 10px; color: #90C8AC; font-weight: bold;">
                                         구매상품: ${dto.productDTO.subject}</p>
                                     <p>${dto.reviewContent}</p>
                                 </div>
-                                <div class="col-lg-5 text-right">
+
+
+                                <div class="col-lg-7 text-right">
                                     <c:forEach items="${dto.reviewImageList}" var="reviewImageDTO">
                                         <img src="/img/review/${reviewImageDTO.storeImageName}" width="100px;"
-                                             height="110px;"/>
+                                             height="110px;" onmouseenter="zoomIn(event)"
+                                             onmouseleave="zoomOut(event)"/>
                                     </c:forEach>
                                 </div>
                             </div>
@@ -78,25 +79,35 @@
 
 
     <!-- 페이지 그룹 -->
-    <c:forEach begin="${startBlockPage}" end="${endBlockPage}" var="i">
-        <c:choose>
-            <c:when test="${reviewList.pageable.pageNumber+1 == i}">
-                <a href="/review/mylist/${memberDTO.id}?page=${i-1}">${i}</a>
-            </c:when>
-            <c:otherwise>
-                <a href="/review/mylist/${memberDTO.id}?page=${i-1}">${i}</a>
-            </c:otherwise>
-        </c:choose>
-    </c:forEach>
+    <div class="text-xs-center" style="margin-bottom: 20px">
+        <ul class="product__pagination text-center">
+            <c:choose>
+                <c:when test="${reviewList.first}"></c:when>
+                <c:otherwise>
+                    <%--                    <a href="/notice/list/?field=${field}&word=${word}&page=0">처음으로</a>--%>
+                    <a href="/review/mylist/${memberDTO.id}?page=${reviewList.number-1}">◀</a>
+                </c:otherwise>
+            </c:choose>
 
-    <!-- 다음 -->
-    <c:choose>
-        <c:when test="${reviewList.last}"></c:when>
-        <c:otherwise>
-            <a href="/review/mylist/${memberDTO.id}?page=${reviewList.number+1}">▶</a>
-        </c:otherwise>
-    </c:choose>
-    </ul>
+            <c:forEach begin="${startBlockPage}" end="${endBlockPage}" var="i">
+                <c:choose>
+                    <c:when test="${reviewList.pageable.pageNumber+1 == i}">
+                        <a href="/review/mylist/${memberDTO.id}?page=${i-1}">${i}</a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="/review/mylist/${memberDTO.id}?page=${i-1}">${i}</a>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+
+            <!-- 다음 -->
+            <c:choose>
+                <c:when test="${reviewList.last}"></c:when>
+                <c:otherwise>
+                    <a href="/review/mylist/${memberDTO.id}?page=${reviewList.number+1}">▶</a>
+                </c:otherwise>
+            </c:choose>
+        </ul>
     </div>
     <!-- 페이징 끝 -->
 

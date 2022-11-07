@@ -6,6 +6,7 @@ import com.youprice.onion.dto.product.*;
 import com.youprice.onion.entity.product.ProductProgress;
 import com.youprice.onion.security.auth.LoginUser;
 import com.youprice.onion.service.chat.ChatService;
+import com.youprice.onion.service.member.BlockService;
 import com.youprice.onion.service.member.MemberService;
 import com.youprice.onion.service.member.ProhibitionKeywordService;
 import com.youprice.onion.service.product.*;
@@ -42,6 +43,7 @@ public class ProductController {
     private final CoordinateService coordinateService;
     private final BiddingService biddingService;
     private final MemberService memberService;
+    private final BlockService blockService;
     private final ProhibitionKeywordService prohibitionKeywordService;
     private final ChatService chatService;
     private final SimpMessagingTemplate template;
@@ -163,24 +165,27 @@ public class ProductController {
 
     //상품 동네리스트 주소
     @GetMapping(value = "wishRangeList")
-    public String list(@LoginUser SessionDTO userSession, HttpSession session, Model model,
+    public String list(@LoginUser SessionDTO sessionDTO, HttpSession session, Model model,
                        @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) throws Exception {
 
         /*세션아이디로 동네 조회*/
-        List<Long> coordinateList = null;
         Long memberId = null;
+        List<Long> blockIdList = null;
+        List<Long> coordinateList = null;
 
-        if (userSession != null) {
+        if (sessionDTO != null) {
 
-            coordinateList = townService.townLists(userSession.getId())
+            blockIdList = blockService.blockIdList(sessionDTO.getId());
+            coordinateList = townService.townLists(sessionDTO.getId())
                     .stream()
                     .map(TownFindDTO::getCoordinateId)
                     .collect(Collectors.toList());
 
-            memberId = userSession.getId();
+            memberId = sessionDTO.getId();
         }
         SearchRequirements searchRequirements = SearchRequirements.builder()
                 .blindStatus(false)
+                .blockIdList(blockIdList)
                 .coordinateIdList(coordinateList)
                 .build();
 
@@ -199,12 +204,18 @@ public class ProductController {
     public String allList(@LoginUser SessionDTO sessionDTO, Model model, @PageableDefault(size = 12, sort = "uploadDate", direction = Sort.Direction.DESC) Pageable pageable, @RequestParam("range") Double range
             , @RequestParam("townName") String townName, HttpSession session) {
 
+        List<Long> blockIdList = null;
+        if(sessionDTO != null) {
+            blockIdList = blockService.blockIdList(sessionDTO.getId());
+        }
+
         List<Long> rangeList = coordinateService.coordinateSearch(townName, range);
         session.setAttribute("rangeList", rangeList);
 
         SearchRequirements searchRequirements = SearchRequirements.builder()
                 .pageable(pageable)
                 .blindStatus(false)
+                .blockIdList(blockIdList)
                 .coordinateIdList(rangeList)
                 .build();
 
@@ -220,18 +231,22 @@ public class ProductController {
     }
 
     @GetMapping("auctionList") //경매 상품 리스트
-    public String auctionList(@LoginUser SessionDTO userSession, HttpSession session, Model model,
+    public String auctionList(@LoginUser SessionDTO sessionDTO, HttpSession session, Model model,
                               @PageableDefault(size = 12, sort = "auctionDeadline", direction = Sort.Direction.ASC) Pageable pageable) throws Exception {
+
+        Long memberId = null;
+        List<Long> blockIdList = null;
+
+        if(sessionDTO != null) {
+            blockIdList = blockService.blockIdList(sessionDTO.getId());
+            memberId = sessionDTO.getId();
+        }
 
         SearchRequirements searchRequirements = SearchRequirements.builder()
                 .blindStatus(false)
                 .auctionStatus(true)
+                .blockIdList(blockIdList)
                 .build();
-
-        Long memberId = null;
-        if (userSession != null) {
-            memberId = userSession.getId();
-        }
 
         searchRequirements.setPageable(pageable);
 
@@ -246,6 +261,11 @@ public class ProductController {
     public String category(@LoginUser SessionDTO sessionDTO, Model model, Long categoryId,
                            @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
+        List<Long> blockIdList = null;
+        if(sessionDTO != null) {
+            blockIdList = blockService.blockIdList(sessionDTO.getId());
+        }
+
         List<Long> categoryIdList = categoryService.findSubCategory(categoryId)
                 .stream().map(CategoryFindDTO::getCategoryId)
                 .collect(Collectors.toList());
@@ -253,6 +273,7 @@ public class ProductController {
         SearchRequirements searchRequirements = SearchRequirements.builder()
                 .pageable(pageable)
                 .blindStatus(false)
+                .blockIdList(blockIdList)
                 .categoryIdList(categoryIdList)
                 .build();
 

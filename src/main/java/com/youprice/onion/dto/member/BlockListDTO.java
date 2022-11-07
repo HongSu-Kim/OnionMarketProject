@@ -21,6 +21,7 @@ public class BlockListDTO {
 
     public BlockListDTO(Block block, int blockListSize) {
         blockId = block.getId();
+        targetId = block.getTarget().getId();
         Member target = block.getTarget();
         memberNickname = target.getNickname();
         userGrade = target.getUserGrade();

@@ -4,7 +4,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <style>
     .n-section-title {
-        border-bottom: 3px solid #47cd65;
+        border-bottom: 3px solid #90C8AC;
         padding-bottom: 10px;
         margin-top: 200px;
         line-height: 1.5;
@@ -18,25 +18,27 @@
     }
 </style>
 
-<section class="hero hero-normal">
+<section class="hero hero-normal" style="margin-top: 240px">
     <div class="container" style="width: 800px;">
-        <div style="margin-bottom: 20px">
-            <div class="n-section-title">
-                <h1 class="tit">게시글</h1>
+        <div style="margin-bottom: 150px">
+            <div class="n-section-title" style="margin-bottom: 30px">
             </div>
 
-            <div>
-                제목 : ${noticeDTO.noticeSubject}
+            <div style="margin-bottom: 35px">
+                <h4 style="margin-bottom: 5px; font-weight: bold"> ${noticeDTO.noticeSubject}</h4>
+                <div style="font-size: 12pt; color: #5a6268">작성일자:${noticeDTO.noticeDate}</div>
                 <span style="float: right">조회수 : ${noticeDTO.hitCount}</span>
             </div>
             <hr/>
-            <div>작성일자:${noticeDTO.noticeDate}</div>
+
+
 
             <div>${noticeDTO.noticeContent}</div>
 
             <div>
                 <c:forEach items="${noticeDTO.noticeImageList}" var="noticeImageDTO">
-                    <img src="/img/notice/${noticeImageDTO.noticeImageName}" width="770" height="500"/>
+                    <img src="/img/notice/${noticeImageDTO.noticeImageName}" width="770" height="500"
+                    style="margin-top: 30px; margin-bottom: 30px"/>
                 </c:forEach>
             </div>
         </div>

@@ -4,9 +4,11 @@ package com.youprice.onion.util;
 import com.youprice.onion.entity.member.Member;
 import org.apache.commons.mail.HtmlEmail;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class MailUtil {
 
-    public static void sendMail(Member member) throws Exception{
+    public static void sendMail(Member member, String url) {
 
         // Mail Server 설정
         String charSet = "utf-8";
@@ -30,7 +32,7 @@ public class MailUtil {
         content += "<p>임시 비밀번호 : ";
         content += member.getPwd() + "</p></div>";
         content += "<div></div>";
-        content += "<a href='http://localhost:8083/member/login'>로그인 하기</a>";
+        content += "<a href='" + url + "/member/login'>로그인 하기</a>";
 
         // 받는 사람 정보
         String toEmail = member.getEmail();

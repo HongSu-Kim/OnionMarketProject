@@ -2,8 +2,10 @@ package com.youprice.onion.dto.board;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Getter @Setter
 public class NoticeFormDTO {
@@ -15,4 +17,5 @@ public class NoticeFormDTO {
     private String noticeSubject;
     @NotEmpty(message = "공지내용을 작성해주세요")
     private String noticeContent;
+    private List<MultipartFile> noticeImageName;
 }

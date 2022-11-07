@@ -100,7 +100,6 @@
 	#best_search {
 	width:740px;
 	margin:0 auto;
-	padding-top:50px;
 	text-align:center;
 	}
 	#best_search li,dd {
@@ -170,45 +169,59 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
-					<div class="hero__item set-bg" data-setbg="/template/img/hero/banner.jpg">
-						<div class="hero__text">
-							<span>FRUIT FRESH</span>
-							<h2>Vegetable <br />100% Organic</h2>
-							<p>Free Pickup and Delivery Available</p>
-							<a href="#" class="primary-btn">SHOP NOW</a>
-						</div>
-					</div>
+					<div class="hero__item set-bg" data-setbg="/template/img/hero/banner2.png"></div>
 				</div>
 			</div>
 		</div>
 	</section>
 	<!-- /광고 -->
 
-	<!-- Categories Section Begin -->
-	<%--<section class="categories">
+	<div id="wrap">
 		<div class="container">
-			<div class="row">
-				<div class="categories__slider owl-carousel">
-					<c:forEach var="productListDTO" items="${hotProductList}">
-						<div class="col-lg-3">
-							<div class="categories__item set-bg" data-setbg="/img/product/${productListDTO.productImageName}" onclick="location.href='/product/detail/${productListDTO.productId}';">
-								<h5><a href="/product/detail/${productListDTO.productId}">${productListDTO.subject}</a></h5>
-							</div>
-						</div>
-					</c:forEach>
-					<div class="col-lg-3">
-						<div class="categories__item set-bg" data-setbg="/template/img/categories/cat-1.jpg">
-							<h5><a href="#">Fresh Fruit</a></h5>
-						</div>
-					</div>
-				</div>
-			</div>
+			<ul id="best_search">
+				<li><p>실시간 인기검색어</p></li>
+				<li>
+					<dl class="time1" style="display:">
+						<dd><a class="t" href="#"><div class="num">1</div>자전거</a></dd>
+						<dd><a class="t" href="#"><div class="num">2</div>전동킥보드</a></dd>
+						<dd><a class="t" href="#"><div class="num">3</div>비키니</a></dd>
+						<dd><a class="t" href="#"><div class="num">4</div>모노키니</a></dd>
+						<dd><a class="t" href="#"><div class="num">5</div>원터치텐트</a></dd>
+					</dl>
+					<dl class="time2" style="display:none;">
+						<dd><a class="t" href="#"><div class="num">6</div>등산화</a></dd>
+						<dd><a class="t" href="#"><div class="num">7</div>풋살화</a></dd>
+						<dd><a class="t" href="#"><div class="num">8</div>요가복</a></dd>
+						<dd><a class="t" href="#"><div class="num">9</div>텐트</a></dd>
+						<dd><a class="t" href="#"><div class="num">10</div>래쉬가드</a></dd>
+					</dl>
+					<dl class="time3" style="display:none;">
+						<dd><a class="t" href="#"><div class="num">11</div>수영복</a></dd>
+						<dd><a class="t" href="#"><div class="num">12</div>디스커버리반팔티</a></dd>
+						<dd><a class="t" href="#"><div class="num">13</div>축구화</a></dd>
+						<dd><a class="t" href="#"><div class="num">14</div>노스페이스바람막이</a></dd>
+						<dd><a class="t" href="#"><div class="num">15</div>전기자전거</a></dd>
+					</dl>
+					<dl class="time4" style="display:none;">
+						<dd><a class="t" href="#"><div class="num">16</div>캠핑카</a></dd>
+						<dd><a class="t" href="#"><div class="num">17</div>캠핑테이블</a></dd>
+						<dd><a class="t" href="#"><div class="num">18</div>여성골프웨어</a></dd>
+						<dd><a class="t" href="#"><div class="num">19</div>여성래쉬가드</a></dd>
+						<dd><a class="t" href="#"><div class="num">20</div>캠핑의자</a></dd>
+					</dl>
+				</li>
+				<li>
+					<a class="best_add ad1" style="cursor:pointer" onClick="javascript:view('0')">&#62;</a>
+					<a class="best_add ad2" onClick="javascript:view('1')" style="display:none;cursor:pointer" >&#62;</a>
+					<a class="best_add ad3" onClick="javascript:view('2')" style="display:none;cursor:pointer" >&#62;</a>
+					<a class="best_add ad4" onClick="javascript:view('3')" style="display:none;cursor:pointer" >&#60;</a>
+				</li>
+			</ul>
 		</div>
-	</section>--%>
-	<!-- Categories Section End -->
+	</div>
 
 	<!-- Featured Section Begin -->
-	<section class="featured spad">
+	<section class="product spad">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
@@ -232,7 +245,7 @@
 						<div class="featured__item">
 							<div class="product__item__pic radius set-bg" data-setbg="/img/product/${productDTO.productImageName}"
 									 onclick="location.href='/product/detail/${productDTO.productId}';">
-								<div style="margin-top:93%;">
+								<div class="pay__auction__image">
 									<c:if test="${productDTO.payStatus eq true}"><img src="/template/img/product/pay.png"></c:if>
 									<c:if test="${productDTO.auctionDeadline ne null}"><img src="/template/img/product/auction.png"></c:if>
 								</div>
@@ -438,49 +451,7 @@
 			</div>
 		</div>
 
-		<div id="wrap">
-			<div class="container">
-				<ul id="best_search">
-					<li><p>실시간 인기검색어</p></li>
-					<li>
-						<dl class="time1" style="display:">
-							<dd><a class="t" href="#"><div class="num">1</div>자전거</a></dd>
-							<dd><a class="t" href="#"><div class="num">2</div>전동킥보드</a></dd>
-							<dd><a class="t" href="#"><div class="num">3</div>비키니</a></dd>
-							<dd><a class="t" href="#"><div class="num">4</div>모노키니</a></dd>
-							<dd><a class="t" href="#"><div class="num">5</div>원터치텐트</a></dd>
-						</dl>
-						<dl class="time2" style="display:none;">
-							<dd><a class="t" href="#"><div class="num">6</div>등산화</a></dd>
-							<dd><a class="t" href="#"><div class="num">7</div>풋살화</a></dd>
-							<dd><a class="t" href="#"><div class="num">8</div>요가복</a></dd>
-							<dd><a class="t" href="#"><div class="num">9</div>텐트</a></dd>
-							<dd><a class="t" href="#"><div class="num">10</div>래쉬가드</a></dd>
-						</dl>
-						<dl class="time3" style="display:none;">
-							<dd><a class="t" href="#"><div class="num">11</div>수영복</a></dd>
-							<dd><a class="t" href="#"><div class="num">12</div>디스커버리반팔티</a></dd>
-							<dd><a class="t" href="#"><div class="num">13</div>축구화</a></dd>
-							<dd><a class="t" href="#"><div class="num">14</div>노스페이스바람막이</a></dd>
-							<dd><a class="t" href="#"><div class="num">15</div>전기자전거</a></dd>
-						</dl>
-						<dl class="time4" style="display:none;">
-							<dd><a class="t" href="#"><div class="num">16</div>캠핑카</a></dd>
-							<dd><a class="t" href="#"><div class="num">17</div>캠핑테이블</a></dd>
-							<dd><a class="t" href="#"><div class="num">18</div>여성골프웨어</a></dd>
-							<dd><a class="t" href="#"><div class="num">19</div>여성래쉬가드</a></dd>
-							<dd><a class="t" href="#"><div class="num">20</div>캠핑의자</a></dd>
-						</dl>
-					</li>
-					<li>
-						<a class="best_add ad1" style="cursor:pointer" onClick="javascript:view('0')">&#62;</a>
-						<a class="best_add ad2" onClick="javascript:view('1')" style="display:none;cursor:pointer" >&#62;</a>
-						<a class="best_add ad3" onClick="javascript:view('2')" style="display:none;cursor:pointer" >&#62;</a>
-						<a class="best_add ad4" onClick="javascript:view('3')" style="display:none;cursor:pointer" >&#60;</a>
-					</li>
-				</ul>
-			</div>
-		</div>
+
 
 
 
