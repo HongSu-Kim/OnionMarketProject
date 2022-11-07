@@ -7,12 +7,10 @@
     <div class="container">
         <div class="row featured__filter">
             <!-- 주문없음 -->
-            <c:if test="${empty page.content}">
+            <c:if test="${not empty page.content}">
                 <div class="col-lg-12">
                     <div class="contact__form__title">
                         <h3>등록된 상품이 없습니다.</h3>
-                        <button type="button" class="site-btn mt-5" onclick="location.href='/product/list'">상품 보러가기
-                        </button>
                     </div>
                 </div>
             </c:if>

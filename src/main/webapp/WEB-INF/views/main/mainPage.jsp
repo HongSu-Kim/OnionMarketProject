@@ -232,7 +232,7 @@
 						<div class="featured__item">
 							<div class="product__item__pic radius set-bg" data-setbg="/img/product/${productDTO.productImageName}"
 									 onclick="location.href='/product/detail/${productDTO.productId}';">
-								<div style="margin-top:93%;">
+								<div class="pay__auction__image">
 									<c:if test="${productDTO.payStatus eq true}"><img src="/template/img/product/pay.png"></c:if>
 									<c:if test="${productDTO.auctionDeadline ne null}"><img src="/template/img/product/auction.png"></c:if>
 								</div>
