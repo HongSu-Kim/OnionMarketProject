@@ -2,7 +2,6 @@ package com.youprice.onion.service.product;
 
 import com.youprice.onion.dto.order.ProductSellListDTO;
 import com.youprice.onion.dto.product.*;
-import com.youprice.onion.entity.product.ProductProgress;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,17 +34,8 @@ public interface ProductService {
     //상품 하나 조회
     ProductFindDTO getProductFindDTO(Long productId);
 
-    //제목과 내용으로 검색
-    List<ProductListDTO> getSearchList(String subject, String content);
-
-    //카테고리별 상품 조회
-    List<ProductListDTO> getProductCategoryList(Long start, Long end);
-
     //하위 카테고리 조회
     List<ProductFindDTO> getProductSubCategory(Long productId, Long categoryId);
-
-    //동네번호 조회
-    TownFindDTO findTownId(String townName);
 
     Page<ProductSellListDTO> getProductSellListDTO(SearchRequirements searchRequirements);
 

@@ -14,7 +14,7 @@ import java.util.List;
 public interface TownService {
 
     void townAdd(TownAddDTO townAddDTO, HttpServletResponse response, String townName) throws IOException;
-
+    void townDelete(Long townId);
     List<TownFindDTO> townList(Long townId);
 
     List<TownFindDTO> townLists(Long memberId);

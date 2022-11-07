@@ -13,10 +13,10 @@ $('#charge_kakao').click(function () {
         name: 'ONION MARKET 양파페이 충전',
         amount: cash,
         buyer_email: 'youpriceonion@gmail.com',
-        buyer_name: '구매자이름',
-        buyer_tel: '010-3104-7411',
-        buyer_addr: '서울시 강남구',
-        buyer_postcode: '123-456'
+        buyer_name: 'TEAM_YOUPRICE',
+        buyer_tel: '02-6255-8002',
+        buyer_addr: '서울특별시 강남구 테헤란로 124 4층 (역삼동, 삼원타워)',
+        buyer_postcode: '06234'
     }, function (rsp) {
         let msg;
         console.log(rsp);

@@ -348,13 +348,13 @@ CREATE TABLE notice_image (
 
 INSERT INTO member VALUES(0, 'ADMIN', 'admin0', '$2a$10$8gkJSCifAA3aWUAZJazhnuYLi2JVSbC7D2UtDmu0cUG9NScriVtZ6', --pwd : admin123
                           'onion', '양파 마켓', SYSDATE, '01012341234', '06234', '서울 강남구 역삼동 823',
-                          '4층 아이티윌', '디글디글0', 'onion@gmail.com', 'onion.png', 1000000, 10000, 0, 0);
+                          '4층 아이티윌', '', 'onion@gmail.com', 'onion.png', 1000000, 10000, 0, 0);
 INSERT INTO member VALUES(1, 'ADMIN', 'admin', '$2a$10$8gkJSCifAA3aWUAZJazhnuYLi2JVSbC7D2UtDmu0cUG9NScriVtZ6', --pwd : admin123
                           'admin', '관리자', SYSDATE, '01012341234', '06234', '서울 강남구 역삼동 823',
-                          '4층 아이티윌', '디글디글', 'youprice.onion.email@gmail.com', 'null.png', 1000000, 10000, 0, 0);
+                          '4층 아이티윌', '', 'youprice.onion.email@gmail.com', 'null.png', 1000000, 10000, 0, 0);
 INSERT INTO member VALUES(2, 'USER', 'user1', '$2a$10$X5ICHy3CCqtWl0su87UzMuCe.v2V92TBIH5szmZ.hBJd/tD/7o8LW', --pwd : user1
-                          'user1', '유저1', SYSDATE, '01011111111', '06253', '서울 강남구 역삼동 838',
-                          '1', '', 'user1@naver.com', 'null.png', 1000000000, 10000, 0, 0);
+                          '디굴디굴', '김디굴', SYSDATE, '01011111111', '06253', '서울 강남구 역삼동 823',
+                          '4층', '', 'user1@naver.com', 'null.png', 200000, 10000, 0, 0);
 INSERT INTO member VALUES(3, 'USER', 'user2', '$2a$10$yCBZmjwdiIsWneGJll69X.Z7DGnGx4pSgeBw1oNVZkbxvg4w./uUy', --pwd : user2
                           'user2', '유저2', SYSDATE, '01022222222', '06120', '서울 강남구 논현동 200-7',
                           '2', '', 'user2@naver.com', 'null.png', 20000, 1000, 0, 0);
@@ -443,26 +443,7 @@ INSERT INTO Coordinate VALUES(65, '서울특별시 강동구 둔촌2동',  '37.5
 
 ----------------------------------------------------------------------------------------------------
 
-INSERT INTO town VALUES(1, 1, 1,'');
-INSERT INTO town VALUES(2, 1, 2,'');
-INSERT INTO town VALUES(3, 1, 3,'');
-INSERT INTO town VALUES(4, 1, 4,'');
-INSERT INTO town VALUES(5, 1, 5,'');
-INSERT INTO town VALUES(6, 1, 6,'');
-INSERT INTO town VALUES(7, 1, 7,'');
-INSERT INTO town VALUES(8, 1, 8,'');
-INSERT INTO town VALUES(9, 1, 9,'');
-INSERT INTO town VALUES(10, 1, 10,'');
-INSERT INTO town VALUES(11, 1, 11,'');
-INSERT INTO town VALUES(12, 1, 12,'');
-INSERT INTO town VALUES(13, 1, 13,'');
-INSERT INTO town VALUES(14, 1, 14,'');
-INSERT INTO town VALUES(15, 1, 15,'');
-INSERT INTO town VALUES(16, 1, 16,'');
-INSERT INTO town VALUES(17, 1, 17,'');
-INSERT INTO town VALUES(18, 1, 18,'');
-INSERT INTO town VALUES(19, 1, 19,'');
-INSERT INTO town VALUES(20, 1, 20,'');
+INSERT INTO town VALUES(1, 0, 1,'');
 
 ----------------------------------------------------------------------------------------------------
 
@@ -609,6 +590,39 @@ INSERT INTO category VALUES(114,'기타','');
 INSERT INTO category VALUES(115,'기타상품',114);
 
 ----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+
+INSERT INTO product VALUES(101,1,1,43,'코오롱스포츠 구스다운 여성 롱패딩 블랙','하자없이 상태좋은편입니다 드라이 한번 하고 입으시면 될 것 같아요 사이즈 95 택포',65000,'42여성패딩1.png',SYSDATE , '', '' ,0,'SALESON','',0);
+INSERT INTO product VALUES(102,1,1,44,'트렌치코트','소매부분은 끈으로 리본 묶을 수 있어요 뒷부분은 케이프 형태입니다.',50000,'42여성코트1.png',SYSDATE , '', '' ,0,'SALESON','1',0);
+INSERT INTO product VALUES(103,1,1,44,'55 66 톰보이 후드 코트','상태 깨끗해요 위례포레샤인 17단지에서 거래가능',20000,'42여성코트2.png',SYSDATE , '', '' ,0,'SALESON','',0);
+INSERT INTO product VALUES(104,1,1,48,'마쥬 스트라이프 셔츠1','마쥬 스트라이프셔츠1(44-55) 새상품 반품 약46',80000,'42여성셔츠1.png',SYSDATE , '', '' ,0,'SALESON','1',0);
+INSERT INTO product VALUES(105,1,1,48,'새상품 미쏘 스트링 포인트 셔츠 원피스 네이비','빠르게 팔려고 가격 내렸습니다~',40000,'42여성셔츠2.png',SYSDATE , '', '' ,0,'SALESON','',0);
+INSERT INTO product VALUES(106,1,1,54,'Jack Wolfskin 기능성 플리스 자켓 66~77','구입하고 실착용 5회 미만, 깨끗하게 보관했어요',50000,'42여성자켓1.png',SYSDATE , '', '' ,0,'SALESON','1',0);
+INSERT INTO product VALUES(107,1,1,54,'미착용 택포함 자라 크롭 자켓','자라 새상품 2021년 구매했는데 택 포함 미착용이에용',46000,'42여성자켓2.png',SYSDATE , '', '' ,0,'SALESON','',0);
+INSERT INTO product VALUES(108,1,1,51,'발랭키 바지. 새옷.','사이즈 26인치. 길이 90센티.',18000,'42여성바지1.png',SYSDATE , '', '' ,0,'SALESON','1',0);
+INSERT INTO product VALUES(109,1,1,52,'스트레이트핏 세미와이드 청바지M','스트레이트 핏 세미와이드 청바지 연청~중청 사이의 예쁜 색감이에요.',5000,'42여성청바지1.png',SYSDATE , '', '' ,0,'SALESON','',0);
+INSERT INTO product VALUES(110,1,1,97,'강아지 집 옥희독희 꿀몬스방석','구매는 바로 얼마 전에 했습니다, 사이즈 안맞아서 싸게 팝니다',43000,'96강아지용품1.png',SYSDATE , '', '' ,0,'SALESON','1',0);
+INSERT INTO product VALUES(111,1,1,97,'이동장이랑 방석 2개같이요','구매는 강아지 유치원에서 직접 선생님 추천으로 샀는데 사용 안해서 팔아요 ㅜㅡㅜ',23000,'96강아지용품2.png',SYSDATE , '', '' ,0,'SALESON','',0);
+INSERT INTO product VALUES(112,1,1,97,'강아지 모자,양말','3,3kg 시츄가 사용하려고 샀던 모자와 양말인데 강아지가 안써서 방치해둬써용..',5000,'96강아지용품3.png',SYSDATE , '', '' ,0,'SALESON','1',0);
+INSERT INTO product VALUES(113,1,1,97,'강아지 울타리','강아지 용품입니다',15000,'96강아지용품4.png',SYSDATE , '', '' ,0,'SALESON','',0);
+INSERT INTO product VALUES(114,1,1,98,'강아지 영양간식','안녕하세요~ 소,연어로 만든 간식입니다',8500,'96강아지간식1.png',SYSDATE , '', '' ,0,'SALESON','1',0);
+INSERT INTO product VALUES(115,1,1,100,'우다다캣 매트','매트만 판매해요~ 거의 새거인데 저렴히 가져가실 분 가져가세요',20000,'96고양이용품1.png',SYSDATE , '', '' ,0,'SALESON','',0);
+INSERT INTO product VALUES(116,1,1,100,'미야옹철 강추템 고양이 미로터널','미야옹철 수의사쌤이 추천해줘서 구매한 고양이 미로터널인데 고양이가 안놀아줘요....',26000,'96고양이용품2.png',SYSDATE , '', '' ,0,'SALESON','1',0);
+INSERT INTO product VALUES(117,1,1,100,'리스펫 사냥본능 고양이 장난감','고양님이 관심이 1도 없어서 팔아요 건전지 교체해야합니다',9000,'96고양이용품3.png',SYSDATE , '', '' ,0,'SALESON','',0);
+INSERT INTO product VALUES(118,1,1,101,'고양이 간식 츄르','우리집 고양이 츄르를 좋아해~ 유통기한 길어요',5000,'96고양이간식1.png',SYSDATE , '', '' ,0,'SALESON','1',0);
+INSERT INTO product VALUES(119,1,1,103,'앵무새 놀이터','사용은 많이 안했는데 나무라 배변이 잘안지워졌습니다...',33000,'96기타용품1.png',SYSDATE , '', '' ,0,'SALESON','',0);
+INSERT INTO product VALUES(120,1,1,103,'펫테일 프론트백(블랙)','새상품/s',10000,'96기타용품2.png',SYSDATE , '', '' ,0,'SALESON','1',0);
+INSERT INTO product VALUES(121,1,1,106,'안스리움클라리네비움','안스리움클라리네비움 사진보시고 연락주세요',70000,'105꽃1.png',SYSDATE , '', '' ,0,'SALESON','',0);
+INSERT INTO product VALUES(122,1,1,106,'몬스테라 화분','집에서 키운 몬스테라 팝니다. 잘크고 있는데 너무 커서 팔아요',15000,'105꽃2.png',SYSDATE , '', '' ,0,'SALESON','1',0);
+INSERT INTO product VALUES(123,1,1,106,'식물(삭소름 보라)','하늘하늘 보라꽃이 예쁜 순동이 삭소름..',5000,'105꽃3.png',SYSDATE , '', '' ,0,'SALESON','',0);
+INSERT INTO product VALUES(124,1,1,106,'선착순 빨리 가져가실 돈나무 금전수입니다','높이 50 안되고 금전수 돈나무 정리해요',15000,'105꽃4.png',SYSDATE , '', '' ,0,'SALESON','1',0);
+INSERT INTO product VALUES(125,1,1,106,'건강한 황금죽 식물입니다.(시멘트 화분포함)','건강한 황금죽이고 공기정화식물로 화학물질 잘정화해요',41000,'105꽃5.png',SYSDATE , '', '' ,0,'SALESON','',0);
+INSERT INTO product VALUES(126,1,1,107,'식물/화분,화초팔아요','새 화분에 분갈이 했어요~ 자리비움으로 정리합니다',6000,'105다육1.png',SYSDATE , '', '' ,0,'SALESON','1',0);
+INSERT INTO product VALUES(127,1,1,107,'다육이 세트','다육이 기를 줄을 몰라서 판매해요 이름도 잘 모릅니다..',10000,'105다육2.png',SYSDATE , '', '' ,0,'SALESON','',0);
+INSERT INTO product VALUES(128,1,1,107,'식물/염자 다육식물 화초 새토분과 새도자기','미니종 염자입니다. 일교차가 커지면 잎끝이 빨갛게 물들어 더욱 이뻐요',2000,'105다육3.png',SYSDATE , '', '' ,0,'SALESON','1',0);
+INSERT INTO product VALUES(129,1,1,107,'다육이','고급진 화분에 붉게 물든 다육 넘이쁘죠',13000,'105다육4.png',SYSDATE , '', '' ,0,'SALESON','',0);
+INSERT INTO product VALUES(130,1,1,107,'다육 모듬입니다~','사이즈 확인하시고 상대원3동 주민센터 앞으로 오시면 되요',7000,'105다육5.png',SYSDATE , '', '' ,0,'SALESON','1',0);
 
 INSERT INTO product VALUES (0, 0, 1, 114, '양파마켓 키워드 알림', '키워드 알림', 0, 'onion.png', SYSDATE, NULL, NULL, 0, 'SOLDOUT', 0, 1);
 

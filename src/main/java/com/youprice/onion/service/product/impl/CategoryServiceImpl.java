@@ -101,9 +101,14 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void CategoryDelete(Long id) { //카테고리삭제
+    public Category CategoryDelete(Long categoryId) { //카테고리삭제
         Category category = new Category();
-        categoryRepositoy.deleteById(id);
+       Category categoryFindDTOList =categoryRepositoy.findById(categoryId).orElse(null);
+      categoryFindDTOList = categoryRepositoy.deleteByCategoryName(categoryFindDTOList.getCategoryName());
+
+
+
+        return  categoryFindDTOList;
 
     }
 

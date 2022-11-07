@@ -18,10 +18,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -168,13 +166,6 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(product);
     }
 
-    //카테고리 전체 상품 조회
-    @Override
-    public List<ProductListDTO> getProductCategoryList(Long start, Long end) {
-        return productRepository.findByCategoryIdBetween(start,end).stream()
-                .map(product -> new ProductListDTO(product))
-                .collect(Collectors.toList());
-    }
     //특정 하위 카테고리 상품 조회
     @Override
     public List<ProductFindDTO> getProductSubCategory(Long productId,Long categoryId) {
@@ -188,14 +179,6 @@ public class ProductServiceImpl implements ProductService {
         Collections.shuffle(subCategoryProduct);
 
         return subCategoryProduct;
-    }
-
-    //검색에 따른 조회(제목,카테고리,내용)
-    @Override
-    public List<ProductListDTO> getSearchList(String subject,String content) {
-        return productRepository.findBySubjectContainingOrContentContaining(subject,content).stream()
-                .map(product -> new ProductListDTO(product))
-                .collect(Collectors.toList());
     }
 
     //상품 하나에 대한 데이터
@@ -229,12 +212,6 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public int updateView(Long productId) {
         return productRepository.updateView(productId);
-    }
-
-    //동네번호 조회
-    @Override
-    public TownFindDTO findTownId(String townName) {
-        return townRepositoy.findByCoordinateTownName(townName).map(TownFindDTO::new).orElse(null);
     }
 
     //유저 판매 상품 목록

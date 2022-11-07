@@ -17,7 +17,7 @@ public interface CategoryService {
 
     void SubCategoryAdd(CategoryAddDTO categoryAddDTO, String topcategoryName, String subCategoryName, HttpServletResponse response) throws IOException;
 
-    void CategoryDelete(Long id);
+   Category CategoryDelete(Long categoryId);
 
     void CategoryUpdate(CategoryUpdateDTO categoryUpdatedto);
 

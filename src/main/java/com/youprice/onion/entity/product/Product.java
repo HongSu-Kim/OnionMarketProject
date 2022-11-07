@@ -144,12 +144,6 @@ public class Product {
 		this.productImageList = productImageList;
     }
 
-    //경매 상품 가격&블라인드 수정
-    public void updateAuctionProduct(ProductListDTO productListDTO){
-        this.price = productListDTO.getPrice();
-        this.blindStatus = productListDTO.getBlindStatus();
-    }
-
 	// 상품상태 수정
 	public Product progressUpdate(ProductProgress productProgress) {
 		this.productProgress = productProgress;

@@ -26,7 +26,6 @@ import java.util.stream.Stream;
 public class KeywordServiceImpl implements KeywordService {
 
  private final KeywordRepositoy keywordRepositoy;
- private  final  KeywordRepositoy.Keywordrepositoy keywordrepositoy;
  private  final  MemberRepository memberRepositoy;
 
  @Override
