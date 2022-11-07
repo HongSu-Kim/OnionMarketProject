@@ -25,11 +25,4 @@ public class ProductImage {
                 this.productImageName = productImageName;
         }
 
-        public void updateImage(Long id, Product product, String productImageName) {
-
-                this.id = id;
-                this.product = product;
-                this.productImageName = productImageName;
-        }
-
 }

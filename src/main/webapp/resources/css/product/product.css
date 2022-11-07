@@ -1,3 +1,39 @@
+.product__form {
+    width: 800px;
+    margin: auto;
+}
+
+.product__form h4 {
+    color: #1c1c1c;
+    font-weight: 700;
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+}
+
+.essential__content {
+    font-size: small;
+    color:#FF5058;
+    margin: 0px 0px 0px 32px;
+}
+
+.checkout__input input[type=radio]{
+    width: 15px;height: 15px; margin-left:8px;
+}
+.checkout__input input[type=checkbox]{
+    width: 15px;height: 15px; margin-left:8px;
+}
+.checkout__input input[type=button]{
+    border-width: thin; color: black;
+}
+.checkout__input input[type=submit]{
+    color: black;
+}
+.product__form p {
+    column-rule: #b2b2b2;
+}
+
+
 #counter {
  text-align: right;
 }
@@ -36,6 +72,9 @@ label.error{display:block;color:red;}
 
 
 /*list*/
+.pay__auction__image {
+    margin: 87% 0 0 5%;
+}
 .product__progress {
     position: relative;
     border-radius: 10px;
@@ -172,10 +211,6 @@ label.error{display:block;color:red;}
     display: flex;
     justify-content: space-between;
 }
-.btnRemove{
-    border-width: thin;
-}
-
 
 /*detail*/
 .content {
