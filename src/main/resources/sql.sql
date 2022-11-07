@@ -304,7 +304,7 @@ CREATE TABLE inquiry (
 	member_id	    	NUMBER	        NOT NULL,
 	inquiry_type        VARCHAR2(50)	NOT NULL,
 	detail_type         VARCHAR2(50)	NOT NULL,
-	inquiry_subject     VARCHAR2(255)	NOT NULL,
+	inquiry_subject     VARCHAR2(100)	NOT NULL,
 	inquiry_content     VARCHAR2(255)	NOT NULL,
 	inquiry_date    	DATE            DEFAULT SYSDATE,
 	status          	VARCHAR2(20)	DEFAULT 'wait',
@@ -636,14 +636,5 @@ INSERT INTO notice VALUES (104, 1, 'QNA', '게시중단 대상 게시물 유형'
 INSERT INTO notice VALUES (105, 1, 'QNA', '유해 게시물 정의 - 불법성 게시물', '※ 불법성 게시물은 현행법에 위배되거나 범죄 및 불법 행위에 악용될 수 있는 정보를 담은 게시물입니다. ※<br/><br/><br/>[ 양파마켓에서 제한하는 음란성 게시물의 대표적인 대상은 아래와 같습니다. ]<br/><br/>- 성 관련 범죄 정보 (타인의 신체를 본인의 의사에 반해 촬영 및 게시하여 성적 수치심을 유발하는 경우, 원조교제/성매매 관련 정보 등)<br/>- 생명 관련 범죄 정보 (자살 조장, 임신중절 알선/소개, 난자/대리모/장기/신생아 매매 및 알선, 살인청부 관련 내용 등)<br/>- 개인정보 관련 범죄 정보 (개인정보의 매매 시도, 개인 계좌 대여, 개인정보 위조 변경 관련 내용 등)' , '2022-11-02', default);
 INSERT INTO notice VALUES (106, 1, 'QNA', '유해 게시물 정의 - 청소년 유해 게시물', '※ 청소년유해 게시물은 어린이와 청소년의 정신적, 신체적 건강을 해칠 우려가 있는 선정적인 내용을 담은 게시물입니다. ※<br/><br/><br/>청소년보호법 제10조에 의해 19세 이상의 성인만 이용할 수 있도록 별도의 청소년유해표시를 하도록 법으로 정해져있습니다.<br/><br/>[ 양파마켓에서 제한하는 음란성 게시물의 대표적인 대상은 아래와 같습니다. ]<br/><br/>- 전신전라 노출, 둔부, 유두·유륜(여성)의 노출을 포함한 게시글<br/>- 성행위 및 자위행위에 대한 노골적인 묘사 및 내용이 포함된 게시글<br/>- 성행위 파트너, 성인물을 구하는 내용이 포함된 게시글<br/>- 청소년유해매체로 고시된 물건을 판매하거나, 거래를 알선하는 게시글 (담배, 주류, 성인 용품, 별지시기, 아이템 거래, 게임 ID 계정 거래 등)<br/>- 혐오스럽거나 불쾌감을 유발하여(신체가 훼손, 혈흔 낭자) 사회 통념상 청소년에게 유해하다고 인정되는 게시글<br/>- 기타 청소년의 건전한 생활태도 및 정신건강을 저해시킬 수 있는 게시글 ' , '2022-11-02', default);
 INSERT INTO notice VALUES (107, 1, 'QNA', '유해 게시물 정의 - 음란성 게시물', '※ 음란성 게시물은 성적 수치심을 유발하여 선량한 성적 관점에 반하는 내용을 담은 게시물입니다. ※<br/><br/>또한, 현행법상 정보통신망을 통한 유통이 금지된 불법정보입니다.<br/><br/><br/>[ 양파마켓에서 제한하는 음란성 게시물의 대표적인 대상은 아래와 같습니다. ]<br/><br/>- 성기, 음모, 항문의 노출을 포함한 게시글<br/>- 성기, 음모, 항문에 대한 성행위가 노골적으로 묘사되거나 관련 내용을 포함한 게시글<br/>- 반인륜적 성행위(시간, 수간, 스와핑) 및 이상 성행위가 묘사되거나 관련 내용을 포함한 게시글<br/>- 아동청소년을 성적 유희의 대상으로 직접적으로 묘사하거나 관련 내용을 포함한 게시글' , '2022-11-02', default);
-
-INSERT INTO notice VALUES (120, 1, 'NOTICE', '[공지] 양파마켓 서비스 운영정책 개정 안내', '안녕하세요. 양파마켓입니다. 양파마켓 서비스 운영정책 개정 안내드립니다.<br/><br/> <p style="font-weight: bold;">01. 운영 정책 개정 사항</p><br/> • 상품이미지, 상품명, 상품설명, 양파채팅에 외부 채널로의 결제 및 대화를 유도하는 행위는 금지됩니다.<br/>• 도매판매 또는 대량 주문/발주를 받는 상품 판매를 금지합니다.<br/>• 사기 또는 아이디 도용은 무기한 활동 정지됩니다.<br/>• 다른 회원을 공격하거나 기분을 불쾌하게 하는 행위를 했을 시 이용에 제재가 따르니 유의하시기 바랍니다.<br/>' , '2022-11-02', default);
-INSERT INTO notice VALUES (121, 1, 'NOTICE', '[공지] 양파마켓 이용약관 개정 안내', '안녕하세요. 양파마켓입니다.<br/><br/> 양파마켓 서비스를 이용해주시는 회원분들께 감사드리며, 예정된 이용약관 개정에 대한 주요 내용을 안내드리오니 서비스 이용에 참고하시기 바랍니다.<br/><br/> <i class="fa-regular fa-flag"></i>이용약관 개정일정<br/><br/> - 개정 이용약관 안내 기간<br/>&nbsp;&nbsp; 2022년 10월 1일 ~ 2022년 11월 8일<br/><br/> - 개정 시행일<br/> &nbsp;&nbsp; 안내기간에 따른 날짜로 시행하게됩니다.' , '2022-11-03', default);
-INSERT INTO notice VALUES (122, 1, 'NOTICE', '양파마켓 채팅이용 안내', '채팅을 이용하려는 고객님들께 알려드립니다<br/> <p style="font-weight: bold; color: ">01. 채팅을 하고싶은 상대의 게시물에서 채팅방에 진입합니다.</p><p style="font-weight: bold; color: ">02. 채팅방 하단에서 [''+'' 버튼 > 사진 버튼]을 선택하여 내 pc에 저장된 사진을 올리면 됩니다.</p><br/> * 아래 사진 참고 *<br/>' , '2022-11-05', default);
-INSERT INTO notice VALUES (123, 1, 'NOTICE', '양파마켓 이용정책을 확인하세요', '안녕하세요. 양파마켓입니다. 양파마켓 홈페이지 이용정책을 안내해 드리니 아래의 항목을 준수해주시기 바랍니다.<br/><br/> <p style="font-weight: bold; color: #e4606d;">01. 거래 제한 품목 등록 금지</p>- 거래 제한 품목 등록 시 게시글 무통보 삭제 및 양파마켓 이용제재 처리됩니다.<br/><br/><p style="font-weight: bold; color: #e4606d;">02. 욕설, 비매너 행위 금지</p>- 다른 회원의 거래를 악의적으로 방해하는 행위 및 비하, 욕설이 포함된 게시글 작성을 금지합니다. 양파마켓은 따뜻한 거래 문화를 만들기 위해 노력하고 있습니다. 이에 동참해주시기 바랍니다.<br/><br/><p style="font-weight: bold; color: #e4606d;">03. 도배글, 스팸글 금지</p>- 지속적으로 노출되는 도배 게시물, 스팸성 홍보 등의 행위는 금지합니다.<br/><br/><p style="font-weight: bold; color: #e4606d;">04. 신고에 따른 계정 정치</p>- 신고가 처리되면 무통보 이용정지가 되오니 이를 유의하여 건전한 마켓이용을 권장합니다.' , '2022-11-02', default);
-INSERT INTO notice VALUES (124, 1, 'NOTICE', '[공지] 양파마켓 개인정보 처리방침', '<p style="color: #4c4c4c; font-weight: bold;">안녕하세요. 양파마켓입니다.</p> <p style="color: #003eff; font-weight: bold;"><i class="fa-solid fa-check"></i> 양파마켓을 이용하는 고객님들께 알립니다.</p> 아래의 안내 사항을 읽어주세요<br/><br/>' , '2022-11-03', default);
-INSERT INTO notice_image VALUES (500, 124, 'onionNotice1.png');
-INSERT INTO notice_image VALUES (501, 124, 'onionNotice2.png');
-INSERT INTO notice_image VALUES (502, 122, 'chatEx1.png');
 
 commit;
