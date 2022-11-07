@@ -9,12 +9,8 @@ public interface CoordinateService {
 
     void coordinateAdd(CoordinateAddDTO coordinateAddDTO);
 
-    List<CoordinateFindDTO> FindGangnam();
+    List<CoordinateFindDTO> findTownList(String wishtown);
 
-    List<CoordinateFindDTO> FindSongpa();
-
-    List<CoordinateFindDTO> FindGangdong();
-
-	List<Long> coordinateSearch(String townName, Double range);
+    List<Long> coordinateSearch(String townName, Double range);
 
 }
