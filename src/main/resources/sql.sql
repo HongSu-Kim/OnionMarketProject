@@ -25,10 +25,6 @@ DROP TABLE wish PURGE;
 DROP TABLE chat PURGE;
 DROP TABLE chatroom PURGE;
 
-DROP TABLE member_category PURGE;
-
-DROP TABLE product_tag PURGE;
-DROP TABLE tag PURGE;
 DROP TABLE bidding PURGE;
 DROP TABLE product_image PURGE;
 DROP TABLE product PURGE;
@@ -116,18 +112,14 @@ CREATE TABLE coordinate (
 	CONSTRAINT PK_COORDINATE PRIMARY KEY (coordinate_id)
 );
 
-CREATE TABLE town
-(
+CREATE TABLE town (
     town_id       NUMBER NOT NULL,
     member_id     NUMBER NOT NULL,
     coordinate_id NUMBER NOT NULL,
-    wish_distance NUMBER NULL,
-
     CONSTRAINT PK_TOWN PRIMARY KEY (town_id),
     CONSTRAINT FK_TOWN_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member (member_id),
     CONSTRAINT FK_TOWN_COORDINATE_ID FOREIGN KEY (coordinate_id) REFERENCES coordinate (coordinate_id)
 );
-
 
 CREATE TABLE category (
     category_id     	NUMBER          NOT NULL,
@@ -176,31 +168,6 @@ CREATE TABLE bidding (
     CONSTRAINT PK_BIDDING PRIMARY KEY (bidding_id),
     CONSTRAINT FK_BIDDING_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id),
     CONSTRAINT FK_BIDDING_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id)
-);
-
-CREATE TABLE tag (
-	tag_id      		NUMBER        	NOT NULL,
-	tag_name    		VARCHAR2(50)  	NOT NULL,
-	tag_count   		NUMBER        	NOT NULL,
-	CONSTRAINT PK_TAG PRIMARY KEY (tag_id)
-);
-
-CREATE TABLE product_tag (
-	product_tag_id  	NUMBER  		NOT NULL,
-	tag_id          	NUMBER  		NOT NULL,
-	product_id      	NUMBER  		NOT NULL,
-	CONSTRAINT PK_PRODUCT_TAG PRIMARY KEY (product_tag_id),
-	CONSTRAINT FK_PRODUCT_TAG_TAG_ID FOREIGN KEY (tag_id) REFERENCES tag(tag_id),
-	CONSTRAINT FK_PRODUCT_TAG_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES product(product_id)
-);
-
-CREATE TABLE member_category (
-	member_category_id  NUMBER  		NOT NULL,
-	member_id           NUMBER  		NOT NULL,
-	category_id         NUMBER  		NOT NULL,
-	CONSTRAINT PK_MEMBER_CATEGORY PRIMARY KEY (member_category_id),
-	CONSTRAINT FK_MC_MEMBER_ID FOREIGN KEY (member_id) REFERENCES member(member_id),
-	CONSTRAINT FK_MC_CATEGORY_ID FOREIGN KEY (category_id) REFERENCES category(category_id)
 );
 
 CREATE TABLE chatroom (
@@ -440,11 +407,7 @@ INSERT INTO Coordinate VALUES(62, '서울특별시 강동구 성내1동',  '37.5
 INSERT INTO Coordinate VALUES(63, '서울특별시 강동구 성내2동',  '37.532425',  '127.129563');
 INSERT INTO Coordinate VALUES(64, '서울특별시 강동구 둔촌1동',  '37.5333656', '127.1419851');
 INSERT INTO Coordinate VALUES(65, '서울특별시 강동구 둔촌2동',  '37.5332885', '127.1419221');
-
-----------------------------------------------------------------------------------------------------
-
--- 서초구
-
+--------------------------------------------------
 INSERT INTO Coordinate VALUES(66,'서울특별시 서초구 방배동',37.4941452,126.988785);
 INSERT INTO Coordinate VALUES(67,'서울특별시 서초구 양재동',37.470101,127.039888);
 INSERT INTO Coordinate VALUES(68,'서울특별시 서초구 우면동',37.466,127.0169);
@@ -471,14 +434,7 @@ INSERT INTO Coordinate VALUES(88,'서울특별시 서초구 방배3동',37.47844
 INSERT INTO Coordinate VALUES(89,'서울특별시 서초구 방배4동',37.489007,126.9923344);
 INSERT INTO Coordinate VALUES(90,'서울특별시 서초구 양재1동',37.4716412,127.026744);
 INSERT INTO Coordinate VALUES(91,'서울특별시 서초구 양재2동',37.470601,127.041188);
-
-
-
-
---------------------------------------------------------------------------------------------
-
---동작구
-
+--------------------------------------------------
 INSERT INTO Coordinate VALUES(92,'서울특별시 동작구 노량진동',37.512308,126.942013);
 INSERT INTO Coordinate VALUES(93,'서울특별시 동작구 상도동',37.4981,126.953089);
 INSERT INTO Coordinate VALUES(94,'서울특별시 동작구 상도1동',37.4981,126.953089);
@@ -500,14 +456,7 @@ INSERT INTO Coordinate VALUES(109,'서울특별시 동작구 사당4동',37.4809
 INSERT INTO Coordinate VALUES(110,'서울특별시 동작구 사당5동',37.4857521,126.9668658);
 INSERT INTO Coordinate VALUES(111,'서울특별시 동작구 신대방1동',37.488943,126.91005);
 INSERT INTO Coordinate VALUES(112,'서울특별시 동작구 신대방2동',37.4984422,126.9244085);
-
-
-
-
---------------------------------------------------------------------------------------------
-
---관악구
-
+--------------------------------------------------
 INSERT INTO Coordinate VALUES(113,'서울특별시 관악구 봉천동',37.4779619,126.9534602);
 INSERT INTO Coordinate VALUES(114,'서울특별시 관악구 신림동',37.487426,126.927075);
 INSERT INTO Coordinate VALUES(115,'서울특별시 관악구 남현동',37.4745394,126.9778366);
@@ -523,19 +472,14 @@ INSERT INTO Coordinate VALUES(124,'서울특별시 관악구 인헌동',37.47509
 INSERT INTO Coordinate VALUES(125,'서울특별시 관악구 서원동',37.4797346,126.9313);
 INSERT INTO Coordinate VALUES(126,'서울특별시 관악구 신원동',37.4815883,126.9273519);
 INSERT INTO Coordinate VALUES(127,'서울특별시 관악구 서림동',37.4749956,126.9349995);
-INSERT INTO Coordinate VALUES(128,'서울특별시 강남구 신사동',37.5240101,127.0227814);
+INSERT INTO Coordinate VALUES(128,'서울특별시 관악구 신사동',37.5240101,127.0227814);
 INSERT INTO Coordinate VALUES(129,'서울특별시 관악구 난향동',37.461429,126.918842);
 INSERT INTO Coordinate VALUES(130,'서울특별시 관악구 조원동',37.4826299,126.9078649);
 INSERT INTO Coordinate VALUES(131,'서울특별시 관악구 대학동',37.4706145,126.9369907);
 INSERT INTO Coordinate VALUES(132,'서울특별시 관악구 삼성동',37.470101,126.932963);
 INSERT INTO Coordinate VALUES(133,'서울특별시 관악구 미성동',37.4761761,126.9155534);
 INSERT INTO Coordinate VALUES(134,'서울특별시 관악구 난곡동',37.4709634,126.9216507);
-
-
---------------------------------------------------------------------------------------------
-
---강진구
-
+--------------------------------------------------
 INSERT INTO Coordinate VALUES(135,'서울특별시 광진구 중곡동',37.560675,127.080038);
 INSERT INTO Coordinate VALUES(136,'서울특별시 광진구 능동',37.5537803,127.0804994);
 INSERT INTO Coordinate VALUES(137,'서울특별시 광진구 구의동',37.5424917,127.0856756);
@@ -554,13 +498,7 @@ INSERT INTO Coordinate VALUES(149,'서울특별시 광진구 자양4동',37.5341
 INSERT INTO Coordinate VALUES(150,'서울특별시 광진구 구의1동 ',37.5424917,127.0856756);
 INSERT INTO Coordinate VALUES(151,'서울특별시 광진구 구의2동',37.5472481,127.0899111);
 INSERT INTO Coordinate VALUES(152,'서울특별시 광진구 구의3동',37.5380706,127.0920204);
-
-
-
---------------------------------------------------------------------------------------------
-
---성동구
-
+--------------------------------------------------
 INSERT INTO Coordinate VALUES(153,'서울특별시 성동구 상왕십리동',37.568375 ,127.0245375);
 INSERT INTO Coordinate VALUES(154,'서울특별시 성동구 하왕십리동',37.5641583 ,127.02875);
 INSERT INTO Coordinate VALUES(155,'서울특별시 성동구 홍익동',37.56695,127.031975);
@@ -589,11 +527,7 @@ INSERT INTO Coordinate VALUES(177,'서울특별시 성동구 성수1가1동',37.
 INSERT INTO Coordinate VALUES(178,'서울특별시 성동구 성수1가2동',37.5464774,127.0443034);
 INSERT INTO Coordinate VALUES(179,'서울특별시 성동구 성수2가1동',37.5395907,127.0540659);
 INSERT INTO Coordinate VALUES(180,'서울특별시 성동구 성수2가3동',37.5482223,127.0552645);
-
---------------------------------------------------------------------------------------------
-
---용산구
-
+--------------------------------------------------
 INSERT INTO Coordinate VALUES(181,'서울특별시 용산구 후암동',37.5486375,126.9781344);
 INSERT INTO Coordinate VALUES(182,'서울특별시 용산구 용산동2가',37.54295,126.98405);
 INSERT INTO Coordinate VALUES(183,'서울특별시 용산구 용산동4가',37.5306,126.9854);
@@ -641,8 +575,7 @@ INSERT INTO Coordinate VALUES(224,'서울특별시 용산구 이태원2동',37.5
 
 --------------------------------------------------------------------------------------------
 
-
-INSERT INTO town VALUES(1, 0, 1,'');
+INSERT INTO town VALUES(1, 0, 1);
 
 ----------------------------------------------------------------------------------------------------
 
@@ -790,7 +723,9 @@ INSERT INTO category VALUES(115,'기타상품',114);
 
 ----------------------------------------------------------------------------------------------------
 
-----------------------------------------------------------------------------------------------------
+INSERT INTO product VALUES (0, 0, 1, 114, '양파마켓 키워드 알림', '키워드 알림', 0, 'onion.png', SYSDATE, NULL, NULL, 0, 'SOLDOUT', 0, 1);
+
+--------------------------------------------------
 
 INSERT INTO product VALUES(101,1,1,43,'코오롱스포츠 구스다운 여성 롱패딩 블랙','하자없이 상태좋은편입니다 드라이 한번 하고 입으시면 될 것 같아요 사이즈 95 택포',65000,'42여성패딩1.png',SYSDATE , '', '' ,0,'SALESON','',0);
 INSERT INTO product VALUES(102,1,1,44,'트렌치코트','소매부분은 끈으로 리본 묶을 수 있어요 뒷부분은 케이프 형태입니다.',50000,'42여성코트1.png',SYSDATE , '', '' ,0,'SALESON','1',0);
@@ -822,9 +757,6 @@ INSERT INTO product VALUES(127,1,1,107,'다육이 세트','다육이 기를 줄�
 INSERT INTO product VALUES(128,1,1,107,'식물/염자 다육식물 화초 새토분과 새도자기','미니종 염자입니다. 일교차가 커지면 잎끝이 빨갛게 물들어 더욱 이뻐요',2000,'105다육3.png',SYSDATE , '', '' ,0,'SALESON','1',0);
 INSERT INTO product VALUES(129,1,1,107,'다육이','고급진 화분에 붉게 물든 다육 넘이쁘죠',13000,'105다육4.png',SYSDATE , '', '' ,0,'SALESON','',0);
 INSERT INTO product VALUES(130,1,1,107,'다육 모듬입니다~','사이즈 확인하시고 상대원3동 주민센터 앞으로 오시면 되요',7000,'105다육5.png',SYSDATE , '', '' ,0,'SALESON','1',0);
-
-----------------------------------------------------------------------------------------------------
-INSERT INTO product VALUES (0, 0, 1, 114, '양파마켓 키워드 알림', '키워드 알림', 0, 'onion.png', SYSDATE, NULL, NULL, 0, 'SOLDOUT', 0, 1);
 
 ----------------------------------------------------------------------------------------------------
 
