@@ -136,7 +136,6 @@
                             <ul class="header__menu__dropdown">
                                 <li><a href="/notice/list">Notice List</a></li>
                                 <li><a href="/inquiry/list">Inquiry List</a></li>
-                                <li><a href="#">Temp4</a></li>
                             </ul>
                         </li>
                         <sec:authorize access="isAnonymous()">
