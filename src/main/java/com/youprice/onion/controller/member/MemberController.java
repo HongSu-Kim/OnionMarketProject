@@ -284,7 +284,6 @@ public class MemberController {
 
     //양파페이 충전 페이지
     @PreAuthorize("isAuthenticated()")
-    @Transactional
     @GetMapping("/cash/{memberId}")
     public String myCash(@LoginUser SessionDTO sessionDTO, @PathVariable("memberId") Long memberId, Model model) {
         if (sessionDTO == null) return "redirect:/member/login";
@@ -297,10 +296,10 @@ public class MemberController {
 
     @PostMapping("/charge/cash")
     @ResponseBody
-    public String chargeCash(@LoginUser SessionDTO sessionDTO, @RequestParam int amount) {
+    public String chargeCash(@LoginUser SessionDTO sessionDTO, @RequestParam int amount, HttpSession session) {
         MemberDTO memberDTO = memberService.getMemberDTO(sessionDTO.getId());
-        memberService.chargeCash(memberDTO.getId(), amount);
-        log.error(String.valueOf(amount));
+		int cash = memberService.chargeCash(memberDTO.getId(), amount);
+		session.setAttribute("cash", cash);
         return "/member/mypage";
     }
 
