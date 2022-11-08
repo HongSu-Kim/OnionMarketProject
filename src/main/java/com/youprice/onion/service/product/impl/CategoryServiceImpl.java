@@ -52,7 +52,7 @@ public class CategoryServiceImpl implements CategoryService {
             return categoryList;
         } else
 
-            category.TopcategoryAdd(categoryCreatedto, categoryName);
+            category.TopcategoryAdd(categoryName);
 
         categoryRepositoy.save(category);
 

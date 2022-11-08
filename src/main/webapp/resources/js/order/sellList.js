@@ -109,14 +109,14 @@ $(function () {
 		$('.modal-shadow').css('display', 'none');
 
 		if (result) {
-			location.href = `/order/orderComplete/${productId}/${num}/${pageNumber}`
+			location.href = `/order/orderComplete/${productId}/${num}`
 		}
 	}
 
 	// 상품 상태 변경 submit
 	let sendIt = () => {
 		if (confirm(msg)) {
-			location.href = `/product/progressUpdate/${productId}/${productProgress}/${pageNumber}`
+			location.href = `/product/progressUpdate/${productId}/${productProgress}`
 		}
 	}
 

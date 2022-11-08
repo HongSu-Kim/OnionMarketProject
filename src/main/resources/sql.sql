@@ -743,6 +743,7 @@ INSERT INTO KEYWORD VALUES(18,5,'중고');
 INSERT INTO KEYWORD VALUES(19,5,'유니폼');
 INSERT INTO KEYWORD VALUES(20,5,'신발');
 ----------------------------------------------------------------------------------------------------
+
 INSERT INTO prohibition_keyword VALUES(1,'담배');
 INSERT INTO prohibition_keyword VALUES(2,'술');
 INSERT INTO prohibition_keyword VALUES(3,'소주');
@@ -750,11 +751,12 @@ INSERT INTO prohibition_keyword VALUES(4,'맥주');
 INSERT INTO prohibition_keyword VALUES(5,'마약');
 INSERT INTO prohibition_keyword VALUES(6,'성인');
 INSERT INTO prohibition_keyword VALUES(7,'음란물');
+
 ----------------------------------------------------------------------------------------------------
+
 INSERT INTO product VALUES (0, 0, 1, 114, '양파마켓 키워드 알림', '키워드 알림', 0, 'onion.png', SYSDATE, NULL, NULL, 0, 'SOLDOUT', 0, 1);
-
+INSERT INTO product VALUES(1, 3, 1, 115, 'ㄷrㅁㅂrlㅍrㅁㄴiㄷr','남은거 3개비 팜', 1000, '115금지품목1.png', SYSDATE , '', '' ,0,'SALESON', 1, 0);
 --------------------------------------------------
-
 INSERT INTO product VALUES(101,1,1,43,'코오롱스포츠 구스다운 여성 롱패딩 블랙','하자없이 상태좋은편입니다 드라이 한번 하고 입으시면 될 것 같아요 사이즈 95 택포',65000,'42여성패딩1.png',SYSDATE , '', '' ,0,'SALESON','',0);
 INSERT INTO product VALUES(102,1,1,44,'트렌치코트','소매부분은 끈으로 리본 묶을 수 있어요 뒷부분은 케이프 형태입니다.',50000,'42여성코트1.png',SYSDATE , '', '' ,0,'SALESON','1',0);
 INSERT INTO product VALUES(103,1,1,44,'55 66 톰보이 후드 코트','상태 깨끗해요 위례포레샤인 17단지에서 거래가능',20000,'42여성코트2.png',SYSDATE , '', '' ,0,'SALESON','',0);
@@ -785,8 +787,23 @@ INSERT INTO product VALUES(127,1,1,107,'다육이 세트','다육이 기를 줄�
 INSERT INTO product VALUES(128,1,1,107,'식물/염자 다육식물 화초 새토분과 새도자기','미니종 염자입니다. 일교차가 커지면 잎끝이 빨갛게 물들어 더욱 이뻐요',2000,'105다육3.png',SYSDATE , '', '' ,0,'SALESON','1',0);
 INSERT INTO product VALUES(129,1,1,107,'다육이','고급진 화분에 붉게 물든 다육 넘이쁘죠',13000,'105다육4.png',SYSDATE , '', '' ,0,'SALESON','',0);
 INSERT INTO product VALUES(130,1,1,107,'다육 모듬입니다~','사이즈 확인하시고 상대원3동 주민센터 앞으로 오시면 되요',7000,'105다육5.png',SYSDATE , '', '' ,0,'SALESON','1',0);
+----------------------------------------------------------------------------------------------------
+INSERT INTO SEARCH VALUES(1,'취업',100);
+INSERT INTO SEARCH VALUES(2,'수료',90);
+INSERT INTO SEARCH VALUES(3,'자바',80);
+INSERT INTO SEARCH VALUES(4,'황태용',70);
+INSERT INTO SEARCH VALUES(5,'스프링',60);
+INSERT INTO SEARCH VALUES(6,'면접',55);
+INSERT INTO SEARCH VALUES(7,'아이티윌',50);
+INSERT INTO SEARCH VALUES(8,'김홍수',45);
+INSERT INTO SEARCH VALUES(9,'최재혁',40);
+INSERT INTO SEARCH VALUES(10,'수료끝',35);
+INSERT INTO SEARCH VALUES(11,'강사님',30);
+INSERT INTO SEARCH VALUES(12,'수고하셨습니다',25);
+INSERT INTO SEARCH VALUES(13,'컴퓨터',20);
+INSERT INTO SEARCH VALUES(14,'IT',15);
+INSERT INTO SEARCH VALUES(15,'끝',10);
 
-INSERT INTO product VALUES(999,1,1,115,'ㄷrㅁㅂrlㅍrㅁㄴiㄷr','남은거 3개비 팜',1000,'115금지품목1.png',SYSDATE , '', '' ,0,'SALESON','1',0);
 
 ----------------------------------------------------------------------------------------------------
 

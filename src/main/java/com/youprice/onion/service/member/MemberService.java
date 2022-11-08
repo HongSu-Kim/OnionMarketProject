@@ -38,7 +38,7 @@ public interface MemberService {
 	List<MemberDTO> getChatMemberList(Long memberId);
 
 
-    void chargeCash(Long memberId, int amount);
+	int chargeCash(Long memberId, int amount);
 
     Page<MemberDTO> getMemberList(Pageable pageable);
 

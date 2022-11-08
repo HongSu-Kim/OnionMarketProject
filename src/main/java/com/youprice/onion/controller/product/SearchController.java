@@ -48,9 +48,9 @@ public class SearchController {
     public String SearchCreate(Model model) {
 
 
-        List<Search> popularSearch = searchService.findBySearchRank();
+        List<Search> searchRank = searchService.findBySearchRank20();
 
-        model.addAttribute("popularSearch", popularSearch);
+        model.addAttribute("searchRank",searchRank);
 
         return "product/popularSearch";
     }

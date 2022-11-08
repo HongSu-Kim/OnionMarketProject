@@ -192,12 +192,12 @@ public class OrderController {
 		}
 	}
 
-	@GetMapping("orderComplete/{productId}/{memberId}/{pageNumber}")
-	public String orderComplete(@PathVariable Long productId, @PathVariable Long memberId, @PathVariable int pageNumber) {
+	@GetMapping("orderComplete/{productId}/{memberId}")
+	public String orderComplete(@PathVariable Long productId, @PathVariable Long memberId) {
 
 		orderService.orderComplete(productId, memberId);
 
-		return "redirect:/order/sellList?productProgress=SOLDOUT&page=" + pageNumber;
+		return "redirect:/order/sellList?productProgress=SOLDOUT";
 	}
 
 }

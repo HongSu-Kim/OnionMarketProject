@@ -35,11 +35,11 @@
             <div class="col-lg-12">
                 <div class="checkout__input">
                     <p> 상위 카테고리 <span>*</span></p>
-                    <form:form action="" method="post" modelAttribute="categoryCreatedto">
+                    <form:form action="" method="post">
                     <input type="text" name="categoryName" placeholder="상위 카테고리 이름을 입력해주세요."/>
 
                     <input type="hidden" name="subCategoryName"/>
-                    <form:errors path="subCategoryName"/>
+
 
 
                     <input type="submit" value="상위카테고리 추가"
@@ -65,8 +65,7 @@
             <div class="col-lg-12">
                 <div class="checkout__input">
 
-                    <form:form action="" name="isc" onsubmit="return check_submit();" method="post"
-                               modelAttribute="categoryCreatedto">
+                    <form:form action="" name="isc" onsubmit="return check_submit();" method="post">
                         <%--                            <input type="text" name="TopName" id="TopName" style="width: 15%;">--%>
                     <div class="checkout__input">
                         <p>상위카테고리 선택<span>*</span></p>
@@ -81,7 +80,7 @@
                         <br/><br/><br/>
                         <p> 하위 카테고리 <span>*</span></p> <input type="text" name="subCategoryName"
                                                               placeholder="하위 카테고리 이름을 입력해주세요."/>
-                        <form:errors path="subCategoryName"/>
+
 
 
                         <input type="submit" value="하위카테고리 추가" onclick="select();"

@@ -175,9 +175,10 @@ public class MemberServiceImpl implements MemberService {
 
     //양파페이 충전
     @Override
-    public void chargeCash(Long memberId, int amount) {
+    public int chargeCash(Long memberId, int amount) {
         Member member = memberRepository.findById(memberId).get();
         member.addCash(amount);
+		return member.getCash();
     }
 
     @Override
