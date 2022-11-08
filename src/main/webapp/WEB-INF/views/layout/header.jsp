@@ -134,8 +134,8 @@
                         </sec:authorize>
                         <li><a href="#">공지사항</a>
                             <ul class="header__menu__dropdown">
-                                <li><a href="/notice/list">Notice List</a></li>
-                                <li><a href="/inquiry/list">Inquiry List</a></li>
+                                <li><a href="/notice/list">공지 사항</a></li>
+                                <li><a href="/inquiry/list">1:1 문의</a></li>
                             </ul>
                         </li>
                         <sec:authorize access="isAnonymous()">
