@@ -1,5 +1,6 @@
 package com.youprice.onion.repository.product;
 
+import com.youprice.onion.dto.product.SearchFindDTO;
 import com.youprice.onion.entity.product.Category;
 import com.youprice.onion.entity.product.Search;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,16 @@ public interface SearchRepositoy extends JpaRepository<Search,Long> {
 
    public Search findBySearchName(String searchName);
 
-   List<Search> findAllByOrderBySearchCountDesc();
+
+   List<Search> findTop5ByOrderBySearchCountDesc();
+    List<Search> findTop10ByOrderBySearchCountDesc();
+
+    List<Search> findTop20ByOrderBySearchCountDesc();
+
+
+
+
+
 
 
 

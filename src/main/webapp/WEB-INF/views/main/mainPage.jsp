@@ -98,6 +98,7 @@
 			font-weight:bold;
 			margin:0px;
 			padding-right:30px;
+			text-align: center;
 		}
 		dd {
 			margin:0px;
@@ -118,16 +119,7 @@
 			vertical-align:middle;
 		}
 		dd .num {
-			background-color:#4b4b4b;
-			color:#fff;
-			font-size:10px;
-			margin-right:10px;
-			vertical-align:middle;
-			width:18px;
-			height:18px;
-			float:left;
-			line-height:18px;
-			text-align:center;
+
 		}
 		.best_add {
 			border:1px solid #bebebe;
@@ -161,14 +153,14 @@
 			}
 		}
 		var viewcount = 0;
-		var rtcarousel = setInterval(function(){ view(viewcount) },5000);
+		var rtcarousel = setInterval(function(){ view(viewcount) },1000);
 
 		$("#best_search").mouseenter(function() {
 			clearInterval(rtcarousel);
 		});
 
 		$("#best_search").mouseleave(function() {
-			rtcarousel = setInterval(function(){ view(viewcount) },5000);
+			rtcarousel = setInterval(function(){ view(viewcount) },1000);
 		});
 
 
@@ -201,45 +193,27 @@
 			</div>
 		</div>
 	</section>
+	<div style="text-align: center; font-size: 20px; font-weight:700;">실시간 인기검색어</div>
 	<div id="wrap">
 		<div class="container">
 			<ul id="best_search">
-				<li><p>실시간 인기검색어</p></li>
+
+
 				<li>
-					<dl class="time1" style="display: block">
-						<dd><a class="t" href="#"><div class="num">1</div>자전거</a></dd>
-						<dd><a class="t" href="#"><div class="num">2</div>전동킥보드</a></dd>
-						<dd><a class="t" href="#"><div class="num">3</div>비키니</a></dd>
-						<dd><a class="t" href="#"><div class="num">4</div>모노키니</a></dd>
-						<dd><a class="t" href="#"><div class="num">5</div>원터치텐트</a></dd>
+					<dl class="time1" style="display:none">
+
+						<c:forEach var="searchRank" items="${searchRank}">
+							<dd><a class="t" href="#"><div class="num"></div>${searchRank.searchName}</a></dd>
+							</c:forEach>
 					</dl>
-					<dl class="time2" style="display:none;">
-						<dd><a class="t" href="#"><div class="num">6</div>등산화</a></dd>
-						<dd><a class="t" href="#"><div class="num">7</div>풋살화</a></dd>
-						<dd><a class="t" href="#"><div class="num">8</div>요가복</a></dd>
-						<dd><a class="t" href="#"><div class="num">9</div>텐트</a></dd>
-						<dd><a class="t" href="#"><div class="num">10</div>래쉬가드</a></dd>
-					</dl>
-					<dl class="time3" style="display:none;">
-						<dd><a class="t" href="#"><div class="num">11</div>수영복</a></dd>
-						<dd><a class="t" href="#"><div class="num">12</div>디스커버리반팔티</a></dd>
-						<dd><a class="t" href="#"><div class="num">13</div>축구화</a></dd>
-						<dd><a class="t" href="#"><div class="num">14</div>노스페이스바람막이</a></dd>
-						<dd><a class="t" href="#"><div class="num">15</div>전기자전거</a></dd>
-					</dl>
-					<dl class="time4" style="display:none;">
-						<dd><a class="t" href="#"><div class="num">16</div>캠핑카</a></dd>
-						<dd><a class="t" href="#"><div class="num">17</div>캠핑테이블</a></dd>
-						<dd><a class="t" href="#"><div class="num">18</div>여성골프웨어</a></dd>
-						<dd><a class="t" href="#"><div class="num">19</div>여성래쉬가드</a></dd>
-						<dd><a class="t" href="#"><div class="num">20</div>캠핑의자</a></dd>
-					</dl>
+
 				</li>
+
 				<li>
-					<a class="best_add ad1" style="cursor:pointer" onClick="javascript:view('0')">&#62;</a>
-					<a class="best_add ad2" onClick="javascript:view('1')" style="display:none;cursor:pointer" >&#62;</a>
-					<a class="best_add ad3" onClick="javascript:view('2')" style="display:none;cursor:pointer" >&#62;</a>
-					<a class="best_add ad4" onClick="javascript:view('3')" style="display:none;cursor:pointer" >&#60;</a>
+<%--					<a class="best_add ad1" style="cursor:pointer" onClick="javascript:view('0')">&#62;</a>--%>
+<%--					<a class="best_add ad2" onClick="javascript:view('1')" style="display:none;cursor:pointer" >&#62;</a>--%>
+<%--					<a class="best_add ad3" onClick="javascript:view('2')" style="display:none;cursor:pointer" >&#62;</a>--%>
+<%--					<a class="best_add ad4" onClick="javascript:view('3')" style="display:none;cursor:pointer" >&#60;</a>--%>
 				</li>
 			</ul>
 		</div>

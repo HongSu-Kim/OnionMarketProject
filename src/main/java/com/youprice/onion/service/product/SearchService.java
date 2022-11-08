@@ -1,6 +1,7 @@
 package com.youprice.onion.service.product;
 
 import com.youprice.onion.dto.product.SearchAddDTO;
+import com.youprice.onion.dto.product.SearchFindDTO;
 import com.youprice.onion.entity.product.Search;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,9 +16,15 @@ public interface SearchService {
 
     Search findBySearchName(String searchName);
 
-    List<Search> findBySearchRank();
+  //  List<Search> findBySearchRank();
 
     int searchupdatecount(String searchName);
+
+    List<Search> findBySearchRank5();
+
+    List<Search> findBySearchRank10();
+
+    List<Search> findBySearchRank20();
 
 
 }
