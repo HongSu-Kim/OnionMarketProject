@@ -27,8 +27,9 @@
                                     <img alt="프로필사진" style="border-radius: 50%"
                                          src="/img/member/${dto.memberDTO.memberImageName}"/>
                                 </div>
+
                                 <div class="col-lg-1">
-                                    <p style="height: 10px">${dto.memberDTO.nickname}</p>
+                                    <p style="height: 10px; width: 64px">${dto.memberDTO.nickname}</p>
                                     <p style="height: 10px"><c:forEach var="i" begin="1" end="${dto.grade}"><span
                                             style="color: gold">★</span></c:forEach></p>
                                 </div>
