@@ -788,6 +788,24 @@ INSERT INTO product VALUES(128,1,1,107,'식물/염자 다육식물 화초 새토
 INSERT INTO product VALUES(129,1,1,107,'다육이','고급진 화분에 붉게 물든 다육 넘이쁘죠',13000,'105다육4.png',SYSDATE , '', '' ,0,'SALESON','',0);
 INSERT INTO product VALUES(130,1,1,107,'다육 모듬입니다~','사이즈 확인하시고 상대원3동 주민센터 앞으로 오시면 되요',7000,'105다육5.png',SYSDATE , '', '' ,0,'SALESON','1',0);
 ----------------------------------------------------------------------------------------------------
+INSERT INTO SEARCH VALUES(1,'취업',100);
+INSERT INTO SEARCH VALUES(2,'수료',90);
+INSERT INTO SEARCH VALUES(3,'자바',80);
+INSERT INTO SEARCH VALUES(4,'황태용',70);
+INSERT INTO SEARCH VALUES(5,'스프링',60);
+INSERT INTO SEARCH VALUES(6,'면접',55);
+INSERT INTO SEARCH VALUES(7,'아이티윌',50);
+INSERT INTO SEARCH VALUES(8,'김홍수',45);
+INSERT INTO SEARCH VALUES(9,'최재혁',40);
+INSERT INTO SEARCH VALUES(10,'수료끝',35);
+INSERT INTO SEARCH VALUES(11,'강사님',30);
+INSERT INTO SEARCH VALUES(12,'수고하셨습니다',25);
+INSERT INTO SEARCH VALUES(13,'컴퓨터',20);
+INSERT INTO SEARCH VALUES(14,'IT',15);
+INSERT INTO SEARCH VALUES(15,'끝',10);
+
+
+----------------------------------------------------------------------------------------------------
 
 INSERT INTO notice VALUES (100, 1, 'QNA', '아이디/비밀번호 찾는 방법', '아이디가 기억나지 않는다면, 웹 페이지에서 아이디/비밀번호 찾기에서 등록한 이메일을 통해 확인할 수 있습니다.', '2022-11-01', default);
 INSERT INTO notice VALUES (101, 1, 'QNA', '커뮤니티 가이드라인', '[ 양파마켓은 동네 이웃 간의 연결을 도와 따뜻하고 활발한 교류가 있는 지역 사회를 만들기 위해 노력하고 있습니다. ]<br/><br/>양파마켓을 사용하는 이웃 모두가 커뮤니티 가이드라인을 지켜주세요<br/><br/> * 이런 행동은 할 수 없어요. *<br/> · 판매 금지 물품 거래<br/> · 중고거래 사기 등 손해를 입히는 행위<br/> · 허위 정보 게시 등 속이거나 기만하는 행위 ' , '2022-11-01', default);

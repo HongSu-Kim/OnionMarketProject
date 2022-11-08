@@ -31,7 +31,7 @@ public class Category {
     private List<Product> categoryList = new ArrayList<>();
 
 
-    public Category TopcategoryAdd(CategoryAddDTO categoryAddDTO, String topcategoryName) {
+    public Category TopcategoryAdd(String topcategoryName) {
         this.categoryName = topcategoryName; //상위카테고리이름
 
         return this;
