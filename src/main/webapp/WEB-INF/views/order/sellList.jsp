@@ -97,7 +97,7 @@
 
 					<!-- 페이징 -->
 					<c:if test="${!empty page.content && page.totalPages != 1}">
-						<input type="hidden" id="pageNumber" value="${page.number + 1}"/>
+						<input type="hidden" id="pageNumber" value="${page.number}"/>
 						<div class="product__pagination text-center">
 							<c:set var="block" value="10"/><%-- 10 --%>
 							<fmt:parseNumber var="pageNumber" integerOnly="true" value="${page.number / block}"/><%-- 현재페이지 : 0 ~ --%>

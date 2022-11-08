@@ -136,7 +136,6 @@
                             <ul class="header__menu__dropdown">
                                 <li><a href="/notice/list">Notice List</a></li>
                                 <li><a href="/inquiry/list">Inquiry List</a></li>
-                                <li><a href="#">Temp4</a></li>
                             </ul>
                         </li>
                         <sec:authorize access="isAnonymous()">
@@ -186,13 +185,10 @@
                                     <ul class="header__menu__dropdown nickname">
                                         <li><a href="/member/mypage">마이페이지</a></li>
                                         <sec:authorize access="hasRole('USER')">
-                                            <li>
-                                                <a href="/member/cash/<sec:authentication property="principal.sessionDTO.id"/>">양파페이 충전</a></li>
-                                            <li>
-                                                <a href="/review/mylist/<sec:authentication property="principal.sessionDTO.id"/>">나의 후기</a></li>
-                                            <li>
-                                                <a href="/inquiry/myList/<sec:authentication property="principal.sessionDTO.id"/>">나의 문의</a></li>
+                                            <li><a href="/member/cash/<sec:authentication property="principal.sessionDTO.id"/>">양파페이 충전</a></li>
                                             <li><a href="/wish/list">위시리스트</a></li>
+                                            <li><a href="/review/mylist/<sec:authentication property="principal.sessionDTO.id"/>">나의 후기</a></li>
+                                            <li><a href="/inquiry/myList/<sec:authentication property="principal.sessionDTO.id"/>">나의 문의</a></li>
                                         </sec:authorize>
                                         <sec:authorize access="hasRole('ADMIN')">
                                             <li><a href="/member/manageMember/">회원관리</a></li>

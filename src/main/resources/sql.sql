@@ -271,8 +271,8 @@ CREATE TABLE inquiry (
 	member_id	    	NUMBER	        NOT NULL,
 	inquiry_type        VARCHAR2(50)	NOT NULL,
 	detail_type         VARCHAR2(50)	NOT NULL,
-	inquiry_subject     VARCHAR2(255)	NOT NULL,
-	inquiry_content     VARCHAR2(255)	NOT NULL,
+	inquiry_subject     VARCHAR2(500)	NOT NULL,
+	inquiry_content     VARCHAR2(500)	NOT NULL,
 	inquiry_date    	DATE            DEFAULT SYSDATE,
 	status          	VARCHAR2(20)	DEFAULT 'wait',
 	secret              CHAR(1)         CONSTRAINT review_image_secret_CK check ( secret = '0' or secret = '1'),
@@ -284,7 +284,7 @@ CREATE TABLE answer (
 	answer_id	    	NUMBER	        NOT NULL,
 	inquiry_id	    	NUMBER	        NOT NULL,
 	member_id	    	NUMBER	        NOT NULL,
-	answer_content      VARCHAR2(255)	NOT NULL,
+	answer_content      VARCHAR2(1000)	NOT NULL,
 	answer_date     	DATE            DEFAULT SYSDATE,
 	CONSTRAINT PK_ANSWER PRIMARY KEY (answer_id),
 	CONSTRAINT FK_ANSWER_INQUIRY_ID FOREIGN KEY (inquiry_id) REFERENCES inquiry(inquiry_id),
@@ -743,6 +743,7 @@ INSERT INTO KEYWORD VALUES(18,5,'중고');
 INSERT INTO KEYWORD VALUES(19,5,'유니폼');
 INSERT INTO KEYWORD VALUES(20,5,'신발');
 ----------------------------------------------------------------------------------------------------
+
 INSERT INTO prohibition_keyword VALUES(1,'담배');
 INSERT INTO prohibition_keyword VALUES(2,'술');
 INSERT INTO prohibition_keyword VALUES(3,'소주');
@@ -750,11 +751,12 @@ INSERT INTO prohibition_keyword VALUES(4,'맥주');
 INSERT INTO prohibition_keyword VALUES(5,'마약');
 INSERT INTO prohibition_keyword VALUES(6,'성인');
 INSERT INTO prohibition_keyword VALUES(7,'음란물');
+
 ----------------------------------------------------------------------------------------------------
+
 INSERT INTO product VALUES (0, 0, 1, 114, '양파마켓 키워드 알림', '키워드 알림', 0, 'onion.png', SYSDATE, NULL, NULL, 0, 'SOLDOUT', 0, 1);
-
+INSERT INTO product VALUES(1, 3, 1, 115, 'ㄷrㅁㅂrlㅍrㅁㄴiㄷr','남은거 3개비 팜', 1000, '115금지품목1.png', SYSDATE , '', '' ,0,'SALESON', 1, 0);
 --------------------------------------------------
-
 INSERT INTO product VALUES(101,1,1,43,'코오롱스포츠 구스다운 여성 롱패딩 블랙','하자없이 상태좋은편입니다 드라이 한번 하고 입으시면 될 것 같아요 사이즈 95 택포',65000,'42여성패딩1.png',SYSDATE , '', '' ,0,'SALESON','',0);
 INSERT INTO product VALUES(102,1,1,44,'트렌치코트','소매부분은 끈으로 리본 묶을 수 있어요 뒷부분은 케이프 형태입니다.',50000,'42여성코트1.png',SYSDATE , '', '' ,0,'SALESON','1',0);
 INSERT INTO product VALUES(103,1,1,44,'55 66 톰보이 후드 코트','상태 깨끗해요 위례포레샤인 17단지에서 거래가능',20000,'42여성코트2.png',SYSDATE , '', '' ,0,'SALESON','',0);
@@ -785,9 +787,6 @@ INSERT INTO product VALUES(127,1,1,107,'다육이 세트','다육이 기를 줄�
 INSERT INTO product VALUES(128,1,1,107,'식물/염자 다육식물 화초 새토분과 새도자기','미니종 염자입니다. 일교차가 커지면 잎끝이 빨갛게 물들어 더욱 이뻐요',2000,'105다육3.png',SYSDATE , '', '' ,0,'SALESON','1',0);
 INSERT INTO product VALUES(129,1,1,107,'다육이','고급진 화분에 붉게 물든 다육 넘이쁘죠',13000,'105다육4.png',SYSDATE , '', '' ,0,'SALESON','',0);
 INSERT INTO product VALUES(130,1,1,107,'다육 모듬입니다~','사이즈 확인하시고 상대원3동 주민센터 앞으로 오시면 되요',7000,'105다육5.png',SYSDATE , '', '' ,0,'SALESON','1',0);
-
-INSERT INTO product VALUES(999,1,1,115,'ㄷrㅁㅂrlㅍrㅁㄴiㄷr','남은거 3개비 팜',1000,'115금지품목1.png',SYSDATE , '', '' ,0,'SALESON','1',0);
-
 ----------------------------------------------------------------------------------------------------
 
 INSERT INTO notice VALUES (100, 1, 'QNA', '아이디/비밀번호 찾는 방법', '아이디가 기억나지 않는다면, 웹 페이지에서 아이디/비밀번호 찾기에서 등록한 이메일을 통해 확인할 수 있습니다.', '2022-11-01', default);
@@ -806,5 +805,30 @@ INSERT INTO notice VALUES (124, 1, 'NOTICE', '[공지] 양파마켓 개인정보
 INSERT INTO notice_image VALUES (500, 124, 'onionNotice1.png');
 INSERT INTO notice_image VALUES (501, 124, 'onionNotice2.png');
 INSERT INTO notice_image VALUES (502, 122, 'chatEx1.png');
+INSERT INTO inquiry VALUES (70, 6, '회원정보', '로그인', '로그인이 안돼요', '비밀번호를 몰라요', '2022-09-11', default, 1);
+INSERT INTO inquiry VALUES (71, 6, '거래', '거래내역확인', '거래가 끝나면 어디서 봐요?', '거래가 끝나면 어디서 봐요?', '2022-09-12', default, 1);
+INSERT INTO inquiry VALUES (72, 6, '기타서비스', '경매이용', '입찰가를 바꾸고싶어요', '입찰가를 바꾸고싶어요', '2022-09-13', default, 1);
+INSERT INTO inquiry VALUES (73, 6, '거래', '거래확정,후기', '후기를 남기려고 하는데 어디서 쓰나요?', '후기는 어디서', '2022-09-18', default, 1);
+INSERT INTO inquiry VALUES (74, 6, '회원정보', '아이디,비밀번호', '아이디 변경 가능해요?', '아이디 변경 가능해요?', '2022-09-21', default, 1);
+INSERT INTO inquiry VALUES (75, 6, '기타서비스', '채팅이용', '채팅 처음써봐요', '채팅 처음써봐요', '2022-09-22', default, 1);
+INSERT INTO inquiry VALUES (80, 6, '거래', '거래내역확인', '거래가 완료되면 어디서 확인하나요?', '직거래로 판매자와 거래를 완료하면 어디서 볼 수 있나요?', '2022-09-24', 'complete', 1);
+INSERT INTO answer VALUES (70, 80, 1, '[메인페이지] - [거래내역] - [구매목록]탭에서 확인하실 수 있습니다.<br/><br/> 더 궁금하신 사항이 있으시다면 양파마켓 고객 센터로 연락주세요', '2022-09-27');
+INSERT INTO inquiry VALUES (81, 5, '거래', '상품찾기', '제가 올린 상품이 블라인드 되었어요', '올린지 하루만에 블라인드 처리되었는데 납득이 가지 않습니다.<br/> 블라인드 상태를 해지해주세요', '2022-09-30', 'complete', 0);
+INSERT INTO answer VALUES (71, 81, 1, '회원님의 게시글이 여러번 신고접수 되었고 합당한 사유로 처리가 되었습니다.<br/>이에 해당 상품이 블라인드 처리 되었습니다.<br/> 더 궁금하신 점이 있다면 고객센터로 연락해주세요.<br/>', '2022-09-30');
+INSERT INTO inquiry VALUES (82, 4, '회원정보', '아이디,비밀번호', '비밀번호가 생각이 안나요!', '비밀번호를 몰라서 새로 회원가입했습니다.<br/> 기존 계정을 다시 쓰고 싶은데 어떻게 찾을 수 있나요?<br/>', '2022-10-03', 'complete', 0);
+INSERT INTO answer VALUES (72, 82, 1, '로그인 화면에서 비밀번호 찾기를 이용해 찾을 수 있습니다.<br/> <p style="color: #4c4c4c; font-weight: bold; color: #e4606d;">회원가입 시 등록한 이메일 주소를 입력하면 해당 이메일로 임시 비밀번호가 발급됩니다.</p><br/> 그 다음 마이페이지에서 회원정보 수정을 통해 비밀번호를 변경할 수 있습니다. ', '2022-10-03');
+INSERT INTO inquiry VALUES (83, 4, '기타서비스', '양파페이,서비스', '페이 충전하는 방법을 몰라요', '양파페이를 충전해서 사용하고 싶은데 어떻게 충전하는지 모르겠어요', '2022-10-10', 'complete', 1);
+INSERT INTO answer VALUES (73, 83, 1, '홈페이지 상단 우측에 [양파페이 잔액]을 누르면 충전 페이지로 들어갑니다.<br/><br/> 원하는 금액을 선택하고 충전하면 됩니다.', '2022-10-11');
+INSERT INTO inquiry VALUES (84, 3, '기타서비스', '경매이용', '경매를 이용해보고 싶어요', '근데 이용방법을 몰라요. 어떻게 하는지 알려주시면 감사하겠습니다.', '2022-10-15', 'complete', 0);
+INSERT INTO answer VALUES (74, 84, 1, '상품 목록에서 AUCTION이 붙은 상품을 클릭하면 경매 이용 가능합니다.<br/> 경매에 참여하시려면 입찰가를 입력하고, <a style="color: #4c4c4c;>입찰하기</a>를 클릭하면 됩니다.', '2022-10-16');
+INSERT INTO inquiry VALUES (85, 3, '거래', '거래방법', '가입하고 처음써보는데 어떻게해요?', '직거래만 가능한가요? 거래 방법 알려주세요. ', '2022-10-20', default, 1);
+INSERT INTO inquiry VALUES (86, 2, '거래', '상품찾기', '봐둔 상품이 있는데 찾고싶어요', '며칠 전에 봐둔 상품을 찾고싶어요', '2022-10-23', 'complete', 0);
+INSERT INTO answer VALUES (76, 86, 1, '상단의 검색탭 및 카테고리 메뉴를 통해 찾으실 수 있습니다. <br/>원하는 상품이 있다면 [찜하기] 또는 [채팅]을 이용하기를 바랍니다.', '2022-10-24');
+INSERT INTO inquiry VALUES (87, 2, '기타서비스', '경매이용', '입찰되는지는 어떻게 알아요?', '어디서 알려줘요?', '2022-10-30', default, 1);
+INSERT INTO inquiry VALUES (88, 2, '기타서비스', '양파페이,포인트', '페이와 포인트를 같이 쓰고싶어요', '한번에 같이 사용 가능한가요?', '2022-11-01', default, 1);
+INSERT INTO inquiry VALUES (89, 3, '회원정보', '회원가입/수정', '프로필 사진을 변경하고 싶어요', '원하는 사진으로 변경하고 싶은데 어떻게 하는지 알려주세요', '2022-11-02', 'complete', 1);
+INSERT INTO answer VALUES (79, 89, 1, '[마이페이지] - [사진변경] 탭을 통해 원하는 사진으로 변경 가능합니다.', '2022-11-03');
+INSERT INTO inquiry VALUES (90, 2, '기타서비스', '채팅이용', '채팅으로 거래예약을 하는건가요?', '채팅 처음 써보는데 사용하는 법을 몰라요', '2022-11-05', 'complete', 1);
+INSERT INTO answer VALUES (80, 90, 1, '구매를 원하는 상품 페이지에 들어가서 [채팅하기]를 클릭하면 판매자와 대화하실 수 있습니다. <br/> 채팅기록은 남아있으니 원할때마다 확인 가능합니다.', '2022-11-05');
 
 commit;
