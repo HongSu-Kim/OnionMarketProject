@@ -182,7 +182,7 @@
 	</section>
 	<!-- /광고 -->
 
-	<section class="from-blog spad">
+	<%--<section class="from-blog spad">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
@@ -210,14 +210,14 @@
 				</li>
 
 				<li>
-<%--					<a class="best_add ad1" style="cursor:pointer" onClick="javascript:view('0')">&#62;</a>--%>
-<%--					<a class="best_add ad2" onClick="javascript:view('1')" style="display:none;cursor:pointer" >&#62;</a>--%>
-<%--					<a class="best_add ad3" onClick="javascript:view('2')" style="display:none;cursor:pointer" >&#62;</a>--%>
-<%--					<a class="best_add ad4" onClick="javascript:view('3')" style="display:none;cursor:pointer" >&#60;</a>--%>
+&lt;%&ndash;					<a class="best_add ad1" style="cursor:pointer" onClick="javascript:view('0')">&#62;</a>&ndash;%&gt;
+&lt;%&ndash;					<a class="best_add ad2" onClick="javascript:view('1')" style="display:none;cursor:pointer" >&#62;</a>&ndash;%&gt;
+&lt;%&ndash;					<a class="best_add ad3" onClick="javascript:view('2')" style="display:none;cursor:pointer" >&#62;</a>&ndash;%&gt;
+&lt;%&ndash;					<a class="best_add ad4" onClick="javascript:view('3')" style="display:none;cursor:pointer" >&#60;</a>&ndash;%&gt;
 				</li>
 			</ul>
 		</div>
-	</div>
+	</div>--%>
 
 	<!-- Featured Section Begin -->
 	<section class="product spad">
