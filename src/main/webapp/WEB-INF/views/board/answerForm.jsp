@@ -38,7 +38,7 @@
 
 </style>
 
-<section class="hero hero-normal">
+<section class="hero hero-normal" style="margin-top: 250px">
     <div class="container" style="width: 800px;">
         <div class="qna-container" style="margin-bottom: 30px">
             <div class="n-section-title">
